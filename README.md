@@ -5,9 +5,12 @@
 > [`docs/RENAME_CHECKLIST.md`](docs/RENAME_CHECKLIST.md) when that happens —
 > everything that needs to change is listed there.
 
-Free career-guidance web app for Class 10–12 students in India. Single
-self-contained `index.html` (HTML + CSS + JS in one file, no build step
-required to run it) backed by Supabase, deployed on Netlify.
+Career-guidance web app for Class 10–12 students in India. Currently
+free to use end-to-end — no monetization has been built yet, not a
+permanent "always free" promise (see `docs/PRE_LAUNCH_CHECKLIST.md`
+for the planned direction). Single self-contained `index.html`
+(HTML + CSS + JS in one file, no build step required to run it)
+backed by Supabase, deployed on Netlify.
 
 **Live:** https://margai.netlify.app
 
