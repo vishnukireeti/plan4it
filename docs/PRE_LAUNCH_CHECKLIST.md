@@ -59,11 +59,6 @@ limitation, not a known bug — see below.
       the Privacy Policy. A proper self-service "delete my account"
       button needs a Supabase Edge Function later.
 
-## Naming
-
-- [ ] Pick the real app name (currently "MARG-AI", a placeholder). Once
-      decided, work through `docs/RENAME_CHECKLIST.md`.
-
 ## Domain
 
 - [ ] Register and connect the custom domain (target: by end of
@@ -91,3 +86,7 @@ limitation, not a known bug — see below.
 - [x] Real Supabase Auth (email/password + Google code path) replacing
       the old localStorage-only demo accounts; saved careers/colleges/
       exams/checklist/profile now sync to an account when signed in
+- [x] Renamed "MARG-AI" → "Plan4it" (2026-11-02): all in-app text, README,
+      docs, and favicons/OG image regenerated. Domain and a few cosmetic
+      account display names intentionally left — see
+      `docs/RENAME_CHECKLIST.md`.

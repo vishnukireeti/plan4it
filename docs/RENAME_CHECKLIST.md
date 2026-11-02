@@ -1,15 +1,20 @@
 # Renaming this app
 
-The app is currently called **"MARG-AI"** (`margai.netlify.app`) — a
-placeholder name chosen early in development. The site owner intends to
-pick a real name before public launch. This is the full checklist for
-when that happens. (The same checklist also lives as a comment in
-`index.html`, right above the GA4 script tag — this file exists so it's
-discoverable without opening the HTML source.)
+**Done, 2026-11-02:** renamed from "MARG-AI" to **"Plan4it"**. Steps 1–3
+below are complete. Still outstanding, same as any future rename:
+- The domain (still `margai.netlify.app`) — left until a custom domain is
+  registered (step 2).
+- The cosmetic account display names in step 4 — update whenever
+  convenient, never urgent.
 
-1. **Text in `index.html`** (~30 spots): find-and-replace `MARG-AI` →
-   the new name, and the standalone `MARG` nav-logo chip text (two
-   spots — search for `>MARG<`). A plain string replace is safe: every
+This file is kept as a reusable checklist in case the app is ever renamed
+again — the steps below are generic, not specific to this rename.
+(The same checklist also lives as a short comment in `index.html`, right
+above the GA4 script tag.)
+
+1. **Text in `index.html`** (~30 spots): find-and-replace the old name →
+   the new name, and the standalone nav-logo chip text (search for the
+   old name wrapped in `>...<`). A plain string replace is safe: every
    occurrence is used as a proper noun, no grammar breaks to worry
    about.
 

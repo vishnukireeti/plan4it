@@ -16,11 +16,12 @@ it's missing: pip install --break-system-packages Pillow
 from PIL import Image, ImageDraw, ImageFont
 
 # ---- EDIT THESE WHEN RENAMING -------------------------------------------
-APP_NAME = "MARG-AI"
-APP_INITIAL = "M"                 # the single letter shown on the icon mark
+APP_NAME = "Plan4it"
+APP_INITIAL = "P"                 # the single letter shown on the icon mark
 APP_TAGLINE_LINE1 = "Career & college guidance for Class 10–12"
-APP_TAGLINE_LINE2 = "students in India — free, no login needed."
-APP_DOMAIN_DISPLAY = "margai.netlify.app"   # shown as plain text on the OG image
+APP_TAGLINE_LINE2 = "students in India."
+APP_DOMAIN_DISPLAY = "margai.netlify.app"   # shown as plain text on the OG image — still the
+                                   # old domain; update once a custom domain is registered
 BRAND_RGB = (37, 99, 235)         # #2563eb — must match the `brand.600` value
                                    # in tailwind.config inside index.html
 # ---------------------------------------------------------------------------

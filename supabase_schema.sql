@@ -1,4 +1,4 @@
--- MARG-AI — Supabase schema
+-- Plan4it — Supabase schema
 --
 -- This file is the version-controlled source of truth for the Supabase project
 -- referenced in index.html (SUPABASE_URL / SUPABASE_ANON_KEY near the top of <head>).

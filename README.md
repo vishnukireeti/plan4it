@@ -1,9 +1,9 @@
-# MARG-AI
+# Plan4it
 
-> **Name is a placeholder.** "MARG-AI" was chosen during early development
-> and the site owner plans to rename before public launch. See
-> [`docs/RENAME_CHECKLIST.md`](docs/RENAME_CHECKLIST.md) when that happens —
-> everything that needs to change is listed there.
+> Renamed from "MARG-AI" to "Plan4it" on 2026-11-02. The text rename is
+> done (app, README, docs); the domain (still `margai.netlify.app`) and a
+> few cosmetic account names are intentionally left for later — see
+> [`docs/RENAME_CHECKLIST.md`](docs/RENAME_CHECKLIST.md) for what's left.
 
 Career-guidance web app for Class 10–12 students in India. Currently
 free to use end-to-end — no monetization has been built yet, not a

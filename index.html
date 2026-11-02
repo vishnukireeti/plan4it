@@ -5,7 +5,7 @@
     <meta name="theme-color" content="#f8fafc">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MARG-AI | Career and college guidance for Class 10–12 students in India</title>
+    <title>Plan4it | Career and college guidance for Class 10–12 students in India</title>
     <meta name="description" content="Guidance for Indian students in Class 10–12 and their families — choose a stream, pick entrance exams, compare colleges, find scholarships, and get a backup plan if a cutoff doesn't go your way.">
     <link rel="canonical" href="https://margai.netlify.app/">
 
@@ -16,8 +16,8 @@
 
     <!-- Open Graph / Twitter Card: controls link previews on WhatsApp, Twitter, Facebook, etc. -->
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="MARG-AI">
-    <meta property="og:title" content="MARG-AI | Career and college guidance for Class 10–12 students in India">
+    <meta property="og:site_name" content="Plan4it">
+    <meta property="og:title" content="Plan4it | Career and college guidance for Class 10–12 students in India">
     <meta property="og:description" content="Guidance for Indian students in Class 10–12 and their families — choose a stream, pick entrance exams, compare colleges, find scholarships, and get a backup plan if a cutoff doesn't go your way.">
     <meta property="og:url" content="https://margai.netlify.app/">
     <meta property="og:image" content="https://margai.netlify.app/assets/og-image.png">
@@ -25,7 +25,7 @@
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="en_IN">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="MARG-AI | Career and college guidance for Class 10–12 students in India">
+    <meta name="twitter:title" content="Plan4it | Career and college guidance for Class 10–12 students in India">
     <meta name="twitter:description" content="Guidance for Indian students in Class 10–12 and their families — choose a stream, pick entrance exams, compare colleges, find scholarships, and get a backup plan if a cutoff doesn't go your way.">
     <meta name="twitter:image" content="https://margai.netlify.app/assets/og-image.png">
 
@@ -34,7 +34,7 @@
     {
         "@context": "https://schema.org",
         "@type": "EducationalOrganization",
-        "name": "MARG-AI",
+        "name": "Plan4it",
         "url": "https://margai.netlify.app/",
         "description": "Career and college guidance for Class 10–12 students in India: stream selection, entrance exam tracking, college comparison, scholarships, and backup planning.",
         "areaServed": { "@type": "Country", "name": "India" },
@@ -56,31 +56,17 @@
          run `node scripts/build-tailwind.mjs` to regenerate assets/tailwind.css. -->
     <link rel="stylesheet" href="/assets/tailwind.css">
     <!-- ============================================================================
-         RENAMING THIS APP (currently "MARG-AI" / margai.netlify.app) — checklist:
-
-         1. Text in this file (~30 spots): find-and-replace "MARG-AI" -> new name
-            and the standalone "MARG" nav-logo chip text (two spots, search for
-            >MARG<). A plain string replace is safe here — every occurrence is used
-            as a proper noun, no grammar breaks.
-         2. "margai.netlify.app" (this file + robots.txt + sitemap.xml): replace with
-            the new domain once you have one. Until then it's fine left as-is.
-         3. Run `python3 scripts/generate-brand-assets.py` after editing the
-            APP_NAME/APP_INITIAL/APP_TAGLINE constants at its top — regenerates
-            favicons + the OG/social-preview image (these bake the name into actual
-            pixels, so they can't be text-replaced).
-         4. Accounts that do NOT need recreating — only a cosmetic display-name
-            field, whenever convenient, never urgent:
-              - GA4: Admin > Property settings (property name only; the
-                Measurement ID itself never changes). Update the Data Stream's
-                website URL once the custom domain is live.
-              - Sentry: Project Settings > General > Name.
-              - Supabase: Project name in the dashboard (the project ref/URL is
-                separate and unaffected).
-              - GitHub repo: Settings > rename (old links auto-redirect).
-              - Netlify site: Project configuration > General > Site details >
-                change site name (this DOES change the *.netlify.app subdomain,
-                so only do this once, deliberately — not relevant at all once a
-                custom domain is attached, since that becomes the primary URL).
+         Renamed from "MARG-AI" to "Plan4it" (2026-11-02). The text rename is done
+         (this file, README, and docs). Still outstanding, same as any future rename:
+         - Domain still margai.netlify.app — left as-is until a custom domain is
+           registered (then also update robots.txt, sitemap.xml, and the OG/canonical
+           URLs in this file).
+         - Favicons / OG image still show the old mark until
+           `python3 scripts/generate-brand-assets.py` is run (APP_NAME/APP_INITIAL
+           already updated in that script's constants).
+         - Cosmetic-only account display names (GA4, Sentry, Supabase, GitHub repo,
+           Netlify site) — update whenever convenient, never urgent; see
+           docs/RENAME_CHECKLIST.md for the full list if this ever needs doing again.
          ============================================================================ -->
     <!-- Google Analytics 4. GA4_MEASUREMENT_ID is a placeholder — create a GA4 property at
          https://analytics.google.com (Admin > Create Property), add a Web data stream for this
@@ -373,7 +359,7 @@
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
     <a href="#main" class="skip-link">Skip to main content</a>
-    <noscript><div style="padding:16px;background:#fef3c7;color:#78350f;font:14px sans-serif;text-align:center">MARG-AI needs JavaScript to work. Please turn it on in your browser.</div></noscript>
+    <noscript><div style="padding:16px;background:#fef3c7;color:#78350f;font:14px sans-serif;text-align:center">Plan4it needs JavaScript to work. Please turn it on in your browser.</div></noscript>
 
     <!-- TOAST CONTAINER -->
     <!-- AUTH MODAL (sign up / log in) -->
@@ -401,7 +387,7 @@
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeAuth()"></div>
         <div id="auth-card" class="auth-card relative bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-md max-h-[94vh] overflow-y-auto p-6 sm:p-8">
             <button type="button" onclick="closeAuth()" aria-label="Close" class="absolute top-3 right-3 w-10 h-10 rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-800 text-xl leading-none">&times;</button>
-            <div class="font-display inline-block bg-brand-600 text-white font-bold px-3 py-1 rounded-lg text-sm mb-4">MARG</div>
+            <div class="font-display inline-block bg-brand-600 text-white font-bold px-3 py-1 rounded-lg text-sm mb-4">Plan4it</div>
             <h2 id="auth-title" class="font-display text-2xl font-bold text-slate-900 mb-1">Create your account</h2>
             <p id="auth-sub" class="text-sm text-slate-600 mb-5">Keep your saved careers, colleges, exams and checklist in one place.</p>
 
@@ -471,7 +457,7 @@
                 <button type="button" onclick="authLogout()" class="w-full min-h-[48px] border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl font-semibold transition">Log out</button>
                 <button type="button" onclick="authDelete()" class="w-full min-h-[44px] text-sm font-semibold text-rose-700 hover:underline">Delete my saved data</button>
             </div>
-            <p class="text-xs text-slate-500 mt-5 text-center">MARG-AI is for guidance only. Always verify details on official websites. We ask only for what we need, and you can delete your details any time.</p>
+            <p class="text-xs text-slate-500 mt-5 text-center">Plan4it is for guidance only. Always verify details on official websites. We ask only for what we need, and you can delete your details any time.</p>
         </div>
     </div>
 
@@ -485,7 +471,7 @@
                     <svg class="w-6 h-6" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
                 </button>
                 <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('home')">
-                    <div class="font-display bg-brand-600 text-white font-bold px-3 py-1.5 rounded-lg text-lg shadow-sm">MARG</div>
+                    <div class="font-display bg-brand-600 text-white font-bold px-3 py-1.5 rounded-lg text-lg shadow-sm">Plan4it</div>
                 </div>
             </div>
 
@@ -574,7 +560,7 @@
             <div class="mt-10 text-left space-y-3">
                 <h2 class="font-bold text-slate-900 text-lg">Good to know</h2>
                 <details class="bg-white border border-slate-200 rounded-xl px-5 py-4">
-                    <summary class="flex items-center justify-between font-semibold text-slate-800 text-sm min-h-[44px]"><span>How MARG-AI works</span><svg class="chev w-4 h-4 text-slate-500 transition-transform shrink-0 ml-3" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg></summary>
+                    <summary class="flex items-center justify-between font-semibold text-slate-800 text-sm min-h-[44px]"><span>How Plan4it works</span><svg class="chev w-4 h-4 text-slate-500 transition-transform shrink-0 ml-3" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg></summary>
                     <ol class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
                         <li class="bg-slate-50 border border-slate-200 rounded-xl p-4"><p class="font-semibold text-slate-900 text-sm">1. Tell us your stage</p><p class="text-xs text-slate-600 mt-1">Class 10, Class 11–12, or already in college.</p></li>
                         <li class="bg-slate-50 border border-slate-200 rounded-xl p-4"><p class="font-semibold text-slate-900 text-sm">2. Answer 3 quick questions</p><p class="text-xs text-slate-600 mt-1">Your interests, how you like to work, and what matters most.</p></li>
@@ -1154,7 +1140,7 @@
                         <li>What is the refund rule if I leave before classes start, or in the first year?</li>
                     </ul>
                 </details>
-                <p class="text-[11px] text-slate-500">Fees and placement figures in MARG-AI are marked when they are approximate. Always confirm them with the college.</p>
+                <p class="text-[11px] text-slate-500">Fees and placement figures in Plan4it are marked when they are approximate. Always confirm them with the college.</p>
             </div>
 
             <!-- Integrated programmes (school + JEE/NEET coaching) -->
@@ -1179,7 +1165,7 @@
 
                     <div>
                         <h4 class="font-bold text-slate-900 mb-1">Main providers (in alphabetical order)</h4>
-                        <p class="text-xs text-slate-500 mb-3">ALLEN, BASE and Deeksha were read on their own websites on 5 Oct 2026 and show how to apply and where they run. The others are short summaries so far. Fees and test dates change every year and differ by centre, so they are not shown. Ask for the current fee sheet in writing. MARG-AI does not rank or recommend any institute.</p>
+                        <p class="text-xs text-slate-500 mb-3">ALLEN, BASE and Deeksha were read on their own websites on 5 Oct 2026 and show how to apply and where they run. The others are short summaries so far. Fees and test dates change every year and differ by centre, so they are not shown. Ask for the current fee sheet in writing. Plan4it does not rank or recommend any institute.</p>
                         <div id="integrated-list"></div>
                         <p class="text-xs text-slate-500 mt-3">Also common in Andhra Pradesh and Telangana: large junior-college chains (for example Sri Chaitanya and Narayana) that run Class 11–12 with JEE/NEET coaching built in. I have not checked their programme details yet, so look at their official sites.</p>
                     </div>
@@ -1825,11 +1811,11 @@
             </div>
             <p class="text-xs text-slate-500 mb-6">Last updated: 28 October 2026</p>
             <div class="prose prose-sm max-w-none space-y-5 text-sm text-slate-700 leading-relaxed">
-                <p>MARG-AI ("we", "us") provides career and education guidance for students in Class 10–12 in India and their families. This page explains what information the app collects, why, and how to reach us about it.</p>
+                <p>Plan4it ("we", "us") provides career and education guidance for students in Class 10–12 in India and their families. This page explains what information the app collects, why, and how to reach us about it.</p>
 
                 <div>
-                    <h3 class="font-bold text-slate-900 mb-1">Using MARG-AI without an account</h3>
-                    <p>You don't need an account to use MARG-AI. Without one, your quiz answers, saved careers, colleges and exams, your checklist, and your profile details are stored only in your browser's local storage, on your own device. We never see this information, it is never sent to our servers, and it is deleted if you clear your browser data or use a different device or browser.</p>
+                    <h3 class="font-bold text-slate-900 mb-1">Using Plan4it without an account</h3>
+                    <p>You don't need an account to use Plan4it. Without one, your quiz answers, saved careers, colleges and exams, your checklist, and your profile details are stored only in your browser's local storage, on your own device. We never see this information, it is never sent to our servers, and it is deleted if you clear your browser data or use a different device or browser.</p>
                 </div>
 
                 <div>
@@ -1839,22 +1825,22 @@
 
                 <div>
                     <h3 class="font-bold text-slate-900 mb-1">What we collect on our servers</h3>
-                    <p>Regardless of whether you have an account, we collect anonymous usage events — for example, that a quiz was completed, or that the careers page was opened — to understand which parts of MARG-AI are useful. Each event is tied only to a random id generated by your browser, never to your name, email, or any other identifying detail. We do not use cookies, and we do not use any third-party advertising or tracking tools.</p>
+                    <p>Regardless of whether you have an account, we collect anonymous usage events — for example, that a quiz was completed, or that the careers page was opened — to understand which parts of Plan4it are useful. Each event is tied only to a random id generated by your browser, never to your name, email, or any other identifying detail. We do not use cookies, and we do not use any third-party advertising or tracking tools.</p>
                 </div>
 
                 <div>
                     <h3 class="font-bold text-slate-900 mb-1">Minors' data</h3>
-                    <p>MARG-AI is built for students as young as 13, and an account is never required to use it — ordinary, signed-out use asks for no name, email, phone number, or precise location at all. Creating an account is an optional choice that does collect a name and email (see above), so we ask anyone under 18 to have a parent or guardian's permission before doing so, the same as the consent checkbox shown when signing up. Our server infrastructure is hosted in India, in line with India's Digital Personal Data Protection (DPDP) Act considerations for data belonging to minors.</p>
+                    <p>Plan4it is built for students as young as 13, and an account is never required to use it — ordinary, signed-out use asks for no name, email, phone number, or precise location at all. Creating an account is an optional choice that does collect a name and email (see above), so we ask anyone under 18 to have a parent or guardian's permission before doing so, the same as the consent checkbox shown when signing up. Our server infrastructure is hosted in India, in line with India's Digital Personal Data Protection (DPDP) Act considerations for data belonging to minors.</p>
                 </div>
 
                 <div>
                     <h3 class="font-bold text-slate-900 mb-1">Who else sees this data</h3>
-                    <p>Anonymous usage data, and — if you create an account — your saved items and your account itself, are stored with Supabase, our database and authentication provider, on servers located in India. Our website is hosted by Netlify, and fonts are loaded from Google Fonts — these services may receive your device's IP address as a normal part of loading a web page, the same as visiting any website. If you sign in with Google, Google is told you're signing into MARG-AI and shares your name and email with us for that purpose. We do not sell or share any data with advertisers or data brokers.</p>
+                    <p>Anonymous usage data, and — if you create an account — your saved items and your account itself, are stored with Supabase, our database and authentication provider, on servers located in India. Our website is hosted by Netlify, and fonts are loaded from Google Fonts — these services may receive your device's IP address as a normal part of loading a web page, the same as visiting any website. If you sign in with Google, Google is told you're signing into Plan4it and shares your name and email with us for that purpose. We do not sell or share any data with advertisers or data brokers.</p>
                 </div>
 
                 <div>
                     <h3 class="font-bold text-slate-900 mb-1">Your rights</h3>
-                    <p>If you don't have an account, your data lives only on your own device — you can delete it at any time by clearing your browser's site data for MARG-AI. If you do have an account, you can delete your saved careers/colleges/exams, checklist and profile at any time from the account menu in the app. Deleting the account itself (not just its saved data) currently needs a request to us by email, using the address below — full self-service account deletion isn't built yet. For questions about the anonymous usage data we hold, or to ask us to remove it, also use the email below — anonymous data is harder to look up by request since it isn't linked to your identity, but we'll do our best to help.</p>
+                    <p>If you don't have an account, your data lives only on your own device — you can delete it at any time by clearing your browser's site data for Plan4it. If you do have an account, you can delete your saved careers/colleges/exams, checklist and profile at any time from the account menu in the app. Deleting the account itself (not just its saved data) currently needs a request to us by email, using the address below — full self-service account deletion isn't built yet. For questions about the anonymous usage data we hold, or to ask us to remove it, also use the email below — anonymous data is harder to look up by request since it isn't linked to your identity, but we'll do our best to help.</p>
                 </div>
 
                 <div>
@@ -1867,7 +1853,7 @@
                     <p>Questions, concerns, or data requests: <a href="mailto:margtest07@gmail.com" class="text-brand-600 underline">margtest07@gmail.com</a></p>
                 </div>
 
-                <p class="text-xs text-slate-400 pt-4 border-t border-slate-100">MARG-AI provides guidance only and is not a substitute for advice from a qualified counsellor, teacher, or doctor.</p>
+                <p class="text-xs text-slate-400 pt-4 border-t border-slate-100">Plan4it provides guidance only and is not a substitute for advice from a qualified counsellor, teacher, or doctor.</p>
             </div>
         </section>
 
@@ -1875,7 +1861,7 @@
 
     <!-- FOOTER -->
     <footer class="bg-white border-t border-slate-200 mt-16 py-8 text-center text-sm text-slate-500">
-        <p>MARG-AI India Platform &bull; Built to provide transparent career trees, entrance exam guidance, and skill roadmaps.</p>
+        <p>Plan4it India Platform &bull; Built to provide transparent career trees, entrance exam guidance, and skill roadmaps.</p>
         <p class="text-xs text-slate-400 mt-2">Fees, cutoffs, dates, and eligibility change every year. Always confirm on the official website before you apply or pay.</p>
         <p class="mt-3">
             <button type="button" onclick="switchView('privacy')" class="text-xs text-slate-400 underline hover:text-brand-600 min-h-[44px] px-3">Privacy Policy</button>
@@ -1887,9 +1873,9 @@
     <div id="age-gate-modal" class="hidden fixed inset-0 z-[95] items-end sm:items-center justify-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="age-gate-title">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
         <div class="relative bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-sm p-6 sm:p-7 text-center">
-            <div class="font-display inline-block bg-brand-600 text-white font-bold px-3 py-1 rounded-lg text-sm mb-4">MARG</div>
+            <div class="font-display inline-block bg-brand-600 text-white font-bold px-3 py-1 rounded-lg text-sm mb-4">Plan4it</div>
             <h2 id="age-gate-title" class="font-display text-lg font-bold text-slate-900 mb-2">Before you start</h2>
-            <p class="text-sm text-slate-600 mb-5">MARG-AI is guidance for students and families. Quick check — who's using it right now?</p>
+            <p class="text-sm text-slate-600 mb-5">Plan4it is guidance for students and families. Quick check — who's using it right now?</p>
             <div class="space-y-2">
                 <button type="button" onclick="ageGateAck('student')" class="w-full min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold transition">I'm a student (age 13 or older)</button>
                 <button type="button" onclick="ageGateAck('parent')" class="w-full min-h-[48px] border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl font-semibold transition">I'm a parent or guardian</button>
@@ -7166,10 +7152,10 @@
         ];
 
         const faqData = [
-            { q: "Is MARG-AI's guidance based on real data?", a: "The careers, exams, colleges, and scholarships here come from compiled datasets, not live official feeds. Fees, cutoffs, exam dates, and eligibility change every year, so always confirm with the official website before you apply or pay." },
+            { q: "Is Plan4it's guidance based on real data?", a: "The careers, exams, colleges, and scholarships here come from compiled datasets, not live official feeds. Fees, cutoffs, exam dates, and eligibility change every year, so always confirm with the official website before you apply or pay." },
             { q: "Can I change my answers after completing the wizard?", a: "Yes — open Find my path again and click \"Retake Quiz\" on your results screen, or just start the wizard again from the navigation menu." },
             { q: "Where is my saved data stored?", a: "If you're signed in, your bookmarked careers, checklist progress, and profile are saved to your account, so they follow you to any device. If you're not signed in, they're stored locally in this browser only, and clearing your browser data will reset them." },
-            { q: "Is MARG-AI only for Class 10–12 students?", a: "That's who it's built for: stream choice, entrance exams, college shortlisting, scholarships, and backup plans after a missed cutoff. College students and graduates can still use the pathways, exams, and funding tools, but they aren't the main focus, and classes below 10th aren't covered." }
+            { q: "Is Plan4it only for Class 10–12 students?", a: "That's who it's built for: stream choice, entrance exams, college shortlisting, scholarships, and backup plans after a missed cutoff. College students and graduates can still use the pathways, exams, and funding tools, but they aren't the main focus, and classes below 10th aren't covered." }
         ];
 
         /* ============================================================
@@ -7456,7 +7442,7 @@
             body: 'Being steered into a course you did not choose is hard, and it is more common than people admit. It is not disloyal to want something different. These steps tend to help:',
             steps: [
                 'Start with what they want for you. It is often security, respect or fear of regret. Say that you understand it before you disagree.',
-                'Bring specifics, not just "I do not want this". One or two alternatives with real costs and timelines work better, and MARG\'s career pages and the printout can help you show them.',
+                'Bring specifics, not just "I do not want this". One or two alternatives with real costs and timelines work better, and Plan4it\'s career pages and the printout can help you show them.',
                 'Offer a time-boxed deal, such as "Let me give this one term my best effort, and meanwhile I will explore this. We can look again in January."',
                 'Ask someone your family respects to join the conversation, such as a teacher, the school counsellor or a relative.',
                 'If money is the real reason, look at scholarships and low-cost routes before accepting that there is only one option.',
@@ -7498,7 +7484,7 @@
                 '<button type="button" onclick="switchView(\'confusedMode\')" class="min-h-[44px] bg-white border border-slate-300 text-slate-700 font-semibold py-2.5 px-4 rounded-xl hover:bg-slate-50 text-sm">Retake the career quiz</button>' +
                 '<button type="button" onclick="goToTool(\'afterDegree\', \'career-switch-block\')" class="min-h-[44px] bg-white border border-slate-300 text-slate-700 font-semibold py-2.5 px-4 rounded-xl hover:bg-slate-50 text-sm">Plan a career switch</button>' +
                 '<button type="button" onclick="goToTool(\'govAndAbroad\', \'scholarship-matcher-block\')" class="min-h-[44px] bg-white border border-slate-300 text-slate-700 font-semibold py-2.5 px-4 rounded-xl hover:bg-slate-50 text-sm">Look at scholarships</button></div>' +
-                '<p class="text-[11px] text-slate-500 mt-3">Rules differ by school, board, university and state, so confirm each step with the institution. MARG-AI is a guide, not official advice.</p>';
+                '<p class="text-[11px] text-slate-500 mt-3">Rules differ by school, board, university and state, so confirm each step with the institution. Plan4it is a guide, not official advice.</p>';
         }
 
         /* ============================================================
@@ -7667,7 +7653,7 @@
                     '<button type="button" onclick="adminAddInstitution()" class="mt-4 min-h-[44px] bg-brand-600 hover:bg-brand-700 text-white font-semibold px-5 py-2.5 rounded-xl text-sm">Add on this browser</button>';
                 if (instEdits.length) html += '<h3 class="font-bold text-slate-900 text-sm mt-6 mb-2">Added by you</h3><div class="space-y-2">' + instEdits.map(function (c) { return '<div class="flex items-center justify-between gap-3 p-3 border border-slate-200 rounded-xl"><div><p class="text-sm font-semibold text-slate-900">' + e(c.name) + '</p><p class="text-xs text-slate-500">' + e(c.city) + ', ' + e(c.state) + '</p></div><button type="button" onclick="adminRemoveInst(\'' + e(c.id) + '\')" class="min-h-[44px] px-3 text-xs font-semibold text-rose-700 hover:underline">Remove</button></div>'; }).join('') + '</div>';
             } else {
-                const out = JSON.stringify({ generated: new Date().toISOString(), note: 'MARG-AI admin edits. Apply to the master data, then republish.', exams: exEdits, institutions: instEdits }, null, 2);
+                const out = JSON.stringify({ generated: new Date().toISOString(), note: 'Plan4it admin edits. Apply to the master data, then republish.', exams: exEdits, institutions: instEdits }, null, 2);
                 html += '<p class="text-sm text-slate-600 mb-3">This is everything you changed in admin mode. Copy it and send it to whoever updates the master data. Nothing here reaches other visitors until the app itself is republished.</p>' +
                     '<label for="admin-export" class="text-xs font-semibold text-slate-600 block mb-1">Your edits as JSON</label><textarea id="admin-export" readonly rows="10" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-xs font-mono">' + e(out) + '</textarea>' +
                     '<div class="flex flex-wrap gap-2 mt-3"><button type="button" onclick="adminCopy()" class="min-h-[44px] bg-brand-600 hover:bg-brand-700 text-white font-semibold px-5 py-2.5 rounded-xl text-sm">Copy to clipboard</button>' +
@@ -8048,8 +8034,8 @@
                 const data = {
                     "@context": "https://schema.org",
                     "@type": "DefinedTermSet",
-                    "name": "MARG-AI admissions glossary",
-                    "description": "Plain-language definitions of Indian admissions and reservation terms used across MARG-AI.",
+                    "name": "Plan4it admissions glossary",
+                    "description": "Plain-language definitions of Indian admissions and reservation terms used across Plan4it.",
                     "hasDefinedTerm": GLOSSARY.map(function (g) {
                         return { "@type": "DefinedTerm", "name": g.label, "description": g.def };
                     })
@@ -9176,7 +9162,7 @@
             if (!sheet || !routes.length) return;
             const pri = (WIZARD_PRIORITY_LABELS[a.constraint] || WIZARD_PRIORITY_LABELS.Budget)[0];
             sheet.innerHTML = '<h1>Talking about what comes after Class 10</h1>' +
-                '<p>Made with MARG-AI on ' + escapeAuth(new Date().toLocaleDateString('en-IN')) + '. A free guide, not official advice.</p>' +
+                '<p>Made with Plan4it on ' + escapeAuth(new Date().toLocaleDateString('en-IN')) + '. A guide, not official advice.</p>' +
                 '<h2>What I told the quiz</h2>' +
                 '<p>Interest: <strong>' + escapeAuth(a.interest || '-') + '</strong> &middot; What I enjoy doing: <strong>' + escapeAuth(a.workStyle || '-') + '</strong> &middot; What matters most: <strong>' + escapeAuth(pri) + '</strong></p>' +
                 '<h2>Routes worth a closer look</h2>' +
@@ -9924,7 +9910,7 @@
             if (!it) return;
             const title = it.title || it.name;
             const label = kind === 'career' ? 'career' : kind === 'college' ? 'college' : 'exam';
-            const text = 'Take a look at this ' + label + ': ' + title + '. Found on MARG-AI, a career guide for Class 10-12 students and families.';
+            const text = 'Take a look at this ' + label + ': ' + title + '. Found on Plan4it, a career guide for Class 10-12 students and families.';
             const url = location.href.split('#')[0];
             if (navigator.share) { navigator.share({ title: title, text: text, url: url }).catch(() => {}); return; }
             window.open('https://wa.me/?text=' + encodeURIComponent(text + ' ' + url), '_blank', 'noopener');
@@ -10098,7 +10084,7 @@
                 '<h5 class="font-bold text-slate-900 text-sm mt-4 mb-1">Check before you choose</h5><ul class="list-disc pl-5 space-y-1 text-xs">' + li(g.check) + '</ul>' +
                 '<p class="text-xs text-slate-600 mt-3"><span class="font-semibold">Where it can lead:</span> ' + e(g.leads) + '</p>' +
                 (after10State.track === 'c11' ? '<button type="button" onclick="goToTool(\'colleges\', \'integrated-panel\')" class="mt-3 min-h-[44px] bg-white border border-slate-300 text-slate-700 font-semibold py-2.5 px-4 rounded-xl hover:bg-slate-50 text-sm">Considering coaching with Class 11–12? See integrated programmes</button>' : '') +
-                '<p class="text-[11px] text-slate-500 mt-4">Rules, dates and seats change every year and differ by state. Confirm everything on the official website. MARG-AI is a guide, not official advice.</p>';
+                '<p class="text-[11px] text-slate-500 mt-4">Rules, dates and seats change every year and differ by state. Confirm everything on the official website. Plan4it is a guide, not official advice.</p>';
         }
 
         // ---------- Integrated programmes panel (Colleges view) ----------
@@ -10337,7 +10323,7 @@
                     '<div class="min-w-0"><p class="font-semibold text-sm text-slate-900 break-words">' + escapeAuth(r[3]) + '</p>' +
                     '<p class="text-xs text-slate-500 break-words">' + escapeAuth([r[4], r[5]].filter(Boolean).join(', ')) + (r[1] ? ' · score ' + r[1].toFixed(2) : '') + '</p></div></div>' +
                     '<div class="flex items-center gap-1 shrink-0">' +
-                    (ids && ids.length === 1 ? '<button onclick="openCollegeDetail(\'' + ids[0] + '\')" class="text-xs font-semibold text-brand-600 hover:underline min-h-[44px] px-2">In MARG</button>' : '') +
+                    (ids && ids.length === 1 ? '<button onclick="openCollegeDetail(\'' + ids[0] + '\')" class="text-xs font-semibold text-brand-600 hover:underline min-h-[44px] px-2">In Plan4it</button>' : '') +
                     (r[2] && meta.pdfBase ? '<a href="' + meta.pdfBase + r[2] + '.pdf" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-slate-500 hover:text-brand-600 min-h-[44px] inline-flex items-center px-2" aria-label="Official data PDF for ' + escapeAuth(r[3]) + '">Data ↗</a>' : '') +
                     '</div></div>';
             }).join('') : '<p class="text-sm text-slate-500 text-center py-6">No institutes match that search.</p>';
@@ -13182,7 +13168,7 @@
                     scholarships: 'Check the institute website, and the National Scholarship Portal (scholarships.gov.in).',
                     placementNote: '',
                     pros: ['Well known name in design education'],
-                    cons: ['Fees, placements and cut-offs are not added to MARG-AI yet, so please check them with the institute'],
+                    cons: ['Fees, placements and cut-offs are not added to Plan4it yet, so please check them with the institute'],
                     tradeoff: 'Fees and placements are not added yet, so check them with the institute before you decide.',
                     listingOnly: true
                 }, x);
@@ -13198,7 +13184,7 @@
                     scholarships: 'Check the college website, and the National Scholarship Portal (scholarships.gov.in).',
                     placementNote: '', relatedCareers: careersByStream[stream] || [],
                     pros: ['Appears in the government\'s NIRF 2025 ranking, ' + r[4] + ' list'],
-                    cons: ['Fees, placements and cut-offs are not added to MARG-AI yet, so please check them with the college'],
+                    cons: ['Fees, placements and cut-offs are not added to Plan4it yet, so please check them with the college'],
                     tradeoff: 'Listed from the official NIRF ranking. Fees and placements are not added yet, so check them before you decide.',
                     listingOnly: true
                 };
@@ -13222,7 +13208,7 @@
                 renderGovtToolkit();
                 renderDashboard();
                 refreshPageNav();
-            } catch (e) { console.error('MARG-AI extra data refresh error:', e); }
+            } catch (e) { console.error('Plan4it extra data refresh error:', e); }
         }
         function loadMoreData() {
             if (!window.fetch || window.__moreDataStarted) return;
@@ -13294,7 +13280,7 @@
                 switchView(initialView, true);
                 if (window.requestIdleCallback) requestIdleCallback(loadMoreData, { timeout: 2500 }); else setTimeout(loadMoreData, 700);
             } catch (err) {
-                console.error('MARG-AI init error:', err);
+                console.error('Plan4it init error:', err);
             }
         });
     </script>
