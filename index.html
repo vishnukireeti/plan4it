@@ -482,7 +482,7 @@
                 <button data-nav="afterDegree" onclick="switchView('afterDegree')" class="nav-link hover:text-brand-600 transition">Pathways</button>
                 <button data-nav="exams" onclick="switchView('exams')" class="nav-link hover:text-brand-600 transition">Exams</button>
                 <button data-nav="colleges" onclick="switchView('colleges')" class="nav-link hover:text-brand-600 transition">Colleges</button>
-                <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad')" class="nav-link hover:text-brand-600 transition">Govt & Abroad</button>
+                <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad')" class="nav-link hover:text-brand-600 transition">Govt & Money</button>
             </nav>
 
             <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
@@ -507,7 +507,7 @@
             <button data-nav="afterDegree" onclick="switchView('afterDegree');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Pathways</button>
             <button data-nav="exams" onclick="switchView('exams');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Exams</button>
             <button data-nav="colleges" onclick="switchView('colleges');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Colleges</button>
-            <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Govt & Abroad</button>
+            <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Govt & Money</button>
         </div>
     </nav>
 
@@ -1308,8 +1308,8 @@
         <!-- ================= VIEW 9: GOV & STUDY ABROAD SECTIONS ================= -->
         <section id="view-govAndAbroad" class="view-section hidden space-y-10">
             <div data-nav="Overview">
-                <h2 class="text-3xl font-extrabold text-slate-900">Govt jobs, money &amp; abroad</h2>
-                <p class="text-slate-600 text-sm mt-1">Government jobs, scholarships, loans, costs and studying abroad, in one place.</p>
+                <h2 class="text-3xl font-extrabold text-slate-900">Govt jobs &amp; money</h2>
+                <p class="text-slate-600 text-sm mt-1">Government jobs, scholarships, loans and the real cost of college, in one place.</p>
             </div>
 
 
@@ -1354,17 +1354,6 @@
                         <li>Most successful candidates attempt 2–3 cycles</li>
                     </ol>
                 </details>
-            </div>
-
-            <!-- Study Abroad Section -->
-            <!-- Study abroad toolkit -->
-            <div data-nav="Study abroad toolkit" id="abroad-toolkit-block" class="scroll-mt-32 bg-white border border-slate-200 p-6 md:p-8 rounded-3xl space-y-4 shadow-sm">
-                <span class="bg-brand-100 text-brand-800 text-xs font-bold px-3 py-1 rounded-full">Study abroad toolkit</span>
-                <h3 class="text-2xl font-extrabold text-slate-900">Plan your study abroad, step by step</h3>
-                <p class="text-slate-600 text-sm">Find countries that fit your budget and course, compare 14 destinations, plan your timeline, find scholarships, avoid common scams and see which tests you need.</p>
-                <div id="ab-tabs" role="tablist" aria-label="Study abroad toolkit" class="flex flex-wrap gap-2"></div>
-                <div id="ab-panel" role="tabpanel" aria-live="polite"></div>
-                <div class="verify-note flex items-start gap-2 text-xs bg-amber-50 border border-amber-200 text-amber-900 rounded-xl px-3 py-2"><span aria-hidden="true">⚠️</span><p>Costs, work rules, visa and scholarship details are typical figures and are not verified against this year's official pages. Visa and immigration rules change often. Always check the country's official study site and the university before you decide or pay.</p></div>
             </div>
 
             <!-- Funding Your Education Section -->
@@ -1818,7 +1807,7 @@
 
                 <div>
                     <h3 class="font-bold text-slate-900 mb-1">Browsing Plan4it without an account</h3>
-                    <p>You don't need an account to browse Plan4it — the Career Explorer, every career/exam/college page, and all the guidance pages (pathways, government jobs, studying abroad) are open to everyone, no sign-in required.</p>
+                    <p>You don't need an account to browse Plan4it — the Career Explorer, every career/exam/college page, and all the guidance pages (pathways, government jobs, money matters) are open to everyone, no sign-in required.</p>
                 </div>
 
                 <div>
@@ -12378,252 +12367,6 @@
             try { panel.innerHTML = fn(); } catch (err) { console.error('Govt toolkit error:', err); panel.innerHTML = '<p class="text-sm text-slate-500">Something went wrong. Please reload the page.</p>'; }
         }
 
-        // ===== Study abroad toolkit (country matcher, 14 countries, timeline, scholarships, red flags, tests) =====
-        const AB = { tab: 'match', budget: '30', level: 'pg', field: 'tech', prios: ['cost'], intake: '', open: '', schLevel: 'all', schCountry: 'all', tCountry: 'de', tLevel: 'pg', tField: 'any' };
-        const AB_TABS = [['match', '🧭 Country matcher'], ['countries', '🌍 All countries'], ['time', '🗓️ Timeline'], ['fund', '🎓 Scholarships abroad'], ['flags', '🚩 Red flags'], ['tests', '📝 Tests you need']];
-        const AB_FIELDS = [['tech', 'Engineering / IT / Data'], ['biz', 'Business / Management'], ['health', 'Medicine / Nursing / Health'], ['sci', 'Pure science / Research'], ['art', 'Design / Arts / Media'], ['law', 'Law / Social science']];
-        const AB_PRIOS = [['cost', 'Lower total cost'], ['work', 'Part-time work while studying'], ['stay', 'Chance to stay and work after'], ['career', 'Strong job market'], ['rank', 'Top-ranked universities'], ['easy', 'Easier admission and visa'], ['english', 'English-taught everywhere']];
-        const AB_FIELD_NAME = { tech: 'engineering and IT', biz: 'business', health: 'health courses', sci: 'science and research', art: 'design and arts', law: 'law and social science' };
-        // lo/hi: approximate total per year in ₹ lakh, tuition plus living. Scores 1 (low) to 5 (high). Figures are illustrative.
-        const AB_COUNTRIES = [
-            { id: 'de', flag: '🇩🇪', name: 'Germany', lo: 8, hi: 13, cost: 1, work: 3, stay: 4, career: 4, rank: 4, easy: 3, eng: 'pg', ugLocal: true, fields: ['tech', 'sci', 'biz'], workRule: 'About 120 full days or 240 half days a year.', post: 'About 18 months to look for a job after the degree.', intake: 'Winter (Oct) and Summer (Apr)', tests: { ug: ['german', 'ielts', 'aps'], pg: ['ielts', 'aps', 'gre'] }, strong: 'Public universities charge little or no tuition. Strong in engineering, with a big industry.', watch: 'You must show a blocked-account amount for living costs. Many undergraduate courses are in German, and Class 12 alone is often not enough for direct entry (Studienkolleg or a year of Indian university may be needed).', link: 'https://www.daad.in/' },
-            { id: 'uk', flag: '🇬🇧', name: 'United Kingdom', lo: 30, hi: 48, cost: 4, work: 3, stay: 3, career: 4, rank: 5, easy: 4, eng: 'full', ugLocal: false, fields: ['biz', 'law', 'art', 'sci', 'health', 'tech'], workRule: 'Usually up to 20 hours a week in term time.', post: 'Graduate Route visa after the degree. Its length has been under review, so check the current rule.', intake: 'September (main), January (some)', tests: { ug: ['ielts', 'lnat'], pg: ['ielts', 'gmat'] }, strong: 'One-year master\'s degrees save time and money. Many top universities.', watch: 'Living costs in London are high. Rules on dependants and post-study visas have changed often.', link: 'https://www.educationuk.org/' },
-            { id: 'us', flag: '🇺🇸', name: 'United States', lo: 30, hi: 70, cost: 5, work: 2, stay: 2, career: 5, rank: 5, easy: 2, eng: 'full', ugLocal: false, fields: ['tech', 'sci', 'biz', 'health', 'art', 'law'], workRule: 'On-campus work up to about 20 hours a week. Off-campus work needs special permission.', post: 'OPT for 12 months, and 24 more for STEM degrees. Staying longer depends on work visas, which are uncertain.', intake: 'Fall (Aug-Sep, main), Spring (Jan)', tests: { ug: ['sat', 'toefl', 'ielts', 'duo'], pg: ['gre', 'toefl', 'ielts', 'gmat'] }, strong: 'Highest salary ceiling, huge research funding, assistantships for master\'s and PhD students.', watch: 'Highest cost. Visa interviews can be refused. Work visas after study are limited and policy keeps changing.', link: 'https://educationusa.state.gov/' },
-            { id: 'ca', flag: '🇨🇦', name: 'Canada', lo: 25, hi: 45, cost: 3, work: 3, stay: 3, career: 3, rank: 4, easy: 3, eng: 'full', ugLocal: false, fields: ['tech', 'biz', 'health', 'sci'], workRule: 'Usually up to 24 hours a week off campus in term time.', post: 'Post-graduation work permit, up to 3 years depending on the programme. Rules have tightened.', intake: 'September, January, May', tests: { ug: ['ielts', 'toefl', 'pte', 'duo'], pg: ['ielts', 'toefl', 'pte', 'gmat'] }, strong: 'Welcoming for international students, with a clear route to work experience.', watch: 'Study permits are now capped, and costs, housing and PR rules have changed a lot. Choose recognised public colleges with care.', link: 'https://www.educanada.ca/' },
-            { id: 'au', flag: '🇦🇺', name: 'Australia', lo: 30, hi: 50, cost: 4, work: 3, stay: 3, career: 3, rank: 4, easy: 3, eng: 'full', ugLocal: false, fields: ['health', 'tech', 'biz', 'sci'], workRule: 'Usually up to 48 hours a fortnight in term time.', post: 'Temporary graduate visa, usually 2 to 4 years depending on the degree.', intake: 'February and July', tests: { ug: ['ielts', 'pte', 'toefl'], pg: ['ielts', 'pte', 'toefl'] }, strong: 'Strong in nursing, engineering and IT, with good student support.', watch: 'Visa and caps have been tightening. Living costs and the proof-of-funds amount are high.', link: 'https://www.studyaustralia.gov.au/' },
-            { id: 'ie', flag: '🇮🇪', name: 'Ireland', lo: 22, hi: 38, cost: 3, work: 3, stay: 3, career: 4, rank: 3, easy: 3, eng: 'full', ugLocal: false, fields: ['tech', 'biz', 'sci'], workRule: 'Usually up to 20 hours a week, more in holidays.', post: 'About 1 to 2 years to stay and work after a master\'s degree.', intake: 'September (main), January (some)', tests: { ug: ['ielts', 'toefl'], pg: ['ielts', 'toefl'] }, strong: 'English-speaking, with many tech and pharma companies. One-year master\'s degrees.', watch: 'Housing is scarce and expensive, especially in Dublin.', link: 'https://www.educationinireland.com/' },
-            { id: 'fr', flag: '🇫🇷', name: 'France', lo: 13, hi: 18, cost: 2, work: 3, stay: 2, career: 3, rank: 3, easy: 3, eng: 'pg', ugLocal: true, fields: ['biz', 'art', 'tech', 'sci'], workRule: 'Part-time work is allowed up to a yearly limit.', post: 'About a year to look for work after a master\'s degree.', intake: 'September (main)', tests: { ug: ['french', 'ielts'], pg: ['ielts', 'french'] }, strong: 'Low public tuition and well-known business and design schools.', watch: 'Private business schools cost far more than public universities. Applications go through the Campus France process. Undergraduate courses are mainly in French.', link: 'https://www.campusfrance.org/' },
-            { id: 'nl', flag: '🇳🇱', name: 'Netherlands', lo: 20, hi: 35, cost: 3, work: 3, stay: 3, career: 4, rank: 4, easy: 3, eng: 'full', ugLocal: false, fields: ['tech', 'biz', 'sci', 'law'], workRule: 'Limited hours in term time, more in summer.', post: 'One-year orientation year to find work after graduating.', intake: 'September (main), February (some)', tests: { ug: ['ielts', 'toefl'], pg: ['ielts', 'toefl'] }, strong: 'Many English-taught courses, a practical teaching style and a strong tech and design scene.', watch: 'Housing is very tight. Popular courses have limited seats.', link: 'https://www.studyinnl.org/' },
-            { id: 'nz', flag: '🇳🇿', name: 'New Zealand', lo: 25, hi: 42, cost: 3, work: 3, stay: 3, career: 2, rank: 3, easy: 4, eng: 'full', ugLocal: false, fields: ['sci', 'health', 'biz'], workRule: 'Usually up to 20 hours a week.', post: 'Post-study work visa of 1 to 3 years depending on the degree.', intake: 'February and July', tests: { ug: ['ielts', 'pte', 'toefl'], pg: ['ielts', 'pte', 'toefl'] }, strong: 'Safe, welcoming and strong in agriculture, environment and health.', watch: 'Fewer jobs than larger countries, and the job market is small.', link: 'https://www.studyinnewzealand.govt.nz/' },
-            { id: 'sg', flag: '🇸🇬', name: 'Singapore', lo: 28, hi: 50, cost: 4, work: 2, stay: 2, career: 4, rank: 5, easy: 2, eng: 'full', ugLocal: false, fields: ['tech', 'biz', 'sci'], workRule: 'Limited part-time work for university students.', post: 'Staying on needs a job offer and a work pass, which are not easy to get.', intake: 'August (main)', tests: { ug: ['sat', 'ielts', 'toefl'], pg: ['gre', 'ielts', 'toefl'] }, strong: 'Top universities close to India, with strong finance and tech employers.', watch: 'Very competitive admission, and few ways to stay long-term.', link: 'https://www.ica.gov.sg/' },
-            { id: 'ae', flag: '🇦🇪', name: 'UAE', lo: 20, hi: 40, cost: 2, work: 2, stay: 3, career: 3, rank: 2, easy: 5, eng: 'full', ugLocal: false, fields: ['biz', 'tech', 'art'], workRule: 'Part-time work needs a permit.', post: 'Depends on getting a job. Longer visas exist for some graduates.', intake: 'September and January', tests: { ug: ['ielts'], pg: ['ielts'] }, strong: 'Close to home, easy admission and branch campuses of international universities.', watch: 'Fewer top-ranked universities. Check the degree is recognised in India (UGC/AIU) if you plan to return.', link: 'https://u.ae/en/information-and-services/education' },
-            { id: 'jp', flag: '🇯🇵', name: 'Japan', lo: 10, hi: 18, cost: 2, work: 3, stay: 3, career: 3, rank: 4, easy: 2, eng: 'some', ugLocal: true, fields: ['tech', 'sci', 'art'], workRule: 'Up to 28 hours a week with permission.', post: 'About a year to look for a job after graduating.', intake: 'April and October', tests: { ug: ['jlpt', 'ielts'], pg: ['ielts', 'jlpt'] }, strong: 'Low public tuition, strong in engineering, robotics and design, and generous MEXT scholarships.', watch: 'Most courses need Japanese. English-taught programmes exist but are fewer.', link: 'https://www.studyinjapan.go.jp/' },
-            { id: 'it', flag: '🇮🇹', name: 'Italy', lo: 10, hi: 18, cost: 1, work: 2, stay: 2, career: 3, rank: 3, easy: 3, eng: 'pg', ugLocal: true, fields: ['art', 'tech', 'biz'], workRule: 'Limited part-time hours.', post: 'About a year to look for work after graduating.', intake: 'September-October', tests: { ug: ['italian', 'ielts'], pg: ['ielts', 'gre'] }, strong: 'Low public fees based on family income, with strong design, fashion and architecture schools.', watch: 'Admin processes are slow, and few jobs are available without Italian.', link: 'https://studyinitaly.esteri.it/' },
-            { id: 'se', flag: '🇸🇪', name: 'Sweden', lo: 18, hi: 32, cost: 3, work: 3, stay: 3, career: 4, rank: 4, easy: 3, eng: 'full', ugLocal: false, fields: ['tech', 'sci', 'art', 'law'], workRule: 'No fixed weekly limit, but studies come first.', post: 'Up to about a year to look for work after a master\'s degree.', intake: 'August-September', tests: { ug: ['ielts', 'toefl'], pg: ['ielts', 'toefl'] }, strong: 'Many English-taught master\'s degrees, innovation-friendly and good for sustainability and tech.', watch: 'Tuition is charged for non-EU students, and housing is hard to find.', link: 'https://studyinsweden.se/' }
-        ];
-        const AB_TESTS = {
-            ielts: { name: 'IELTS Academic', what: 'English: reading, listening, writing, speaking.', score: 'Overall band 6.0 to 7.5 for most courses.', fee: 'About ₹17,000-19,000', valid: '2 years', site: 'https://ielts.org/' },
-            toefl: { name: 'TOEFL iBT', what: 'English, taken on a computer.', score: 'About 80 to 100 out of 120 for most courses.', fee: 'About ₹17,000-19,000', valid: '2 years', site: 'https://www.ets.org/toefl' },
-            pte: { name: 'PTE Academic', what: 'English, taken on a computer, with fast results.', score: 'About 50 to 70 out of 90.', fee: 'About ₹16,000-18,000', valid: '2 years', site: 'https://www.pearsonpte.com/' },
-            duo: { name: 'Duolingo English Test', what: 'Short online English test.', score: 'About 105 to 130 out of 160.', fee: 'About ₹6,000', valid: '2 years', site: 'https://englishtest.duolingo.com/', warn: 'Accepted by fewer universities, and not for UK student visas.' },
-            sat: { name: 'SAT', what: 'Maths, reading and writing for undergraduate admission.', score: 'Out of 1600. Top universities look for very high scores.', fee: 'About $70-100 plus fees', valid: 'Scores stay on record', site: 'https://satsuite.collegeboard.org/', warn: 'Many US universities were test-optional, but several have brought testing back. Check each one.' },
-            gre: { name: 'GRE General', what: 'Maths and verbal reasoning for master\'s admission.', score: 'Out of 340. Needed score depends on the programme.', fee: 'About $230 (₹20,000+)', valid: '5 years', site: 'https://www.ets.org/gre', warn: 'Many universities no longer require it, but some engineering programmes in the US and Europe still do.' },
-            gmat: { name: 'GMAT Focus', what: 'Reasoning for MBA and business master\'s.', score: 'Out of 805. Top schools look for 645 and above.', fee: 'About $275', valid: '5 years', site: 'https://www.mba.com/' },
-            lnat: { name: 'LNAT', what: 'Reasoning and essay for UK law courses.', score: 'Varies by university.', fee: 'See site', valid: '1 year', site: 'https://lnat.ac.uk/' },
-            german: { name: 'German test (TestDaF, DSH, Goethe)', what: 'German language for German-taught courses.', score: 'Usually level B2 to C1.', fee: 'See site', valid: 'Varies', site: 'https://www.daad.in/' },
-            french: { name: 'French test (DELF, DALF, TCF)', what: 'French language for French-taught courses.', score: 'Usually level B2.', fee: 'See site', valid: 'Varies', site: 'https://www.campusfrance.org/' },
-            italian: { name: 'Italian test (CELI, CILS)', what: 'Italian language for Italian-taught courses.', score: 'Usually level B2.', fee: 'See site', valid: 'Varies', site: 'https://studyinitaly.esteri.it/' },
-            jlpt: { name: 'JLPT', what: 'Japanese language.', score: 'N2 or N1 for Japanese-taught courses.', fee: 'See site', valid: 'No expiry', site: 'https://www.jlpt.jp/e/' },
-            aps: { name: 'APS certificate (Germany)', what: 'Document check required for Indian students applying to German universities.', score: 'Not a score. It verifies your certificates.', fee: 'See site', valid: 'See site', site: 'https://www.aps-india.de/' }
-        };
-        const AB_SCHOLARSHIPS = [
-            { n: 'Fulbright-Nehru fellowships', c: 'US', l: ['pg', 'phd'], cover: 'Large part or full', who: 'Indian citizens with strong academics and leadership. Competitive.', when: 'Applications usually open in the first half of the year.', site: 'https://www.usief.org.in/' },
-            { n: 'Chevening scholarships', c: 'UK', l: ['pg'], cover: 'Full', who: 'Master\'s at UK universities, with at least 2 years of work experience.', when: 'Usually opens in August and closes around October-November.', site: 'https://www.chevening.org/' },
-            { n: 'Commonwealth scholarships', c: 'UK', l: ['pg', 'phd'], cover: 'Full', who: 'For students who could not otherwise study in the UK.', when: 'Usually closes in the winter before the course.', site: 'https://cscuk.fcdo.gov.uk/' },
-            { n: 'Gates Cambridge', c: 'UK', l: ['pg', 'phd'], cover: 'Full', who: 'Postgraduate study at Cambridge, selected for academic strength and leadership.', when: 'Closes with the Cambridge application round.', site: 'https://www.gatescambridge.org/' },
-            { n: 'Rhodes scholarship', c: 'UK', l: ['pg'], cover: 'Full', who: 'Postgraduate study at Oxford. Open to Indian students through the India constituency.', when: 'Usually closes in the middle of the year.', site: 'https://www.rhodeshouse.ox.ac.uk/' },
-            { n: 'DAAD scholarships', c: 'Germany', l: ['pg', 'phd'], cover: 'Monthly stipend plus costs', who: 'Master\'s and PhD students, mainly with a good degree and relevant experience.', when: 'Many programmes close in autumn for the next year.', site: 'https://www.daad.in/' },
-            { n: 'Erasmus Mundus Joint Master\'s', c: 'Europe', l: ['pg'], cover: 'Often full', who: 'Joint master\'s degrees across several European countries.', when: 'Deadlines are mostly between October and January.', site: 'https://www.eacea.ec.europa.eu/' },
-            { n: 'Eiffel Excellence Scholarship', c: 'France', l: ['pg', 'phd'], cover: 'Monthly allowance plus costs', who: 'Master\'s and PhD students, applied for by the French institution.', when: 'Institutions apply around January.', site: 'https://www.campusfrance.org/' },
-            { n: 'MEXT scholarship', c: 'Japan', l: ['ug', 'pg', 'phd'], cover: 'Full', who: 'Japanese government scholarship for undergraduate, master\'s and research students.', when: 'Applications usually go through the Japanese embassy in the spring.', site: 'https://www.in.emb-japan.go.jp/' },
-            { n: 'Swedish Institute scholarships', c: 'Sweden', l: ['pg'], cover: 'Tuition and living costs', who: 'Master\'s students from selected countries who show leadership.', when: 'Usually closes in the winter.', site: 'https://si.se/en/' },
-            { n: 'Inlaks scholarships', c: 'Any', l: ['pg'], cover: 'Partial to large', who: 'Indian students admitted to top universities abroad.', when: 'Usually opens early in the year.', site: 'https://www.inlaksfoundation.org/' },
-            { n: 'J.N. Tata Endowment loan scholarship', c: 'Any', l: ['pg', 'phd'], cover: 'Partial (loan-scholarship)', who: 'Indian graduates going abroad for postgraduate study.', when: 'Applications usually close in the spring.', site: 'https://www.jntataendowment.org/' },
-            { n: 'National Overseas Scholarship (Government of India)', c: 'Any', l: ['pg', 'phd'], cover: 'Large part', who: 'Indian students from certain categories (SC and other groups) going abroad for master\'s and PhD.', when: 'Check the ministry notice each year.', site: 'https://nosmsje.gov.in/' }
-        ];
-        const AB_LADDER = ['University merit awards: many universities give partial tuition discounts based on marks. Ask each one.', 'Assistantships: in the US and some other countries, master\'s and PhD students can be paid for research or teaching.', 'Education loan: see our loan navigator, and check collateral rules before you choose a country.', 'Part-time work: allowed, but it rarely covers tuition. Plan to pay tuition from savings, loans or scholarships.'];
-        const AB_FLAGS = [
-            ['"Guaranteed visa" or "guaranteed admission"', 'No agent can promise this. Visas are decided by the embassy and admissions by the university.', 'Walk away. Ask the university directly instead.'],
-            ['Pressure to pay quickly', 'Offers like "pay today to hold your seat" or "last seat" push you to decide before checking.', 'Take at least a few days. Check the deadline on the university\'s own website.'],
-            ['Fees paid to the agent, not the university', 'Tuition and deposits should go only to the university\'s official payment portal, with a receipt in your name.', 'Never pay tuition to a personal account or a different company.'],
-            ['Unknown or unrecognised university', 'Some places look like universities but are not accredited, or their degree is not valid for jobs or Indian recognition.', 'Check the official government list of recognised institutions in that country, and the AIU recognition if you plan to return to India.'],
-            ['Fake or edited documents', 'An agent may suggest changing bank statements, marks or experience letters to meet requirements.', 'Never do this. It can lead to a ban, deportation, and a record that follows you.'],
-            ['"Work will pay for your studies"', 'Part-time hours are limited, and pay may not cover tuition and rent together.', 'Plan your full first-year cost as if you earn nothing.'],
-            ['"PR is guaranteed" or "easy"', 'Immigration rules change often, and countries have capped students and tightened PR.', 'Choose a country because the course is good, and treat PR as a bonus.'],
-            ['Cheap MBBS abroad without checking Indian rules', 'To practise in India, you generally need to qualify NEET, the course must meet NMC rules, and you must pass a licensing exam (FMGE / NExT). Pass rates for the licensing exam have been low.', 'Read the current NMC rules and check recent pass rates of the specific college before paying anything.'],
-            ['Hidden costs', 'Agent service fees, "processing" fees, insurance, accommodation deposits and blocked-account charges can add up.', 'Ask for a written, itemised cost list before you sign.'],
-            ['Agents paid by the university', 'Some agents earn commission, so they push the universities that pay them.', 'Ask which universities pay them, and compare with options they did not mention.']
-        ];
-        const AB_AGENT_Q = ['Which universities do you work with, and do you earn a commission from them?', 'What is your total fee, in writing, and what does it cover?', 'Can I apply directly myself? What would be different?', 'What happened to your last 10 students? Can I speak to two of them?', 'Will tuition go directly to the university?'];
-
-        function abSet(k, v) { AB[k] = v; renderAbroadToolkit(); }
-        function abTogglePrio(p) {
-            const i = AB.prios.indexOf(p);
-            if (i >= 0) AB.prios.splice(i, 1); else { if (AB.prios.length >= 2) AB.prios.shift(); AB.prios.push(p); }
-            renderAbroadToolkit();
-        }
-        function abSelect(id, label, opts, val, key) {
-            return '<label class="block"><span class="block text-xs font-bold text-slate-600 mb-1">' + label + '</span><select id="' + id + '" onchange="abSet(\'' + key + '\', this.value)" class="w-full min-h-[44px] border border-slate-300 rounded-xl px-3 py-2 bg-white text-sm text-slate-800">' +
-                opts.map(function (o) { return '<option value="' + o[0] + '"' + (String(o[0]) === String(val) ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></label>';
-        }
-        function abCountry(id) { return AB_COUNTRIES.find(function (c) { return c.id === id; }); }
-        function abLink(url, text) { return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-brand-700 hover:underline">' + text + ' ↗</a>'; }
-        function abCostText(c) { return '₹' + c.lo + 'L-' + c.hi + 'L a year'; }
-
-        function abScore(c) {
-            let s = 0; const why = [], B = Number(AB.budget);
-            if (B >= 999) { s += 10; }
-            else if (c.hi <= B) { s += 30; why.push('Fits your budget (about ' + abCostText(c) + ')'); }
-            else if (c.lo <= B) { s += 12; why.push('Possible on a tighter budget (cost starts near ₹' + c.lo + 'L a year)'); }
-            else { s -= 25; why.push('Likely above your budget (about ' + abCostText(c) + ')'); }
-            if (c.fields.indexOf(AB.field) !== -1) { s += 20; why.push('Strong for ' + AB_FIELD_NAME[AB.field]); }
-            if (AB.level === 'ug' && c.ugLocal) { s -= 25; why.push('Most undergraduate courses need the local language'); }
-            if (AB.level === 'ug' && !c.ugLocal && c.eng !== 'some') s += 5;
-            AB.prios.forEach(function (p) {
-                if (p === 'cost') { s += (6 - c.cost) * 6; if (c.cost <= 2) why.push('Among the lower-cost options'); }
-                else if (p === 'english') { s += c.eng === 'full' ? 15 : c.eng === 'pg' ? 6 : 0; if (c.eng === 'full') why.push('English-taught across most courses'); }
-                else { s += c[p] * 6; if (c[p] >= 4) why.push({ work: 'Reasonable part-time work rules', stay: 'Good chance to stay and work after', career: 'Strong job market', rank: 'Top-ranked universities', easy: 'Easier admission and visa' }[p]); }
-            });
-            return { c: c, s: s, why: why };
-        }
-        function abRenderMatch() {
-            const esc = escapeAuth;
-            let h = '<div class="grid sm:grid-cols-3 gap-3">' +
-                abSelect('ab-budget', 'Yearly budget (tuition + living)', [['15', 'Up to ₹15 lakh'], ['30', 'Up to ₹30 lakh'], ['45', 'Up to ₹45 lakh'], ['70', 'Up to ₹70 lakh'], ['999', 'Flexible (loan or scholarship)']], AB.budget, 'budget') +
-                abSelect('ab-level', 'What do you want to study?', [['ug', 'Bachelor\'s (after Class 12)'], ['pg', 'Master\'s'], ['mba', 'MBA']], AB.level, 'level') +
-                abSelect('ab-field', 'Field', AB_FIELDS, AB.field, 'field') + '</div>' +
-                '<p class="text-xs font-bold text-slate-600 mt-4 mb-2">What matters most? Pick up to 2.</p><div class="flex flex-wrap gap-2" role="group" aria-label="Priorities">' +
-                AB_PRIOS.map(function (p) { return gtChip(esc(p[1]), AB.prios.indexOf(p[0]) !== -1, "abTogglePrio('" + p[0] + "')"); }).join('') + '</div>';
-            const ranked = AB_COUNTRIES.map(abScore).sort(function (a, b) { return b.s - a.s; }).slice(0, 5);
-            h += '<h4 class="mt-5 mb-2 font-bold text-slate-900 text-sm">Countries that fit you best</h4><div class="grid md:grid-cols-2 gap-3">' + ranked.map(function (r, i) {
-                const c = r.c;
-                return '<div class="border border-slate-200 rounded-2xl p-4 bg-white space-y-2" data-ab-match="' + c.id + '"><div class="flex items-center justify-between gap-2"><p class="font-extrabold text-slate-900">' + c.flag + ' ' + esc(c.name) + '</p><span class="text-[11px] font-bold px-2 py-0.5 rounded-full ' + (i === 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600') + '">' + (i === 0 ? 'Best match' : 'Worth a look') + '</span></div>' +
-                    '<ul class="list-disc pl-5 text-sm text-slate-700 space-y-0.5">' + r.why.slice(0, 4).map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('') + '</ul>' +
-                    '<p class="text-xs text-slate-600"><strong>Keep in mind:</strong> ' + esc(c.watch) + '</p><div class="flex gap-3 flex-wrap"><button type="button" onclick="abOpenCountry(\'' + c.id + '\')" class="text-xs font-bold text-brand-700 hover:underline min-h-[32px]">Full details →</button>' + abLink(c.link, 'Official study guide') + '</div></div>';
-            }).join('') + '</div>';
-            if (AB.level === 'mba') h += '<p class="text-xs text-slate-500 mt-3">For MBA, most programmes also ask for 2 or more years of work experience, and the GMAT or GRE.</p>';
-            h += '<p class="text-xs text-slate-500 mt-3">This is a starting point based on typical costs and rules, not a ranking. Check each country\'s official site, because visa and work rules change often.</p>';
-            return h;
-        }
-        function abOpenCountry(id) { AB.open = id; AB.tab = 'countries'; renderAbroadToolkit(); setTimeout(function () { const el = document.querySelector('[data-ab-country="' + id + '"]'); if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 60); }
-        function abRenderCountries() {
-            const esc = escapeAuth;
-            let h = '<p class="text-sm text-slate-600">' + AB_COUNTRIES.length + ' countries compared. Costs are rough yearly totals (tuition plus living) and change with exchange rates.</p><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-3">';
-            AB_COUNTRIES.forEach(function (c) {
-                const on = AB.open === c.id;
-                h += '<div class="border rounded-2xl p-4 bg-white ' + (on ? 'border-brand-500' : 'border-slate-200') + ' space-y-2" data-ab-country="' + c.id + '"><div class="flex items-center justify-between gap-2"><p class="font-extrabold text-slate-900">' + c.flag + ' ' + esc(c.name) + '</p><span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">' + abCostText(c) + '</span></div>' +
-                    '<p class="text-sm text-slate-700">' + esc(c.strong) + '</p>' +
-                    '<button type="button" aria-expanded="' + on + '" onclick="abSet(\'open\',\'' + (on ? '' : c.id) + '\')" class="text-xs font-bold text-brand-700 hover:underline min-h-[32px]">' + (on ? 'Hide details' : 'Show details') + '</button>';
-                if (on) {
-                    const row = function (t, v) { return '<p class="text-xs text-slate-700"><strong>' + t + ':</strong> ' + esc(v) + '</p>'; };
-                    h += '<div class="space-y-1.5 pt-1 border-t border-slate-100">' + row('Main intakes', c.intake) + row('Part-time work', c.workRule) + row('After the degree', c.post) + row('Tests', c.tests.ug.concat(c.tests.pg).filter(function (t, i, a) { return a.indexOf(t) === i; }).map(function (t) { return AB_TESTS[t].name; }).join(', ')) + row('Keep in mind', c.watch) + '<p>' + abLink(c.link, 'Official study guide') + '</p></div>';
-                }
-                h += '</div>';
-            });
-            return h + '</div><p class="text-xs text-slate-500 mt-3">Work hours and post-study visa lengths are typical from recent rules. They change often, so confirm on the official site before you decide.</p>';
-        }
-
-        function abIntakes() {
-            const now = new Date(), out = [], y0 = now.getFullYear();
-            [[0, 'Jan'], [1, 'Feb'], [7, 'Aug'], [8, 'Sep'], [9, 'Oct']].forEach(function () {});
-            for (let y = y0; y <= y0 + 3; y++) [[1, 'Feb'], [8, 'Sep']].forEach(function (m) { const d = new Date(y, m[0], 1); if ((d - now) / (30.4 * 86400000) >= 3) out.push([y + '-' + String(m[0] + 1).padStart(2, '0'), (m[0] === 1 ? 'Spring intake, ' : 'Fall / Autumn intake, ') + m[1] + ' ' + y]); });
-            return out.slice(0, 6);
-        }
-        const AB_STEPS = [
-            [-18, 'Decide: country, course and budget', 'Talk to your family about the yearly budget and how much loan you can take.'],
-            [-15, 'Start test preparation', 'English test first, then GRE / GMAT / SAT if your courses need one.'],
-            [-12, 'Take your tests and check scholarship deadlines', 'Some scholarships close 10 to 12 months before the course starts. Scores stay valid for about 2 years.'],
-            [-11, 'Shortlist 8 to 10 universities and ask for recommendations', 'A mix of reach, match and safe choices. Ask teachers early for letters.'],
-            [-10, 'Write your statement of purpose, CV and essays', 'Start drafts early and get feedback. Collect transcripts.'],
-            [-9, 'Submit applications', 'Many Fall deadlines fall between October and January. Check each one.'],
-            [-6, 'Compare offers and accept one', 'Pay the deposit only on the university\'s official portal.'],
-            [-5, 'Arrange money: loan, proof of funds', 'Start the loan process early. Banks need offer letters and collateral papers.'],
-            [-4, 'Apply for the visa', 'Book the earliest slot allowed. Keep documents ready.'],
-            [-3, 'Housing, health insurance and flights', 'Book accommodation before arrival if you can.'],
-            [-2, 'Forex, medicals and document copies', 'Carry originals and copies of important documents.'],
-            [-1, 'Pre-departure briefing and packing', 'Join the university\'s student groups and plan your first week.']
-        ];
-        function abStepDate(intake, off) {
-            const p = intake.split('-'), d = new Date(Number(p[0]), Number(p[1]) - 1 + off, 1);
-            return d;
-        }
-        const AB_MONTH = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        function abRenderTime() {
-            const esc = escapeAuth, opts = abIntakes();
-            if (!AB.intake || !opts.some(function (o) { return o[0] === AB.intake; })) AB.intake = opts[1] ? opts[1][0] : opts[0][0];
-            const now = new Date(), cut = new Date(now.getFullYear(), now.getMonth(), 1), ip = AB.intake.split('-'), iDate = new Date(Number(ip[0]), Number(ip[1]) - 1, 1);
-            const monthsLeft = Math.round((iDate - now) / (30.4 * 86400000));
-            let h = '<div class="grid sm:grid-cols-2 gap-3">' + abSelect('ab-intake', 'When do you want to start?', opts, AB.intake, 'intake') + '</div>';
-            h += '<p class="text-sm text-slate-700 mt-3">That is about <strong>' + monthsLeft + ' months</strong> from now. Fall is the main intake in the US, UK, Canada and Germany. Spring or February intakes suit Australia, New Zealand and some Canadian and Irish universities.</p>';
-            if (monthsLeft < 12) h += '<div class="mt-3 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl px-3 py-2 text-sm"><strong>Less than a year to go.</strong> You can still apply, but you will need to do several steps at the same time, and some scholarships will already be closed. Consider a later intake if your tests are not done yet.</div>';
-            h += '<ol class="mt-4 space-y-2">' + AB_STEPS.map(function (s, i) {
-                const d = abStepDate(AB.intake, s[0]), past = d < cut, now0 = d.getFullYear() === cut.getFullYear() && d.getMonth() === cut.getMonth();
-                const tag = past ? '<span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Should be under way</span>' : now0 ? '<span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Start this month</span>' : '';
-                return '<li class="border border-slate-200 rounded-xl p-3 bg-white flex gap-3"><div class="shrink-0 w-16 text-center"><p class="text-xs font-bold text-brand-700">' + AB_MONTH[d.getMonth()] + '</p><p class="text-xs text-slate-500">' + d.getFullYear() + '</p></div><div><p class="font-bold text-sm text-slate-900">' + esc(s[1]) + ' ' + tag + '</p><p class="text-xs text-slate-600 mt-0.5">' + esc(s[2]) + '</p></div></li>';
-            }).join('') + '</ol>';
-            h += '<div class="flex flex-wrap gap-2 mt-4"><button type="button" onclick="abTimelineToChecklist()" class="min-h-[44px] px-4 py-2 rounded-xl bg-brand-600 text-white text-sm font-bold hover:bg-brand-700">Add key steps to my checklist</button></div><p class="text-xs text-slate-500 mt-3">A general plan. Application and scholarship deadlines depend on each university, so check theirs.</p>';
-            return h;
-        }
-        function abTimelineToChecklist() {
-            if (!requireAuth('Sign in to add these steps to your checklist.', abTimelineToChecklist)) return;
-            const list = getChecklist().slice(), have = new Set(list.map(function (i) { return i.id; }));
-            let n = 0;
-            AB_STEPS.forEach(function (s, i) { const cid = 'ab-' + AB.intake + '-' + i, d = abStepDate(AB.intake, s[0]); if (!have.has(cid)) { list.push({ id: cid, text: AB_MONTH[d.getMonth()] + ' ' + d.getFullYear() + ': ' + s[1], done: false }); n++; } });
-            setChecklist(list);
-            if (typeof renderDashboardChecklist === 'function') renderDashboardChecklist();
-            showToast(n ? 'Added ' + n + ' steps to your dashboard checklist.' : 'Those steps are already on your checklist.');
-        }
-
-        function abRenderFund() {
-            const esc = escapeAuth, cs = ['all'].concat(AB_SCHOLARSHIPS.map(function (s) { return s.c; }).filter(function (c, i, a) { return a.indexOf(c) === i; }));
-            let h = '<div class="grid sm:grid-cols-2 gap-3">' + abSelect('ab-schlevel', 'Level', [['all', 'Any level'], ['ug', 'Bachelor\'s'], ['pg', 'Master\'s'], ['phd', 'PhD']], AB.schLevel, 'schLevel') +
-                abSelect('ab-schcountry', 'Country', cs.map(function (c) { return [c, c === 'all' ? 'Any country' : c]; }), AB.schCountry, 'schCountry') + '</div>';
-            const rows = AB_SCHOLARSHIPS.filter(function (s) { return (AB.schLevel === 'all' || s.l.indexOf(AB.schLevel) !== -1) && (AB.schCountry === 'all' || s.c === AB.schCountry); });
-            h += '<p class="text-sm text-slate-700 mt-4"><strong>' + rows.length + '</strong> scholarships' + '</p>';
-            if (!rows.length) h += '<p class="text-sm text-slate-500 mt-2">None in this list for that choice. Many universities have their own merit awards, so ask the admissions office directly.</p>';
-            h += '<div class="grid sm:grid-cols-2 gap-3 mt-2">' + rows.map(function (s) {
-                return '<div class="border border-slate-200 rounded-2xl p-4 bg-white space-y-1.5"><div class="flex items-start justify-between gap-2"><p class="font-bold text-slate-900 text-sm">' + esc(s.n) + '</p><span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 shrink-0">' + esc(s.c) + '</span></div>' +
-                    '<p class="text-xs text-slate-700"><strong>Covers:</strong> ' + esc(s.cover) + '</p><p class="text-xs text-slate-700"><strong>Who:</strong> ' + esc(s.who) + '</p><p class="text-xs text-slate-700"><strong>Usual timing:</strong> ' + esc(s.when) + '</p>' + abLink(s.site, 'Official site') + '</div>';
-            }).join('') + '</div>';
-            h += '<div class="mt-5 border border-slate-200 rounded-2xl p-4 bg-slate-50"><h4 class="font-bold text-slate-900 text-sm mb-2">Other ways to cover the cost</h4><ul class="list-disc pl-5 space-y-1 text-sm text-slate-700">' + AB_LADDER.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('') + '</ul><button type="button" onclick="goToBlock(\'loan-navigator-block\')" class="mt-3 text-xs font-bold text-brand-700 hover:underline min-h-[32px]">Open the loan navigator →</button></div>';
-            h += '<p class="text-xs text-slate-500 mt-3">Fully funded scholarships are given to a small number of applicants. Eligibility, amounts and dates change every year and are not verified here, so read the official page before you plan around one.</p>';
-            return h;
-        }
-
-        function abRenderFlags() {
-            const esc = escapeAuth;
-            let h = '<p class="text-sm text-slate-600">Most study-abroad problems come from a few patterns. Check any agent, offer or university against these.</p><div class="grid md:grid-cols-2 gap-3 mt-3">' + AB_FLAGS.map(function (f) {
-                return '<div class="border border-rose-200 bg-rose-50 rounded-2xl p-4 space-y-1.5"><p class="font-bold text-slate-900 text-sm">🚩 ' + esc(f[0]) + '</p><p class="text-xs text-slate-700"><strong>Why it matters:</strong> ' + esc(f[1]) + '</p><p class="text-xs text-slate-700"><strong>What to do:</strong> ' + esc(f[2]) + '</p></div>';
-            }).join('') + '</div>';
-            h += '<div class="mt-4 border border-slate-200 rounded-2xl p-4 bg-white"><h4 class="font-bold text-slate-900 text-sm mb-2">Questions to ask any agent</h4><ul class="list-disc pl-5 space-y-1 text-sm text-slate-700">' + AB_AGENT_Q.map(function (q) { return '<li>' + esc(q) + '</li>'; }).join('') + '</ul></div>';
-            h += '<p class="text-xs text-slate-500 mt-3">If you are already abroad and need help, your Indian embassy or consulate is the official place to ask. Never share your passport scan, bank login or OTP with anyone who contacts you first.</p>';
-            return h;
-        }
-
-        function abRenderTests() {
-            const esc = escapeAuth, c = abCountry(AB.tCountry) || AB_COUNTRIES[0], lv = AB.tLevel === 'ug' ? 'ug' : 'pg';
-            let h = '<div class="grid sm:grid-cols-3 gap-3">' + abSelect('ab-tcountry', 'Country', AB_COUNTRIES.map(function (x) { return [x.id, x.flag + ' ' + x.name]; }), AB.tCountry, 'tCountry') +
-                abSelect('ab-tlevel', 'Level', [['ug', 'Bachelor\'s'], ['pg', 'Master\'s'], ['mba', 'MBA']], AB.tLevel, 'tLevel') +
-                abSelect('ab-tfield', 'Special field', [['any', 'None of these'], ['law', 'Law'], ['med', 'Medicine (MBBS)']], AB.tField, 'tField') + '</div>';
-            let keys = c.tests[lv].slice();
-            if (AB.tLevel === 'mba' && keys.indexOf('gmat') === -1) keys.push('gmat');
-            if (AB.tLevel === 'mba') keys = keys.filter(function (k) { return k !== 'sat'; });
-            if (AB.tField === 'law' && keys.indexOf('lnat') === -1 && c.id === 'uk') keys.push('lnat');
-            const card = function (k) {
-                const t = AB_TESTS[k];
-                return '<div class="border border-slate-200 rounded-2xl p-4 bg-white space-y-1"><p class="font-bold text-slate-900 text-sm">' + esc(t.name) + '</p><p class="text-xs text-slate-700">' + esc(t.what) + '</p><p class="text-xs text-slate-700"><strong>Typical score:</strong> ' + esc(t.score) + '</p><p class="text-xs text-slate-700"><strong>Cost:</strong> ' + esc(t.fee) + ' · <strong>Valid:</strong> ' + esc(t.valid) + '</p>' + (t.warn ? '<p class="text-xs text-amber-800">' + esc(t.warn) + '</p>' : '') + abLink(t.site, 'Official site') + '</div>';
-            };
-            h += '<h4 class="mt-5 mb-2 font-bold text-slate-900 text-sm">For ' + c.flag + ' ' + esc(c.name) + ' you will probably need</h4><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">' + keys.map(card).join('') + '</div>';
-            const notes = [];
-            if (AB.tField === 'med') notes.push('MBBS abroad: to practise in India you generally need to qualify NEET and meet NMC rules, then pass a licensing exam (FMGE / NExT). Check the current rules first.');
-            if (AB.tField === 'law' && c.id === 'us') notes.push('US law (JD) usually asks for the LSAT. Many Indian students do an LLM instead, which has different requirements.');
-            if (AB.tField === 'law' && c.id !== 'uk' && c.id !== 'us') notes.push('Law entry tests differ by university. Check each course page.');
-            if (c.id === 'de') notes.push('Indian students applying to Germany usually need the APS certificate, and Class 12 alone may need a Studienkolleg year or one year of university for undergraduate entry.');
-            if (c.id === 'fr') notes.push('Applications for France go through Campus France, which is a process and not a test.');
-            if (c.ugLocal && lv === 'ug') notes.push('Undergraduate courses here are mostly in the local language, so budget 6 to 12 months for language study.');
-            if (notes.length) h += '<div class="mt-4 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl px-3 py-2 text-sm space-y-1">' + notes.map(function (n) { return '<p>' + esc(n) + '</p>'; }).join('') + '</div>';
-            h += '<div class="mt-5 border border-slate-200 rounded-2xl p-4 bg-slate-50"><h4 class="font-bold text-slate-900 text-sm mb-2">Which English test should I take?</h4><ul class="list-disc pl-5 space-y-1 text-sm text-slate-700"><li>Pick the one your target universities accept. IELTS is accepted almost everywhere.</li><li>For UK student visas, make sure you take the version the visa rules require.</li><li>PTE gives fast results. TOEFL is common in the US. Duolingo is cheaper but accepted by fewer places.</li><li>Take a practice test first. Book 3 to 4 months before applications, so you can retake.</li></ul></div>';
-            h += '<p class="text-xs text-slate-500 mt-3">Fees and scores are approximate and many universities waive or change test rules. The university\'s own admissions page decides.</p>';
-            return h;
-        }
-        function renderAbroadToolkit() {
-            const tabs = document.getElementById('ab-tabs'), panel = document.getElementById('ab-panel');
-            if (!tabs || !panel) return;
-            tabs.innerHTML = AB_TABS.map(function (t) { return '<button type="button" role="tab" aria-selected="' + (AB.tab === t[0]) + '" data-ab="' + t[0] + '" onclick="abSet(\'tab\',\'' + t[0] + '\')" class="min-h-[44px] px-4 py-2 rounded-xl border text-sm font-bold transition ' + (AB.tab === t[0] ? 'border-brand-600 bg-brand-50 text-brand-800' : 'border-slate-200 bg-white text-slate-600 hover:border-brand-300') + '">' + t[1] + '</button>'; }).join('');
-            const fn = { match: abRenderMatch, countries: abRenderCountries, time: abRenderTime, fund: abRenderFund, flags: abRenderFlags, tests: abRenderTests }[AB.tab] || abRenderMatch;
-            try { panel.innerHTML = fn(); } catch (err) { console.error('Abroad toolkit error:', err); panel.innerHTML = '<p class="text-sm text-slate-500">Something went wrong. Please reload the page.</p>'; }
-        }
-
         function goToBlock(id) {
             const el = document.getElementById(id);
             if (!el) return;
@@ -13074,7 +12817,7 @@
             { id: 'switch', title: 'Already working?', blurb: 'Change fields without starting from zero.' },
             { id: 'track', title: 'Keep track of it all', blurb: 'Your saved items, checklist, and profile.' }
         ];
-        const VIEW_NAMES = { confusedMode: 'Find my path', explorer: 'Careers', afterDegree: 'Pathways', exams: 'Exams', colleges: 'Colleges', govAndAbroad: 'Govt & Abroad', backupPlan: 'Safety Net', dashboard: 'My Dashboard' };
+        const VIEW_NAMES = { confusedMode: 'Find my path', explorer: 'Careers', afterDegree: 'Pathways', exams: 'Exams', colleges: 'Colleges', govAndAbroad: 'Govt & Money', backupPlan: 'Safety Net', dashboard: 'My Dashboard' };
         const TOOL_DIRECTORY = [
             { group: 'decide', view: 'confusedMode', block: '', label: '🧭 Career quiz', title: 'Career quiz', desc: 'Answer a few quick questions to get matched careers, then check how your family\'s expectations line up with your own interest.', kw: 'confused find my path direction wizard interest match parents family stuck' },
             { group: 'decide', view: 'explorer', block: '', label: '🔎 Careers', title: 'Career explorer', desc: 'Browse and filter every career by category, with salary, demand, skills, and a roadmap for each.', kw: 'careers browse salary skills roadmap' },
@@ -13091,7 +12834,6 @@
             { group: 'money', view: 'govAndAbroad', block: 'loan-navigator-block', label: '🏦 Loans', title: 'Education loan navigator', desc: 'How education loans work, what to compare, and the terms worth understanding.', kw: 'loan emi bank borrow interest' },
             { group: 'money', view: 'govAndAbroad', block: 'hidden-cost-block', label: '🧮 Real cost', title: 'Hidden cost calculator', desc: 'Add living costs and travel to the tuition fee to see what a course really costs per year.', kw: 'cost fees hostel living budget expense tuition' },
             { group: 'money', view: 'govAndAbroad', block: 'reservation-quota-block', label: '⚖️ Reservation & quota', title: 'Reservation and quota explainer', desc: 'Pick your category and exam to see how category, domicile, and quota usually interact.', kw: 'quota obc sc st ews category domicile reservation' },
-            { group: 'money', view: 'govAndAbroad', block: 'abroad-toolkit-block', label: '🌍 Study abroad toolkit', title: 'Study abroad toolkit', desc: 'Match countries to your budget and course, compare 14 destinations, plan the timeline, find scholarships, avoid scams and check which tests you need.', kw: 'abroad overseas foreign usa uk canada germany australia ireland france singapore japan study ielts toefl gre gmat sat scholarship chevening fulbright daad visa agent scam timeline' },
             { group: 'money', view: 'govAndAbroad', block: 'govt-toolkit-block', label: '🧰 Govt jobs toolkit', title: 'Government jobs toolkit', desc: 'Find exams for your qualification, check age limits and attempts, see what each job is like, get a prep plan and category benefits.', kw: 'government exam finder eligibility age limit attempts relaxation reservation category obc sc st ews pwd prep plan upsc ssc bank railway defence police teacher job pay sarkari' },
             { group: 'money', view: 'govAndAbroad', block: 'govt-careers-block', label: '🏛️ Govt careers', title: 'Government careers', desc: 'Public sector and UPSC-track options, with the trade-off between job security and competition.', kw: 'government upsc ssc banking sarkari psu' },
             { group: 'switch', view: 'afterDegree', block: 'career-switch-block', label: '🔄 Switch careers', title: 'Career switch planner', desc: 'Already working? Plan a move to a new field backwards from your goal, with skill gaps, routes, and a timeline.', kw: 'working professional switch change career pivot experience job' },
@@ -13229,7 +12971,6 @@
             renderReservationInfo();
             renderRecoveryGuidance();
             renderGovtToolkit();
-            renderAbroadToolkit();
             initCareerSwitchPlanner();
             renderToolDirectory();
             initDataDrivenFilters();
