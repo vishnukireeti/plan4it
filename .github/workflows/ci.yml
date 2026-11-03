@@ -1,10 +1,16 @@
 name: CI
 
-# Runs on every push/PR to main. This site deploys manually (via the Netlify
-# CLI/API, not Netlify's git-connected auto-deploy), so this workflow is the
-# only thing standing between a broken change and it reaching production --
-# nothing here blocks a deploy automatically, so always check this went green
-# before deploying.
+# Runs on every push/PR to main, and is reported here on GitHub (gh run list,
+# the commit's check-run status) so there's an independent, visible record
+# of whether a given commit was actually checked. It does NOT by itself
+# block a push to main from deploying: commits land directly on main (no PR
+# step), so a GitHub-side "required status check" can't gate a push the way
+# it gates a PR merge -- a status check can only exist for a commit that's
+# already on the remote. The actual gate lives locally: see
+# .githooks/pre-push, which runs these same checks (plus
+# scripts/ci/logic_tests.py) before `git push` is allowed to proceed at all,
+# since pushes from this project only ever happen from a sandbox with that
+# hook installed (`git config core.hooksPath .githooks`).
 
 on:
   push:
@@ -55,3 +61,6 @@ jobs:
 
       - name: Browser smoke test
         run: python3 scripts/ci/smoke_test.py
+
+      - name: Logic tests (quiz scoring, backup-plan ranking)
+        run: python3 scripts/ci/logic_tests.py

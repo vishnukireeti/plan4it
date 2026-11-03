@@ -61,16 +61,14 @@ not in `index.html` — change it there, then rerun the build.
 
 ## Deploying
 
-**This is important and easy to get wrong: pushing to GitHub does NOT
-deploy the site.** Despite being a GitHub-backed repo, this Netlify site
-was never connected for git-triggered auto-deploys — every deploy so far
-has been a manual trigger via the Netlify CLI/API. (Whether that's
-intentional or a misconfigured Netlify dashboard setting was never fully
-confirmed — worth checking Netlify's dashboard under Site settings → Build
-& deploy → Continuous deployment if you want git-push-to-deploy instead.)
-
-To actually ship a change to production, a deploy has to be triggered
-separately after pushing.
+**This is important and easy to get wrong the other way: pushing to
+GitHub's `main` branch DOES deploy the site immediately.** This Netlify
+site is connected for git-triggered auto-deploys — confirmed from Netlify's
+own deploy records. There is no staging step, no manual approval, and (see
+"CI" below) no GitHub-side gate that can block it, since commits land
+directly on `main` with no PR step. The only thing standing between a
+broken commit and production is `.githooks/pre-push` (see below) — never
+push with `--no-verify` unless you mean it.
 
 ## CI
 
@@ -92,10 +90,20 @@ separately after pushing.
   loads the page over HTTP, checks the stylesheet actually applied, the
   catalog data loaded, SEO tags are present, and there are no unexpected
   console errors.
+- **Logic tests** (`scripts/ci/logic_tests.py`) — calls the real
+  `scoreCareerForWizard()` and `generateBackupPlan()` functions in a
+  headless browser and checks their output against what the app promises a
+  student: a matching interest outscores an unrelated one, a named career
+  scores higher, backup colleges are sorted and labeled exactly the way the
+  ranking formula and the UI's own thresholds say they should be.
 
-This workflow doesn't block a deploy by itself (deploys are manual, see
-above) — treat a green run as "safe to deploy," not as a gate that stops
-you.
+This workflow runs on GitHub after every push (a visible record, and a
+backstop if the local hook below was ever bypassed), but — because pushes
+land directly on `main` with no PR step — it cannot itself block a push
+from deploying. The actual gate is local: see `.githooks/pre-push`, run
+automatically by `git push` once you've set `git config core.hooksPath
+.githooks` (one-time, per clone). It runs these same checks against the
+commit about to be pushed and refuses the push if any fail.
 
 ## Analytics & error monitoring
 

@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# Local pre-push gate. Installed via: git config core.hooksPath .githooks
+#
+# This repo pushes straight to main (no PR step), so GitHub's own branch
+# protection can't actually block a bad push the way it blocks a PR merge --
+# a required status check has to exist for a commit that's already on the
+# remote, and a direct push IS the thing putting it there. This hook is the
+# real gate: it runs the same checks CI runs, against the commit(s) about to
+# be pushed, and refuses the push if any of them fail. GitHub Actions still
+# runs after a successful push too, as an independent, visible record (and
+# a backstop if this hook was ever bypassed with --no-verify) -- but this is
+# what actually stops a broken commit from reaching production, since a
+# deploy here follows directly from a push landing on main.
+set -euo pipefail
+
+cd "$(git rev-parse --show-toplevel)"
+
+echo "pre-push: running CI-equivalent checks before allowing this push..."
+echo
+
+run() {
+    echo "-> $1"
+    if ! eval "$2"; then
+        echo
+        echo "pre-push: '$1' failed. Push aborted -- fix this before pushing, or use"
+        echo "'git push --no-verify' to bypass deliberately (not recommended)."
+        exit 1
+    fi
+}
+
+run "HTML structure check"      "python3 scripts/ci/check_html_structure.py"
+run "JS syntax check"            "python3 scripts/ci/check_js_syntax.py"
+run "JSON validity check"        "python3 scripts/ci/check_json.py"
+
+if [ -f package.json ] && [ -d node_modules ]; then
+    run "Tailwind drift check" "node scripts/build-tailwind.mjs && git diff --exit-code assets/tailwind.css"
+else
+    echo "-> Tailwind drift check: skipped (run 'npm install' once to enable it locally)"
+fi
+
+if python3 -c "import playwright" >/dev/null 2>&1; then
+    run "Browser smoke test" "python3 scripts/ci/smoke_test.py"
+    run "Logic tests"        "python3 scripts/ci/logic_tests.py"
+else
+    echo "-> Browser smoke test + logic tests: skipped (run 'pip install playwright && playwright install chromium' once to enable them locally)"
+fi
+
+echo
+echo "pre-push: all available checks passed."

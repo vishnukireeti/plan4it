@@ -66,17 +66,6 @@ limitation, not a known bug — see below.
       canonical/OG URLs and sitemap in `index.html` /
       `sitemap.xml`, and `robots.txt`'s `Sitemap:` line.
 
-## Still unresolved from earlier
-
-- [ ] **Netlify auto-deploy**: this site has only ever deployed via a
-      manual Netlify CLI/API trigger, never via GitHub's webhook —
-      confirmed from Netlify's own deploy records (`deploy_source` was
-      always `"api"`, never `"github"`). Whether that's intentional or
-      a misconfigured "Continuous deployment" setting in the Netlify
-      dashboard was never confirmed either way. Worth checking Site
-      settings → Build & deploy → Continuous deployment if git-push-to-
-      deploy is wanted instead of the current manual trigger.
-
 ## Already done (kept here for a record, not action items)
 
 - [x] SEO infra (robots.txt, sitemap.xml, canonical/OG tags, JSON-LD)
@@ -90,3 +79,14 @@ limitation, not a known bug — see below.
       docs, and favicons/OG image regenerated. Domain and a few cosmetic
       account display names intentionally left — see
       `docs/RENAME_CHECKLIST.md`.
+- [x] CI now actually gates pushes to `main`, not just advisory
+      (2026-11-03): added `.githooks/pre-push` (enabled via
+      `git config core.hooksPath .githooks`), which re-runs CI's checks
+      plus new logic tests on the commit about to be pushed and refuses the
+      push on failure — the real gate, since GitHub branch protection can't
+      block a direct push with no PR step. See `README.md`'s "Deploying"
+      and "CI" sections.
+- [x] Added logic tests for the two scoring/ranking functions that drive
+      real recommendations (`scripts/ci/logic_tests.py`): quiz scoring
+      (`scoreCareerForWizard`) and backup-college ranking
+      (`generateBackupPlan`/`renderBackupPlan`).
