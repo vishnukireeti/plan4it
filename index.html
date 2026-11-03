@@ -1524,7 +1524,7 @@
         <section id="view-dashboard" class="view-section hidden space-y-8">
             <div class="bg-gradient-to-r from-brand-900 to-brand-800 text-white p-8 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
-                    <span class="bg-brand-500/40 text-brand-200 text-xs font-semibold px-3 py-1 rounded-full">Student Profile Active</span>
+                    <span id="profile-active-badge" class="bg-brand-500/40 text-brand-200 text-xs font-semibold px-3 py-1 rounded-full hidden">Student Profile Active</span>
                     <h2 data-nav="Your dashboard" id="dashboard-title" class="text-3xl font-extrabold mt-3">Your Personalized Career Dashboard</h2>
                     <p class="text-brand-200 text-sm mt-1">Saved careers, action checklist, and your profile — kept in your account if you're signed in, or in this browser if not.</p>
                 </div>
@@ -1558,9 +1558,12 @@
                         <!-- Populated by JS -->
                     </div>
 
-                    <div id="dash-checklist-block" class="scroll-mt-32 flex items-center justify-between">
-                        <h3 data-nav="Action checklist" class="text-xl font-bold text-slate-900">Your Action Checklist</h3>
-                        <span id="checklist-progress-label" class="text-xs font-semibold text-slate-500"></span>
+                    <div id="dash-checklist-block" class="scroll-mt-32">
+                        <div class="flex items-center justify-between">
+                            <h3 data-nav="Action checklist" id="checklist-title" class="text-xl font-bold text-slate-900">Your Action Checklist</h3>
+                            <span id="checklist-progress-label" class="text-xs font-semibold text-slate-500"></span>
+                        </div>
+                        <p id="checklist-subtitle" class="text-xs text-slate-500 mt-0.5 hidden">Suggested starting points — check one off to make this list your own.</p>
                     </div>
                     <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
                         <div id="checklist-progress-fill" class="bg-brand-600 h-1.5 rounded-full wizard-progress-fill" style="width:0%"></div>
@@ -8463,12 +8466,18 @@
             else { badge.classList.add('hidden'); badge.classList.remove('flex'); }
         }
 
+        // Shown only until the student has a real checklist of their own (see getChecklist()
+        // below) -- so every item here must make sense with literally nothing else done yet.
+        // Never mark one `done: true` by default: that renders as a claim the student already
+        // did something they didn't, which is exactly the kind of thing that makes a tool feel
+        // fake rather than useful. Keep these pointed at Plan4it's own tools (quiz, explorer,
+        // profile), not generic career advice any site could give.
         const DEFAULT_CHECKLIST = [
-            { id: 'c1', text: 'Research relevant degree syllabus and fee structures for your top match.', done: true },
-            { id: 'c2', text: 'Complete one free introductory course in your target skill area.', done: false },
-            { id: 'c3', text: 'Set up a portfolio (GitHub, Behance, or a simple project page).', done: false },
-            { id: 'c4', text: 'Connect with someone already working in the field for an informational chat.', done: false },
-            { id: 'c5', text: 'Reassess your career confidence level after 30 days of consistent exploration.', done: false }
+            { id: 'c1', text: 'Take the 2-minute career quiz to get your first matches.', done: false },
+            { id: 'c2', text: 'Browse the Career Explorer and save 2-3 careers that interest you.', done: false },
+            { id: 'c3', text: 'Fill in your Student Profile so advice here is tailored to you.', done: false },
+            { id: 'c4', text: 'Check entrance exam dates for the stream you are leaning towards.', done: false },
+            { id: 'c5', text: 'Once you have a top match, come back here to track real next steps for it.', done: false }
         ];
         function getChecklist() {
             if (authGetSession()) {
@@ -8479,6 +8488,14 @@
                 const stored = JSON.parse(localStorage.getItem(STORAGE_KEYS.checklist));
                 return stored && stored.length ? stored : DEFAULT_CHECKLIST;
             } catch(e) { return DEFAULT_CHECKLIST; }
+        }
+        // True until the student has their own checklist (any toggle, or any "Add to my
+        // checklist" from another tool, creates one) -- used to label the starter list as
+        // suggestions rather than letting it masquerade as tracked personal progress.
+        function checklistIsDefault() {
+            if (authGetSession()) { const stored = cloudData && cloudData.checklist; return !(stored && stored.length); }
+            try { const stored = JSON.parse(localStorage.getItem(STORAGE_KEYS.checklist)); return !(stored && stored.length); }
+            catch (e) { return true; }
         }
         function setChecklist(list) {
             if (authGetSession()) { if (cloudData) { cloudData.checklist = list; scheduleCloudSave(); } }
@@ -11486,12 +11503,20 @@
             renderDeadlines();
             renderDashboardChecklist();
             loadProfileIntoForm();
+            // Only claim the profile is active once the student has actually filled in at
+            // least one field -- it used to show unconditionally, which told every brand-new
+            // visitor "Active" before they'd typed anything at all.
+            const prof = getProfile();
+            document.getElementById('profile-active-badge').classList.toggle('hidden', !(prof && (prof.stage || prof.location || prof.budget)));
         }
 
         function renderDashboardChecklist() {
             const list = getChecklist();
+            const isDefault = checklistIsDefault();
             const done = list.filter(i => i.done).length;
-            document.getElementById('checklist-progress-label').textContent = `${done} / ${list.length} complete`;
+            document.getElementById('checklist-title').textContent = isDefault ? 'Get Started' : 'Your Action Checklist';
+            document.getElementById('checklist-subtitle').classList.toggle('hidden', !isDefault);
+            document.getElementById('checklist-progress-label').textContent = isDefault ? '' : `${done} / ${list.length} complete`;
             document.getElementById('checklist-progress-fill').style.width = `${Math.round((done / list.length) * 100)}%`;
 
             document.getElementById('dashboard-checklist').innerHTML = list.map((item, idx) => `
