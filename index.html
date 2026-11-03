@@ -477,7 +477,7 @@
 
             <nav class="hidden lg:flex items-center gap-x-4 xl:gap-x-7 text-sm font-medium text-slate-600 whitespace-nowrap">
                 <button data-nav="confusedMode" onclick="switchView('confusedMode')" class="nav-link text-brand-600 font-semibold hover:text-brand-700 transition">Find my path</button>
-                <button data-nav="backupPlan" onclick="switchView('backupPlan')" class="nav-link hover:text-brand-600 transition">Backup Plans</button>
+                <button data-nav="backupPlan" onclick="switchView('backupPlan')" class="nav-link hover:text-brand-600 transition">Safety Net</button>
                 <button data-nav="explorer" onclick="switchView('explorer')" class="nav-link hover:text-brand-600 transition">Careers</button>
                 <button data-nav="afterDegree" onclick="switchView('afterDegree')" class="nav-link hover:text-brand-600 transition">Pathways</button>
                 <button data-nav="exams" onclick="switchView('exams')" class="nav-link hover:text-brand-600 transition">Exams</button>
@@ -502,7 +502,7 @@
     <nav id="mobile-menu-panel" class="hidden lg:hidden fixed top-16 left-0 right-0 z-50 bg-white border-b border-slate-200 shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto" aria-label="Main menu">
         <div class="flex flex-col py-2">
             <button data-nav="confusedMode" onclick="switchView('confusedMode');closeMobileMenu()" class="nav-link text-brand-600 font-semibold text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Find my path</button>
-            <button data-nav="backupPlan" onclick="switchView('backupPlan');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Backup Plans</button>
+            <button data-nav="backupPlan" onclick="switchView('backupPlan');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Safety Net</button>
             <button data-nav="explorer" onclick="switchView('explorer');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Careers</button>
             <button data-nav="afterDegree" onclick="switchView('afterDegree');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Pathways</button>
             <button data-nav="exams" onclick="switchView('exams');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Exams</button>
@@ -13017,7 +13017,7 @@
             { id: 'switch', title: 'Already working?', blurb: 'Change fields without starting from zero.' },
             { id: 'track', title: 'Keep track of it all', blurb: 'Your saved items, checklist, and profile.' }
         ];
-        const VIEW_NAMES = { confusedMode: 'Find my path', explorer: 'Careers', afterDegree: 'Pathways', exams: 'Exams', colleges: 'Colleges', govAndAbroad: 'Govt & Abroad', backupPlan: 'Backup Plans', dashboard: 'My Dashboard' };
+        const VIEW_NAMES = { confusedMode: 'Find my path', explorer: 'Careers', afterDegree: 'Pathways', exams: 'Exams', colleges: 'Colleges', govAndAbroad: 'Govt & Abroad', backupPlan: 'Safety Net', dashboard: 'My Dashboard' };
         const TOOL_DIRECTORY = [
             { group: 'decide', view: 'confusedMode', block: '', label: '🧭 Career quiz', title: 'Career quiz', desc: 'Answer a few quick questions to get matched careers, then check how your family\'s expectations line up with your own interest.', kw: 'confused find my path direction wizard interest match parents family stuck' },
             { group: 'decide', view: 'explorer', block: '', label: '🔎 Careers', title: 'Career explorer', desc: 'Browse and filter every career by category, with salary, demand, skills, and a roadmap for each.', kw: 'careers browse salary skills roadmap' },
