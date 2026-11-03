@@ -118,6 +118,13 @@ BACKUP_TEST_JS = """
     const list = BACKUP_COLLEGES[examId];
     if (!list || list.length < 5) { problems.push('BACKUP_COLLEGES.jee-main-advanced has fewer than 5 entries; cannot test top-5 ranking.'); return { problems }; }
 
+    // generateBackupPlan() now requires sign-in (requireAuth()) before it does anything --
+    // fake a session the same way, via plain assignment to the top-level `let
+    // currentAuthSession` binding that authGetSession() reads. No real Supabase
+    // connectivity is needed: generateBackupPlan()'s own ranking logic never touches
+    // cloudData, only requireAuth()'s gate check does (authGetSession() truthiness).
+    currentAuthSession = { user: { id: 'logic-test-user' } };
+
     // A synthetic target college that matches none of the real entries by
     // name, so every real entry is a legitimate "other" candidate. Plain
     // assignment (no "window."/"let"/"const") on purpose: BACKUP_TARGET is

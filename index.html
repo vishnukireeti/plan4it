@@ -384,9 +384,9 @@
     </div>
 
     <div id="auth-modal" class="hidden fixed inset-0 z-[90] items-end sm:items-center justify-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="auth-title">
-        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeAuth()"></div>
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="dismissAuth()"></div>
         <div id="auth-card" class="auth-card relative bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-md max-h-[94vh] overflow-y-auto p-6 sm:p-8">
-            <button type="button" onclick="closeAuth()" aria-label="Close" class="absolute top-3 right-3 w-10 h-10 rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-800 text-xl leading-none">&times;</button>
+            <button type="button" onclick="dismissAuth()" aria-label="Close" class="absolute top-3 right-3 w-10 h-10 rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-800 text-xl leading-none">&times;</button>
             <div class="font-display inline-block bg-brand-600 text-white font-bold px-3 py-1 rounded-lg text-sm mb-4">Plan4it</div>
             <h2 id="auth-title" class="font-display text-2xl font-bold text-slate-900 mb-1">Create your account</h2>
             <p id="auth-sub" class="text-sm text-slate-600 mb-5">Keep your saved careers, colleges, exams and checklist in one place.</p>
@@ -1817,13 +1817,13 @@
                 <p>Plan4it ("we", "us") provides career and education guidance for students in Class 10–12 in India and their families. This page explains what information the app collects, why, and how to reach us about it.</p>
 
                 <div>
-                    <h3 class="font-bold text-slate-900 mb-1">Using Plan4it without an account</h3>
-                    <p>You don't need an account to use Plan4it. Without one, your quiz answers, saved careers, colleges and exams, your checklist, and your profile details are stored only in your browser's local storage, on your own device. We never see this information, it is never sent to our servers, and it is deleted if you clear your browser data or use a different device or browser.</p>
+                    <h3 class="font-bold text-slate-900 mb-1">Browsing Plan4it without an account</h3>
+                    <p>You don't need an account to browse Plan4it — the Career Explorer, every career/exam/college page, and all the guidance pages (pathways, government jobs, studying abroad) are open to everyone, no sign-in required.</p>
                 </div>
 
                 <div>
-                    <h3 class="font-bold text-slate-900 mb-1">If you create an account</h3>
-                    <p>Creating an account is optional, and only changes where your saved careers/colleges/exams, checklist and profile are stored — from your device's local storage to our database, so you can see the same saved items on another device after signing in. Your quiz answers stay device-only either way. Signing up with email collects your name, email, and a password (we never see your password itself — it's handled directly by our authentication provider, Supabase, which stores it hashed, not as plain text). Signing up with Google instead shares your name and email from your Google account with us, nothing else. Your account's saved data is protected so that only you can read or change it, even on our side.</p>
+                    <h3 class="font-bold text-slate-900 mb-1">What needs an account</h3>
+                    <p>Taking the career quiz, saving a career/college/exam, using the checklist, filling in your profile, and generating a backup plan all require a free account. We do this so that what you've done — your quiz matches, what you've saved, your checklist progress — is tied to your account rather than one device's browser storage, and is there for you the next time you come back, on any device. These are stored in our database (via Supabase), protected so that only you can read or change them, even on our side. Signing up with email collects your name, email, and a password (we never see your password itself — it's handled directly by our authentication provider, Supabase, which stores it hashed, not as plain text). Signing up with Google instead shares your name and email from your Google account with us, nothing else.</p>
                 </div>
 
                 <div>
@@ -7157,7 +7157,7 @@
         const faqData = [
             { q: "Is Plan4it's guidance based on real data?", a: "The careers, exams, colleges, and scholarships here come from compiled datasets, not live official feeds. Fees, cutoffs, exam dates, and eligibility change every year, so always confirm with the official website before you apply or pay." },
             { q: "Can I change my answers after completing the wizard?", a: "Yes — open Find my path again and click \"Retake Quiz\" on your results screen, or just start the wizard again from the navigation menu." },
-            { q: "Where is my saved data stored?", a: "If you're signed in, your bookmarked careers, checklist progress, and profile are saved to your account, so they follow you to any device. If you're not signed in, they're stored locally in this browser only, and clearing your browser data will reset them." },
+            { q: "Where is my saved data stored?", a: "Saving a career/college/exam, the quiz, the checklist, your profile, and the backup plan generator all need a free account — once you're signed in, all of it is saved to your account and follows you to any device." },
             { q: "Is Plan4it only for Class 10–12 students?", a: "That's who it's built for: stream choice, entrance exams, college shortlisting, scholarships, and backup plans after a missed cutoff. College students and graduates can still use the pathways, exams, and funding tools, but they aren't the main focus, and classes below 10th aren't covered." }
         ];
 
@@ -7515,7 +7515,7 @@
         /* ============================================================
            LOCAL STORAGE HELPERS
            ============================================================ */
-        const STORAGE_KEYS = { saved: 'marg_saved_careers', savedColleges: 'marg_saved_colleges', savedExams: 'marg_saved_exams', checklist: 'marg_checklist', profile: 'marg_profile' };
+        const STORAGE_KEYS = { saved: 'marg_saved_careers', savedColleges: 'marg_saved_colleges', savedExams: 'marg_saved_exams', checklist: 'marg_checklist', profile: 'marg_profile', wizardAnswers: 'marg_wizard_answers' };
 
         // Central write guard: localStorage.setItem can throw (private/incognito mode, storage disabled,
         // quota exceeded), and every reader here already tolerates a missing value. Route all writes
@@ -8397,6 +8397,7 @@
             updateSavedBadge();
         }
         function toggleSaveCareer(careerId) {
+            if (!requireAuth('Sign in to save careers to your dashboard.', function () { toggleSaveCareer(careerId); })) return;
             let saved = getSavedCareers();
             const c = careersData.find(x => x.id === careerId);
             if (!c) return;
@@ -8405,7 +8406,7 @@
                 showToast(`Removed "${c.title}" from saved careers`);
             } else {
                 saved.push(careerId);
-                showToast(`Saved "${c.title}" to your dashboard`); authNudge();
+                showToast(`Saved "${c.title}" to your dashboard`);
                 trackEvent('career_saved');
             }
             setSavedCareers(saved);
@@ -8423,6 +8424,7 @@
             updateSavedBadge();
         }
         function toggleSaveCollege(collegeId) {
+            if (!requireAuth('Sign in to save colleges to your dashboard.', function () { toggleSaveCollege(collegeId); })) return;
             let saved = getSavedColleges();
             const c = collegesData.find(x => x.id === collegeId);
             if (!c) return;
@@ -8431,7 +8433,7 @@
                 showToast(`Removed "${c.name}" from saved colleges`);
             } else {
                 saved.push(collegeId);
-                showToast(`Saved "${c.name}" to your dashboard`); authNudge();
+                showToast(`Saved "${c.name}" to your dashboard`);
             }
             setSavedColleges(saved);
             renderColleges();
@@ -8448,6 +8450,7 @@
             updateSavedBadge();
         }
         function toggleSaveExam(examId) {
+            if (!requireAuth('Sign in to save exams to your dashboard.', function () { toggleSaveExam(examId); })) return;
             let saved = getSavedExams();
             const e = examsData.find(x => x.id === examId);
             if (!e) return;
@@ -8456,7 +8459,7 @@
                 showToast(`Removed "${e.name}" from saved exams`);
             } else {
                 saved.push(examId);
-                showToast(`Saved "${e.name}" to your dashboard`); authNudge();
+                showToast(`Saved "${e.name}" to your dashboard`);
             }
             setSavedExams(saved);
             renderExams();
@@ -8506,6 +8509,7 @@
             else safeSetItem(STORAGE_KEYS.checklist, JSON.stringify(list));
         }
         function toggleChecklistItem(id) {
+            if (!requireAuth('Sign in to track your checklist.', function () { toggleChecklistItem(id); })) { renderDashboardChecklist(); return; }
             const list = getChecklist();
             const item = list.find(i => i.id === id);
             if (item) item.done = !item.done;
@@ -8518,17 +8522,14 @@
             try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.profile)) || null; } catch(e) { return null; }
         }
         function saveProfile() {
+            if (!requireAuth('Sign in to save your profile.', saveProfile)) return;
             const profile = {
                 stage: document.getElementById('profile-stage').value,
                 location: document.getElementById('profile-location').value,
                 budget: document.getElementById('profile-budget').value
             };
-            if (authGetSession()) {
-                if (cloudData) { cloudData.profile = profile; scheduleCloudSave(); }
-                showToast('Profile saved');
-            } else if (safeSetItem(STORAGE_KEYS.profile, JSON.stringify(profile))) {
-                showToast('Profile saved');
-            }
+            if (cloudData) { cloudData.profile = profile; scheduleCloudSave(); }
+            showToast('Profile saved');
         }
         function loadProfileIntoForm() {
             const p = getProfile();
@@ -8593,6 +8594,11 @@
         document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMobileMenu(); });
 
         function switchView(viewId, skipHash) {
+            // The quiz is a "use it" tool, not reference material -- gate it here, in the
+            // one place every entry point (nav links, home/explorer CTAs, recovery-guide
+            // links, browser back/forward, and a direct #confusedMode link) already funnels
+            // through, rather than patching each call site individually.
+            if (viewId === 'confusedMode' && !requireAuth('Sign in to take the career quiz — your answers and matches are saved to your account, so you can pick up where you left off on any device.', function () { switchView('confusedMode'); })) return;
             const prevEl = document.querySelector('.view-section:not(.hidden)');
             const prevView = prevEl ? prevEl.id.slice(5) : null;
             if (prevView && DETAIL_PARENT[viewId] === prevView) listReturn = { view: prevView, y: window.scrollY };
@@ -9096,18 +9102,24 @@
             return { score, reasons };
         }
 
-        // Persist completed quiz answers so other pages (Career Explorer) can use them.
+        // Persist completed quiz answers so other pages (Career Explorer) can use them, and
+        // so they follow the student to another device. The quiz now requires sign-in to
+        // even start (see requireAuth() in switchView), so this always has a real account
+        // to save to in practice -- it still falls back to local storage defensively, the
+        // same way every other saved-data getter/setter in this file does.
         function saveWizardAnswers(answers) {
-            try { localStorage.setItem('marg_wizard_answers', JSON.stringify(answers)); } catch (e) {}
+            if (authGetSession()) { if (cloudData) { cloudData.wizardAnswers = answers; scheduleCloudSave(); } return; }
+            try { localStorage.setItem(STORAGE_KEYS.wizardAnswers, JSON.stringify(answers)); } catch (e) {}
         }
         function getStoredWizardAnswers() {
-            try {
-                const a = JSON.parse(localStorage.getItem('marg_wizard_answers'));
-                return (a && a.interest && a.workStyle && a.constraint) ? a : null;
-            } catch (e) { return null; }
+            let a;
+            if (authGetSession()) { a = cloudData && cloudData.wizardAnswers; }
+            else { try { a = JSON.parse(localStorage.getItem(STORAGE_KEYS.wizardAnswers)); } catch (e) { a = null; } }
+            return (a && a.interest && a.workStyle && a.constraint) ? a : null;
         }
         function clearStoredWizardAnswers() {
-            try { localStorage.removeItem('marg_wizard_answers'); } catch (e) {}
+            if (authGetSession()) { if (cloudData) { cloudData.wizardAnswers = null; scheduleCloudSave(); } return; }
+            try { localStorage.removeItem(STORAGE_KEYS.wizardAnswers); } catch (e) {}
         }
 
         // ---------- Class 10 route suggestions (shown after the quiz when the stage is Class 10 or below) ----------
@@ -9550,10 +9562,28 @@
         // onAuthStateChange listener below, so it can be read synchronously anywhere in this
         // file without every call site needing to be made async.
         let currentAuthSession = null;
-        const AUTH_LOCAL_KEYS = { nudged: 'marg_auth_nudged' };
         const authState = { opener: null, tab: 'signup' };
+        // Set by requireAuth() below when it blocks an action; replayed once, right after
+        // the next successful sign-in, by the onAuthStateChange listener further down.
+        let authPendingRetry = null;
 
         function authGetSession() { return currentAuthSession; }
+        // Browsing (the career explorer, detail pages, guides) never needs an account.
+        // Anything that saves something for the student -- the quiz, bookmarking a
+        // career/college/exam, the checklist, the profile, the backup-plan generator --
+        // calls this first. Signed in: runs `retry` immediately and returns true. Not
+        // signed in: remembers `retry` to replay automatically the moment sign-in
+        // succeeds, opens the sign-in/signup modal with a reason specific to what was
+        // being attempted, and returns false so the caller does nothing else this time --
+        // no silent local-only save, and no "saved!" toast for something that didn't
+        // actually happen.
+        function requireAuth(reason, retry) {
+            if (authGetSession()) return true;
+            authPendingRetry = retry || null;
+            openAuth('signup');
+            document.getElementById('auth-sub').textContent = reason;
+            return false;
+        }
         function authErr(id, msg) {
             const el = document.getElementById(id); if (!el) return;
             el.textContent = msg; el.classList.toggle('hidden', !msg);
@@ -9615,6 +9645,12 @@
             document.body.style.overflow = '';
             if (authState.opener && authState.opener.focus) authState.opener.focus();
         }
+        // Closing the modal via its own X/backdrop is the student giving up on whatever
+        // requireAuth() was waiting for -- drop the pending retry so a *later*, unrelated
+        // sign-in doesn't unexpectedly replay it. closeAuth() itself stays plain because the
+        // successful-signup/login paths call it right before onAuthStateChange needs to read
+        // and run that same pending retry.
+        function dismissAuth() { authPendingRetry = null; closeAuth(); }
 
         function authSignup(ev) {
             if (ev) ev.preventDefault();
@@ -9685,6 +9721,7 @@
             });
         }
         function authLogout() {
+            authPendingRetry = null;
             if (sb) sb.auth.signOut();
             closeAuth();
             showToast('Logged out');
@@ -9701,15 +9738,6 @@
                 showToast('Your saved data was deleted');
             });
         }
-        // One gentle prompt, the first time someone saves something without an account.
-        function authNudge() {
-            try {
-                if (authGetSession() || localStorage.getItem(AUTH_LOCAL_KEYS.nudged)) return;
-                localStorage.setItem(AUTH_LOCAL_KEYS.nudged, '1');
-            } catch (e) { return; }
-            setTimeout(function () { if (!authGetSession() && document.getElementById('auth-modal').classList.contains('hidden')) { openAuth('signup'); document.getElementById('auth-sub').textContent = 'Nice, you saved something. Create an account so you can find it again.'; } }, 1200);
-        }
-
         function updateAuthUI() {
             const s = authGetSession();
             const btn = document.getElementById('auth-header-btn');
@@ -9734,7 +9762,7 @@
         let cloudSaveTimer = null;
         const CLOUD_SAVE_DEBOUNCE_MS = 800;
 
-        function cloudDataDefaults() { return { savedCareers: [], savedColleges: [], savedExams: [], checklist: null, profile: null }; }
+        function cloudDataDefaults() { return { savedCareers: [], savedColleges: [], savedExams: [], checklist: null, profile: null, wizardAnswers: null }; }
 
         function scheduleCloudSave() {
             if (cloudSaveTimer) clearTimeout(cloudSaveTimer);
@@ -9759,7 +9787,8 @@
                 savedColleges: get(STORAGE_KEYS.savedColleges) || [],
                 savedExams: get(STORAGE_KEYS.savedExams) || [],
                 checklist: get(STORAGE_KEYS.checklist),
-                profile: get(STORAGE_KEYS.profile)
+                profile: get(STORAGE_KEYS.profile),
+                wizardAnswers: get(STORAGE_KEYS.wizardAnswers)
             };
         }
 
@@ -9788,6 +9817,11 @@
                 if (session && !wasSignedIn) {
                     loadCloudData(session).then(function () {
                         try { renderDashboard(); } catch (e) {}
+                        // Resume whatever the student was actually trying to do when they
+                        // got stopped by requireAuth() -- take the quiz, save a career,
+                        // generate a backup plan, etc. -- now that they're signed in and
+                        // cloudData is loaded for real.
+                        if (authPendingRetry) { const fn = authPendingRetry; authPendingRetry = null; try { fn(); } catch (e) {} }
                     });
                 } else if (!session && wasSignedIn) {
                     cloudData = null;
@@ -11784,6 +11818,7 @@
         }
 
         function generateBackupPlan() {
+            if (!requireAuth('Sign in to generate and save your backup plan.', generateBackupPlan)) return;
             const examId = document.getElementById('backup-exam').value;
             const targetId = document.getElementById('backup-target-college').value;
             const scoreRaw = document.getElementById('backup-score').value;
@@ -12282,6 +12317,7 @@
             return h;
         }
         function gtPrepToChecklist() {
+            if (!requireAuth('Sign in to add these steps to your checklist.', gtPrepToChecklist)) return;
             const p = gtPrepPlan(), list = getChecklist().slice(), have = new Set(list.map(function (i) { return i.id; }));
             const items = [
                 'Read the latest ' + p.f.label + ' notification, syllabus and pattern',
@@ -12308,6 +12344,7 @@
             return h;
         }
         function gtDocsToChecklist() {
+            if (!requireAuth('Sign in to add these to your checklist.', gtDocsToChecklist)) return;
             const list = getChecklist().slice(), have = new Set(list.map(function (i) { return i.id; }));
             let n = 0;
             GT_DOCS.forEach(function (t, i) { const cid = 'gt-doc-' + i; if (!have.has(cid)) { list.push({ id: cid, text: 'Get ready: ' + t, done: false }); n++; } });
@@ -12501,6 +12538,7 @@
             return h;
         }
         function abTimelineToChecklist() {
+            if (!requireAuth('Sign in to add these steps to your checklist.', abTimelineToChecklist)) return;
             const list = getChecklist().slice(), have = new Set(list.map(function (i) { return i.id; }));
             let n = 0;
             AB_STEPS.forEach(function (s, i) { const cid = 'ab-' + AB.intake + '-' + i, d = abStepDate(AB.intake, s[0]); if (!have.has(cid)) { list.push({ id: cid, text: AB_MONTH[d.getMonth()] + ' ' + d.getFullYear() + ': ' + s[1], done: false }); n++; } });
@@ -12591,6 +12629,7 @@
             renderColleges();
         }
         function addSetbackToChecklist(id) {
+            if (!requireAuth('Sign in to add these steps to your checklist.', function () { addSetbackToChecklist(id); })) return;
             const d = SETBACKS.find(function (x) { return x.id === id; });
             if (!d) return;
             const list = getChecklist().slice(), have = new Set(list.map(function (i) { return i.id; }));
@@ -12979,6 +13018,7 @@
         }
 
         function addSwitchPlanToChecklist() {
+            if (!requireAuth('Sign in to add this plan to your checklist.', addSwitchPlanToChecklist)) return;
             if (!lastSwitchPlan) return;
             const p = lastSwitchPlan;
             const items = p.gated ? [
