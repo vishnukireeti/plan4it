@@ -8541,13 +8541,15 @@
 
         // Per-career skill self-check — which skills the person says they already have.
         function getCheckedSkills(careerId) {
+            if (authGetSession()) return (cloudData && cloudData.skillReadiness && cloudData.skillReadiness[careerId]) || [];
             try { return JSON.parse(localStorage.getItem('marg_skill_readiness:' + careerId)) || []; } catch (e) { return []; }
         }
         function toggleSkillReadiness(careerId, skillName) {
+            if (!requireAuth('Sign in to save which skills you already have.', function () { toggleSkillReadiness(careerId, skillName); })) return;
             let checked = getCheckedSkills(careerId);
             if (checked.includes(skillName)) checked = checked.filter(s => s !== skillName);
             else checked.push(skillName);
-            safeSetItem('marg_skill_readiness:' + careerId, JSON.stringify(checked));
+            if (cloudData) { if (!cloudData.skillReadiness) cloudData.skillReadiness = {}; cloudData.skillReadiness[careerId] = checked; scheduleCloudSave(); }
             openCareerDetail(careerId, true); // re-render in place to reflect the new readiness score
         }
 
@@ -9762,7 +9764,7 @@
         let cloudSaveTimer = null;
         const CLOUD_SAVE_DEBOUNCE_MS = 800;
 
-        function cloudDataDefaults() { return { savedCareers: [], savedColleges: [], savedExams: [], checklist: null, profile: null, wizardAnswers: null }; }
+        function cloudDataDefaults() { return { savedCareers: [], savedColleges: [], savedExams: [], checklist: null, profile: null, wizardAnswers: null, skillReadiness: {} }; }
 
         function scheduleCloudSave() {
             if (cloudSaveTimer) clearTimeout(cloudSaveTimer);
@@ -9782,13 +9784,28 @@
         // in for real, so they don't lose what they already had.
         function collectLocalDataForMigration() {
             function get(key) { try { return JSON.parse(localStorage.getItem(key)); } catch (e) { return null; } }
+            // Skill-readiness checkboxes use one localStorage key per career
+            // ("marg_skill_readiness:<id>") rather than a single fixed key like everything
+            // else, so migrating them means scanning for that prefix instead of a plain get().
+            const skillReadiness = {};
+            try {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const k = localStorage.key(i);
+                    if (k && k.indexOf('marg_skill_readiness:') === 0) {
+                        const careerId = k.slice('marg_skill_readiness:'.length);
+                        const v = get(k);
+                        if (v && v.length) skillReadiness[careerId] = v;
+                    }
+                }
+            } catch (e) {}
             return {
                 savedCareers: get(STORAGE_KEYS.saved) || [],
                 savedColleges: get(STORAGE_KEYS.savedColleges) || [],
                 savedExams: get(STORAGE_KEYS.savedExams) || [],
                 checklist: get(STORAGE_KEYS.checklist),
                 profile: get(STORAGE_KEYS.profile),
-                wizardAnswers: get(STORAGE_KEYS.wizardAnswers)
+                wizardAnswers: get(STORAGE_KEYS.wizardAnswers),
+                skillReadiness: skillReadiness
             };
         }
 
