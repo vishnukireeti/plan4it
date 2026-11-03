@@ -9,7 +9,7 @@
     <meta name="description" content="Guidance for Indian students in Class 10–12 and their families — choose a stream, pick entrance exams, compare colleges, find scholarships, and get a backup plan if a cutoff doesn't go your way.">
     <link rel="canonical" href="https://margai.netlify.app/">
 
-    <!-- Favicons / app icons. Regenerate via the PIL script in assets/ if the brand mark changes. -->
+    <!-- Favicons / app icons. Regenerate via scripts/generate-brand-assets.py if the brand mark changes. -->
     <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
     <link rel="icon" href="/assets/icon-512.png" sizes="512x512" type="image/png">
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
@@ -387,7 +387,10 @@
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="dismissAuth()"></div>
         <div id="auth-card" class="auth-card relative bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-md max-h-[94vh] overflow-y-auto p-6 sm:p-8">
             <button type="button" onclick="dismissAuth()" aria-label="Close" class="absolute top-3 right-3 w-10 h-10 rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-800 text-xl leading-none">&times;</button>
-            <div class="font-display inline-block bg-brand-600 text-white font-bold px-3 py-1 rounded-lg text-sm mb-4">Plan4it</div>
+            <div class="inline-flex items-center gap-1.5 mb-4">
+                <span class="w-5 h-5 rounded-md bg-brand-600 flex items-center justify-center shrink-0" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" class="w-3 h-3"><path d="M5 12.5L9.5 17L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="font-display font-bold text-sm text-slate-900">Plan<span class="text-brand-600">4</span>it</span>
+            </div>
             <h2 id="auth-title" class="font-display text-2xl font-bold text-slate-900 mb-1">Create your account</h2>
             <p id="auth-sub" class="text-sm text-slate-600 mb-5">Keep your saved careers, colleges, exams and checklist in one place.</p>
 
@@ -470,8 +473,9 @@
                 <button id="mobile-menu-btn" type="button" onclick="toggleMobileMenu()" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu-panel" class="lg:hidden -ml-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl hover:bg-slate-100 transition">
                     <svg class="w-6 h-6" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
                 </button>
-                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('home')">
-                    <div class="font-display bg-brand-600 text-white font-bold px-3 py-1.5 rounded-lg text-lg shadow-sm">Plan4it</div>
+                <div class="flex items-center gap-2 cursor-pointer" onclick="switchView('home')">
+                    <span class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center shrink-0" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" class="w-[18px] h-[18px]"><path d="M5 12.5L9.5 17L19 7" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <span class="font-display font-bold text-lg text-slate-900">Plan<span class="text-brand-600">4</span>it</span>
                 </div>
             </div>
 
@@ -1865,7 +1869,10 @@
     <div id="age-gate-modal" class="hidden fixed inset-0 z-[95] items-end sm:items-center justify-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="age-gate-title">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
         <div class="relative bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-sm p-6 sm:p-7 text-center">
-            <div class="font-display inline-block bg-brand-600 text-white font-bold px-3 py-1 rounded-lg text-sm mb-4">Plan4it</div>
+            <div class="inline-flex items-center gap-1.5 mb-4">
+                <span class="w-5 h-5 rounded-md bg-brand-600 flex items-center justify-center shrink-0" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" class="w-3 h-3"><path d="M5 12.5L9.5 17L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="font-display font-bold text-sm text-slate-900">Plan<span class="text-brand-600">4</span>it</span>
+            </div>
             <h2 id="age-gate-title" class="font-display text-lg font-bold text-slate-900 mb-2">Before you start</h2>
             <p class="text-sm text-slate-600 mb-5">Plan4it is guidance for students and families. Quick check — who's using it right now?</p>
             <div class="space-y-2">
