@@ -33,23 +33,25 @@ const html = readFileSync(htmlPath, 'utf8');
 const tokens = new Set(html.split(/["'`<>=\s;{}]+/).filter(Boolean));
 const candidates = [...tokens];
 
-// Same brand palette as the old `tailwind.config` JS object in index.html —
-// keep these two in sync if the brand colour ever changes.
+// Brand palette: Tailwind's own "sky" scale, chosen for the dark-only theme
+// (graphite surfaces + a cyan-leaning blue accent — see docs/PRE_LAUNCH_CHECKLIST.md
+// "Theme" entry). Keep this in sync with the html.dark overrides in index.html's
+// <style> block if the accent hue ever changes again.
 const css = `
 @import "tailwindcss";
 
 @theme {
-  --color-brand-50: #eff6ff;
-  --color-brand-100: #dbeafe;
-  --color-brand-200: #bfdbfe;
-  --color-brand-300: #93c5fd;
-  --color-brand-400: #60a5fa;
-  --color-brand-500: #3b82f6;
-  --color-brand-600: #2563eb;
-  --color-brand-700: #1d4ed8;
-  --color-brand-800: #1e40af;
-  --color-brand-900: #1e3a8a;
-  --color-brand-950: #172554;
+  --color-brand-50: #f0f9ff;
+  --color-brand-100: #e0f2fe;
+  --color-brand-200: #bae6fd;
+  --color-brand-300: #7dd3fc;
+  --color-brand-400: #38bdf8;
+  --color-brand-500: #0ea5e9;
+  --color-brand-600: #0284c7;
+  --color-brand-700: #0369a1;
+  --color-brand-800: #075985;
+  --color-brand-900: #0c4a6e;
+  --color-brand-950: #082f49;
 }
 `;
 

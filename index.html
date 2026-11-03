@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <script>try{if(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.classList.add('dark')}catch(e){}</script>
-    <meta name="theme-color" content="#f8fafc">
+    <script>document.documentElement.classList.add('dark')</script>
+    <meta name="theme-color" content="#101417">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plan4it | Career and college guidance for Class 10–12 students in India</title>
@@ -147,7 +147,7 @@
         button:not(:disabled), [role="tab"] { cursor: pointer; }
         button:active:not(:disabled) { transform: translateY(1px); }
         input:focus-visible, select:focus-visible, textarea:focus-visible { outline: none; }
-        .skip-link { position: absolute; left: 8px; top: -60px; z-index: 200; background: #1d4ed8; color: #fff; padding: 10px 16px; border-radius: 10px; font-weight: 600; font-size: 14px; text-decoration: none; transition: top .15s; }
+        .skip-link { position: absolute; left: 8px; top: -60px; z-index: 200; background: #0369a1; color: #fff; padding: 10px 16px; border-radius: 10px; font-weight: 600; font-size: 14px; text-decoration: none; transition: top .15s; }
         .skip-link:focus { top: 8px; }
         main:focus { outline: none; }
         @keyframes marg-pop { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
@@ -185,6 +185,7 @@
             .page-nav-m { display: block; position: sticky; top: 4rem; z-index: 40; margin: -.5rem -1rem 1rem; padding: .5rem 1rem; background: inherit; }
             .page-nav-m select { width: 100%; }
             #mobile-menu-panel .nav-link.active { border-bottom: none; background: #eff6ff; }
+            html.dark #mobile-menu-panel .nav-link.active { background: rgba(14,165,233,0.14); }
         }
         /* Colleges filter panel: always open on desktop, collapsible on phones */
         .cf-chips { display: flex; gap: .5rem; overflow-x: auto; padding-bottom: .25rem; }
@@ -211,18 +212,24 @@
         .home-step:last-child .step-rail { display: none; }
         .home-collapsed [data-extra] { display: none; }
         .home-searching .home-collapsed [data-extra] { display: block; }
-        /* ===== DARK MODE (generated). Follows the device setting (prefers-color-scheme). Screen only, so printing stays light. ===== */
+        /* ===== DARK MODE (generated). Always on — the app is dark-only, see applyTheme(). Kept
+           as an html.dark override block (rather than redefining Tailwind's own color tokens)
+           because the same literal class, e.g. bg-white or text-slate-900, is used for both a
+           "this needs to go dark" role (a card's fill) and a "this needs to stay light" role
+           (white text on a colored button) — a blanket token swap would break the second case. ===== */
         @media screen {
             html.dark { color-scheme: dark; }
-            html.dark body.bg-slate-50 { background-color: #020617; color: #e2e8f0; }
-            html.dark input, html.dark select, html.dark textarea { background-color: #0f172a; color: #f1f5f9; caret-color: #60a5fa; -webkit-text-fill-color: #f1f5f9; border-color: #475569; }
-            html.dark input::placeholder, html.dark textarea::placeholder { color: #8b9bb3; -webkit-text-fill-color: #8b9bb3; opacity: 1; }
-            html.dark input:-webkit-autofill { -webkit-box-shadow: 0 0 0 40px #0f172a inset; -webkit-text-fill-color: #f1f5f9; }
-            html.dark input[type="range"] { background: #334155; -webkit-text-fill-color: initial; }
-            html.dark select option { background-color: #0f172a; color: #f1f5f9; }
-            html.dark .glass-card { background: rgba(15, 23, 42, 0.95); }
-            html.dark .nav-link.active { color: #60a5fa; }
-            html.dark ::selection { background: #1d4ed8; color: #fff; }
+            html.dark body.bg-slate-50 { background-color: #101417; color: #a2afb8; }
+            html.dark input, html.dark select, html.dark textarea { background-color: #181e22; color: #f3f7f9; caret-color: #38bdf8; -webkit-text-fill-color: #f3f7f9; border-color: #333c44; }
+            html.dark input::placeholder, html.dark textarea::placeholder { color: #616e78; -webkit-text-fill-color: #616e78; opacity: 1; }
+            html.dark input:-webkit-autofill { -webkit-box-shadow: 0 0 0 40px #181e22 inset; -webkit-text-fill-color: #f3f7f9; }
+            html.dark input[type="range"] { background: #333c44; -webkit-text-fill-color: initial; }
+            html.dark input[type="range"]::-webkit-slider-thumb { background: #0ea5e9; }
+            html.dark select option { background-color: #181e22; color: #f3f7f9; }
+            html.dark .glass-card { background: rgba(20, 26, 30, 0.95); }
+            html.dark .nav-link.active { color: #38bdf8; }
+            html.dark .card-interactive:hover, html.dark .card-interactive:focus-within { border-color: #0ea5e9; }
+            html.dark ::selection { background: #0369a1; color: #fff; }
             html.dark details > summary { color: inherit; }
             html.dark .bg-amber-100{background-color:rgba(245,158,11,0.2)}
             html.dark .bg-amber-50{background-color:rgba(245,158,11,0.12)}
@@ -234,15 +241,21 @@
             html.dark .bg-emerald-50\/50{background-color:rgba(16,185,129,0.06)}
             html.dark .bg-emerald-50\/60{background-color:rgba(16,185,129,0.072)}
             html.dark .bg-rose-50{background-color:rgba(244,63,94,0.12)}
-            html.dark .bg-slate-100{background-color:#1e293b}
-            html.dark .bg-slate-200{background-color:#2c3a50}
-            html.dark .bg-slate-400{background-color:#475569}
-            html.dark .bg-slate-50{background-color:#131c31}
-            html.dark .bg-slate-800{background-color:#475569}
-            html.dark .bg-slate-900{background-color:#334155}
-            html.dark .bg-slate-900\/60{background-color:rgba(0,0,0,.60)}
-            html.dark .bg-white{background-color:#0f172a}
-            html.dark .bg-white\/95{background-color:rgba(15,23,42,.95)}
+            html.dark .bg-slate-100{background-color:#1e252b}
+            html.dark .bg-slate-200{background-color:#262e35}
+            html.dark .bg-slate-400{background-color:#4b555e}
+            html.dark .bg-slate-50{background-color:#141a1e}
+            /* bg-slate-800 standalone (badges/chips) stays a neutral elevated graphite; the
+               hover:bg-slate-800 variant below is a different rule (different class), used only
+               as the hover-darken pair of bg-slate-900 buttons, so it can go to the brand color. */
+            html.dark .bg-slate-800{background-color:#2a323a}
+            /* bg-slate-900 is this app's "important chrome" color (compare bar, toasts, the
+               primary dashboard button, CTA banners) — on a dark page a near-black chip would
+               be invisible, so these become the brand accent instead of another dark neutral. */
+            html.dark .bg-slate-900{background-color:#0284c7}
+            html.dark .bg-slate-900\/60{background-color:rgba(0,0,0,.6)}
+            html.dark .bg-white{background-color:#181e22}
+            html.dark .bg-white\/95{background-color:rgba(10,13,15,.92)}
             html.dark .border-amber-100{border-color:rgba(245,158,11,0.2)}
             html.dark .border-amber-200{border-color:rgba(245,158,11,0.35)}
             html.dark .border-brand-100{border-color:rgba(var(--brand-500-rgb),0.2)}
@@ -252,19 +265,19 @@
             html.dark .border-emerald-200{border-color:rgba(16,185,129,0.35)}
             html.dark .border-rose-100{border-color:rgba(244,63,94,0.2)}
             html.dark .border-rose-200{border-color:rgba(244,63,94,0.35)}
-            html.dark .border-slate-100{border-color:#1e293b}
-            html.dark .border-slate-200{border-color:#334155}
-            html.dark .border-slate-300{border-color:#475569}
+            html.dark .border-slate-100{border-color:#1e252b}
+            html.dark .border-slate-200{border-color:#262e35}
+            html.dark .border-slate-300{border-color:#333c44}
             html.dark .text-amber-700{color:#fcd34d}
             html.dark .text-amber-800{color:#fde68a}
             html.dark .text-amber-900{color:#fde68a}
-            html.dark .text-brand-200{color:#bfdbfe}
-            html.dark .text-brand-300{color:#93c5fd}
-            html.dark .text-brand-500{color:#60a5fa}
-            html.dark .text-brand-600{color:#60a5fa}
-            html.dark .text-brand-700{color:#93c5fd}
-            html.dark .text-brand-800{color:#bfdbfe}
-            html.dark .text-brand-900{color:#dbeafe}
+            html.dark .text-brand-200{color:#e0f2fe}
+            html.dark .text-brand-300{color:#bae6fd}
+            html.dark .text-brand-500{color:#38bdf8}
+            html.dark .text-brand-600{color:#38bdf8}
+            html.dark .text-brand-700{color:#7dd3fc}
+            html.dark .text-brand-800{color:#bae6fd}
+            html.dark .text-brand-900{color:#e0f2fe}
             html.dark .text-emerald-600{color:#34d399}
             html.dark .text-emerald-700{color:#6ee7b7}
             html.dark .text-emerald-800{color:#a7f3d0}
@@ -273,30 +286,31 @@
             html.dark .text-rose-700{color:#fda4af}
             html.dark .text-rose-800{color:#fecdd3}
             html.dark .text-rose-900{color:#fecdd3}
-            html.dark .text-slate-400{color:#8b9bb3}
-            html.dark .text-slate-500{color:#94a3b8}
-            html.dark .text-slate-600{color:#cbd5e1}
-            html.dark .text-slate-700{color:#e2e8f0}
-            html.dark .text-slate-800{color:#f1f5f9}
-            html.dark .text-slate-900{color:#f8fafc}
-            html.dark .disabled\:text-slate-400:disabled{color:#64748b}
+            html.dark .text-slate-300{color:#49545d}
+            html.dark .text-slate-400{color:#616e78}
+            html.dark .text-slate-500{color:#83909a}
+            html.dark .text-slate-600{color:#a2afb8}
+            html.dark .text-slate-700{color:#c2cdd5}
+            html.dark .text-slate-800{color:#e1e8ec}
+            html.dark .text-slate-900{color:#f3f7f9}
+            html.dark .disabled\:text-slate-400:disabled{color:#4c5760}
             html.dark .hover\:bg-amber-100:hover{background-color:rgba(245,158,11,0.3)}
             html.dark .hover\:bg-brand-100:hover{background-color:rgba(var(--brand-500-rgb),0.3)}
             html.dark .hover\:bg-brand-50:hover{background-color:rgba(var(--brand-500-rgb),0.18)}
             html.dark .hover\:bg-brand-50\/50:hover{background-color:rgba(var(--brand-500-rgb),0.09)}
             html.dark .hover\:bg-emerald-50:hover{background-color:rgba(16,185,129,0.18)}
-            html.dark .hover\:bg-slate-100:hover{background-color:#2c3a50}
-            html.dark .hover\:bg-slate-50:hover{background-color:#1e293b}
-            html.dark .hover\:bg-slate-800:hover{background-color:#475569}
-            html.dark .hover\:border-slate-300:hover{border-color:#64748b}
-            html.dark .hover\:text-brand-600:hover{color:#93c5fd}
-            html.dark .hover\:text-brand-700:hover{color:#bfdbfe}
-            html.dark .hover\:text-brand-800:hover{color:#dbeafe}
+            html.dark .hover\:bg-slate-100:hover{background-color:#262e35}
+            html.dark .hover\:bg-slate-50:hover{background-color:#1e252b}
+            html.dark .hover\:bg-slate-800:hover{background-color:#0369a1}
+            html.dark .hover\:border-slate-300:hover{border-color:#3e4950}
+            html.dark .hover\:text-brand-600:hover{color:#7dd3fc}
+            html.dark .hover\:text-brand-700:hover{color:#bae6fd}
+            html.dark .hover\:text-brand-800:hover{color:#e0f2fe}
             html.dark .hover\:text-rose-500:hover{color:#fb7185}
-            html.dark .hover\:text-slate-600:hover{color:#e2e8f0}
-            html.dark .hover\:text-slate-700:hover{color:#f1f5f9}
+            html.dark .hover\:text-slate-600:hover{color:#c2cdd5}
+            html.dark .hover\:text-slate-700:hover{color:#e1e8ec}
         }
-        :root { --brand-600-rgb: 37, 99, 235; --brand-500-rgb: 59, 130, 246; --brand-400-rgb: 96, 165, 250; }
+        :root { --brand-600-rgb: 2, 132, 199; --brand-500-rgb: 14, 165, 233; --brand-400-rgb: 56, 189, 248; }
         /* Tap-to-explain terms */
         .gloss { background: none; border: 0; padding: 0; margin: 0; font: inherit; color: inherit; display: inline; cursor: help; text-decoration: underline dotted; text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
         .gloss:focus-visible { outline: 2px solid rgba(var(--brand-600-rgb), .6); outline-offset: 2px; border-radius: 2px; }
@@ -306,16 +320,18 @@
         .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .cat-pill.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+        .cat-pill.active { background: #0284c7; color: #fff; border-color: #0284c7; }
+        html.dark .cat-pill.active { background: #0ea5e9; border-color: #0ea5e9; }
         .wizard-progress-fill { transition: width .35s ease; }
         details > summary { list-style: none; cursor: pointer; }
         details > summary::-webkit-details-marker { display: none; }
         details[open] .chev { transform: rotate(180deg); }
         .toast-enter { animation: toastIn .25s ease forwards; }
         @keyframes toastIn { from { opacity:0; transform: translateY(8px);} to { opacity:1; transform: translateY(0);} }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:9999px; background:#2563eb; cursor:pointer; margin-top:-7px; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:9999px; background:#0284c7; cursor:pointer; margin-top:-7px; }
         input[type="range"] { -webkit-appearance:none; height:4px; border-radius:9999px; background:#e2e8f0; }
-        .nav-link.active { color:#2563eb; border-bottom:2px solid #2563eb; }
+        .nav-link.active { color:#0284c7; border-bottom:2px solid #0284c7; }
+        html.dark .nav-link.active { border-bottom-color: #38bdf8; }
         .checkbox-wrapper { display: inline-flex; align-items: center; min-height: 44px; padding: 10px 4px; cursor: pointer; }
 
         /* View transitions: a single fade+rise when a view becomes visible, so navigating
@@ -8365,12 +8381,11 @@
         }
         window.addEventListener('scroll', function () { if (pageNavTick) return; pageNavTick = true; requestAnimationFrame(function () { pageNavTick = false; updatePageNavActive(); }); }, { passive: true });
 
-        // ---------- Colour theme: follows the device (light or dark). There is no switch. ----------
+        // ---------- Colour theme: dark only, always. No toggle, no device preference. ----------
         function applyTheme() {
-            const dark = !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-            document.documentElement.classList.toggle('dark', dark);
+            document.documentElement.classList.add('dark');
             const meta = document.querySelector('meta[name="theme-color"]');
-            if (meta) meta.setAttribute('content', dark ? '#020617' : '#f8fafc');
+            if (meta) meta.setAttribute('content', '#101417');
         }
 
         function safeSetItem(key, value) {
@@ -13101,7 +13116,6 @@
                 adminSyncUI();
                 try { localStorage.removeItem('marg_theme'); } catch (e) {} // an old saved theme choice is no longer used
                 applyTheme();
-                if (window.matchMedia) { try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme); } catch (e) {} }
                 initNirfPanel();
                 initIntegratedPanel();
                 renderQuizStep(1);
