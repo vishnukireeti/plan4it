@@ -490,7 +490,7 @@
     <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-1">
-                <button id="mobile-menu-btn" type="button" onclick="toggleMobileMenu()" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu-panel" class="lg:hidden -ml-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl hover:bg-slate-100 transition">
+                <button id="mobile-menu-btn" type="button" onclick="toggleMobileMenu()" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu-panel" class="xl:hidden -ml-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl hover:bg-slate-100 transition">
                     <svg class="w-6 h-6" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
                 </button>
                 <div class="flex items-center gap-2 cursor-pointer" onclick="switchView('home')">
@@ -499,7 +499,7 @@
                 </div>
             </div>
 
-            <nav class="hidden lg:flex items-center gap-x-4 xl:gap-x-7 text-sm font-medium text-slate-600 whitespace-nowrap">
+            <nav class="hidden xl:flex items-center gap-x-4 xl:gap-x-7 text-sm font-medium text-slate-600 whitespace-nowrap">
                 <button data-nav="confusedMode" onclick="switchView('confusedMode')" class="nav-link text-brand-600 font-semibold hover:text-brand-700 transition">Find my path</button>
                 <button data-nav="backupPlan" onclick="switchView('backupPlan')" class="nav-link hover:text-brand-600 transition">Safety Net</button>
                 <button data-nav="explorer" onclick="switchView('explorer')" class="nav-link hover:text-brand-600 transition">Careers</button>
@@ -509,12 +509,13 @@
                 <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad')" class="nav-link hover:text-brand-600 transition">Govt & Money</button>
             </nav>
 
-            <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
-                <button id="gs-btn" type="button" onclick="openGlobalSearch()" aria-label="Search careers, exams and colleges" title="Search (press /)" class="min-h-[40px] min-w-[40px] border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl px-3 flex items-center justify-center gap-2 text-sm font-semibold transition"><svg class="w-5 h-5" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="M13.5 13.5L17 17" stroke-linecap="round"/></svg><span class="hidden sm:inline">Search</span></button>
+            <div class="flex items-center gap-1 sm:gap-3 shrink-0">
+                <button id="gs-btn" type="button" onclick="openGlobalSearch()" aria-label="Search careers, exams and colleges" title="Search (press /)" class="min-h-[40px] min-w-[40px] border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl px-2.5 sm:px-3 flex items-center justify-center gap-2 text-sm font-semibold transition"><svg class="w-5 h-5" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="M13.5 13.5L17 17" stroke-linecap="round"/></svg><span class="hidden sm:inline">Search</span></button>
                 <button id="admin-header-btn" type="button" onclick="openAdmin()" class="hidden min-h-[40px] border border-amber-200 text-amber-800 bg-amber-50 hover:bg-amber-100 px-3 rounded-xl text-xs font-semibold transition">Admin</button>
-                    <button id="auth-header-btn" type="button" onclick="openAuth()" aria-label="Sign up or log in" title="Create an account or log in" class="min-h-[40px] whitespace-nowrap border border-brand-200 text-brand-700 hover:bg-brand-50 px-3 sm:px-4 py-2 rounded-xl text-sm font-semibold transition">Sign up</button>
-                <button onclick="switchView('dashboard')" class="relative whitespace-nowrap bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-sm">
-                    My Dashboard
+                    <button id="auth-header-btn" type="button" onclick="openAuth()" aria-label="Sign up or log in" title="Create an account or log in" class="min-h-[40px] whitespace-nowrap border border-brand-200 text-brand-700 hover:bg-brand-50 px-2.5 sm:px-4 py-2 rounded-xl text-sm font-semibold transition">Sign up</button>
+                <button onclick="switchView('dashboard')" aria-label="My Dashboard" title="My Dashboard" class="relative whitespace-nowrap bg-slate-900 hover:bg-slate-800 text-white min-h-[40px] min-w-[40px] px-2.5 sm:px-4 py-2 rounded-xl text-sm font-semibold transition shadow-sm flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5 sm:hidden" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2.5" y="2.5" width="6.5" height="6.5" rx="1.3"/><rect x="11" y="2.5" width="6.5" height="6.5" rx="1.3"/><rect x="2.5" y="11" width="6.5" height="6.5" rx="1.3"/><rect x="11" y="11" width="6.5" height="6.5" rx="1.3"/></svg>
+                    <span class="hidden sm:inline">My Dashboard</span>
                     <span id="saved-count-badge" class="hidden absolute -top-2 -right-2 bg-brand-600 text-white text-[10px] font-bold w-5 h-5 rounded-full items-center justify-center">0</span>
                 </button>
             </div>
@@ -522,8 +523,8 @@
     </header>
 
     <!-- MOBILE MENU (hamburger, phone only; desktop nav in header is untouched) -->
-    <div id="mobile-menu-overlay" class="hidden lg:hidden fixed inset-0 bg-black/30 z-40" onclick="closeMobileMenu()"></div>
-    <nav id="mobile-menu-panel" class="hidden lg:hidden fixed top-16 left-0 right-0 z-50 bg-white border-b border-slate-200 shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto" aria-label="Main menu">
+    <div id="mobile-menu-overlay" class="hidden xl:hidden fixed inset-0 bg-black/30 z-40" onclick="closeMobileMenu()"></div>
+    <nav id="mobile-menu-panel" class="hidden xl:hidden fixed top-16 left-0 right-0 z-50 bg-white border-b border-slate-200 shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto" aria-label="Main menu">
         <div class="flex flex-col py-2">
             <button data-nav="confusedMode" onclick="switchView('confusedMode');closeMobileMenu()" class="nav-link text-brand-600 font-semibold text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Find my path</button>
             <button data-nav="backupPlan" onclick="switchView('backupPlan');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Safety Net</button>
@@ -532,6 +533,8 @@
             <button data-nav="exams" onclick="switchView('exams');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Exams</button>
             <button data-nav="colleges" onclick="switchView('colleges');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Colleges</button>
             <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Govt & Money</button>
+            <div class="my-1 border-t border-slate-200"></div>
+            <button data-nav="dashboard" onclick="switchView('dashboard');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">My Dashboard</button>
         </div>
     </nav>
 
