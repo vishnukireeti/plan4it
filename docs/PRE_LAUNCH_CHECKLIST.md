@@ -77,9 +77,10 @@ limitation, not a known bug — see below.
       exams/checklist/profile now sync to an account when signed in
 - [x] Renamed "MARG-AI" → "Plan4it" (2026-11-02): all in-app text, README,
       docs, and favicons/OG image regenerated. Custom domain `plan4it.co`
-      registered and connected via Netlify DNS (2026-11-04). A few cosmetic
-      account display names (GitHub repo name, Netlify site name, GA4/
-      Sentry/Supabase project names) intentionally left — see
+      registered and connected via Netlify DNS (2026-11-04), now the live
+      primary URL. GitHub repo, Netlify site, and Supabase project all
+      renamed the same day — nothing named "marg" left anywhere except
+      cosmetic GA4/Sentry dashboard display names — see
       `docs/RENAME_CHECKLIST.md`.
 - [x] CI now actually gates pushes to `main`, not just advisory
       (2026-11-03): added `.githooks/pre-push` (enabled via

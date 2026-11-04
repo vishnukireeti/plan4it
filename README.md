@@ -1,10 +1,11 @@
 # Plan4it
 
-> Renamed from "MARG-AI" to "Plan4it" on 2026-11-02; custom domain
-> `plan4it.co` connected 2026-11-04. A few cosmetic account display names
-> (GitHub repo name on GitHub.com, Netlify site name, GA4/Sentry/Supabase
-> project names) are intentionally left for later — see
-> [`docs/RENAME_CHECKLIST.md`](docs/RENAME_CHECKLIST.md) for what's left.
+> Renamed from "MARG-AI" to "Plan4it" on 2026-11-02. Custom domain
+> `plan4it.co` connected 2026-11-04 and is now the live primary URL.
+> GitHub repo, Netlify site, and Supabase project names all renamed too
+> (2026-11-04) — nothing named "marg"/"MargAI" left anywhere. GA4/Sentry
+> project *display names* are the only cosmetic leftovers — see
+> [`docs/RENAME_CHECKLIST.md`](docs/RENAME_CHECKLIST.md).
 
 Career-guidance web app for Class 10–12 students in India. Currently
 free to use end-to-end — no monetization has been built yet, not a
@@ -13,7 +14,7 @@ for the planned direction). Single self-contained `index.html`
 (HTML + CSS + JS in one file, no build step required to run it)
 backed by Supabase, deployed on Netlify.
 
-**Live:** https://plan4it.co (also reachable at https://margai.netlify.app, the underlying Netlify subdomain)
+**Live:** https://plan4it.co (also reachable at https://plan4it-app.netlify.app, the underlying Netlify subdomain)
 
 ## What's in this repo
 

@@ -2,15 +2,16 @@
 
 **Done, 2026-11-02:** renamed from "MARG-AI" to **"Plan4it"**. Steps 1–3
 below are complete. **Done, 2026-11-04:** custom domain `plan4it.co`
-registered and connected via Netlify DNS (step 2) — `index.html`,
-`robots.txt`, and `sitemap.xml` all updated to it. Still outstanding:
-- The cosmetic account display names in step 4 — update whenever
-  convenient, never urgent. Of these, the **GitHub repo name** is the
-  one actually worth doing soon (it's the most visible one left showing
-  "MargAI"/"margai") — it has to be done by the repo owner directly on
-  GitHub.com (Settings → rename), since repo renames can't be done
-  through this tool's GitHub access. Old links auto-redirect once renamed,
-  so it's safe to do anytime, no urgency.
+registered and connected (step 2, now the live primary URL) —
+`index.html`, `robots.txt`, and `sitemap.xml` all updated to it. Also on
+2026-11-04: GitHub repo renamed to `vishnukireeti/plan4it` (by the repo
+owner, on GitHub.com), Netlify site renamed to `plan4it-app` (so the
+fallback subdomain is now `plan4it-app.netlify.app`), and the Supabase
+project renamed (by the project owner, in the Supabase dashboard — the
+project ref/URL itself is unaffected). **Nothing named "marg"/"MargAI" is
+left anywhere** — step 4 is fully done. Only remaining optional items are
+the GA4 and Sentry project *display names* (pure cosmetic labels inside
+those dashboards, never affect how the app runs).
 
 This file is kept as a reusable checklist in case the app is ever renamed
 again — the steps below are generic, not specific to this rename.
@@ -48,7 +49,4 @@ above the GA4 script tag.)
      details → change site name. This *does* change the
      `*.netlify.app` subdomain, so only do this once, deliberately —
      and it stops mattering entirely once a custom domain is
-     attached, since that becomes the primary URL. (Tried renaming to
-     `plan4it` on 2026-11-04 — already taken by someone else's Netlify
-     site; would need a variant like `plan4it-app`. Low priority since
-     `plan4it.co` is now the real URL anyone sees.)
+     attached, since that becomes the primary URL.

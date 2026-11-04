@@ -13,11 +13,15 @@ is a free, single-file HTML career-guidance web app for Class 10–12 students
 in India (and their families). It helps them figure out careers, exams,
 colleges and scholarships that fit their situation.
 
-- **Repo:** `vishnukireeti/MargAI` on GitHub (repo itself not yet renamed on
-  GitHub.com — cosmetic only, see `docs/RENAME_CHECKLIST.md`)
+- **Repo:** `vishnukireeti/plan4it` on GitHub (renamed from `MargAI`
+  2026-11-04; the git remote in this clone was updated to match — if an
+  older clone still points at `.../MargAI`, GitHub auto-redirects it, but
+  update it when convenient: `git remote set-url origin
+  https://github.com/vishnukireeti/plan4it`)
 - **Deployed at:** https://plan4it.co via Netlify (custom domain connected
-  2026-11-04; also reachable at https://margai.netlify.app, the underlying
-  Netlify subdomain)
+  2026-11-04, now the live primary URL; also reachable at
+  https://plan4it-app.netlify.app, the underlying Netlify subdomain,
+  renamed from `margai` the same day)
 - **Backend:** Supabase project ref `mpfzxbvpndextzgiqpmo` (Mumbai / `ap-south-1` region)
 - **Architecture:** One self-contained `index.html` (HTML+CSS+JS, no build
   step to run it) + a precompiled Tailwind stylesheet + a Supabase backend
