@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://margai.netlify.app/sitemap.xml
+Sitemap: https://plan4it.co/sitemap.xml

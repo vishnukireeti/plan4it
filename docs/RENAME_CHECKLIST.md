@@ -1,9 +1,10 @@
 # Renaming this app
 
-**Done, 2026-11-02:** renamed from "MARG-AI" to **"Plan4it"**. Steps 1–3
-below are complete. Still outstanding, same as any future rename:
-- The domain (still `margai.netlify.app`) — left until a custom domain is
-  registered (step 2).
+**Done, 2026-11-02:** renamed from "MARG-AI" to **"Plan4it"**. Steps 1–2
+below are complete — custom domain `plan4it.co` connected 2026-11-04,
+all canonical/OG/Twitter/JSON-LD URLs, `robots.txt` and `sitemap.xml`
+updated. Still outstanding, same as any future rename:
+- Step 3 (regenerate favicons/OG image) — they still show the old mark.
 - The cosmetic account display names in step 4 — update whenever
   convenient, never urgent.
 
