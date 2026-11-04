@@ -1,5 +1,5 @@
 {
-  "name": "margai",
+  "name": "plan4it",
   "private": true,
   "description": "Plan4it — career guidance for Class 10-12 students in India. Single-file HTML app; this package.json exists only to pin the Tailwind build tool used by scripts/build-tailwind.mjs and to give CI something to install.",
   "scripts": {

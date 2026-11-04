@@ -1,11 +1,16 @@
 # Renaming this app
 
 **Done, 2026-11-02:** renamed from "MARG-AI" to **"Plan4it"**. Steps 1–3
-below are complete. Still outstanding, same as any future rename:
-- The domain (still `margai.netlify.app`) — left until a custom domain is
-  registered (step 2).
+below are complete. **Done, 2026-11-04:** custom domain `plan4it.co`
+registered and connected via Netlify DNS (step 2) — `index.html`,
+`robots.txt`, and `sitemap.xml` all updated to it. Still outstanding:
 - The cosmetic account display names in step 4 — update whenever
-  convenient, never urgent.
+  convenient, never urgent. Of these, the **GitHub repo name** is the
+  one actually worth doing soon (it's the most visible one left showing
+  "MargAI"/"margai") — it has to be done by the repo owner directly on
+  GitHub.com (Settings → rename), since repo renames can't be done
+  through this tool's GitHub access. Old links auto-redirect once renamed,
+  so it's safe to do anytime, no urgency.
 
 This file is kept as a reusable checklist in case the app is ever renamed
 again — the steps below are generic, not specific to this rename.
@@ -43,4 +48,7 @@ above the GA4 script tag.)
      details → change site name. This *does* change the
      `*.netlify.app` subdomain, so only do this once, deliberately —
      and it stops mattering entirely once a custom domain is
-     attached, since that becomes the primary URL.
+     attached, since that becomes the primary URL. (Tried renaming to
+     `plan4it` on 2026-11-04 — already taken by someone else's Netlify
+     site; would need a variant like `plan4it-app`. Low priority since
+     `plan4it.co` is now the real URL anyone sees.)
