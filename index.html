@@ -639,7 +639,7 @@
                             <select id="wiz-state" onchange="wizardSit('state', this.value)" class="w-full sm:w-80 px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:outline-none focus:ring-2 focus:ring-brand-500">
                                 <option value="">Select your state...</option>
                                 <option value="any">I can study in any state</option>
-                                <option value="Andhra Pradesh">Andhra Pradesh</option><option value="Arunachal Pradesh">Arunachal Pradesh</option><option value="Assam">Assam</option><option value="Bihar">Bihar</option><option value="Chhattisgarh">Chhattisgarh</option><option value="Goa">Goa</option><option value="Gujarat">Gujarat</option><option value="Haryana">Haryana</option><option value="Himachal Pradesh">Himachal Pradesh</option><option value="Jharkhand">Jharkhand</option><option value="Karnataka">Karnataka</option><option value="Kerala">Kerala</option><option value="Madhya Pradesh">Madhya Pradesh</option><option value="Maharashtra">Maharashtra</option><option value="Manipur">Manipur</option><option value="Meghalaya">Meghalaya</option><option value="Mizoram">Mizoram</option><option value="Nagaland">Nagaland</option><option value="Odisha">Odisha</option><option value="Punjab">Punjab</option><option value="Rajasthan">Rajasthan</option><option value="Sikkim">Sikkim</option><option value="Tamil Nadu">Tamil Nadu</option><option value="Telangana">Telangana</option><option value="Tripura">Tripura</option><option value="Uttar Pradesh">Uttar Pradesh</option><option value="Uttarakhand">Uttarakhand</option><option value="West Bengal">West Bengal</option><option value="Andaman & Nicobar Islands">Andaman & Nicobar Islands</option><option value="Chandigarh">Chandigarh</option><option value="Delhi">Delhi</option><option value="Jammu & Kashmir">Jammu & Kashmir</option><option value="Ladakh">Ladakh</option><option value="Puducherry">Puducherry</option>
+                                <option value="Andhra Pradesh">Andhra Pradesh</option><option value="Arunachal Pradesh">Arunachal Pradesh</option><option value="Assam">Assam</option><option value="Bihar">Bihar</option><option value="Chhattisgarh">Chhattisgarh</option><option value="Goa">Goa</option><option value="Gujarat">Gujarat</option><option value="Haryana">Haryana</option><option value="Himachal Pradesh">Himachal Pradesh</option><option value="Jharkhand">Jharkhand</option><option value="Karnataka">Karnataka</option><option value="Kerala">Kerala</option><option value="Madhya Pradesh">Madhya Pradesh</option><option value="Maharashtra">Maharashtra</option><option value="Manipur">Manipur</option><option value="Meghalaya">Meghalaya</option><option value="Mizoram">Mizoram</option><option value="Nagaland">Nagaland</option><option value="Odisha">Odisha</option><option value="Punjab">Punjab</option><option value="Rajasthan">Rajasthan</option><option value="Sikkim">Sikkim</option><option value="Tamil Nadu">Tamil Nadu</option><option value="Telangana">Telangana</option><option value="Tripura">Tripura</option><option value="Uttar Pradesh">Uttar Pradesh</option><option value="Uttarakhand">Uttarakhand</option><option value="West Bengal">West Bengal</option><option value="Andaman & Nicobar Islands">Andaman & Nicobar Islands</option><option value="Chandigarh">Chandigarh</option><option value="Dadra &amp; Nagar Haveli and Daman &amp; Diu">Dadra &amp; Nagar Haveli and Daman &amp; Diu</option><option value="Delhi">Delhi</option><option value="Jammu & Kashmir">Jammu & Kashmir</option><option value="Ladakh">Ladakh</option><option value="Lakshadweep">Lakshadweep</option><option value="Puducherry">Puducherry</option>
                             </select>
                         </div>
                         <div>
@@ -1049,6 +1049,11 @@
                 <div>
                     <h3 class="font-bold text-slate-900">Class 11–12 colleges and schools</h3>
                     <p class="text-xs text-slate-600 mt-1">Junior colleges, PU colleges and school systems that take students after Class 10, covering the Mumbai region, Pune, Bengaluru, Mysuru and Hyderabad, plus national school systems. It is not a ranking and it is not complete. The first entries were checked against several sources. Many others come from one directory listing and are marked, so confirm them with the college. Streams are shown only where a listing states them. For the full official list in your state, use the admission portal in "Where can I study after Class 10?" above.</p>
+                
+                    <div class="mt-3 flex flex-wrap items-center gap-2 bg-brand-50 border border-brand-100 rounded-xl px-3 py-2">
+                        <p class="text-xs text-brand-900">Want a diploma instead of Class 11–12? Polytechnics and other diploma colleges are listed for every state.</p>
+                        <button type="button" onclick="showDiplomaColleges()" class="min-h-[40px] px-3 rounded-lg bg-white border border-brand-200 text-xs font-semibold text-brand-700 hover:bg-brand-100">See diploma and polytechnic colleges →</button>
+                    </div>
                 </div>
                 <input type="text" id="a10c-search" aria-label="Search Class 11 and 12 colleges" placeholder="Search by name, city or stream..." oninput="renderAfter10Colleges()" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm min-h-[44px] focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-500">
                 <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
@@ -1265,6 +1270,14 @@
                         <option value="az">Sort: A to Z</option>
                     </select>
                 </div>
+                <div class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2" role="group" aria-label="Where">
+                    <select id="college-state-filter" aria-label="Filter by state" onchange="collegeStateChanged()" class="sm:w-64 px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500"><option value="ALL">All states</option></select>
+                    <select id="college-district-filter" aria-label="Filter by district" onchange="collegeDistrictChanged()" disabled class="sm:w-64 px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500 disabled:bg-slate-50 disabled:text-slate-400"><option value="ALL">All districts</option></select>
+                    <label id="college-nearby-wrap" class="checkbox-wrapper hidden items-center gap-2 text-sm font-semibold text-slate-700 px-3 min-h-[44px] rounded-xl border border-slate-300 bg-white cursor-pointer select-none">
+                        <input type="checkbox" id="college-nearby" onchange="renderColleges()" class="rounded border-slate-300 text-brand-600 focus:ring-2 focus:ring-brand-500">
+                        Also show nearby districts <span class="font-normal text-slate-500">(within about 100 km)</span>
+                    </label>
+                </div>
                 <div id="college-field-chips" role="group" aria-label="Field" class="cf-chips hide-scrollbar"></div>
                 <div class="flex flex-wrap items-center gap-2">
                     <button type="button" id="college-filters-toggle" onclick="toggleCollegeFilters()" aria-expanded="false" aria-controls="college-more-filters" class="cf-toggle min-h-[40px] px-4 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:border-brand-400 items-center gap-2">More filters<span id="college-filters-count" class="hidden min-w-[1.25rem] h-5 px-1 rounded-full bg-brand-600 text-white text-[11px] font-bold items-center justify-center"></span></button>
@@ -1273,11 +1286,30 @@
                 <div id="college-more-filters" class="cf-panel cf-closed bg-slate-50 border border-slate-200 rounded-2xl p-3">
                     <select id="college-level-filter" aria-label="Filter by level" onchange="renderColleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500">
                         <option value="ALL">All levels</option>
+                        <option value="DIP">Diploma and polytechnic (after Class 10)</option>
                         <option value="UG">Undergraduate (after Class 12)</option>
                         <option value="PG">Postgraduate (after graduation)</option>
                     </select>
+                    <select id="college-own-filter" aria-label="Filter by ownership" onchange="renderColleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500">
+                        <option value="ALL">Government or private</option>
+                        <option value="gov">Government</option>
+                        <option value="aided">Government-aided</option>
+                        <option value="pvt">Private</option>
+                        <option value="unk">Not stated</option>
+                    </select>
+                    <select id="college-kind-filter" aria-label="Filter by type of institution" onchange="renderColleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500">
+                        <option value="ALL">Any type of institution</option>
+                        <option value="U">Universities</option>
+                        <option value="C">Colleges</option>
+                        <option value="S">Standalone institutes (polytechnics, nursing, B.Ed and others)</option>
+                    </select>
+                    <select id="college-tier-filter" aria-label="Filter by how much information we have" onchange="renderColleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500">
+                        <option value="ALL">Any amount of detail</option>
+                        <option value="1">Detailed profiles</option>
+                        <option value="2">Verified listings</option>
+                        <option value="3">Basic profiles</option>
+                    </select>
                     <select id="college-exam-filter" aria-label="Filter by entrance exam" onchange="renderColleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500"><option value="ALL">Any entrance exam</option></select>
-                    <select id="college-state-filter" aria-label="Filter by state" onchange="renderColleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500"><option value="ALL">All states</option></select>
                     <select id="college-fees-filter" aria-label="Filter by yearly fees" onchange="renderColleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500">
                         <option value="ALL">Any yearly fees</option>
                         <option value="1">Under ₹1L a year</option>
@@ -1291,9 +1323,10 @@
                         Saved only
                     </label>
                 </div>
-                <p class="text-[11px] text-slate-500">"Recommended" puts NIRF-ranked colleges first. A rank is one signal, so also check courses, fees and placements.</p>
+                <p class="text-[11px] text-slate-500">"Top ranked" puts NIRF-ranked colleges first, then the colleges we know most about. A rank is one signal, so also check courses, fees and placements.</p>
             </div>
 
+            <div data-cmode="degree" id="college-dir-banner" aria-live="polite"></div>
             <div data-cmode="degree" id="college-fit-banner"></div>
             <p data-cmode="degree" id="colleges-result-count" aria-live="polite" class="text-xs text-slate-500 font-medium"></p>
             <div data-nav="All colleges" data-cmode="degree" id="colleges-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -8943,7 +8976,7 @@
         function toggleSaveCollege(collegeId) {
             if (!requireAuth('Sign in to save colleges to your dashboard.', function () { toggleSaveCollege(collegeId); })) return;
             let saved = getSavedColleges();
-            const c = collegesData.find(x => x.id === collegeId);
+            const c = findCollege(collegeId);
             if (!c) return;
             if (saved.includes(collegeId)) {
                 saved = saved.filter(id => id !== collegeId);
@@ -9175,7 +9208,7 @@
         function renderHome() {
             document.getElementById('stat-careers').textContent = careersData.length + '+';
             document.getElementById('stat-exams').textContent = examsData.length + '+';
-            document.getElementById('stat-colleges').textContent = collegesData.length + '+';
+            document.getElementById('stat-colleges').textContent = DIR.index ? Math.floor((DIR.index.total + collegesData.length) / 1000) + ',000+' : collegesData.length + '+';
             document.getElementById('stat-scholarships').textContent = SCHOLARSHIPS_DATA.length + '+';
 
             const faqList = document.getElementById('faq-list');
@@ -9435,7 +9468,7 @@
            is used to put realistic colleges, exams and careers first. Nothing is hidden, and a student can
            always switch back to "show everything".
            ============================================================ */
-        const FIT_STATES = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Andaman & Nicobar Islands', 'Chandigarh', 'Delhi', 'Jammu & Kashmir', 'Ladakh', 'Puducherry'];
+        const FIT_STATES = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Andaman & Nicobar Islands', 'Chandigarh', 'Dadra & Nagar Haveli and Daman & Diu', 'Delhi', 'Jammu & Kashmir', 'Ladakh', 'Lakshadweep', 'Puducherry'];
         // The same state can show up in raw data a dozen different ways ("New Delhi", "NEW DELHI",
         // "NCT of Delhi"; "Pondicherry" vs "Puducherry"; "South Sikkim" as a district tacked onto
         // the state). Left unnormalized, each spelling becomes its own entry in the state filter
@@ -9445,7 +9478,9 @@
             'pondicherry': 'Puducherry', 'pondicherry (ut)': 'Puducherry', 'union territory of puducherry': 'Puducherry',
             'jammu and kashmir': 'Jammu & Kashmir', 'jammu & kashmir (ut)': 'Jammu & Kashmir', 'j&k': 'Jammu & Kashmir', 'j & k': 'Jammu & Kashmir',
             'nct of delhi': 'Delhi', 'delhi ncr': 'Delhi', 'ncr': 'Delhi', 'national capital territory of delhi': 'Delhi',
-            'andaman and nicobar islands': 'Andaman & Nicobar Islands', 'andaman & nicobar': 'Andaman & Nicobar Islands'
+            'andaman and nicobar islands': 'Andaman & Nicobar Islands', 'andaman & nicobar': 'Andaman & Nicobar Islands',
+            'dadra and nagar haveli and daman and diu': 'Dadra & Nagar Haveli and Daman & Diu', 'the dadra and nagar haveli and daman and diu': 'Dadra & Nagar Haveli and Daman & Diu',
+            'dadra and nagar haveli': 'Dadra & Nagar Haveli and Daman & Diu', 'daman and diu': 'Dadra & Nagar Haveli and Daman & Diu', 'orissa': 'Odisha'
         };
         function canonicalState(raw) {
             const s = String(raw || '').trim();
@@ -9468,11 +9503,11 @@
         const FIT_BUDGET = { 'u1': ['up to ₹1 lakh a year', 1], '1-3': ['₹1 to 3 lakh a year', 3], '3-8': ['₹3 to 8 lakh a year', 8], '8+': ['no fee limit', 1e9] };
         const FIT_LEVEL = { top: ['marks at the very top', 0], strong: ['strong marks', 1], mid: ['marks around the middle', 2], low: ['marks you are still improving', 3], none: ['no test taken yet', 2] };
         const FIT_INTEREST_FIELDS = {
-            Technology: ['Technology', 'Computer Applications'], Engineering: ['Technology', 'Architecture'], Healthcare: ['Medical', 'Pharmacy'],
-            Business: ['Management', 'Commerce'], 'Law & Public Service': ['Law', 'Arts & Humanities'], Education: ['Arts & Humanities', 'Science'],
-            Science: ['Science', 'Agriculture'], Creative: ['Design', 'Media', 'Architecture'], Media: ['Media', 'Arts & Humanities'],
-            'Sports & Fitness': ['Medical', 'Arts & Humanities'], 'Aviation & Hospitality': ['Hospitality', 'Technology'],
-            'Skilled Trades': ['Technology'], 'Personal Services & Wellness': ['Medical', 'Hospitality']
+            Technology: ['Technology', 'Computer Applications'], Engineering: ['Technology', 'Architecture'], Healthcare: ['Medical', 'Nursing & Paramedical', 'Pharmacy'],
+            Business: ['Management', 'Commerce', 'General degree (BA, BSc, BCom)'], 'Law & Public Service': ['Law', 'Arts & Humanities', 'General degree (BA, BSc, BCom)'], Education: ['Education', 'Arts & Humanities', 'Science'],
+            Science: ['Science', 'Agriculture', 'General degree (BA, BSc, BCom)'], Creative: ['Design', 'Media', 'Architecture'], Media: ['Media', 'Arts & Humanities'],
+            'Sports & Fitness': ['Medical', 'Education', 'Arts & Humanities'], 'Aviation & Hospitality': ['Hospitality', 'Technology'],
+            'Skilled Trades': ['Technology'], 'Personal Services & Wellness': ['Nursing & Paramedical', 'Medical', 'Hospitality']
         };
         const FIT_INTEREST_EXAM_STREAMS = {
             Technology: ['Engineering', 'Science', 'Computer Applications', 'Diploma & ITI'], Engineering: ['Engineering', 'Architecture', 'Diploma & ITI', 'Science'],
@@ -9541,15 +9576,21 @@
         }
         function collegeFit(c, f) {
             let s = 40; const tags = [];
-            const ut = f.level ? FIT_LEVEL[f.level][1] : 2, d = collegeTier(c) - ut;
-            if (d === 0) { s += 32; if (f.level) tags.push(['Usually a good match for your marks', 'g']); }
-            else if (d === 1) { s += 26; if (f.level) tags.push(['Likely easier to get into', 'g']); }
-            else if (d >= 2) s += 10;
-            else if (d === -1) { s += 16; if (f.level) tags.push(['A stretch, but worth a try', 'a']); }
-            else { s -= 30; if (f.level) tags.push(['Very hard to get into for most students', 'r']); }
+            if (c.dir) {
+                // no rank or cutoff for directory colleges, so no claim about how hard it is to get in
+                s += 18 + (c.tier === 1 ? 6 : c.tier === 2 ? 3 : 0);
+            } else {
+                const ut = f.level ? FIT_LEVEL[f.level][1] : 2, d = collegeTier(c) - ut;
+                if (d === 0) { s += 32; if (f.level) tags.push(['Usually a good match for your marks', 'g']); }
+                else if (d === 1) { s += 26; if (f.level) tags.push(['Likely easier to get into', 'g']); }
+                else if (d >= 2) s += 10;
+                else if (d === -1) { s += 16; if (f.level) tags.push(['A stretch, but worth a try', 'a']); }
+                else { s -= 30; if (f.level) tags.push(['Very hard to get into for most students', 'r']); }
+            }
             if (f.budget) {
                 const cap = FIT_BUDGET[f.budget][1];
-                if (c.feesLakh == null) s -= 2;
+                if (c.feesLakh == null && c.dir && (c.ownKey === 'gov' || c.ownKey === 'aided') && cap <= 3) { s += 10; tags.push([c.ownKey === 'gov' ? 'Government college, fees are usually lower' : 'Government-aided, fees are usually lower', 'g']); }
+                else if (c.feesLakh == null) s -= 2;
                 else if (c.feesLakh <= cap) { s += 20; tags.push(['Fits your fee budget', 'g']); }
                 else if (c.feesLakh <= cap * 1.3) s += 4;
                 else { s -= 28; tags.push(['Above your fee budget', 'a']); }
@@ -9985,24 +10026,41 @@
                     '</div>';
                 return;
             }
-            const ranked = collegesData.map(function (c) { const r = collegeFit(c, f); return { c: c, score: r.score, tags: r.tags }; });
-            ranked.sort(function (a, b) { return b.score - a.score; });
-            const top = ranked.slice(0, 6);
+            // every college in the student's state, not only the curated ones: load that state's file first
+            const code = f.state !== 'any' && DIR.codeOf ? DIR.codeOf[f.state] : '';
+            if (!DIR.index && !DIR.failed) { box.innerHTML = '<p class="text-sm text-slate-500 p-4">Finding colleges for you…</p>'; dirLoadIndex().then(renderWizardCollegeMatches); return; }
+            if (code && !DIR.shards[code] && !DIR_FAILED_SHARDS.has(code)) {
+                box.innerHTML = '<p class="text-sm text-slate-500 p-4">Finding colleges in ' + e(f.state) + '…</p>';
+                dirLoadState(code).then(function () { if (!DIR.shards[code]) DIR_FAILED_SHARDS.add(code); renderWizardCollegeMatches(); });
+                return;
+            }
+            const pool = code && DIR.shards[code] ? collegesData.concat(DIR.shards[code]) : collegesData;
+            const ranked = pool.map(function (c) { const r = collegeFit(c, f); return { c: c, score: r.score, tags: r.tags }; });
+            ranked.sort(function (a, b) { return b.score - a.score || collegeDetailRank(a.c) - collegeDetailRank(b.c); });
+            // at least three from the student's own state whenever it has any
+            const inState = f.state !== 'any' ? ranked.filter(function (r) { return collegeState(r.c) === f.state; }).slice(0, 3) : [];
+            const picked = new Set(inState.map(function (r) { return r.c.id; }));
+            const top = inState.concat(ranked.filter(function (r) { return !picked.has(r.c.id); }).slice(0, 6 - inState.length)).sort(function (a, b) { return b.score - a.score; });
+            const st = code && DIR.stateOf ? DIR.stateOf[code] : null;
             box.innerHTML = top.map(function (r) {
                 const c = r.c;
                 const fit = fitInfo(Math.min(97, Math.max(45, Math.round((r.score / 120) * 100))));
                 const name = c.name.replace(/\s*\(.*?\)\s*/g, ' ').trim();
-                const chip = 'text-xs font-semibold bg-slate-50 border border-slate-200 text-slate-800 hover:border-brand-400 rounded-full px-3 min-h-[36px]';
+                const stands = c.dir
+                    ? [dirFacts(c), c.courseRows.length ? dirSeats(c).toLocaleString('en-IN') + ' approved seats a year' : '', c.uni ? 'Affiliated to ' + c.uni : '']
+                    : [c.fees ? c.fees + (/\//.test(c.fees) ? '' : ' / yr') : '', c.relatedExam ? 'Entry via ' + c.relatedExam : '', c.placementNote ? c.placementNote.split('.')[0] : ''];
+                const courses = c.dir ? c.courses : (c.courses || []);
                 return '<div class="p-4 bg-white border border-slate-200 rounded-xl">' +
                     '<div class="flex items-start justify-between gap-3"><div class="min-w-0">' +
-                    '<div class="flex items-center gap-2 mb-1"><span class="text-xs font-bold px-2.5 py-0.5 rounded ' + fit.cls + '">' + fit.text + '</span><span class="text-brand-600 text-xs tracking-widest" aria-hidden="true">' + '●'.repeat(fit.dots) + '<span class="text-slate-300">' + '●'.repeat(3 - fit.dots) + '</span></span>' + (c.nirf ? '<span class="text-[11px] font-semibold text-slate-500">NIRF #' + c.nirf + '</span>' : '') + '</div>' +
+                    '<div class="flex flex-wrap items-center gap-2 mb-1"><span class="text-xs font-bold px-2.5 py-0.5 rounded ' + fit.cls + '">' + fit.text + '</span><span class="text-brand-600 text-xs tracking-widest" aria-hidden="true">' + '●'.repeat(fit.dots) + '<span class="text-slate-300">' + '●'.repeat(3 - fit.dots) + '</span></span>' + (c.nirf ? '<span class="text-[11px] font-semibold text-slate-500">NIRF #' + c.nirf + '</span>' : '') + (c.dir ? dirTierBadge(c) : '') + '</div>' +
                     '<h4 class="font-bold text-slate-900">' + e(name) + '</h4><p class="text-xs text-slate-600">' + e(c.location || '') + '</p></div>' +
                     '<button type="button" onclick="openCollegeDetail(\'' + c.id + '\')" class="shrink-0 text-brand-700 text-sm font-semibold hover:underline min-h-[44px]">Full details →</button></div>' +
-                    '<p class="text-xs text-slate-600 mt-2"><span class="font-semibold text-slate-800">What stands out:</span> ' + e([c.fees ? c.fees + ' / yr' : '', c.relatedExam ? 'Entry via ' + c.relatedExam : '', c.placementNote ? c.placementNote.split('.')[0] : ''].filter(Boolean).join(' · ')) + '</p>' +
-                    (c.courses && c.courses.length ? '<p class="text-xs text-slate-600 mt-1"><span class="font-semibold text-slate-800">Popular courses:</span> ' + e(c.courses.slice(0, 3).join(', ')) + '</p>' : '') +
+                    (stands.filter(Boolean).length ? '<p class="text-xs text-slate-600 mt-2"><span class="font-semibold text-slate-800">What stands out:</span> ' + e(stands.filter(Boolean).join(' · ')) + '</p>' : '') +
+                    (courses.length ? '<p class="text-xs text-slate-600 mt-1"><span class="font-semibold text-slate-800">' + (c.dir ? 'Courses' : 'Popular courses') + ':</span> ' + e(courses.slice(0, 3).join(', ')) + '</p>' : '') +
                     '<div class="mt-3 pt-3 border-t border-slate-100">' + fitTagsHTML(r.tags) + '</div>' +
                     '</div>';
-            }).join('');
+            }).join('') +
+                (st ? '<button type="button" onclick="goColleges()" class="w-full min-h-[48px] mt-1 rounded-xl border border-brand-200 bg-brand-50 text-brand-800 font-semibold text-sm hover:bg-brand-100">See all ' + (st.count + collegesData.filter(function (c) { return collegeState(c) === st.name; }).length).toLocaleString('en-IN') + ' colleges in ' + e(st.name) + ' →</button>' : '');
         }
 
         function renderFamilyReflection() {
@@ -10619,7 +10677,7 @@
         }
         function shareItem(kind, id) {
             const src = kind === 'career' ? careersData : kind === 'college' ? collegesData : examsData;
-            const it = src.find(x => x.id === id);
+            const it = kind === 'college' ? findCollege(id) : src.find(x => x.id === id);
             if (!it) return;
             const title = it.title || it.name;
             const label = kind === 'career' ? 'career' : kind === 'college' ? 'college' : 'exam';
@@ -11052,7 +11110,8 @@
         };
 
         function renderPagedGrid(key, grid, list, cardFn, moreId, noun) {
-            const sig = list.map(x => x.id).join('|');
+            // cheap signature: a new list resets the "show more" limit (joining 80,000 ids each keystroke would be slow)
+            const sig = list.length + ':' + list.slice(0, 40).map(x => x.id).join('|') + ':' + (list.length ? list[list.length - 1].id : '');
             const st = PAGED_LISTS.state[key] || (PAGED_LISTS.state[key] = { sig: null, limit: PAGED_LISTS.size });
             if (st.sig !== sig) { st.sig = sig; st.limit = PAGED_LISTS.size; }
             st.args = [grid, list, cardFn, moreId, noun];
@@ -11754,8 +11813,200 @@
         /* ============================================================
            COLLEGES
            ============================================================ */
+        /* ---------- College directory: every listed institution in India ----------
+           The ~1,000 colleges above (collegesData) are hand-curated. The directory adds every
+           university, college and standalone institute in the AISHE list (Ministry of Education),
+           enriched from the AICTE course list and JoSAA cutoffs. It is large, so it is split into one
+           file per state in data/colleges/ and fetched only when a student picks that state or searches
+           all of India. Built by scripts/data/build_colleges.py. */
+        const DIR = { index: null, links: {}, josaa: {}, shards: {}, loading: {}, failed: false, ready: null, allLoaded: false, byId: new Map() };
+        const DIR_OWN = { 1: 'gov', 2: 'aided', 3: 'pvt', 4: 'gov', 5: 'gov', 6: 'gov', 7: 'pvt', 8: 'pvt' };
+        const DIR_OWN_LABEL = { gov: 'Government', aided: 'Government-aided', pvt: 'Private', unk: 'Not stated' };
+        const DIR_TIER_LABEL = { 1: 'Detailed profile', 2: 'Verified listing', 3: 'Basic profile' };
+        const DIR_KIND_LABEL = { U: 'University', C: 'College', S: 'Standalone institute' };
+        function dirLoadIndex() {
+            if (DIR.ready) return DIR.ready;
+            const get = function (u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); }); };
+            DIR.ready = Promise.all([get('data/colleges/index.json'), get('data/colleges/links.json').catch(function () { return {}; }), get('data/colleges/josaa.json').catch(function () { return {}; })])
+                .then(function (res) {
+                    DIR.index = res[0]; DIR.links = res[1] || {}; DIR.josaa = res[2] || {};
+                    DIR.codeOf = {}; DIR.stateOf = {}; DIR.distLL = {};
+                    DIR.index.states.forEach(function (s) {
+                        DIR.codeOf[s.name] = s.code; DIR.stateOf[s.code] = s;
+                        s.districts.forEach(function (d) { if (d.length > 3) DIR.distLL[s.name + '|' + d[0]] = [d[2], d[3]]; });
+                    });
+                    // curated colleges learn their district and AISHE code from the directory build
+                    collegesData.forEach(dirApplyLink);
+                    try { initDataDrivenFilters(); } catch (e) { console.error(e); }
+                    const st = document.getElementById('stat-colleges');
+                    if (st) st.textContent = Math.floor((DIR.index.total + collegesData.length) / 1000) + ',000+';
+                    return DIR.index;
+                })
+                .catch(function (e) { console.warn('College directory not loaded:', e); DIR.failed = true; return null; });
+            return DIR.ready;
+        }
+        function dirApplyLink(c) {
+            const l = DIR.links[c.id];
+            if (!l || c._linked) return;
+            c._linked = 1; c.aishe = l.aishe || ''; if (l.district) c.district = l.district; if (l.uni && !c.uni) c.uni = l.uni;
+        }
+        function dirLoadState(code) {
+            if (!code) return Promise.resolve([]);
+            if (DIR.shards[code]) return Promise.resolve(DIR.shards[code]);
+            if (DIR.loading[code]) return DIR.loading[code];
+            DIR.loading[code] = dirLoadIndex().then(function () {
+                return fetch('data/colleges/' + code + '.json').then(function (r) { if (!r.ok) throw new Error(code + ' ' + r.status); return r.json(); });
+            }).then(function (sh) {
+                const list = sh.rows.map(function (row, i) { return dirMake(row, sh, i); });
+                DIR.shards[code] = list;
+                list.forEach(function (c) { DIR.byId.set(c.id, c); });
+                delete DIR.loading[code];
+                DIR.allLoaded = DIR.index.states.every(function (s) { return !!DIR.shards[s.code]; });
+                return list;
+            }).catch(function (e) { console.warn('Could not load colleges for', code, e); delete DIR.loading[code]; DIR.failed = true; return []; });
+            return DIR.loading[code];
+        }
+        function dirLoadAll() {
+            return dirLoadIndex().then(function (ix) {
+                if (!ix) return [];
+                return Promise.all(ix.states.map(function (s) { return dirLoadState(s.code); })).then(function () { DIR.allLoaded = true; });
+            });
+        }
+        function dirMake(r, sh, i) {
+            // cols: id, name, district, kind, ctype, own, tier, aishe, uni, flags, fields, levels, courses, address, pin, aicte
+            const F = DIR.index.fields, fields = [];
+            for (let k = 0; k < r[10].length; k++) fields.push(F[r[10].charCodeAt(k) - 97]);
+            const lv = r[11], kind = r[3];
+            const ownKey = DIR_OWN[r[5]] || 'unk';
+            return {
+                id: r[0], name: r[1], district: r[2], kind: kind, ctype: r[4], ownCode: r[5], ownKey: ownKey, tier: r[6], aishe: r[7],
+                uni: r[8] >= 0 ? sh.unis[r[8]] : '', women: !!(r[9] & 1), minority: !!(r[9] & 2), fieldsFromName: !!(r[9] & 4), ownFromName: !!(r[9] & 8),
+                courseRows: r[12], courses: r[12].map(function (x) { return x[1]; }), address: r[13], pin: r[14], aicte: r[15],
+                dir: 1, state: sh.state, code: sh.code, location: (r[2] ? r[2] + ', ' : '') + sh.state,
+                stream: fields[0] || '', type: (DIR.index.own[r[5]] || DIR_KIND_LABEL[kind]),
+                fees: 'Not available', feesLakh: null, nirf: 0, nirfCategory: '', nirfRank: '', relatedExam: '', placementScore: 0, relatedCareers: [],
+                _st: sh.state, _fields: fields, _ex: [], _i: i,
+                _lv: { ug: lv.indexOf('U') > -1 || (!lv && (kind === 'C' || kind === 'U')), pg: lv.indexOf('P') > -1, dip: lv.indexOf('D') > -1 }
+            };
+        }
+        function findCollege(id) { return collegesData.find(function (x) { return x.id === id; }) || DIR.byId.get(id) || null; }
+        function dirCodeFromId(id) { const m = /^d-([a-z]{2})-/.exec(String(id || '')); return m ? m[1] : ''; }
+        // Saved or shared directory colleges may belong to a state that is not loaded yet.
+        function ensureColleges(ids) {
+            const codes = {}; (ids || []).forEach(function (id) { const k = dirCodeFromId(id); if (k && !DIR.shards[k]) codes[k] = 1; });
+            const ks = Object.keys(codes);
+            return ks.length ? Promise.all(ks.map(dirLoadState)) : Promise.resolve();
+        }
+        function collegeDistrict(c) { return c.district || ''; }
+        function collegeOwnKey(c) {
+            if (c.dir) return c.ownKey;
+            const t = String(c.type || '');
+            return /aided/i.test(t) ? 'aided' : /govern|public|central|state|iit|nit|aiims/i.test(t) ? 'gov' : /private|deemed|trust/i.test(t) ? 'pvt' : 'unk';
+        }
+        function collegeKindKey(c) {
+            if (c.dir) return c.kind;
+            return /universit|vishwavidyalaya|vidyapeeth|deemed/i.test((c.name || '') + ' ' + (c.type || '')) ? 'U' : /institute|school|polytechnic/i.test(c.name || '') ? 'S' : 'C';
+        }
+        function collegeTierKey(c) { return c.dir ? String(c.tier) : '1'; }
+        // Distance between two districts' centres, in km (haversine).
+        function distKm(a, b) {
+            const R = 6371, rad = Math.PI / 180, dLa = (b[0] - a[0]) * rad, dLo = (b[1] - a[1]) * rad;
+            const h = Math.sin(dLa / 2) * Math.sin(dLa / 2) + Math.cos(a[0] * rad) * Math.cos(b[0] * rad) * Math.sin(dLo / 2) * Math.sin(dLo / 2);
+            return 2 * R * Math.asin(Math.sqrt(h));
+        }
+        // Districts (in any state) whose centre lies within km of the chosen district's centre.
+        function nearbyDistricts(state, district, km) {
+            const me = DIR.distLL && DIR.distLL[state + '|' + district];
+            const out = new Map([[state + '|' + district, 0]]);
+            if (!me) return out;
+            Object.keys(DIR.distLL).forEach(function (k) { const d = distKm(me, DIR.distLL[k]); if (d <= km) out.set(k, Math.round(d)); });
+            return out;
+        }
+
+        // ---------- fast word search over the directory (one word index per state file) ----------
+        const DIR_TAG_WORDS = {
+            'Technology': 'engineering engineer btech be technology polytechnic diploma computer it bca mca',
+            'Management': 'management mba bba pgdm business', 'Medical': 'medical mbbs doctor medicine dental bds ayurveda bams homoeopathy bhms',
+            'Nursing & Paramedical': 'nursing nurse bsc nursing gnm anm paramedical physiotherapy health', 'Pharmacy': 'pharmacy bpharm dpharm pharma',
+            'Law': 'law llb lawyer legal', 'Education': 'education bed b ed ded deled teacher teaching training', 'Architecture': 'architecture barch planning',
+            'Agriculture': 'agriculture agri veterinary horticulture fisheries', 'Design': 'design fashion fine arts', 'Hospitality': 'hotel management hospitality catering tourism',
+            'Media': 'media journalism mass communication', 'Commerce': 'commerce bcom', 'Science': 'science bsc', 'Arts & Humanities': 'arts ba humanities',
+            'General degree (BA, BSc, BCom)': 'degree ba bsc bcom arts science commerce'
+        };
+        function dirSearchIndex(list) {
+            if (list._ix) return list._ix;
+            const name = new Map(), other = new Map();
+            const add = function (map, w, i) { if (!w) return; let a = map.get(w); if (!a) { a = []; map.set(w, a); } if (a[a.length - 1] !== i) a.push(i); };
+            list.forEach(function (c, i) {
+                searchNorm(c.name).split(' ').forEach(function (w) { add(name, w, i); });
+                searchAcronyms(c.name).split(' ').forEach(function (w) { add(name, w, i); });
+                const o = [c.district, c.state, c.uni, DIR_KIND_LABEL[c.kind], DIR_OWN_LABEL[c.ownKey], c.women ? 'women girls' : '', c._lv.dip ? 'diploma polytechnic' : '',
+                    c._fields.map(function (f) { return f + ' ' + (DIR_TAG_WORDS[f] || ''); }).join(' '), c.courses.join(' '), c.pin, c.aishe].join(' ');
+                searchNorm(o).split(' ').forEach(function (w) { add(other, w, i); });
+            });
+            const vocab = Array.from(new Set(Array.from(name.keys()).concat(Array.from(other.keys())))).sort();
+            list._ix = { name: name, other: other, vocab: vocab, n: list.length };
+            return list._ix;
+        }
+        function dirWordMatches(ix, t) {
+            // words in the index that match token t, with a score (same scale as searchWordScore)
+            const out = [], v = ix.vocab;
+            if (ix.name.has(t) || ix.other.has(t)) out.push([t, 10]);
+            if (t.length >= 3) {
+                let lo = 0, hi = v.length;
+                while (lo < hi) { const mid = (lo + hi) >> 1; if (v[mid] < t) lo = mid + 1; else hi = mid; }
+                for (let k = lo; k < v.length && k < lo + 400 && v[k].indexOf(t) === 0; k++) if (v[k] !== t) out.push([v[k], 8]);
+            }
+            // near-spellings too, unless the word is common: a typo can itself be a rare word in the data
+            // ("Polytecnic" is in one college's official name), and must still find the 2,000 polytechnics
+            const common = (ix.name.get(t) || []).length + (ix.other.get(t) || []).length >= 25;
+            if ((!out.length || !common) && t.length >= 5) {
+                const mx = t.length >= 8 ? 2 : 1;
+                for (let k = 0; k < v.length; k++) {
+                    const w = v[k];
+                    if (w[0] !== t[0] || Math.abs(w.length - t.length) > mx) continue;
+                    const d = searchEdit(t, w, mx);
+                    if (d <= mx) out.push([w, 6.5 - d]);
+                }
+            }
+            return out;
+        }
+        function dirSearch(q, lists) {
+            const qn = searchNorm(q);
+            let toks = qn.split(' ').filter(function (t) { return t && !SEARCH_STOP.has(t); });
+            if (!toks.length) toks = qn.split(' ').filter(Boolean);
+            const exact = [], partial = [];
+            if (!toks.length) return { list: [], exactCount: 0 };
+            lists.forEach(function (list) {
+                if (!list || !list.length) return;
+                const ix = dirSearchIndex(list), n = ix.n;
+                const total = new Float32Array(n), hits = new Uint8Array(n);
+                toks.forEach(function (t) {
+                    const best = new Float32Array(n);
+                    const apply = function (word, s) {
+                        const a = ix.name.get(word), b = ix.other.get(word);
+                        if (a) for (let k = 0; k < a.length; k++) if (s > best[a[k]]) best[a[k]] = s;
+                        if (b) { const s2 = s * 0.75; for (let k = 0; k < b.length; k++) if (s2 > best[b[k]]) best[b[k]] = s2; }
+                    };
+                    dirWordMatches(ix, t).forEach(function (m) { apply(m[0], m[1]); });
+                    (SEARCH_SYN[t] || []).forEach(function (a) { if (a !== t && (ix.name.has(a) || ix.other.has(a))) apply(a, 5); });
+                    for (let k = 0; k < n; k++) if (best[k] > 0) { hits[k]++; total[k] += best[k]; }
+                });
+                for (let k = 0; k < n; k++) {
+                    if (!hits[k]) continue;
+                    (hits[k] === toks.length ? exact : partial).push({ c: list[k], s: total[k] + (hits[k] === toks.length && searchNorm(list[k].name).indexOf(qn) > -1 ? 15 : 0) });
+                }
+            });
+            const cmp = function (a, b) { return (b.s - a.s) || (a.c.tier - b.c.tier) || (a.c.name < b.c.name ? -1 : 1); };
+            exact.sort(cmp);
+            const list = exact.map(function (r) { return r.c; });
+            if (exact.length < 3) { partial.sort(cmp); return { list: list.concat(partial.slice(0, 30).map(function (r) { return r.c; })), exactCount: exact.length }; }
+            return { list: list, exactCount: exact.length };
+        }
+
         let CUR_FIT = null;
         function collegeCardHTML(c) {
+            if (c.dir) return dirCardHTML(c);
             const saved = getSavedColleges().includes(c.id);
             return `
                 <div class="card-interactive bg-white border border-slate-200 p-6 rounded-2xl shadow-sm space-y-3 relative">
@@ -11778,12 +12029,122 @@
                 </div>`;
         }
 
+        function dirTierBadge(c) {
+            const cls = c.tier === 1 ? 'bg-emerald-50 text-emerald-700' : c.tier === 2 ? 'bg-brand-50 text-brand-700' : 'bg-slate-100 text-slate-600';
+            const tip = c.tier === 1 ? 'Official course list with seats, or admission cutoffs' : c.tier === 2 ? 'Listed with the Ministry of Education plus an official detail such as its university' : 'Listed with the Ministry of Education. More details are being added';
+            return '<span class="text-xs px-2 py-0.5 rounded font-semibold shrink-0 ' + cls + '" title="' + tip + '">' + DIR_TIER_LABEL[c.tier] + '</span>';
+        }
+        function dirFacts(c) {
+            return [DIR_KIND_LABEL[c.kind], c.ownKey !== 'unk' ? DIR_OWN_LABEL[c.ownKey] : '', c.women ? 'Women only' : ''].filter(Boolean).join(' · ');
+        }
+        function dirSeats(c) { return c.courseRows.reduce(function (s, x) { return s + (x[2] || 0); }, 0); }
+        function dirCardHTML(c) {
+            const e = escapeAuth, saved = getSavedColleges().includes(c.id), seats = dirSeats(c);
+            return '<div class="card-interactive bg-white border border-slate-200 p-6 rounded-2xl shadow-sm space-y-3 relative">' +
+                '<button onclick="toggleSaveCollege(\'' + c.id + '\')" aria-label="' + (saved ? 'Remove from saved' : 'Save college') + '" class="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center ' + (saved ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-400 hover:text-brand-600') + ' transition">' +
+                '<svg class="w-4 h-4" viewBox="0 0 20 20" fill="' + (saved ? 'currentColor' : 'none') + '" stroke="currentColor" stroke-width="1.5"><path d="M5 3.5a1 1 0 011-1h8a1 1 0 011 1v13.2a.5.5 0 01-.79.41L10 13.5l-4.21 3.6a.5.5 0 01-.79-.4V3.5z"/></svg></button>' +
+                '<div class="flex justify-between items-start gap-2 pr-8"><h3 class="font-bold text-slate-900 text-base">' + e(c.name) + '</h3>' + dirTierBadge(c) + '</div>' +
+                '<p class="text-xs text-slate-500">📍 ' + e(c.location) + ' | <span class="font-semibold text-slate-700">' + e(dirFacts(c)) + '</span></p>' +
+                (collegeNearKm(c) ? '<p class="text-xs font-semibold text-slate-700">About ' + collegeNearKm(c) + ' km from ' + escapeAuth(document.getElementById('college-district-filter').value) + '</p>' : '') +
+                (CUR_FIT ? fitTagsHTML(collegeFit(c, CUR_FIT).tags) : '') +
+                (c._fields.length ? '<div class="flex flex-wrap gap-1.5">' + c._fields.slice(0, 3).map(function (f) { return '<span class="text-[10px] bg-brand-50 text-brand-700 px-2 py-0.5 rounded-full font-semibold">' + e(f) + '</span>'; }).join('') + '</div>' : '') +
+                (c.courseRows.length ? '<p class="text-xs text-slate-600"><strong class="text-slate-800">' + c.courseRows.length + ' approved course' + (c.courseRows.length === 1 ? '' : 's') + '</strong>' + (seats ? ' · ' + seats.toLocaleString('en-IN') + ' seats a year' : '') + ' <span class="text-slate-500">(AICTE)</span></p>' : '') +
+                (DIR.josaa[c.id] ? '<p class="text-xs text-slate-600"><strong class="text-slate-800">JoSAA 2025 cutoffs</strong> available</p>' : '') +
+                (c.uni ? '<p class="text-xs text-slate-600"><strong class="text-slate-800">Affiliated to:</strong> ' + e(c.uni) + '</p>' : '') +
+                (c.tier === 3 ? '<p class="text-xs bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-slate-600">Basic profile. Detailed information is being added, so confirm courses and fees with the college.</p>' : '') +
+                '<button onclick="openCollegeDetail(\'' + c.id + '\')" class="text-brand-600 hover:text-brand-800 text-xs font-semibold">View details →</button></div>';
+        }
+        const JOSAA_QUOTA = { AI: 'All India', HS: 'Home state', OS: 'Other states', GO: 'Goa', JK: 'J&K', LA: 'Ladakh' };
+        function josaaCourseName(p) {
+            return String(p).replace(/\s*\((\d+) Years?,\s*Bachelor of Technology\)/i, ' (B.Tech, $1 yrs)')
+                .replace(/\s*\((\d+) Years?,\s*Bachelor and Master of Technology \(Dual Degree\)\)/i, ' (B.Tech + M.Tech, $1 yrs)')
+                .replace(/\s*\((\d+) Years?,\s*Bachelor of Architecture\)/i, ' (B.Arch, $1 yrs)')
+                .replace(/\s*\((\d+) Years?,\s*([^)]+)\)/, ' ($2, $1 yrs)');
+        }
+        function josaaHTML(id) {
+            const j = DIR.josaa && DIR.josaa[id];
+            if (!j || !j.rows || !j.rows.length) return '';
+            const e = escapeAuth, rows = j.rows.slice().sort(function (a, b) { return a[3] - b[3]; });
+            const tr = function (r) { return '<tr class="border-t border-slate-100"><td class="py-1.5 pr-3">' + e(josaaCourseName(r[0])) + '</td><td class="py-1.5 pr-3 whitespace-nowrap">' + e(JOSAA_QUOTA[r[1]] || r[1]) + '</td><td class="py-1.5 text-right tabular-nums font-semibold">' + Number(r[3]).toLocaleString('en-IN') + '</td></tr>'; };
+            const head = '<thead><tr class="text-left text-slate-500"><th class="py-1.5 pr-3 font-semibold">Course</th><th class="py-1.5 pr-3 font-semibold">Quota</th><th class="py-1.5 text-right font-semibold">Last rank admitted</th></tr></thead>';
+            return '<div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-3">' +
+                '<h3 class="font-bold text-slate-900 text-lg">JoSAA 2025 cutoffs</h3>' +
+                '<p class="text-xs text-slate-600">Closing ranks in the final round (round ' + j.round + ') for OPEN seats, gender-neutral. A lower rank is harder. IITs use the JEE Advanced rank; other JoSAA institutes use the JEE Main rank. Reserved categories and female-only seats have different cutoffs.</p>' +
+                '<div class="overflow-x-auto"><table class="w-full text-xs text-slate-700">' + head + '<tbody>' + rows.slice(0, 10).map(tr).join('') + '</tbody></table></div>' +
+                (rows.length > 10 ? '<details><summary class="text-xs font-semibold text-brand-700 cursor-pointer min-h-[40px] flex items-center">Show all ' + rows.length + ' courses</summary><div class="overflow-x-auto"><table class="w-full text-xs text-slate-700">' + head + '<tbody>' + rows.slice(10).map(tr).join('') + '</tbody></table></div></details>' : '') +
+                '<p class="text-[11px] text-slate-500">Source: JoSAA opening and closing ranks 2025 (josaa.nic.in). Cutoffs change every year.</p></div>';
+        }
+        const DIR_ADMISSION = {
+            'Technology': 'Engineering degrees usually admit through JEE Main or your state\'s engineering entrance test, followed by state counselling. Diplomas at polytechnics usually admit on Class 10 marks or a state polytechnic entrance test.',
+            'Medical': 'MBBS, BDS and AYUSH seats are filled through NEET UG, then MCC counselling (all-India quota) or your state\'s counselling.',
+            'Nursing & Paramedical': 'B.Sc Nursing usually admits through a state or university nursing entrance, or NEET in some states. GNM, ANM and paramedical diplomas usually admit on Class 12 marks.',
+            'Pharmacy': 'B.Pharm usually admits through your state\'s entrance test (often the engineering one) or on Class 12 marks. D.Pharm usually admits on Class 12 marks.',
+            'Law': 'National Law Universities admit through CLAT. Other law colleges usually use a state law entrance test, CUET or Class 12 marks.',
+            'Education': 'B.Ed and D.El.Ed seats usually go through your state\'s or university\'s B.Ed entrance test or counselling.',
+            'Management': 'MBA seats usually go through CAT, MAT, CMAT, XAT or your state\'s MBA entrance test. BBA usually admits on Class 12 marks or CUET.',
+            'General degree (BA, BSc, BCom)': 'BA, BSc and BCom seats usually go on Class 12 marks through the affiliating university\'s admission portal, or through CUET for central universities.',
+            'Architecture': 'B.Arch admits through NATA or JEE Main Paper 2, then counselling.',
+            'Agriculture': 'Agriculture degrees usually admit through your state agricultural university\'s entrance test or ICAR AIEEA.'
+        };
+        function dirDetailHTML(c) {
+            const e = escapeAuth, saved = getSavedColleges().includes(c.id), seats = dirSeats(c);
+            const fact = function (label, value, note) { return value ? '<div class="bg-slate-50 border border-slate-200 rounded-xl p-3"><p class="text-slate-600 mb-1">' + label + '</p><p class="font-bold text-slate-800">' + value + '</p>' + (note ? '<p class="text-[11px] text-slate-500 mt-0.5">' + note + '</p>' : '') + '</div>' : ''; };
+            const ctypes = (DIR.index && DIR.index.ctypes) || [];
+            const kindTxt = e(DIR_KIND_LABEL[c.kind] + (c.ctype && ctypes[c.ctype] ? ' (' + ctypes[c.ctype].toLowerCase() + ')' : ''));
+            const ownTxt = c.ownKey !== 'unk' ? e(DIR.index.own[c.ownCode] || DIR_OWN_LABEL[c.ownKey]) : '';
+            const lv = { D: 'Diploma', U: 'Undergraduate', P: 'Postgraduate' };
+            const adm = c.tier < 3 ? (c._fields.map(function (f) { return DIR_ADMISSION[f]; }).filter(Boolean)[0] || '') : '';
+            const q = encodeURIComponent(c.name + ' ' + (c.district || '') + ' ' + c.state + ' official website');
+            const sameDistrict = (DIR.shards[c.code] || []).filter(function (x) { return x.id !== c.id && x.district === c.district && x._fields.some(function (f) { return c._fields.indexOf(f) > -1; }); })
+                .sort(function (a, b) { return a.tier - b.tier || (a.name < b.name ? -1 : 1); }).slice(0, 6);
+            const courseTable = c.courseRows.length ? '<div><h3 class="font-bold text-slate-900 text-lg mb-1">Approved courses and seats</h3>' +
+                '<p class="text-xs text-slate-600 mb-2">From the AICTE list of approved institutes (October 2025 snapshot). Seats are the yearly intake AICTE allows, across all shifts.</p>' +
+                '<div class="overflow-x-auto"><table class="w-full text-xs text-slate-700"><thead><tr class="text-left text-slate-500"><th class="py-1.5 pr-3 font-semibold">Level</th><th class="py-1.5 pr-3 font-semibold">Course</th><th class="py-1.5 text-right font-semibold">Seats a year</th></tr></thead><tbody>' +
+                c.courseRows.slice().sort(function (a, b) { return 'DUP'.indexOf(a[0]) - 'DUP'.indexOf(b[0]) || (a[1] < b[1] ? -1 : 1); }).map(function (r) {
+                    return '<tr class="border-t border-slate-100"><td class="py-1.5 pr-3 whitespace-nowrap">' + (lv[r[0]] || '') + '</td><td class="py-1.5 pr-3">' + e(r[1]) + '</td><td class="py-1.5 text-right tabular-nums">' + (r[2] ? r[2].toLocaleString('en-IN') : 'Not stated') + '</td></tr>';
+                }).join('') + '</tbody>' + (seats ? '<tfoot><tr class="border-t border-slate-300 font-semibold"><td class="py-1.5" colspan="2">Total</td><td class="py-1.5 text-right tabular-nums">' + seats.toLocaleString('en-IN') + '</td></tr></tfoot>' : '') + '</table></div></div>' : '';
+            const srcs = ['AISHE institution directory (Ministry of Education)'].concat(c.aicte ? ['AICTE approved institutes, October 2025'] : []).concat(DIR.josaa[c.id] ? ['JoSAA 2025'] : []);
+            return shareBarHTML('college', c.id) +
+                '<div class="flex items-center justify-between flex-wrap gap-2">' +
+                (c._fields.length ? '<div class="flex flex-wrap gap-1.5">' + c._fields.map(function (f) { return '<span class="text-xs font-semibold bg-brand-50 text-brand-700 px-3 py-1 rounded-full">' + e(f) + '</span>'; }).join('') + '</div>' : '<span></span>') +
+                '<div class="flex items-center gap-3">' + dirTierBadge(c) +
+                '<button onclick="toggleSaveCollege(\'' + c.id + '\')" class="text-xs font-semibold px-3 py-1.5 rounded-lg border ' + (saved ? 'bg-brand-600 text-white border-brand-600' : 'border-slate-300 text-slate-700 hover:bg-slate-50') + ' transition">' + (saved ? '✓ Saved' : '+ Save to Dashboard') + '</button></div></div>' +
+                '<h2 class="text-3xl font-extrabold text-slate-900">' + e(c.name) + '</h2>' +
+                '<p class="text-slate-600 text-sm">📍 ' + e(c.location) + (c.pin ? ' · PIN ' + e(c.pin) : '') + '</p>' +
+                (c.address ? '<p class="text-xs text-slate-500 -mt-4">' + e(c.address) + '</p>' : '') +
+                (c.tier === 3 ? '<p class="text-sm bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-700"><strong>Basic profile.</strong> Detailed information is being updated. This college is listed with the Ministry of Education, but we do not yet have its courses, fees or admission details, so confirm them with the college.</p>' : '') +
+                '<div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">' +
+                fact('Type', kindTxt) + fact('Ownership', ownTxt || 'Not stated', ownTxt ? (c.ownFromName ? 'From the official name' : 'From AICTE records') : '') +
+                fact('Affiliated to', c.uni ? e(c.uni) : '', 'Its degrees are awarded by this university') +
+                fact('AISHE code', c.aishe ? e(c.aishe) : '', 'Ministry of Education ID') + fact('AICTE ID', c.aicte ? e(c.aicte) : '') +
+                fact('Admission for', c.women ? 'Women only' : '') + fact('Minority institution', c.minority ? 'Yes' : '', 'Some seats may be reserved for the minority community') +
+                '</div>' +
+                (c.fieldsFromName && c._fields.length ? '<p class="text-[11px] text-slate-500 -mt-3">Fields are worked out from the college\'s official name. Check its exact courses with the college.</p>' : '') +
+                courseTable + josaaHTML(c.id) +
+                '<div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-3"><h3 class="font-bold text-slate-900 text-lg">Fees, placements and admission</h3>' +
+                '<p class="text-sm text-slate-700"><strong>Fees:</strong> Not available yet. Ask the college for the full fee list for every year of the course.</p>' +
+                '<p class="text-sm text-slate-700"><strong>Placements:</strong> Not available yet. Ask for the latest placement report, with the number of students placed and the median salary.</p>' +
+                (adm ? '<p class="text-sm text-slate-700"><strong>How admission usually works in this field:</strong> ' + e(adm) + ' The college\'s own admission page is the final word.</p>' : '') +
+                '<div class="flex flex-wrap gap-2 pt-1">' +
+                '<a href="https://www.google.com/search?q=' + q + '" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold px-3 min-h-[40px] inline-flex items-center rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50">Find the official website ↗</a>' +
+                '<a href="https://dashboard.aishe.gov.in/hedirectory/" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold px-3 min-h-[40px] inline-flex items-center rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50">Check on AISHE ↗</a>' +
+                (c.aicte ? '<a href="https://facilities.aicte-india.org/dashboard/pages/angulardashboard.php" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold px-3 min-h-[40px] inline-flex items-center rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50">Check approval on AICTE ↗</a>' : '') +
+                '</div></div>' +
+                (sameDistrict.length ? '<div><h3 class="font-bold text-slate-900 text-lg mb-2">Similar colleges in ' + e(c.district) + '</h3><div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' + sameDistrict.map(function (x) {
+                    return '<button onclick="openCollegeDetail(\'' + x.id + '\')" class="text-left bg-white border border-slate-200 rounded-xl p-3 hover:shadow-md transition"><p class="font-semibold text-slate-900 text-sm">' + e(x.name) + '</p><p class="text-xs text-slate-500 mt-0.5">' + e(dirFacts(x)) + '</p></button>';
+                }).join('') + '</div></div>' : '') +
+                '<p class="text-[11px] text-slate-500">Source: ' + srcs.join('; ') + '. Directory built ' + e((DIR.index && DIR.index.built) || '') + '. An AISHE listing shows a college is registered with the Ministry of Education; it does not by itself prove UGC, AICTE or other approval for a course.</p>';
+        }
+
         // Level, exam and state are worked out from the college data, so they stay correct when the data is updated.
         function collegeLevelFlags(c) {
+            if (c._lv) return c._lv;
             const t = (Array.isArray(c.courses) ? c.courses.join(' | ') : String(c.courses || '')) + ' ' + (c.name || '');
             const pg = /\bM\.|\bMBA|\bMCA|\bMSc|\bMS\b|\bMD\b|\bLLM|\bPGDM|\bPGP|\bPG\b|\bMMS|\bMA\b|\bMDes|\bMPharm|\bPhD|\bMPH|\bMTech|\bM\s?Tech|\bMArch|Master/i.test(t);
             const ug = /\bB\.|\bBBA|\bBCA|\bBA\b|\bBSc|\bBTech|\bB\s?Tech|\bMBBS|\bLLB|\bBDS|\bBArch|\bBDes|\bBHM|\bBPharm|\bBCom|\bBFA|\bBMS|\bBVSc|\bBAMS|Integrated|Dual Degree/i.test(t);
-            return { ug: ug || !pg, pg: pg };
+            const dip = /\bdiploma\b|polytechnic|\bD\.?\s?Pharm/i.test(t);
+            c._lv = { ug: ug || !pg, pg: pg, dip: dip };
+            return c._lv;
         }
         const COLLEGE_EXAM_TAGS = [
             ['JEE (Main / Advanced)', /JEE/i],
@@ -11798,22 +12159,59 @@
             ["College's own test (BITSAT, VITEEE and others)", /BITSAT|VITEEE|SRMJEEE|AEEE|KIITEE|\bMET\b|UGEE|Institution-specific|IIMC|NCHM/i]
         ];
         function collegeExamTags(c) {
+            if (c._ex) return c._ex; // directory colleges: no exam claim is made, so [] (they never match an exam filter)
             const t = String(c.relatedExam || '');
             const tags = COLLEGE_EXAM_TAGS.filter(function (x) { return x[1].test(t); }).map(function (x) { return x[0]; });
             return tags.length ? tags : ['Other'];
         }
         function collegeState(c) {
+            if (c._st) return c._st;
             const parts = String(c.location || '').split(',');
             return canonicalState(parts[parts.length - 1].trim());
         }
 
+        const COLLEGE_SELECT_FILTERS = ['college-level-filter', 'college-stream-filter', 'college-exam-filter', 'college-state-filter', 'college-district-filter', 'college-own-filter', 'college-kind-filter', 'college-tier-filter', 'college-fees-filter'];
         function resetCollegeFilters() {
             document.getElementById('college-search').value = '';
-            ['college-level-filter', 'college-stream-filter', 'college-exam-filter', 'college-state-filter', 'college-fees-filter'].forEach(function (id) { document.getElementById(id).value = 'ALL'; });
+            COLLEGE_SELECT_FILTERS.forEach(function (id) { const el = document.getElementById(id); if (el) el.value = 'ALL'; });
+            const nb = document.getElementById('college-nearby'); if (nb) nb.checked = false;
             FIT_OFF = true; // clearing the filters means: show everything
             document.getElementById('college-sort').value = 'nirf';
             document.getElementById('college-saved-toggle').checked = false;
+            syncDistrictOptions();
             renderColleges();
+        }
+        function collegeStateChanged() {
+            const d = document.getElementById('college-district-filter'); if (d) d.value = 'ALL';
+            const nb = document.getElementById('college-nearby'); if (nb) nb.checked = false;
+            syncDistrictOptions();
+            renderColleges();
+        }
+        function collegeDistrictChanged() {
+            const d = document.getElementById('college-district-filter'), nb = document.getElementById('college-nearby');
+            if (d && d.value === 'ALL' && nb) nb.checked = false;
+            syncDistrictOptions();
+            renderColleges();
+        }
+        // District list for the chosen state (from the directory index), with the nearby option shown once a district is picked.
+        function syncDistrictOptions() {
+            const st = document.getElementById('college-state-filter'), sel = document.getElementById('college-district-filter'), wrap = document.getElementById('college-nearby-wrap');
+            if (!st || !sel) return;
+            const s = DIR.index && st.value !== 'ALL' ? DIR.stateOf[DIR.codeOf[st.value]] : null;
+            const cur = sel.value;
+            if (!s) {
+                sel.innerHTML = '<option value="ALL">' + (st.value === 'ALL' ? 'Pick a state to choose a district' : 'All districts') + '</option>';
+                sel.disabled = true;
+            } else if (sel.getAttribute('data-for') !== s.code) {
+                sel.innerHTML = '<option value="ALL">All districts in ' + escapeAuth(s.name) + '</option>' + s.districts.map(function (d) { return '<option value="' + escapeAuth(d[0]) + '">' + escapeAuth(d[0]) + '</option>'; }).join('');
+                sel.setAttribute('data-for', s.code);
+                sel.disabled = false;
+                sel.value = Array.prototype.some.call(sel.options, function (o) { return o.value === cur; }) ? cur : 'ALL';
+            }
+            if (!s) sel.removeAttribute('data-for');
+            const canNear = !!s && sel.value !== 'ALL' && !!(DIR.distLL && DIR.distLL[s.name + '|' + sel.value]);
+            if (wrap) { wrap.classList.toggle('hidden', !canNear); wrap.classList.toggle('flex', canNear); }
+            if (!canNear) { const nb = document.getElementById('college-nearby'); if (nb) nb.checked = false; }
         }
 
         // Each filter menu shows how many colleges each choice would leave, and greys out choices that would leave none,
@@ -11856,30 +12254,53 @@
             c._fields = Object.keys(set);
             return c._fields;
         }
+        // Each filter: vals(c) lists the option values a college belongs to. pass(c, v) can override the
+        // test (district + nearby). State counts come from the directory index, since only the chosen
+        // state's colleges are loaded.
+        let COLLEGE_NEAR = null; // Map "State|District" -> km, when "also show nearby districts" is on
         const COLLEGE_FACETS = [
-            { id: 'college-level-filter', test: (c, v) => collegeLevelFlags(c)[v === 'UG' ? 'ug' : 'pg'] },
-            { id: 'college-stream-filter', test: (c, v) => collegeFields(c).indexOf(v) >= 0 },
-            { id: 'college-exam-filter', test: (c, v) => collegeExamTags(c).includes(v) },
-            { id: 'college-state-filter', test: (c, v) => collegeState(c) === v },
-            { id: 'college-fees-filter', test: (c, v) => c.feesLakh != null && (v === 'over5' ? c.feesLakh > 5 : c.feesLakh <= Number(v)) }
+            { id: 'college-level-filter', vals: function (c) { const l = collegeLevelFlags(c), v = []; if (l.dip) v.push('DIP'); if (l.ug) v.push('UG'); if (l.pg) v.push('PG'); return v; } },
+            { id: 'college-stream-filter', vals: function (c) { return collegeFields(c); } },
+            { id: 'college-exam-filter', vals: function (c) { return collegeExamTags(c); } },
+            { id: 'college-state-filter', vals: function (c) { return [collegeState(c)]; }, staticCounts: true },
+            { id: 'college-district-filter', vals: function (c) { return [collegeDistrict(c)]; },
+              pass: function (c, v) { return COLLEGE_NEAR ? COLLEGE_NEAR.has(collegeState(c) + '|' + collegeDistrict(c)) : collegeDistrict(c) === v; } },
+            { id: 'college-own-filter', vals: function (c) { return [collegeOwnKey(c)]; } },
+            { id: 'college-kind-filter', vals: function (c) { return [collegeKindKey(c)]; } },
+            { id: 'college-tier-filter', vals: function (c) { return [collegeTierKey(c)]; } },
+            { id: 'college-fees-filter', vals: function (c) { return c.feesLakh == null ? [] : c.feesLakh > 5 ? ['over5'] : ['1', '2', '5'].filter(function (x) { return c.feesLakh <= Number(x); }); } }
         ];
-        function updateCollegeFacets(vals, order, savedOnly, savedIds) {
-            const base = function (c) {
-                return (!order || order.has(c.id)) && (!savedOnly || savedIds.includes(c.id));
-            };
-            COLLEGE_FACETS.forEach(function (f) {
+        function facetPass(f, c, v) { return v === 'ALL' || (f.pass ? f.pass(c, v) : f.vals(c).indexOf(v) > -1); }
+        // One pass over the pool: the result list, plus for every menu how many colleges each of its
+        // options would leave (counting colleges that match every OTHER menu), so a menu never offers a dead end.
+        function filterColleges(pool, vals, base) {
+            const n = COLLEGE_FACETS.length, counts = COLLEGE_FACETS.map(function () { return {}; }), list = [];
+            for (let i = 0; i < pool.length; i++) {
+                const c = pool[i];
+                if (!base(c)) continue;
+                let fails = 0, failAt = -1;
+                for (let k = 0; k < n; k++) { if (!facetPass(COLLEGE_FACETS[k], c, vals[COLLEGE_FACETS[k].id])) { fails++; failAt = k; if (fails > 1) break; } }
+                if (fails > 1) continue;
+                if (fails === 0) list.push(c);
+                for (let k = 0; k < n; k++) {
+                    if (fails === 1 && k !== failAt) continue;
+                    const vs = COLLEGE_FACETS[k].vals(c), m = counts[k];
+                    for (let j = 0; j < vs.length; j++) m[vs[j]] = (m[vs[j]] || 0) + 1;
+                }
+            }
+            return { list: list, counts: counts };
+        }
+        function updateCollegeFacets(counts) {
+            COLLEGE_FACETS.forEach(function (f, k) {
                 const sel = document.getElementById(f.id);
                 if (!sel) return;
-                // colleges that match everything EXCEPT this menu, so its own options can be counted
-                const pool = collegesData.filter(function (c) {
-                    return base(c) && COLLEGE_FACETS.every(function (g) { return g.id === f.id || vals[g.id] === 'ALL' || g.test(c, vals[g.id]); });
-                });
                 Array.prototype.forEach.call(sel.options, function (o) {
                     if (!o.hasAttribute('data-label')) o.setAttribute('data-label', o.textContent);
                     if (o.value === 'ALL') { o.textContent = o.getAttribute('data-label'); o.disabled = false; return; }
-                    const n = pool.filter(function (c) { return f.test(c, o.value); }).length;
-                    o.textContent = o.getAttribute('data-label') + ' (' + n + ')';
-                    o.disabled = n === 0 && sel.value !== o.value;
+                    if (f.staticCounts) return; // labelled once from the directory index (see initDataDrivenFilters)
+                    const c = counts[k][o.value] || 0;
+                    o.textContent = o.getAttribute('data-label') + ' (' + c.toLocaleString('en-IN') + ')';
+                    o.disabled = c === 0 && sel.value !== o.value;
                 });
             });
         }
@@ -11911,16 +12332,18 @@
             const el = document.getElementById(id);
             if (!el) return;
             if (el.type === 'checkbox') el.checked = false; else if (el.tagName === 'SELECT') el.value = 'ALL'; else el.value = '';
+            if (id === 'college-state-filter') return collegeStateChanged();
+            if (id === 'college-district-filter') return collegeDistrictChanged();
             renderColleges();
         }
         function renderCollegeChips() {
             const e = escapeAuth, field = document.getElementById('college-stream-filter');
-            const label = function (o) { return o.getAttribute('data-label') || o.textContent.replace(/\s*\(\d+\)\s*$/, ''); };
-            const count = function (o) { const m = o.textContent.match(/\((\d+)\)\s*$/); return m ? m[1] : ''; };
+            const label = function (o) { return o.getAttribute('data-label') || o.textContent.replace(/\s*\([\d,]+\)\s*$/, ''); };
+            const count = function (o) { const m = o.textContent.match(/\(([\d,]+)\)\s*$/); return m ? m[1] : ''; };
             const chipsEl = document.getElementById('college-field-chips');
             if (chipsEl && field) {
-                // biggest fields first, in a fixed order that does not jump around as other filters change
-                const freq = {}; collegesData.forEach(function (c) { collegeFields(c).forEach(function (f) { freq[f] = (freq[f] || 0) + 1; }); });
+                // biggest fields first (for the colleges in view), so a state's real mix shows up front
+                const freq = {}; Array.prototype.forEach.call(field.options, function (o) { freq[o.value] = Number((count(o) || '0').replace(/,/g, '')); });
                 const opts = Array.prototype.slice.call(field.options).sort(function (a, b) { return a.value === 'ALL' ? -1 : b.value === 'ALL' ? 1 : (freq[b.value] || 0) - (freq[a.value] || 0) || a.value.localeCompare(b.value); });
                 chipsEl.innerHTML = opts.map(function (o) {
                     const on = o.value === field.value, off = o.disabled && !on;
@@ -11933,10 +12356,15 @@
             const q = (document.getElementById('college-search').value || '').trim();
             if (q) chips.push(['college-search', '\u201c' + (q.length > 24 ? q.slice(0, 23) + '…' : q) + '\u201d']);
             let panelActive = 0;
-            ['college-level-filter', 'college-exam-filter', 'college-state-filter', 'college-fees-filter'].forEach(function (id) {
+            ['college-state-filter', 'college-district-filter', 'college-level-filter', 'college-own-filter', 'college-kind-filter', 'college-tier-filter', 'college-exam-filter', 'college-fees-filter'].forEach(function (id) {
                 const s = document.getElementById(id);
-                if (s && s.value !== 'ALL') { chips.push([id, label(s.options[s.selectedIndex])]); panelActive++; }
+                if (s && s.value !== 'ALL' && s.selectedIndex > -1) {
+                    chips.push([id, label(s.options[s.selectedIndex]).replace(/\s*\([\d,]+ colleges?\)\s*$/, '')]);
+                    if (id !== 'college-state-filter' && id !== 'college-district-filter') panelActive++;
+                }
             });
+            const nb = document.getElementById('college-nearby');
+            if (nb && nb.checked) chips.push(['college-nearby', 'Nearby districts']);
             if (document.getElementById('college-saved-toggle').checked) { chips.push(['college-saved-toggle', 'Saved only']); panelActive++; }
             const anyFilter = chips.length > 0 || (field && field.value !== 'ALL');
             document.getElementById('college-active-chips').innerHTML = chips.map(function (c) {
@@ -11946,10 +12374,70 @@
             badge.textContent = panelActive; badge.classList.toggle('hidden', !panelActive); badge.classList.toggle('inline-flex', !!panelActive);
         }
 
+        function collegeNearKm(c) { return COLLEGE_NEAR ? COLLEGE_NEAR.get(collegeState(c) + '|' + collegeDistrict(c)) : null; }
+        function collegeDetailRank(c) { return c.dir ? c.tier : 0; } // curated first, then detailed, verified, basic
+        // Which directory state files this view needs, given the filters and search.
+        function collegesNeededStates(stateVal, query, savedOnly, savedIds) {
+            const need = new Set();
+            if (!DIR.index) return need;
+            if (stateVal !== 'ALL' && DIR.codeOf[stateVal]) need.add(DIR.codeOf[stateVal]);
+            if (COLLEGE_NEAR) COLLEGE_NEAR.forEach(function (km, k) { const s = DIR.codeOf[k.split('|')[0]]; if (s) need.add(s); });
+            if (savedOnly) savedIds.forEach(function (id) { const k = dirCodeFromId(id); if (k) need.add(k); });
+            if (stateVal === 'ALL' && query.length >= 2) DIR.index.states.forEach(function (s) { need.add(s.code); });
+            return need;
+        }
+        function collegeDirBannerHTML(stateVal, query, missing) {
+            const e = escapeAuth, n = function (x) { return Number(x || 0).toLocaleString('en-IN'); };
+            const box = function (inner, tone) { return '<div class="' + (tone || 'bg-white border-slate-200') + ' border rounded-2xl px-4 py-3 text-sm text-slate-700">' + inner + '</div>'; };
+            if (!DIR.index) return DIR.failed ? box('The full list of colleges in India could not be loaded, so you are seeing the ' + n(collegesData.length) + ' colleges with detailed profiles. Check your connection and reload the page.', 'bg-amber-50 border-amber-200') : '';
+            const total = DIR.index.total + collegesData.length;
+            if (missing.length) {
+                const one = missing.length === 1 && DIR.stateOf[missing[0]];
+                return box('<span class="inline-block w-3 h-3 mr-2 align-middle rounded-full border-2 border-brand-600 border-t-transparent animate-spin" aria-hidden="true"></span>' +
+                    (one ? 'Loading all ' + n(one.count) + ' colleges in ' + e(one.name) + '…' : 'Loading all ' + n(total) + ' colleges in India for your search. This happens once and takes a few seconds on a slow connection…'));
+            }
+            const sources = '<details class="mt-1"><summary class="text-xs font-semibold text-brand-700 cursor-pointer min-h-[36px] inline-flex items-center">Where this list comes from</summary><div class="text-xs text-slate-600 space-y-1 pb-1">' +
+                '<p><strong>Detailed profile:</strong> official course list with yearly seats (AICTE, Oct 2025), or JoSAA 2025 cutoffs, or a Plan4it profile with rankings, fees and placements.</p>' +
+                '<p><strong>Verified listing:</strong> listed with the Ministry of Education (AISHE) along with an official detail such as its affiliating university or AICTE record.</p>' +
+                '<p><strong>Basic profile:</strong> listed with AISHE by name and district only. Details are being added.</p>' +
+                '<p>Sources: ' + DIR.index.sources.map(function (s) { return '<a href="' + e(s.url) + '" target="_blank" rel="noopener noreferrer" class="text-brand-600 hover:underline">' + e(s.name) + '</a>'; }).join(' · ') + '. Fees and placements are only shown where a college\'s own figures were checked.</p></div></details>';
+            if (stateVal === 'ALL') {
+                if (query) return box('Searching all ' + n(total) + ' colleges in India.' + sources);
+                const f = getFit(), fs = f && f.state && f.state !== 'any' ? DIR.stateOf[DIR.codeOf[f.state]] : null;
+                return box('<p><strong class="text-slate-900">Showing the ' + n(collegesData.length) + ' colleges with the most detail</strong> (rankings, fees, placements). Plan4it lists <strong class="text-slate-900">' + n(total) + ' colleges</strong> across every state and union territory. Choose your state and district above, or search by name, to see them all.</p>' +
+                    (fs ? '<button type="button" onclick="pickCollegeState(\'' + e(fs.name) + '\')" class="mt-2 min-h-[40px] px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold">See all ' + n(fs.count) + ' colleges in ' + e(fs.name) + ' →</button>' : '') + sources);
+            }
+            const s = DIR.stateOf[DIR.codeOf[stateVal]];
+            if (!s) return '';
+            return box('<p><strong class="text-slate-900">All colleges in ' + e(s.name) + '</strong>: ' + n(s.t1) + ' detailed profiles, ' + n(s.t2) + ' verified listings and ' + n(s.t3) + ' basic profiles' +
+                (COLLEGE_NEAR ? ', plus colleges in ' + (COLLEGE_NEAR.size - 1) + ' nearby district' + (COLLEGE_NEAR.size === 2 ? '' : 's') : '') + '.</p>' + sources);
+        }
+        function pickCollegeState(name) {
+            const sel = document.getElementById('college-state-filter');
+            if (!sel) return;
+            sel.value = name;
+            collegeStateChanged();
+            const t = document.getElementById('college-state-filter'); if (t && t.scrollIntoView) t.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        function syncCollegeNearSort(nearOn) {
+            const sort = document.getElementById('college-sort');
+            if (!sort) return;
+            let o = sort.querySelector('option[value="near"]');
+            if (nearOn && !o) { o = document.createElement('option'); o.value = 'near'; o.textContent = 'Sort: Nearest first'; sort.insertBefore(o, sort.firstChild); sort.value = 'near'; }
+            if (!nearOn && o) { if (sort.value === 'near') sort.value = 'nirf'; o.remove(); }
+        }
+        const DIR_FAILED_SHARDS = new Set();
         function renderColleges() {
-            const query = (document.getElementById('college-search').value || '').toLowerCase();
+            const query = (document.getElementById('college-search').value || '').trim();
             const vals = {};
-            COLLEGE_FACETS.forEach(function (f) { vals[f.id] = document.getElementById(f.id).value; });
+            COLLEGE_FACETS.forEach(function (f) { const el = document.getElementById(f.id); vals[f.id] = el ? el.value : 'ALL'; });
+            if (!DIR.index && !DIR.failed) dirLoadIndex().then(function () { syncDistrictOptions(); renderColleges(); });
+            syncDistrictOptions();
+            const stateVal = vals['college-state-filter'], distVal = document.getElementById('college-district-filter').value;
+            vals['college-district-filter'] = distVal;
+            const nb = document.getElementById('college-nearby');
+            COLLEGE_NEAR = nb && nb.checked && stateVal !== 'ALL' && distVal !== 'ALL' && DIR.index ? nearbyDistricts(stateVal, distVal, 100) : null;
+            syncCollegeNearSort(!!COLLEGE_NEAR);
             syncCollegeSortOptions();
             let sortMode = document.getElementById('college-sort').value;
             CUR_FIT = fitActive() ? getFit() : null;
@@ -11961,31 +12449,48 @@
             const empty = document.getElementById('colleges-empty-state');
             const countLabel = document.getElementById('colleges-result-count');
 
-            const sr = query.trim() ? searchRank(collegesData, query, collegeSearchFields, 'college') : null;
-            const order = sr ? new Map(sr.list.map(function (c, i) { return [c.id, i]; })) : null;
-            updateCollegeFacets(vals, order, savedOnly, savedIds);
-            renderCollegeChips();
+            // fetch any state files this view needs, then draw again
+            const need = collegesNeededStates(stateVal, query, savedOnly, savedIds);
+            const missing = Array.from(need).filter(function (k) { return !DIR.shards[k] && !DIR_FAILED_SHARDS.has(k); });
+            if (missing.length) Promise.all(missing.map(function (k) { return dirLoadState(k).then(function (l) { if (!DIR.shards[k]) DIR_FAILED_SHARDS.add(k); return l; }); }))
+                .then(function () { if (!document.getElementById('view-colleges').classList.contains('hidden')) renderColleges(); });
+            const banner = document.getElementById('college-dir-banner'); if (banner) banner.innerHTML = collegeDirBannerHTML(stateVal, query, missing);
+            const dirLists = Array.from(need).map(function (k) { return DIR.shards[k]; }).filter(Boolean);
+            const pool = dirLists.length ? collegesData.concat.apply(collegesData, dirLists) : collegesData;
 
-            let list = collegesData.filter(c => {
-                const matchesQuery = !order || order.has(c.id);
-                const matchesFacets = COLLEGE_FACETS.every(f => vals[f.id] === 'ALL' || f.test(c, vals[f.id]));
-                const matchesSaved = !savedOnly || savedIds.includes(c.id);
-                return matchesQuery && matchesFacets && matchesSaved;
-            });
-
-            if (sortMode === 'fit' && !order) {
-                const sc = new Map(); list.forEach(function (c) { sc.set(c.id, collegeFit(c, CUR_FIT).score); });
-                list.sort(function (a, b) { return sc.get(b.id) - sc.get(a.id) || (a.nirf || Infinity) - (b.nirf || Infinity); });
+            // searching: curated colleges use the detailed scorer, the directory uses its word index
+            let order = null, exact = null, relaxed = false;
+            if (query) {
+                const cur = searchRank(collegesData, query.toLowerCase(), collegeSearchFields, 'college');
+                const ce = cur.relaxed ? 0 : Math.min(cur.exactCount, cur.list.length);
+                const dr = dirLists.length ? dirSearch(query, dirLists) : { list: [], exactCount: 0 };
+                const combined = cur.list.slice(0, ce).concat(dr.list.slice(0, dr.exactCount), cur.list.slice(ce), dr.list.slice(dr.exactCount));
+                order = new Map(); combined.forEach(function (c, i) { if (!order.has(c.id)) order.set(c.id, i); });
+                exact = new Set(cur.list.slice(0, ce).concat(dr.list.slice(0, dr.exactCount)).map(function (c) { return c.id; }));
+                relaxed = !exact.size && combined.length > 0;
             }
-            else if (sortMode === 'fees-low') list.sort((a, b) => (a.feesLakh == null ? 1e9 : a.feesLakh) - (b.feesLakh == null ? 1e9 : b.feesLakh));
-            else if (sortMode === 'fees-high') list.sort((a, b) => (b.feesLakh == null ? -1 : b.feesLakh) - (a.feesLakh == null ? -1 : a.feesLakh));
-            else if (sortMode === 'az') list.sort((a, b) => a.name.localeCompare(b.name));
-            else if (order) list.sort((a, b) => order.get(a.id) - order.get(b.id)); // searching: best match first
-            else list.sort((a, b) => (a.nirf || Infinity) - (b.nirf || Infinity)); // unranked (0) last, not first
+            const savedSet = new Set(savedIds);
+            const res = filterColleges(pool, vals, function (c) { return (!order || order.has(c.id)) && (!savedOnly || savedSet.has(c.id)); });
+            updateCollegeFacets(res.counts);
+            renderCollegeChips();
+            let list = res.list;
 
-            const nExact = sr ? Math.min(sr.exactCount, list.length) : list.length;
-            countLabel.textContent = sr && sr.relaxed ? `No exact match for “${query.trim()}”. Showing the ${list.length} closest.` : `${list.length} college${list.length === 1 ? '' : 's'} found` + (sr && list.length > nExact ? ` (${list.length - nExact} related)` : '');
-            suggestSet('colleges', query.trim(), list.slice(0, 6).map(function (c) { return { id: c.id, title: c.name, sub: c.location + ' · ' + c.stream, rel: !!order && order.get(c.id) >= nExact }; }), list.length, sr && sr.relaxed);
+            const byName = function (a, b) { return a.name < b.name ? -1 : a.name > b.name ? 1 : 0; };
+            if (sortMode === 'near' && COLLEGE_NEAR) list.sort(function (a, b) { return (collegeNearKm(a) || 0) - (collegeNearKm(b) || 0) || collegeDetailRank(a) - collegeDetailRank(b) || (a.nirf || Infinity) - (b.nirf || Infinity) || byName(a, b); });
+            else if (sortMode === 'fit' && !order) {
+                const sc = new Map(); list.forEach(function (c) { sc.set(c.id, collegeFit(c, CUR_FIT).score); });
+                list.sort(function (a, b) { return sc.get(b.id) - sc.get(a.id) || (a.nirf || Infinity) - (b.nirf || Infinity) || collegeDetailRank(a) - collegeDetailRank(b); });
+            }
+            else if (sortMode === 'fees-low') list.sort((a, b) => (a.feesLakh == null ? 1e9 : a.feesLakh) - (b.feesLakh == null ? 1e9 : b.feesLakh) || collegeDetailRank(a) - collegeDetailRank(b));
+            else if (sortMode === 'fees-high') list.sort((a, b) => (b.feesLakh == null ? -1 : b.feesLakh) - (a.feesLakh == null ? -1 : a.feesLakh) || collegeDetailRank(a) - collegeDetailRank(b));
+            else if (sortMode === 'az') list.sort(byName);
+            else if (order) list.sort((a, b) => order.get(a.id) - order.get(b.id)); // searching: best match first
+            else list.sort((a, b) => (a.nirf || Infinity) - (b.nirf || Infinity) || collegeDetailRank(a) - collegeDetailRank(b) || byName(a, b)); // ranked first, then the colleges we know most about
+
+            const nExact = exact ? list.filter(function (c) { return exact.has(c.id); }).length : list.length;
+            const num = function (x) { return x.toLocaleString('en-IN'); };
+            countLabel.textContent = relaxed ? `No exact match for “${query}”. Showing the ${num(list.length)} closest.` : `${num(list.length)} college${list.length === 1 ? '' : 's'} found` + (exact && list.length > nExact ? ` (${num(list.length - nExact)} related)` : '');
+            suggestSet('colleges', query, list.slice(0, 6).map(function (c) { return { id: c.id, title: c.name, sub: c.location + (c.stream ? ' · ' + c.stream : ''), rel: !!exact && !exact.has(c.id) }; }), list.length, relaxed);
 
             if (!list.length) {
                 grid.innerHTML = '';
@@ -12022,8 +12527,28 @@
             if (note) { const n = Object.keys(badges).length; note.classList.toggle('hidden', !n); note.textContent = n ? 'We marked what matters most for you, based on your quiz answers.' : ''; }
         }
         function openCollegeDetail(collegeId, skipViewSwitch) {
-            const c = collegesData.find(item => item.id === collegeId);
             const content = document.getElementById('college-detail-content');
+            if (dirCodeFromId(collegeId) && !DIR.byId.has(collegeId) && !openCollegeDetail._retry) {
+                // a directory college whose state file is not loaded yet (saved earlier, or from another page)
+                content.innerHTML = '<p class="text-slate-500 text-sm">Loading this college…</p>';
+                if (!skipViewSwitch) switchView('collegeDetail');
+                ensureColleges([collegeId]).then(function () { openCollegeDetail._retry = true; try { openCollegeDetail(collegeId, true); } finally { openCollegeDetail._retry = false; } });
+                return;
+            }
+            const c = findCollege(collegeId);
+            if (c && c.dir) {
+                content.innerHTML = dirDetailHTML(c);
+                const rg = document.getElementById('related-colleges-grid');
+                if (rg) rg.innerHTML = '';
+                if (rg && rg.previousElementSibling) rg.previousElementSibling.classList.add('hidden');
+                if (!skipViewSwitch) switchView('collegeDetail');
+                return;
+            }
+            { const rg = document.getElementById('related-colleges-grid'); if (rg && rg.previousElementSibling) rg.previousElementSibling.classList.remove('hidden'); }
+            if (!DIR.index && !DIR.failed) dirLoadIndex().then(function () {
+                // JoSAA cutoffs and the AISHE code arrive with the directory index: redraw if this page is still open
+                if (DIR.josaa[collegeId] || DIR.links[collegeId]) { const v = document.getElementById('view-collegeDetail'); if (v && !v.classList.contains('hidden')) openCollegeDetail(collegeId, true); }
+            });
             if (!c) {
                 content.innerHTML = `<p class="text-slate-500 text-sm">We couldn't find that college. It may have been removed.</p>`;
                 if (!skipViewSwitch) switchView('collegeDetail');
@@ -12044,7 +12569,7 @@
                     </div>
                 </div>
                 <h2 class="text-3xl font-extrabold text-slate-900">${c.name}</h2>
-                <p class="text-slate-600 text-sm">📍 ${c.location} · ${c.type}</p>
+                <p class="text-slate-600 text-sm">📍 ${c.location} · ${c.type}${c.district && c.location.indexOf(c.district) < 0 ? ' · ' + escapeAuth(c.district) + ' district' : ''}${c.aishe ? ' · AISHE code ' + escapeAuth(c.aishe) : ''}</p>
                 ${nirfDetailHTML(c)}
                 ${(c.feeVerified && c.placeSrc) ? '' : verifyNoteHTML('Fees, placements and cut-offs shown here are approximate or not added yet. Please confirm them on the college\'s official website before you decide.', c, 'fee', 'Open official site')}
 
@@ -12072,6 +12597,7 @@
                     <p class="text-sm text-slate-700"><strong>Scholarships:</strong> ${c.scholarships}</p>
                     ${collegePlacementHTML(c)}
                 </div>
+                ${josaaHTML(c.id)}
 
                 <div>
                     <h3 class="font-bold text-slate-900 text-lg mb-2">Courses Offered</h3>
@@ -12160,15 +12686,20 @@
             if (!savedCollegeIds.length) {
                 collegeListEl.innerHTML = `<p class="text-sm text-slate-500 text-center py-6">No colleges saved yet. Browse <button onclick="switchView('colleges')" class="text-brand-600 font-semibold hover:underline">College Discovery</button> and tap the bookmark icon on any card.</p>`;
             } else {
+                // directory colleges live in per-state files: load any that are missing, then draw again
+                if (savedCollegeIds.some(function (id) { return dirCodeFromId(id) && !DIR.byId.has(id); }) && !renderDashboard._loading) {
+                    renderDashboard._loading = true;
+                    ensureColleges(savedCollegeIds).then(function () { renderDashboard._loading = false; try { renderDashboard(); } catch (e) {} });
+                }
                 collegeListEl.innerHTML = savedCollegeIds.map(id => {
-                    const c = collegesData.find(x => x.id === id);
-                    if (!c) return '';
+                    const c = findCollege(id);
+                    if (!c) return dirCodeFromId(id) ? '<p class="text-xs text-slate-500 p-4">Loading a saved college…</p>' : '';
                     return `
                     <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 gap-3">
                         <div>
-                            <span class="text-xs bg-brand-100 text-brand-800 font-bold px-2 py-0.5 rounded">${nirfLabel(c)}</span>
-                            <h4 class="font-bold text-slate-900 text-lg mt-1">${c.name}</h4>
-                            <p class="text-slate-600 text-xs mt-0.5">${c.location} · ${c.fees}${approxText(c, 'fee')}</p>
+                            <span class="text-xs bg-brand-100 text-brand-800 font-bold px-2 py-0.5 rounded">${c.dir ? escapeAuth(dirFacts(c) || 'Listed college') : nirfLabel(c)}</span>
+                            <h4 class="font-bold text-slate-900 text-lg mt-1">${escapeAuth(c.name)}</h4>
+                            <p class="text-slate-600 text-xs mt-0.5">${escapeAuth(c.location)}${c.dir ? ' · ' + DIR_TIER_LABEL[c.tier] : ' · ' + c.fees + approxText(c, 'fee')}</p>
                         </div>
                         <div class="flex items-center gap-2 shrink-0">
                             <button onclick="openCollegeDetail('${c.id}')" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-xl text-xs font-semibold transition">View Details</button>
@@ -13042,7 +13573,27 @@
             if (q) { if (Array.prototype.some.call(sel.options, function (o) { return o.value === q; })) sel.value = q; else inp.value = q; }
             renderExams();
         }
-        function goColleges() { setFitOff(false); switchView('colleges'); }
+        function showDiplomaColleges() {
+            setCollegesMode('degree');
+            const lv = document.getElementById('college-level-filter'); if (lv) lv.value = 'DIP';
+            goColleges();
+            renderColleges();
+            const t = document.getElementById('college-state-filter'); if (t && t.scrollIntoView) t.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        function goColleges() {
+            setFitOff(false);
+            // the quiz knows the student's state: open the Colleges page on that state, with every college in it
+            const f = getFit(), sel = document.getElementById('college-state-filter');
+            if (f && f.state && f.state !== 'any' && sel) {
+                if (!Array.prototype.some.call(sel.options, function (o) { return o.value === f.state; })) {
+                    const o = document.createElement('option'); o.value = f.state; o.textContent = f.state; sel.appendChild(o);
+                }
+                sel.value = f.state;
+                const d = document.getElementById('college-district-filter'); if (d) d.value = 'ALL';
+                syncDistrictOptions();
+            }
+            switchView('colleges');
+        }
         function goLowFee() {
             switchView('colleges');
             const s = document.getElementById('college-sort'); s.dataset.touched = 1; s.value = 'fees-low';
@@ -13603,19 +14154,23 @@
            never needs a matching hand-edit to these <select> elements.
            ============================================================ */
         function initDataDrivenFilters() {
-            const opt = (v, label) => `<option value="${v}">${label || v}</option>`;
+            const opt = (v, label) => `<option value="${escapeAuth(v)}">${escapeAuth(label || v)}</option>`;
+            // rebuilding a menu must not throw away what the student already picked
+            const keep = function (id, fill) { const el = document.getElementById(id); if (!el) return; const v = el.value; fill(el); if (Array.prototype.some.call(el.options, function (o) { return o.value === v; })) el.value = v; };
 
-            const streams = [...new Set([].concat.apply([], collegesData.map(c => collegeFields(c))))].sort();
-            const collegeStreamSel = document.getElementById('college-stream-filter');
-            if (collegeStreamSel) collegeStreamSel.innerHTML = opt('ALL', 'All fields') + streams.map(x => opt(x)).join('');
+            const streams = [...new Set([].concat.apply([], collegesData.map(c => collegeFields(c))).concat(DIR.index ? DIR.index.fields : []))].sort();
+            keep('college-stream-filter', function (el) { el.innerHTML = opt('ALL', 'All fields') + streams.map(x => opt(x)).join(''); });
 
             const examOpts = COLLEGE_EXAM_TAGS.map(x => x[0]).filter(t => collegesData.some(c => collegeExamTags(c).includes(t)));
-            const collegeExamSel = document.getElementById('college-exam-filter');
-            if (collegeExamSel) collegeExamSel.innerHTML = opt('ALL', 'Any entrance exam') + examOpts.map(x => opt(x)).join('');
+            keep('college-exam-filter', function (el) { el.innerHTML = opt('ALL', 'Any entrance exam') + examOpts.map(x => opt(x)).join(''); });
 
-            const states = [...new Set(collegesData.map(collegeState))].filter(Boolean).sort();
-            const collegeStateSel = document.getElementById('college-state-filter');
-            if (collegeStateSel) collegeStateSel.innerHTML = opt('ALL', 'All states') + states.map(x => opt(x)).join('');
+            // states: every state and union territory, with how many colleges each has in total
+            const curByState = {}; collegesData.forEach(function (c) { const s = collegeState(c); if (s) curByState[s] = (curByState[s] || 0) + 1; });
+            const states = DIR.index ? DIR.index.states.map(function (s) { return [s.name, s.count + (curByState[s.name] || 0)]; }).sort(function (a, b) { return a[0].localeCompare(b[0]); })
+                : Object.keys(curByState).sort().map(function (s) { return [s, curByState[s]]; });
+            keep('college-state-filter', function (el) {
+                el.innerHTML = opt('ALL', 'All states') + states.map(function (x) { return '<option value="' + escapeAuth(x[0]) + '" data-label="' + escapeAuth(x[0]) + '">' + escapeAuth(x[0]) + ' (' + x[1].toLocaleString('en-IN') + ' colleges)</option>'; }).join('');
+            });
 
             const categories = [...new Set(SCHOLARSHIPS_DATA.flatMap(x => x.categoryTags))].filter(c => c !== 'Any').sort();
             const catSel = document.getElementById('scholarship-category');
