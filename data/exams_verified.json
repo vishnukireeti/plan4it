@@ -1,6 +1,27 @@
 {
  "v": 1,
  "exams": {
+  "aai-je": {
+   "cycle": "2026",
+   "body": "Airports Authority of India",
+   "site": "aai.aero",
+   "links": [
+    [
+     "AAI recruitment results",
+     "https://www.aai.aero/en/recruitment/result/all"
+    ],
+    [
+     "Junior Executive (ATC) advertisement 02/2025 (PDF)",
+     "https://www.aai.aero/sites/default/files/examdashboard_advertisement/Detailed%20ATC%20Advertisement%2002-2025-CHQ.pdf"
+    ],
+    [
+     "Junior Executive recruitment through GATE (PDF)",
+     "https://www.aai.aero/sites/default/files/examdashboard_advertisement/Rectt%20Advt%20%20through%20GATE%202023-2024-2025.pdf"
+    ]
+   ],
+   "src": "https://www.aai.aero/en/recruitment/result/all",
+   "checked": "2026-11-05"
+  },
   "afcat": {
    "cycle": "2026–27",
    "body": "Indian Air Force",
@@ -264,6 +285,31 @@
     ]
    ],
    "src": "https://joinindianarmy.nic.in/Notificationdetail.htm?741=",
+   "checked": "2026-11-05"
+  },
+  "barc-oces": {
+   "cycle": "2026",
+   "body": "Bhabha Atomic Research Centre (BARC), Department of Atomic Energy",
+   "fee": "₹500 for General/OBC men; no fee for women, transgender, SC/ST and PwD",
+   "mode": "Online test (100 MCQs, 2 hours, +3/−1) or a valid GATE score, then interview",
+   "age": "Up to 26 (OBC 29, SC/ST 31) on 1 Aug of the year",
+   "eligibility": "B.E./B.Tech in listed branches or M.Sc in listed sciences, with 60% (or 6.0 CGPA)",
+   "last": {
+    "reg": "Till 21 Jan 2026",
+    "exam": "Online test 14–15 Mar 2026; interviews 12 May – 12 Jun 2026"
+   },
+   "site": "barc.gov.in",
+   "links": [
+    [
+     "BARC careers (officers)",
+     "https://www.barc.gov.in/careers/officers.html"
+    ],
+    [
+     "OCES/DGFS 2026 brochure (PDF)",
+     "https://www.barc.gov.in/careers/barc_ts_OCES_DGFS_brochure.pdf"
+    ]
+   ],
+   "src": "https://www.barc.gov.in/careers/barc_ts_OCES_DGFS_brochure.pdf",
    "checked": "2026-11-05"
   },
   "bihar-dcece": {
@@ -834,6 +880,31 @@
    "src": "https://cdnbbsr.s3waas.gov.in/s3d1a21da7bca4abff8b0b61b87597de73/uploads/2026/01/202601031633478370.pdf",
    "checked": "2026-11-05"
   },
+  "drdo-ceptam": {
+   "cycle": "CEPTAM-11",
+   "body": "DRDO (CEPTAM)",
+   "last": {
+    "reg": "Closed 11 Jan 2026 (extended)",
+    "exam": "Tier I CBT held in 2026"
+   },
+   "site": "drdo.gov.in",
+   "links": [
+    [
+     "CEPTAM-11 advertisement (PDF)",
+     "https://drdo.gov.in/drdo/sites/default/files/vacancy/CEPTAM-11_AdvtEnglish.pdf"
+    ],
+    [
+     "CEPTAM-11 Tier I CBT notice",
+     "https://drdo.gov.in/drdo/en/announcement/tier-i-cbt-examination-notice-under-ceptam-11-advertisement"
+    ],
+    [
+     "Important notice for CEPTAM-11 candidates",
+     "https://drdo.gov.in/drdo/en/announcement/important-notice-ceptam-11-candidates"
+    ]
+   ],
+   "src": "https://drdo.gov.in/drdo/en/announcement/last-date-online-application-ceptam-11-extended-11th-january-2026",
+   "checked": "2026-11-05"
+  },
   "dsssb": {
    "cycle": "2026",
    "body": "Delhi Subordinate Services Selection Board",
@@ -1342,6 +1413,34 @@
     "exam": "Qualifier exam after 4 weeks of coursework"
    }
   },
+  "india-post-gds": {
+   "cycle": "2026 (Schedule II, July 2026)",
+   "body": "Department of Posts, India Post",
+   "fee": "₹100; no fee for women, SC/ST, PwBD and transwomen",
+   "mode": "No written exam: merit list from Class 10 marks, then document verification",
+   "age": "18 to 40 (relaxation: SC/ST 5 years, OBC 3, PwBD 10)",
+   "eligibility": "Class 10 pass with Maths and English; local language studied up to Class 10; can ride a bicycle and use a computer",
+   "last": {
+    "reg": "Registration 31 Aug – 19 Sep 2026; applications 2 – 21 Sep 2026"
+   },
+   "site": "indiapostgdsonline.gov.in",
+   "links": [
+    [
+     "GDS online engagement",
+     "https://www.indiapost.gov.in/gdsonlineengagement"
+    ],
+    [
+     "GDS Schedule II July 2026 notification (PDF)",
+     "https://www.indiapost.gov.in/gdsonlineengagement/pdf/descriptive-notification.pdf"
+    ],
+    [
+     "Online GDS vacancies",
+     "https://www.indiapost.gov.in/vacancies/online-gds"
+    ]
+   ],
+   "src": "https://www.indiapost.gov.in/gdsonlineengagement/pdf/descriptive-notification.pdf",
+   "checked": "2026-11-05"
+  },
   "ioqm": {
    "cycle": "2026–27",
    "body": "Mathematics Teachers' Association (India) with HBCSE",
@@ -1447,6 +1546,31 @@
     ]
    ],
    "src": "https://admission.isical.ac.in/Documents/IsiAdmission2026/Admission-Notice-2026.pdf",
+   "checked": "2026-11-05"
+  },
+  "isro-icrb": {
+   "cycle": "2026 (ISRO:ICRB:03(EMC):2026)",
+   "body": "ISRO Centralised Recruitment Board",
+   "last": {
+    "reg": "27 Aug – 16 Sep 2026",
+    "exam": "Written test 29 Oct 2026 (postponed)"
+   },
+   "site": "isro.gov.in",
+   "links": [
+    [
+     "ICRB Scientist/Engineer 'SC' recruitment",
+     "https://www.isro.gov.in/ICRB_Recruitment13.html"
+    ],
+    [
+     "ISRO careers",
+     "https://www.isro.gov.in/Careers.html"
+    ],
+    [
+     "Recruitment FAQs 2026 (PDF)",
+     "https://www.isro.gov.in/media_isro/pdf/recruitmentNotice/2026/August/FAQs_2026__27082026.pdf"
+    ]
+   ],
+   "src": "https://www.isro.gov.in/ICRB_Recruitment13.html",
    "checked": "2026-11-05"
   },
   "jamia-entrance": {
@@ -1636,6 +1760,27 @@
     ]
    ],
    "src": "https://kvsangathan.nic.in/en/interview-notice/",
+   "checked": "2026-11-05"
+  },
+  "lic-aao": {
+   "cycle": "32nd batch",
+   "body": "Life Insurance Corporation of India",
+   "site": "licindia.in",
+   "links": [
+    [
+     "AAO (Generalist) 32nd batch",
+     "https://licindia.in/documents/d/guest/generalists-09042026"
+    ],
+    [
+     "AAO Generalist notification (PDF)",
+     "https://licindia.in/documents/d/guest/aao-generalist-notification-2025-final"
+    ],
+    [
+     "AAO Specialist notification (PDF)",
+     "https://licindia.in/documents/d/guest/aao-specialist-notification-2025-final"
+    ]
+   ],
+   "src": "https://licindia.in/documents/d/guest/generalists-09042026",
    "checked": "2026-11-05"
   },
   "mah-bba-cet": {
@@ -3400,5 +3545,5 @@
    "checked": "2026-11-05"
   }
  },
- "count": 129
+ "count": 135
 }
