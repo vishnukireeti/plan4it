@@ -135,8 +135,31 @@ ABBREV = [
 ]
 
 
+def fix_mojibake(s):
+    """Undo text that was saved in the wrong encoding upstream, e.g. "VisvesvarayaÂ " or Hindi
+    names that arrive as "Ã Â¤..."; only accept a repair that decodes cleanly."""
+    for _ in range(3):
+        if not re.search('[\u00c2\u00c3\u00e2]', s):
+            break
+        try:
+            t = s.encode('cp1252').decode('utf-8')
+        except (UnicodeEncodeError, UnicodeDecodeError):
+            try:
+                t = s.encode('latin-1').decode('utf-8')
+            except (UnicodeEncodeError, UnicodeDecodeError):
+                break
+        if t == s:
+            break
+        s = t
+    for bad, good in (('\u00e2\u20ac\u2122', "'"), ('\u00c2\u20ac', ''), ('\u00e2\u20ac', ''), ('\u0152', ''), ('\u0153', ''), ('\x9d', '')):
+        s = s.replace(bad, good)
+    s = re.sub('\u00e2(?=[\\s(]|$)', '', s)  # a lone leftover byte, as in "Kendujharâ (Keonjhar)"
+    return s.replace('\u00c2\u00a0', ' ').replace('\u00c2 ', ' ')
+
+
 def clean_space(s):
-    return re.sub(r'\s+', ' ', str(s or '').replace(' ', ' ')).strip(' ,.-')
+    s = fix_mojibake(str(s or '')).replace('"', '')
+    return re.sub(r'\s+', ' ', s.replace('\u00a0', ' ')).strip(' ,.-\'`')
 
 
 def display_name(s):

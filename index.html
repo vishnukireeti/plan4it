@@ -11935,23 +11935,25 @@
         };
         function dirSearchIndex(list) {
             if (list._ix) return list._ix;
-            const name = new Map(), other = new Map();
+            const name = new Map(), other = new Map(), tags = new Map();
             const add = function (map, w, i) { if (!w) return; let a = map.get(w); if (!a) { a = []; map.set(w, a); } if (a[a.length - 1] !== i) a.push(i); };
             list.forEach(function (c, i) {
                 searchNorm(c.name).split(' ').forEach(function (w) { add(name, w, i); });
                 searchAcronyms(c.name).split(' ').forEach(function (w) { add(name, w, i); });
-                const o = [c.district, c.state, c.uni, DIR_KIND_LABEL[c.kind], DIR_OWN_LABEL[c.ownKey], c.women ? 'women girls' : '', c._lv.dip ? 'diploma polytechnic' : '',
-                    c._fields.map(function (f) { return f + ' ' + (DIR_TAG_WORDS[f] || ''); }).join(' '), c.courses.join(' '), c.pin, c.aishe].join(' ');
+                // where it is and who runs it: strong; what it teaches (inferred field words): weaker
+                const o = [c.district, c.state, c.uni, DIR_KIND_LABEL[c.kind], DIR_OWN_LABEL[c.ownKey], c.women ? 'women girls' : '', c.courses.join(' '), c.pin, c.aishe].join(' ');
                 searchNorm(o).split(' ').forEach(function (w) { add(other, w, i); });
+                const tg = [c._lv.dip ? 'diploma polytechnic' : '', c._fields.map(function (f) { return f + ' ' + (DIR_TAG_WORDS[f] || ''); }).join(' ')].join(' ');
+                searchNorm(tg).split(' ').forEach(function (w) { add(tags, w, i); });
             });
-            const vocab = Array.from(new Set(Array.from(name.keys()).concat(Array.from(other.keys())))).sort();
-            list._ix = { name: name, other: other, vocab: vocab, n: list.length };
+            const vocab = Array.from(new Set(Array.from(name.keys()).concat(Array.from(other.keys()), Array.from(tags.keys())))).sort();
+            list._ix = { name: name, other: other, tags: tags, vocab: vocab, n: list.length };
             return list._ix;
         }
         function dirWordMatches(ix, t) {
             // words in the index that match token t, with a score (same scale as searchWordScore)
             const out = [], v = ix.vocab;
-            if (ix.name.has(t) || ix.other.has(t)) out.push([t, 10]);
+            if (ix.name.has(t) || ix.other.has(t) || ix.tags.has(t)) out.push([t, 10]);
             if (t.length >= 3) {
                 let lo = 0, hi = v.length;
                 while (lo < hi) { const mid = (lo + hi) >> 1; if (v[mid] < t) lo = mid + 1; else hi = mid; }
@@ -11959,7 +11961,7 @@
             }
             // near-spellings too, unless the word is common: a typo can itself be a rare word in the data
             // ("Polytecnic" is in one college's official name), and must still find the 2,000 polytechnics
-            const common = (ix.name.get(t) || []).length + (ix.other.get(t) || []).length >= 25;
+            const common = (ix.name.get(t) || []).length + (ix.other.get(t) || []).length + (ix.tags.get(t) || []).length >= 25;
             if ((!out.length || !common) && t.length >= 5) {
                 const mx = t.length >= 8 ? 2 : 1;
                 for (let k = 0; k < v.length; k++) {
@@ -11984,12 +11986,13 @@
                 toks.forEach(function (t) {
                     const best = new Float32Array(n);
                     const apply = function (word, s) {
-                        const a = ix.name.get(word), b = ix.other.get(word);
+                        const a = ix.name.get(word), b = ix.other.get(word), g = ix.tags.get(word);
                         if (a) for (let k = 0; k < a.length; k++) if (s > best[a[k]]) best[a[k]] = s;
                         if (b) { const s2 = s * 0.75; for (let k = 0; k < b.length; k++) if (s2 > best[b[k]]) best[b[k]] = s2; }
+                        if (g) { const s3 = s * 0.5; for (let k = 0; k < g.length; k++) if (s3 > best[g[k]]) best[g[k]] = s3; }
                     };
                     dirWordMatches(ix, t).forEach(function (m) { apply(m[0], m[1]); });
-                    (SEARCH_SYN[t] || []).forEach(function (a) { if (a !== t && (ix.name.has(a) || ix.other.has(a))) apply(a, 5); });
+                    (SEARCH_SYN[t] || []).forEach(function (a) { if (a !== t && (ix.name.has(a) || ix.other.has(a) || ix.tags.has(a))) apply(a, 5); });
                     for (let k = 0; k < n; k++) if (best[k] > 0) { hits[k]++; total[k] += best[k]; }
                 });
                 for (let k = 0; k < n; k++) {

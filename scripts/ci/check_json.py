@@ -18,7 +18,7 @@ def main():
         print(f"No {DATA_DIR}/ directory found -- nothing to check.")
         return
 
-    files = sorted(DATA_DIR.glob("*.json"))
+    files = sorted(DATA_DIR.glob("*.json")) + sorted(DATA_DIR.glob("colleges/*.json"))
     if not files:
         print(f"No .json files in {DATA_DIR}/ -- nothing to check.")
         return
@@ -36,6 +36,25 @@ def main():
         for path, err in failures:
             print(f"  - {path}: {err}")
         sys.exit(1)
+
+    # the college directory: every state listed in the index needs its file, with the rows it promises
+    idx_path = DATA_DIR / "colleges" / "index.json"
+    if idx_path.exists():
+        idx = json.loads(idx_path.read_text(encoding="utf-8"))
+        problems = []
+        for st in idx.get("states", []):
+            f = DATA_DIR / "colleges" / (st["code"] + ".json")
+            if not f.exists():
+                problems.append(f"{f} is missing")
+                continue
+            d = json.loads(f.read_text(encoding="utf-8"))
+            if len(d.get("rows", [])) != st["count"]:
+                problems.append(f"{f}: index says {st['count']} rows, file has {len(d.get('rows', []))}")
+            if d.get("cols", [None])[0] != "id":
+                problems.append(f"{f}: unexpected column layout")
+        if problems:
+            print("College directory check FAILED:\n" + "\n".join("  - " + x for x in problems))
+            sys.exit(1)
 
     print(f"JSON OK: {len(files)} file(s) in {DATA_DIR}/ all parse.")
 
