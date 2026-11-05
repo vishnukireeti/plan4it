@@ -566,6 +566,337 @@
    "src": "https://cdnbbsr.s3waas.gov.in/s36832a7b24bc06775d02b7406880b93fc/uploads/2026/01/202601281538483605.pdf",
    "checked": "2026-11-05"
   },
+  "rrb-alp": {
+   "cycle": "2026 (CEN 01/2026)",
+   "body": "Railway Recruitment Boards (RRBs)",
+   "fee": "₹500 (₹400 refunded after CBT 1). SC, ST, ex-servicemen, women, transgender, minority and EBC: ₹250 (fully refunded after CBT 1)",
+   "mode": "Online CBT 1, CBT 2, then a computer-based aptitude test (CBAT)",
+   "duration": "CBT 1: 60 minutes. CBT 2: 2 hours 30 minutes",
+   "pattern": "CBT 1: 75 questions (Maths, Mental Ability, General Science). CBT 2 Part A: 100 questions; Part B: 75 trade questions (qualifying at 35%). One-third negative marking. Final merit: CBT 2 Part A and CBAT, 50:50",
+   "age": "18 to 30 on 1 Jul 2026. Relaxation: SC/ST 5 years, OBC 3",
+   "eligibility": "Class 10 plus ITI in a listed trade, or apprenticeship, or a diploma/degree in Mechanical, Electrical, Electronics or Automobile engineering",
+   "last": {
+    "reg": "15 May – 14 Jun 2026",
+    "exam": "CBT dates published on the RRB websites"
+   },
+   "site": "rrbapply.gov.in",
+   "links": [
+    [
+     "RRB application portal",
+     "https://www.rrbapply.gov.in/"
+    ],
+    [
+     "ALP CEN 01/2026 notification (PDF)",
+     "https://www.rrbcdg.gov.in/uploads/2026/01-ALP/012026ALP-CEN.pdf"
+    ],
+    [
+     "RRB Chandigarh ALP 2026 page",
+     "https://www.rrbcdg.gov.in/2026-01-alp.php"
+    ]
+   ],
+   "src": "https://www.rrbcdg.gov.in/uploads/2026/01-ALP/012026ALP-CEN.pdf",
+   "checked": "2026-11-05"
+  },
+  "rrb-group-d": {
+   "cycle": "2026 (CEN 09/2025)",
+   "body": "Railway Recruitment Boards (RRBs)",
+   "fee": "₹500 (₹400 refunded after the CBT). SC, ST, ex-servicemen, PwBD, women, transgender, minority and EBC: ₹250 (fully refunded after the CBT)",
+   "mode": "Online CBT, then physical efficiency test, documents and medical",
+   "duration": "90 minutes",
+   "pattern": "100 questions: General Science 25, Maths 25, Reasoning 30, General Awareness 20. One-third negative marking. PET: men carry 35 kg for 100 m and run 1,000 m in 4 min 15 s; women 20 kg and 1,000 m in 5 min 40 s",
+   "age": "18 to 33 on 1 Jan 2026. Relaxation: SC/ST 5 years, OBC 3, PwBD 10 to 15",
+   "eligibility": "Class 10 or ITI (post-wise details in the notification)",
+   "last": {
+    "reg": "31 Jan – 2 Mar 2026",
+    "exam": "CBT dates published on the RRB websites"
+   },
+   "site": "rrbapply.gov.in",
+   "links": [
+    [
+     "RRB application portal",
+     "https://www.rrbapply.gov.in/"
+    ],
+    [
+     "Level 1 CEN 09/2025 notification (PDF)",
+     "https://www.rrbcdg.gov.in/uploads/2025/09-LVL1/092025-CEN.pdf"
+    ]
+   ],
+   "src": "https://www.rrbcdg.gov.in/uploads/2025/09-LVL1/092025-CEN.pdf",
+   "checked": "2026-11-05"
+  },
+  "rrb-ntpc": {
+   "cycle": "2026",
+   "body": "Railway Recruitment Boards (RRBs)",
+   "fee": "₹500 (₹400 refunded after CBT 1). Concession categories ₹250 (fully refunded after CBT 1)",
+   "mode": "Online CBT 1, CBT 2, typing or aptitude test (some posts), documents and medical",
+   "duration": "90 minutes per CBT",
+   "pattern": "CBT 1: 100 questions (General Awareness 40, Maths 30, Reasoning 30). CBT 2: 120 questions. One-third negative marking",
+   "age": "Usually 18–30 (Class 12 posts) or 18–33/36 (graduate posts); check each CEN",
+   "eligibility": "Class 12 for undergraduate posts (clerks, typists); a degree for graduate posts (Station Master, Goods Guard and others)",
+   "last": {
+    "reg": "Station Master CEN 08/2026: 27 Oct – 25 Nov 2026",
+    "exam": "NTPC UG (CEN 07/2025) CBT 2 held in 2026"
+   },
+   "site": "rrbapply.gov.in",
+   "links": [
+    [
+     "RRB application portal",
+     "https://www.rrbapply.gov.in/"
+    ],
+    [
+     "Station Master recruitment 2026, 1,265 posts (press release, PDF)",
+     "https://rb.indianrailways.gov.in/public/cms/pdf/press_release/Indian_Railways_to_Recruit_1,265_Station_Masters_Nationwide/2026/10/179325285968327OCT2026-1.pdf"
+    ],
+    [
+     "NTPC Undergraduate CEN 06/2024 (PDF)",
+     "https://www.rrbcdg.gov.in/uploads/2024/06-NTPCUG/Detailed%20CEN%2006-2024%20NTPC.pdf"
+    ]
+   ],
+   "src": "https://www.rrbcdg.gov.in/uploads/2024/06-NTPCUG/Detailed%20CEN%2006-2024%20NTPC.pdf",
+   "checked": "2026-11-05"
+  },
+  "ssc-cgl": {
+   "cycle": "2026",
+   "body": "Staff Selection Commission (SSC)",
+   "fee": "₹100; no fee for women, SC, ST, PwBD and eligible ex-servicemen",
+   "mode": "Online (CBT): Tier I, then Tier II",
+   "duration": "Tier I: 1 hour (15-minute timer per section)",
+   "pattern": "Tier I: 100 MCQs, 200 marks (Reasoning, General Awareness, Quant, English, 25 each). −0.5 per wrong answer",
+   "age": "18–27 or 18–30 on 1 Aug (depends on the post; 32 for Junior Statistical Officer), with relaxations",
+   "eligibility": "Bachelor's degree (final-year students who finish by 1 Aug can apply). Some posts need Maths or Statistics",
+   "last": {
+    "reg": "21 May – 22 Jun 2026",
+    "exam": "Tier I: 30 Sep – 30 Oct 2026; Tier II: December 2026 (tentative)"
+   },
+   "site": "ssc.gov.in",
+   "links": [
+    [
+     "SSC official website",
+     "https://ssc.gov.in/"
+    ],
+    [
+     "CGL 2026 notice (PDF)",
+     "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_cgl_2025.pdf"
+    ],
+    [
+     "CGL 2026 Tier I schedule notice (PDF)",
+     "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Important%20Notice%202026_cgle_2026_12092026.pdf"
+    ],
+    [
+     "SSC tentative calendar 2026–27 (PDF)",
+     "https://ssc.gov.in/api/attachment/uploads/masterData/ExamCalendar/Tentative_Calendar2026_27_08012026.pdf"
+    ]
+   ],
+   "src": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_cgl_2025.pdf",
+   "checked": "2026-11-05"
+  },
+  "ssc-chsl": {
+   "cycle": "2026",
+   "body": "Staff Selection Commission (SSC)",
+   "fee": "₹100; no fee for women, SC, ST, PwBD and eligible ex-servicemen",
+   "mode": "Online (CBT): Tier I, then Tier II",
+   "duration": "Tier I: 60 minutes (15-minute timer per section)",
+   "pattern": "Tier I: 100 MCQs, 200 marks (English, Reasoning, Quant, General Awareness, 25 each). −0.5 per wrong answer",
+   "age": "18 to 27 on 1 Aug 2026 (born 2 Aug 1999 – 1 Aug 2008). Relaxation: SC/ST 5 years, OBC 3, PwBD 10",
+   "eligibility": "Class 12 pass (Science with Maths for some DEO posts)",
+   "next": {
+    "exam": "2026-11-30",
+    "regOpens": "2026-09-07",
+    "regCloses": "2026-10-07",
+    "status": "Official",
+    "short": "Tier I: 30 Nov – 31 Dec 2026 (proposed)"
+   },
+   "last": {
+    "reg": "7 Sep – 7 Oct 2026 (correction 14–16 Oct)",
+    "exam": "Tier I: 30 Nov – 31 Dec 2026 (proposed)"
+   },
+   "site": "ssc.gov.in",
+   "links": [
+    [
+     "SSC official website",
+     "https://ssc.gov.in/"
+    ],
+    [
+     "CHSL 2026 notice (PDF)",
+     "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_chsl_2026.pdf"
+    ],
+    [
+     "SSC exam schedule notice, 1 Oct 2026 (PDF)",
+     "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_01102026.pdf"
+    ]
+   ],
+   "src": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_chsl_2026.pdf",
+   "checked": "2026-11-05"
+  },
+  "ssc-cpo": {
+   "cycle": "2026",
+   "body": "Staff Selection Commission (SSC)",
+   "fee": "₹100; no fee for women, SC, ST and eligible ex-servicemen",
+   "mode": "Online (CBT) Paper I, physical tests, Paper II, medical",
+   "duration": "Paper I: 1 hour",
+   "pattern": "Paper I: 100 MCQs, 100 marks (Reasoning, GK, Quant, English, 25 each). −0.25 per wrong answer",
+   "age": "20 to 25 on 1 Aug 2026 (SI Fire, CISF: 18 to 30). Relaxation: SC/ST 5 years, OBC 3",
+   "eligibility": "Bachelor's degree. Men applying for Delhi Police need a car and motorcycle licence. Height: men 170 cm, women 157 cm (relaxed for hill areas and ST)",
+   "next": {
+    "exam": "2026-11-23",
+    "regOpens": "2026-09-10",
+    "regCloses": "2026-09-30",
+    "status": "Official",
+    "short": "Paper I: 23–28 Nov 2026 (revised)"
+   },
+   "last": {
+    "reg": "10 – 30 Sep 2026",
+    "exam": "Paper I: 23–28 Nov 2026"
+   },
+   "site": "ssc.gov.in",
+   "links": [
+    [
+     "SSC official website",
+     "https://ssc.gov.in/"
+    ],
+    [
+     "SI in Delhi Police and CAPFs 2026 notice (PDF)",
+     "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_capf_2026.pdf"
+    ],
+    [
+     "Revised exam dates, 26 Oct 2026 (PDF)",
+     "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Important%20notice_revised_dated_26_10_2026.pdf"
+    ]
+   ],
+   "src": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_capf_2026.pdf",
+   "checked": "2026-11-05"
+  },
+  "ssc-gd": {
+   "cycle": "2026",
+   "body": "Staff Selection Commission (SSC)",
+   "fee": "₹100; no fee for women, SC, ST and eligible ex-servicemen",
+   "mode": "Online (CBT), then physical tests and medical",
+   "duration": "60 minutes",
+   "pattern": "80 MCQs, 160 marks (Reasoning, GK, Elementary Maths, English/Hindi, 20 each). −0.25 per wrong answer. Paper in English, Hindi and 13 regional languages",
+   "age": "18 to 23 on 1 Jan of the exam year. Relaxation: SC/ST 5 years, OBC 3",
+   "eligibility": "Class 10 pass, with domicile of the state chosen. Height: men 170 cm, women 157 cm (relaxed for some regions and ST). Run: men 5 km in 24 min, women 1.6 km in 8.5 min",
+   "last": {
+    "reg": "1 – 31 Dec 2025",
+    "exam": "February – April 2026",
+    "result": "CBE result 12 Oct 2026"
+   },
+   "site": "ssc.gov.in",
+   "links": [
+    [
+     "SSC official website",
+     "https://ssc.gov.in/"
+    ],
+    [
+     "Constable (GD) 2026 notice (PDF)",
+     "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_CTGD_2026.pdf"
+    ],
+    [
+     "SSC tentative calendar 2026–27 (GD 2027 notice planned for Sep 2026) (PDF)",
+     "https://ssc.gov.in/api/attachment/uploads/masterData/ExamCalendar/Tentative_Calendar2026_27_08012026.pdf"
+    ]
+   ],
+   "src": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_CTGD_2026.pdf",
+   "checked": "2026-11-05"
+  },
+  "ssc-je": {
+   "cycle": "2026",
+   "body": "Staff Selection Commission (SSC)",
+   "fee": "₹100; no fee for women, SC, ST, PwBD and ex-servicemen",
+   "mode": "Online (CBT): Paper I (qualifying), then Paper II",
+   "duration": "2 hours per paper",
+   "pattern": "Paper I: 200 MCQs, 200 marks (Reasoning 50, General Awareness 50, engineering subject 100), −0.25 per wrong answer. Paper II: 100 questions, 300 marks, −1 per wrong answer",
+   "age": "Up to 30 or 32 on 1 Aug 2026, depending on the post, with relaxations",
+   "eligibility": "Diploma or degree in Civil, Mechanical or Electrical engineering (varies by post)",
+   "next": {
+    "exam": "2026-11-30",
+    "regOpens": "2026-09-02",
+    "regCloses": "2026-09-22",
+    "status": "Official",
+    "short": "Paper I: 2–6 Nov and 30 Nov – 1 Dec 2026"
+   },
+   "last": {
+    "reg": "2 – 22 Sep 2026",
+    "exam": "Paper I: 2–6 Nov and 30 Nov – 1 Dec 2026"
+   },
+   "site": "ssc.gov.in",
+   "links": [
+    [
+     "SSC official website",
+     "https://ssc.gov.in/"
+    ],
+    [
+     "JE 2026 notice (PDF)",
+     "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_je_2026.pdf"
+    ],
+    [
+     "Revised exam dates, 26 Oct 2026 (PDF)",
+     "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Important%20notice_revised_dated_26_10_2026.pdf"
+    ]
+   ],
+   "src": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_je_2026.pdf",
+   "checked": "2026-11-05"
+  },
+  "ssc-mts": {
+   "cycle": "2025",
+   "body": "Staff Selection Commission (SSC)",
+   "mode": "Online (CBT) in two sessions; Havaldar posts also have physical tests",
+   "last": {
+    "exam": "4 – 20 Feb 2026 (MTS and Havaldar 2025)",
+    "result": "Havaldar CBE result 3 Aug 2026"
+   },
+   "site": "ssc.gov.in",
+   "links": [
+    [
+     "SSC official website",
+     "https://ssc.gov.in/"
+    ],
+    [
+     "MTS and Havaldar 2025 notice (PDF)",
+     "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_mts_2025.pdf"
+    ],
+    [
+     "MTS and Havaldar 2025 result write-up (PDF)",
+     "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/writeup_mts_03082026.pdf"
+    ],
+    [
+     "SSC tentative calendar 2026–27 (PDF)",
+     "https://ssc.gov.in/api/attachment/uploads/masterData/ExamCalendar/Tentative_Calendar2026_27_08012026.pdf"
+    ]
+   ],
+   "src": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/writeup_mts_03082026.pdf",
+   "checked": "2026-11-05"
+  },
+  "ssc-steno": {
+   "cycle": "2026",
+   "body": "Staff Selection Commission (SSC)",
+   "fee": "₹100; no fee for women, SC, ST, PwBD and eligible ex-servicemen",
+   "mode": "Online (CBT), then a stenography skill test",
+   "duration": "CBT: 2 hours (sectional timers)",
+   "pattern": "200 MCQs, 200 marks (Reasoning 50, General Awareness 50, English 100). −0.25 per wrong answer. Skill test: dictation at 100 wpm (Grade C) or 80 wpm (Grade D)",
+   "age": "Grade C: 18–30; Grade D: 18–27 (on 1 Aug 2026), with relaxations",
+   "eligibility": "Class 12 pass, with stenography skill",
+   "last": {
+    "reg": "24 Apr – 15 May 2026",
+    "exam": "9 – 15 Sep 2026"
+   },
+   "site": "ssc.gov.in",
+   "links": [
+    [
+     "SSC official website",
+     "https://ssc.gov.in/"
+    ],
+    [
+     "Stenographer 2026 notice (PDF)",
+     "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_steno_2026.pdf"
+    ],
+    [
+     "Stenographer 2026 revised dates (PDF)",
+     "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Steno_2026_Dates_31082026.pdf"
+    ]
+   ],
+   "src": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_steno_2026.pdf",
+   "checked": "2026-11-05"
+  },
   "ts-polycet": {
    "cycle": "2026",
    "body": "State Board of Technical Education and Training (SBTET), Telangana",
@@ -818,5 +1149,5 @@
    "checked": "2026-11-05"
   }
  },
- "count": 28
+ "count": 38
 }
