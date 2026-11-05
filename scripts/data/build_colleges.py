@@ -171,6 +171,56 @@ def display_name(s):
     return smart_title(s)
 
 
+# Words that mark the part of an AISHE name that is the institution itself. A comma-separated
+# tail after it ("..., Govt. Middle School Annex, Near NES Office, Yelahanka, Bangalore -560")
+# is the address, which belongs on the address line, not in the title.
+INST_WORDS = re.compile(
+    r"\b(college|colleges|institute|institution|university|vishwavidyalaya|vidyapeeth|vidyapith|"
+    r"mahavidyalaya|mahavidyalay|mahavidhyalaya|vidyalaya|school|academy|polytechnic|"
+    r"centre|center|kendra|campus|faculty|department|iti|iit|iiit|nit|iim|aiims|"
+    r"seminary|madrasa|gurukul|pharmacy|nursing)\b", re.I)
+WEAK_LEAD = re.compile(r"^(college|institute|school|faculty|department|centre|center)\s+(of|for)\b", re.I)
+NOISE = [
+    re.compile(r"\s*\(\s*(inst\.?|institute)\s*code[^)]*\)", re.I),        # (Inst. Code - 014)
+    re.compile(r"\s*\(\s*cc\s*-\s*[a-z0-9]+\s*\)", re.I),                    # (CC-A5)
+    re.compile(r"\s*\b(ph|phone|mob|mobile|tel)\b\.?\s*(no)?\.?\s*[:\-]*[\s\d,/+\-]*$", re.I),  # Ph. No.: 98971...
+    re.compile(r"\s*\b(pin|pincode)\b\s*[-:]?\s*[\d\s]*$", re.I),
+    re.compile(r"\s*-\s*\d{3,6}\s*$"),                                       # "Bangalore -560"
+]
+NAME_CONT = re.compile(r"^(&|and\b|research|science|sciences|arts|commerce|technology|management|engineering|"
+                       r"education|studies|medical|hospital|humanities|law|pharmacy|nursing|computer)\b", re.I)
+PLACE_HINT = re.compile(r"^(near|opp\.?|opposite|behind|beside|at|po|p\.o\.?|via|dist\.?|distt\.?|tq\.?|tal\.?|"
+                        r"taluk|tehsil|village|vill\.?|gram|post|road|rd\.?|sector|sec\.?|plot|no\.?)\b", re.I)
+
+
+def split_name_place(name):
+    """Return (institution name, place text) for names with an address glued on."""
+    s = name
+    for rx in NOISE:
+        s = rx.sub('', s)
+    s = re.sub(r'\s*,\s*', ', ', s).strip(' ,-')
+    segs = [x.strip() for x in s.split(', ') if x.strip()]
+    if len(segs) <= 1:
+        return s, ''
+    k = next((i for i, x in enumerate(segs) if INST_WORDS.search(x) and not PLACE_HINT.match(x)), None)
+    if k is None:
+        # no institution word anywhere: keep the first part unless it is too short to identify
+        k = 0 if len(segs[0]) >= 6 else 1
+    start = k - 1 if k > 0 and WEAK_LEAD.match(segs[k]) else k
+    end = k
+    # commas inside the real name: "Institute of Technical Education, Research & Management"
+    while end + 1 < len(segs) and NAME_CONT.match(segs[end + 1]) and not PLACE_HINT.match(segs[end + 1]):
+        end += 1
+    if start == 0 and WEAK_LEAD.match(segs[0]) and len(segs[0].split()) <= 4 and end + 1 < len(segs):
+        end += 1  # "College of Engineering, Pune": the city is part of how it is known
+    title = ', '.join(segs[start:end + 1])
+    rest = segs[end + 1:]
+    place = ', '.join(rest)
+    # a lone leading society/trust name ("Trimurti Shikshan Prasarak Mandal, ...") is dropped from
+    # the title; anything before k that isn't kept becomes part of nothing (it's the managing body)
+    return smart_title(title.strip(' ,-')), smart_title(place) if place else ''
+
+
 def smart_title(s):
     """AISHE names arrive in ALL CAPS, all lower case, or Mixed. Only re-case the first two."""
     s = clean_space(s)
@@ -828,7 +878,7 @@ def build():
         for r in sorted(by_state.get(st, []), key=lambda r: r['name'].lower()):
             if r.get('linked'):
                 continue
-            name = display_name(r['name'])
+            name, place = split_name_place(display_name(r['name']))
             kind = r['kind']
             progs = r.get('progs') or []
             courses = []
@@ -890,7 +940,7 @@ def build():
             rows_out.append([
                 rid, name, r['district'], kind, ctype, own, tier, r['code'], ui, flags,
                 ''.join(chr(97 + FIELD_IDX[f]) for f in fset), ''.join(sorted(levels)),
-                courses, smart_title(r.get('address', '')), pin, r.get('aicte', ''),
+                courses, smart_title(r.get('address', '')) or place, pin, r.get('aicte', ''),
             ])
             dists[r['district']] += 1
             total['tier%d' % tier] += 1
