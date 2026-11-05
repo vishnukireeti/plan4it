@@ -1,6 +1,69 @@
 {
  "v": 1,
  "exams": {
+  "aiapget": {
+   "cycle": "2026",
+   "body": "National Testing Agency (NTA)",
+   "fee": "₹2,700 (General); ₹2,450 (EWS/OBC-NCL); ₹1,800 (SC/ST/PwBD/third gender)",
+   "mode": "Online (CBT)",
+   "duration": "2 hours",
+   "pattern": "120 MCQs, 480 marks; +4 correct, −1 wrong",
+   "eligibility": "BAMS, BUMS, BSMS or BHMS with registration and internship completed by the cut-off date",
+   "age": "No upper age limit",
+   "last": {
+    "reg": "10 – 30 Jul 2026",
+    "exam": "22 Aug 2026",
+    "result": "Announced on the NTA website"
+   },
+   "site": "exams.nta.nic.in/aiapget",
+   "links": [
+    [
+     "AIAPGET official page",
+     "https://exams.nta.nic.in/aiapget/"
+    ],
+    [
+     "AIAPGET 2026 information bulletin (PDF)",
+     "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2026/07/202607111067394464.pdf"
+    ],
+    [
+     "AIAPGET 2026 final answer key",
+     "https://exams.nta.nic.in/final-answer-key-of-all-india-ayush-post-graduate-entrance-test-aiapget-2026/"
+    ]
+   ],
+   "src": "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2026/07/202607111067394464.pdf",
+   "checked": "2026-11-05"
+  },
+  "aissee": {
+   "cycle": "2026",
+   "body": "National Testing Agency (NTA) for the Sainik Schools Society",
+   "fee": "₹850 (General, defence wards, ex-servicemen, OBC-NCL); ₹700 (SC/ST)",
+   "mode": "Pen and paper (OMR)",
+   "duration": "Class 6: 150 minutes. Class 9: 180 minutes",
+   "pattern": "Class 6: 125 MCQs, 300 marks (Language, Maths, Intelligence, GK). Class 9: 150 MCQs, 400 marks (Maths, Intelligence, English, Science, Social Science). No negative marking",
+   "age": "Class 6: 10 to 12 years on 31 March of the admission year. Class 9: 13 to 15 years",
+   "last": {
+    "reg": "10 – 30 Oct 2025",
+    "exam": "January 2026",
+    "result": "Within 6 weeks of the exam"
+   },
+   "site": "aissee.nta.nic.in",
+   "links": [
+    [
+     "AISSEE official website",
+     "https://exams.nta.nic.in/sainik-school-society/"
+    ],
+    [
+     "AISSEE 2026 information bulletin (PDF)",
+     "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2025/10/20251010937989896.pdf"
+    ],
+    [
+     "AISSAC 2026 counselling",
+     "https://exams.nta.nic.in/document/all-india-sainik-schools-admission-counselling-aissac-2026/"
+    ]
+   ],
+   "src": "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2025/10/20251010937989896.pdf",
+   "checked": "2026-11-05"
+  },
   "ap-eapcet": {
    "cycle": "2026",
    "links": [
@@ -63,6 +126,245 @@
    "src": "https://bceceboard.bihar.gov.in/pdf_Adv/ADV_DCECE26_01.pdf",
    "checked": "2026-11-05"
   },
+  "cds": {
+   "cycle": "2026 (II)",
+   "body": "Union Public Service Commission (UPSC)",
+   "fee": "₹200; no fee for women and SC/ST candidates",
+   "mode": "Written (objective, OMR), then SSB interview",
+   "duration": "2 hours per paper",
+   "pattern": "IMA, INA, AFA: English, GK and Elementary Maths, 100 marks each (300). OTA: English and GK only (200). One-third negative marking",
+   "age": "IMA and INA 19–24; AFA 20–24 (26 with a commercial pilot licence); OTA 19–25",
+   "eligibility": "IMA and OTA: any degree. INA: engineering degree or B.Sc with Physics and Maths. AFA: degree with Physics and Maths at Class 12, or B.E. Final-year students can apply",
+   "attempts": "Held twice a year; no attempt limit within the age band",
+   "last": {
+    "reg": "20 May – 9 Jun 2026",
+    "exam": "13 Sep 2026",
+    "result": "Written result 19 Oct 2026"
+   },
+   "site": "upsc.gov.in",
+   "links": [
+    [
+     "UPSC official website",
+     "https://www.upsc.gov.in/"
+    ],
+    [
+     "CDS (II) 2026 notice (PDF)",
+     "https://www.upsc.gov.in/sites/default/files/Notif-CDS-II-2026-Engl-200526.pdf"
+    ],
+    [
+     "CDS (II) 2026 written result (PDF)",
+     "https://www.upsc.gov.in/sites/default/files/WR-CDSE-II-2026-Engl-19102026.pdf"
+    ]
+   ],
+   "src": "https://www.upsc.gov.in/sites/default/files/Notif-CDS-II-2026-Engl-200526.pdf",
+   "checked": "2026-11-05"
+  },
+  "cmat": {
+   "cycle": "2026",
+   "body": "National Testing Agency (NTA)",
+   "fee": "General: ₹2,500 (male), ₹1,250 (female). EWS/SC/ST/OBC-NCL/PwBD/third gender: ₹1,250",
+   "mode": "Online (CBT), English only",
+   "duration": "3 hours",
+   "pattern": "100 MCQs, 400 marks in 5 sections (Quant and DI, Logical Reasoning, Language, General Awareness, Innovation and Entrepreneurship). +4 correct, −1 wrong",
+   "age": "No age limit",
+   "eligibility": "Bachelor's degree in any discipline (final-year students can apply)",
+   "last": {
+    "reg": "17 Oct – 17 Nov 2025",
+    "exam": "25 Jan 2026",
+    "result": "Announced on the NTA website"
+   },
+   "site": "cmat.nta.nic.in",
+   "links": [
+    [
+     "CMAT official website",
+     "https://cmat.nta.nic.in/"
+    ],
+    [
+     "CMAT 2026 information bulletin (PDF)",
+     "https://cdnbbsr.s3waas.gov.in/s3a381c2c35c9157f6b67fd07d5a200ae1/uploads/2025/10/202510171049586023.pdf"
+    ],
+    [
+     "CMAT 2026 answer key notice (exam held 25 Jan 2026)",
+     "https://nta.ac.in/Download/Notice/Notice_20260217190549.pdf"
+    ]
+   ],
+   "src": "https://cdnbbsr.s3waas.gov.in/s3a381c2c35c9157f6b67fd07d5a200ae1/uploads/2025/10/202510171049586023.pdf",
+   "checked": "2026-11-05"
+  },
+  "csir-net": {
+   "cycle": "December 2026",
+   "body": "National Testing Agency (NTA) for CSIR",
+   "fee": "₹1,150 (General); ₹600 (EWS/OBC-NCL); ₹325 (SC/ST/PwD/third gender). Late fee ₹500 extra",
+   "mode": "Online (CBT)",
+   "duration": "3 hours",
+   "pattern": "Parts A, B and C, 200 marks in every subject. Negative marking in most parts (varies by subject)",
+   "age": "JRF: up to 30 years on 1 Dec 2026 (up to 5 years' relaxation for OBC-NCL, SC, ST, PwD, third gender, women). No age limit for Assistant Professor or PhD",
+   "attempts": "No attempt limit; held twice a year",
+   "next": {
+    "exam": "2026-12-19",
+    "regOpens": "2026-10-07",
+    "regCloses": "2026-11-09",
+    "status": "Official",
+    "short": "19, 22 and 27 Dec 2026",
+    "regText": "7 Oct – 5 Nov 2026 (late fee till 9 Nov); correction 10–12 Nov"
+   },
+   "last": {
+    "reg": "7 Oct – 5 Nov 2026 (late fee till 9 Nov)",
+    "exam": "19, 22 and 27 Dec 2026",
+    "result": "To be announced"
+   },
+   "site": "csirnet.nta.nic.in",
+   "links": [
+    [
+     "CSIR NET official website",
+     "https://csirnet.nta.nic.in/"
+    ],
+    [
+     "Joint CSIR-UGC NET December 2026 information bulletin (PDF)",
+     "https://cdnbbsr.s3waas.gov.in/s3efdf562ce2fb0ad460fd8e9d33e57f57/uploads/2026/10/202610071407707951.pdf"
+    ],
+    [
+     "CSIR NET public notices 2026",
+     "https://csirnet.nta.nic.in/document-category/2026-public-notices/"
+    ]
+   ],
+   "src": "https://cdnbbsr.s3waas.gov.in/s3efdf562ce2fb0ad460fd8e9d33e57f57/uploads/2026/10/202610071407707951.pdf",
+   "checked": "2026-11-05"
+  },
+  "cuet-pg": {
+   "cycle": "2026",
+   "body": "National Testing Agency (NTA)",
+   "fee": "Up to 2 papers: ₹1,400 (General), ₹1,200 (EWS/OBC-NCL), ₹1,100 (SC/ST/third gender), ₹1,000 (PwBD); each extra paper ₹700 (General) or ₹600. Outside India ₹7,000. Up to 4 papers",
+   "mode": "Online (CBT) only",
+   "duration": "90 minutes per paper",
+   "pattern": "75 MCQs per paper; +4 correct, −1 wrong",
+   "last": {
+    "reg": "14 Dec 2025 – 14 Jan 2026 (correction 18–20 Jan)",
+    "exam": "March 2026",
+    "result": "Announced on the NTA website"
+   },
+   "site": "exams.nta.nic.in/cuet-pg",
+   "links": [
+    [
+     "CUET PG information bulletin page",
+     "https://exams.nta.nic.in/document/cuet-pg-information-bulletin/"
+    ],
+    [
+     "CUET (PG) 2026 information bulletin (PDF)",
+     "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2025/12/202512161583029269.pdf"
+    ],
+    [
+     "CUET PG participating universities",
+     "https://exams.nta.nic.in/cuet-pg/participating-universities/"
+    ]
+   ],
+   "src": "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2025/12/202512161583029269.pdf",
+   "checked": "2026-11-05"
+  },
+  "cuet-ug": {
+   "cycle": "2026",
+   "body": "National Testing Agency (NTA)",
+   "fee": "Up to 3 subjects: ₹1,000 (General), ₹900 (OBC-NCL/EWS), ₹800 (SC/ST/PwBD/third gender); each extra subject ₹400 / ₹375 / ₹350. Outside India ₹4,500 (+₹1,800 per extra subject)",
+   "mode": "Online (CBT) only",
+   "duration": "60 minutes per test",
+   "pattern": "50 compulsory MCQs per test; +5 correct, −1 wrong. Up to 5 tests including languages and the General Aptitude Test",
+   "age": "No age limit for CUET itself; universities may have their own",
+   "attempts": "No attempt limit",
+   "last": {
+    "reg": "3 – 30 Jan 2026 (correction 2–4 Feb)",
+    "exam": "11 – 31 May 2026",
+    "result": "Announced on the NTA website"
+   },
+   "site": "cuet.nta.nic.in",
+   "links": [
+    [
+     "CUET UG official website",
+     "https://cuet.nta.nic.in/"
+    ],
+    [
+     "CUET (UG) 2026 information bulletin (PDF)",
+     "https://cdnbbsr.s3waas.gov.in/s3d1a21da7bca4abff8b0b61b87597de73/uploads/2026/01/202601031633478370.pdf"
+    ],
+    [
+     "All CUET information bulletins",
+     "https://cuet.nta.nic.in/information-bulletin/"
+    ]
+   ],
+   "src": "https://cdnbbsr.s3waas.gov.in/s3d1a21da7bca4abff8b0b61b87597de73/uploads/2026/01/202601031633478370.pdf",
+   "checked": "2026-11-05"
+  },
+  "gpat": {
+   "cycle": "2026",
+   "body": "National Board of Examinations in Medical Sciences (NBEMS) for the Pharmacy Council of India",
+   "fee": "₹3,500 (General/OBC/EWS); ₹2,500 (SC/ST/PwD)",
+   "mode": "Online (CBT), English only",
+   "duration": "3 hours, in timed sections",
+   "pattern": "125 MCQs, 500 marks; +4 correct, −1 wrong",
+   "eligibility": "B.Pharm (final-year and pre-final-year students can apply)",
+   "attempts": "One application per year; no limit across years stated",
+   "last": {
+    "reg": "23 Dec 2025 – 12 Jan 2026",
+    "exam": "7 Mar 2026",
+    "result": "By 7 Apr 2026"
+   },
+   "site": "natboard.edu.in",
+   "links": [
+    [
+     "NBEMS official website",
+     "https://natboard.edu.in/"
+    ],
+    [
+     "GPAT 2026 information bulletin (PDF)",
+     "https://nbe.edu.in/IB/Information%20bulletin%20GPAT%202026.pdf"
+    ],
+    [
+     "GPAT 2026 result notice",
+     "https://natboard.edu.in/viewNotice.php?NBE=Q0Qwc3Z1d3NhWVEwQVphZGVXRDh2QT09"
+    ]
+   ],
+   "src": "https://nbe.edu.in/IB/Information%20bulletin%20GPAT%202026.pdf",
+   "checked": "2026-11-05"
+  },
+  "ies-ese": {
+   "cycle": "2027",
+   "body": "Union Public Service Commission (UPSC)",
+   "fee": "₹200; no fee for women, SC, ST and PwBD candidates",
+   "mode": "Prelims: objective (OMR). Mains: written. Then personality test",
+   "duration": "Prelims: Paper I 2 hours, Paper II 3 hours",
+   "pattern": "Prelims 500 marks: Paper I General Studies and Engineering Aptitude (200), Paper II engineering discipline (300). One-third negative marking",
+   "age": "21 to 30 on 1 Jan 2027 (born 2 Jan 1997 – 1 Jan 2006). Relaxation: SC/ST 5 years, OBC 3, PwBD 10",
+   "eligibility": "Engineering degree (or equivalent listed in the notice); final-year students can apply",
+   "next": {
+    "exam": "2027-01-31",
+    "regOpens": "2026-09-16",
+    "regCloses": "2026-10-06",
+    "status": "Official",
+    "short": "Prelims 31 Jan 2027; Mains 18 Jun 2027",
+    "regText": "16 Sep – 6 Oct 2026 (closed)"
+   },
+   "last": {
+    "reg": "16 Sep – 6 Oct 2026",
+    "exam": "Prelims 31 Jan 2027; Mains 18 Jun 2027",
+    "result": "Announced on upsc.gov.in"
+   },
+   "site": "upsc.gov.in",
+   "links": [
+    [
+     "UPSC official website",
+     "https://www.upsc.gov.in/"
+    ],
+    [
+     "ESE 2027 examination notice (PDF)",
+     "https://www.upsc.gov.in/sites/default/files/Notif-ESEP-2027-Engl-160926.pdf"
+    ],
+    [
+     "UPSC exam calendar",
+     "https://www.upsc.gov.in/examinations/exam-calendar"
+    ]
+   ],
+   "src": "https://www.upsc.gov.in/sites/default/files/Notif-ESEP-2027-Engl-160926.pdf",
+   "checked": "2026-11-05"
+  },
   "jeecup": {
    "cycle": "2026",
    "links": [
@@ -84,6 +386,158 @@
     ]
    ],
    "src": "https://jeecup.admissions.nic.in/document/information-brochure-for-upjee-2026/",
+   "checked": "2026-11-05"
+  },
+  "jipmat": {
+   "cycle": "2026",
+   "body": "National Testing Agency (NTA) for IIM Bodh Gaya and IIM Jammu",
+   "fee": "₹2,200 (General/OBC-NCL); ₹1,100 (SC/ST/PwBD/EWS/transgender). Outside India ₹11,000",
+   "mode": "Online (CBT), English only",
+   "duration": "2 hours 30 minutes",
+   "pattern": "100 MCQs, 400 marks: Quant 33, DI and LR 33, Verbal and RC 34. +4 correct, −1 wrong",
+   "eligibility": "Class 12 (any stream) passed in the last two years or appearing; Class 10 passed in or after the year set in the bulletin",
+   "last": {
+    "reg": "16 Apr – 10 May 2026",
+    "exam": "7 Jun 2026",
+    "result": "Announced on the NTA website"
+   },
+   "site": "exams.nta.nic.in/jipmat",
+   "links": [
+    [
+     "JIPMAT official page",
+     "https://exams.nta.nic.in/jipmat/"
+    ],
+    [
+     "JIPMAT 2026 information bulletin (PDF)",
+     "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2026/04/20260416666062493.pdf"
+    ],
+    [
+     "JIPMAT 2026 score card",
+     "https://exams.nta.nic.in/score-card-of-jipmat-2026/"
+    ]
+   ],
+   "src": "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2026/04/20260416666062493.pdf",
+   "checked": "2026-11-05"
+  },
+  "ncet": {
+   "cycle": "2026",
+   "body": "National Testing Agency (NTA)",
+   "site": "exams.nta.nic.in/ncet",
+   "links": [
+    [
+     "NCET official page",
+     "https://exams.nta.nic.in/ncet/"
+    ],
+    [
+     "NCET 2026 information bulletin (PDF)",
+     "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2026/02/202603061783155582.pdf"
+    ],
+    [
+     "NCET 2026 participating universities (PDF)",
+     "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2026/03/202603101898228214.pdf"
+    ],
+    [
+     "NCET 2026 syllabus",
+     "https://exams.nta.nic.in/ncet-2026-syllabus/"
+    ]
+   ],
+   "src": "https://exams.nta.nic.in/ncet/",
+   "checked": "2026-11-05"
+  },
+  "nchm-jee": {
+   "cycle": "2026",
+   "body": "National Testing Agency (NTA) for NCHMCT",
+   "fee": "₹1,000 (General/OBC-NCL); ₹700 (EWS); ₹450 (SC/ST/PwD/third gender). GST and bank charges extra",
+   "mode": "Online (CBT), English and Hindi",
+   "duration": "2 hours",
+   "pattern": "120 MCQs: Numerical 15, Reasoning 15, GK 15, English 45, Service-sector aptitude 30. +4 correct, −1 wrong",
+   "age": "No age limit",
+   "last": {
+    "reg": "26 Dec 2025 – 25 Jan 2026",
+    "exam": "25 Apr 2026",
+    "result": "Announced on the NTA website"
+   },
+   "site": "exams.nta.nic.in/nchm-jee",
+   "links": [
+    [
+     "NCHM JEE official page",
+     "https://exams.nta.nic.in/nchm-jee/"
+    ],
+    [
+     "NCHM JEE 2026 information bulletin (PDF)",
+     "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2025/12/20260102470139941.pdf"
+    ]
+   ],
+   "src": "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2025/12/20260102470139941.pdf",
+   "checked": "2026-11-05"
+  },
+  "nda": {
+   "cycle": "2026 (II)",
+   "body": "Union Public Service Commission (UPSC)",
+   "fee": "₹100; no fee for women, SC/ST, and wards of JCOs/NCOs/ORs at Sainik or Military Schools",
+   "mode": "Written (objective, OMR), then SSB interview",
+   "duration": "Two papers of 2.5 hours each",
+   "pattern": "Maths 300 marks + General Ability Test 600 marks (English 200, GK 400) = 900; SSB 900. One-third negative marking",
+   "age": "About 16.5 to 19.5 years (NDA II 2026: born 1 Jan 2008 – 1 Jan 2011)",
+   "eligibility": "Unmarried men and women. Army wing: Class 12 any stream. Air Force, Navy and Naval Academy: Class 12 with Physics, Chemistry and Maths. Class 12 students can apply",
+   "attempts": "Held twice a year (April and September); no attempt limit within the age band",
+   "last": {
+    "reg": "20 May – 9 Jun 2026",
+    "exam": "13 Sep 2026",
+    "result": "Written result 13 Oct 2026"
+   },
+   "site": "upsc.gov.in",
+   "links": [
+    [
+     "UPSC official website",
+     "https://www.upsc.gov.in/"
+    ],
+    [
+     "NDA and NA (II) 2026 notice (PDF)",
+     "https://www.upsc.gov.in/sites/default/files/Notif-NDA-II-2026-Engl-200526.pdf"
+    ],
+    [
+     "NDA and NA (II) 2026 written result (PDF)",
+     "https://www.upsc.gov.in/sites/default/files/WR-NDA-NA-II-2026-Engl-13102026.pdf"
+    ],
+    [
+     "NDA and NA (I) 2026 notice (PDF)",
+     "https://www.upsc.gov.in/sites/default/files/Notif-NDA-NA-I-2026-Engl-101225.pdf"
+    ]
+   ],
+   "src": "https://www.upsc.gov.in/sites/default/files/Notif-NDA-II-2026-Engl-200526.pdf",
+   "checked": "2026-11-05"
+  },
+  "neet-ug": {
+   "cycle": "2026",
+   "body": "National Testing Agency (NTA)",
+   "fee": "₹1,700 (General); ₹1,600 (EWS/OBC-NCL); ₹1,000 (SC/ST/PwBD/third gender); ₹9,500 outside India. GST and bank charges extra",
+   "mode": "Pen and paper (OMR), single shift",
+   "duration": "3 hours (2–5 PM)",
+   "pattern": "180 compulsory MCQs, 720 marks: Physics 45, Chemistry 45, Biology 90. +4 correct, −1 wrong",
+   "age": "At least 17 by 31 Dec of the exam year; no upper limit",
+   "attempts": "No attempt limit stated in the 2026 bulletin",
+   "last": {
+    "reg": "8 Feb – 8 Mar 2026 (correction 10–12 Mar)",
+    "exam": "3 May 2026",
+    "result": "Announced on the NTA website"
+   },
+   "site": "neet.nta.nic.in",
+   "links": [
+    [
+     "NEET UG official website",
+     "https://neet.nta.nic.in/"
+    ],
+    [
+     "NEET (UG) 2026 information bulletin (PDF)",
+     "https://cdnbbsr.s3waas.gov.in/s37bc1ec1d9c3426357e69acd5bf320061/uploads/2026/02/202602081576322299.pdf"
+    ],
+    [
+     "NTA official website",
+     "https://nta.ac.in/"
+    ]
+   ],
+   "src": "https://cdnbbsr.s3waas.gov.in/s37bc1ec1d9c3426357e69acd5bf320061/uploads/2026/02/202602081576322299.pdf",
    "checked": "2026-11-05"
   },
   "ojee": {
@@ -140,6 +594,203 @@
    "src": "https://sbtet.telangana.gov.in/downloads/Circular/Brief%20Notification.pdf",
    "checked": "2026-11-05"
   },
+  "ugc-net": {
+   "cycle": "December 2026",
+   "body": "National Testing Agency (NTA) for UGC",
+   "fee": "₹1,150 (General); ₹600 (EWS/OBC-NCL); ₹325 (SC/ST/PwD/third gender). Late fee ₹500 extra",
+   "mode": "Online (CBT)",
+   "duration": "3 hours for both papers together, no break",
+   "pattern": "Paper I: 50 MCQs (100 marks), teaching and research aptitude. Paper II: 100 MCQs (200 marks) in your subject. 2 marks each, no negative marking",
+   "age": "JRF: up to 30 years on 1 Dec 2026 (up to 5 years' relaxation for OBC-NCL, SC, ST, PwD, third gender, women). No age limit for Assistant Professor or PhD",
+   "attempts": "No attempt limit; held twice a year (June and December)",
+   "next": {
+    "exam": "2026-12-14",
+    "regOpens": "2026-10-08",
+    "regCloses": "2026-10-31",
+    "status": "Official",
+    "short": "14–18 and 21 Dec 2026",
+    "regText": "8 – 28 Oct 2026 (late fee till 31 Oct); correction 2–4 Nov"
+   },
+   "last": {
+    "reg": "8 – 28 Oct 2026 (late fee till 31 Oct)",
+    "exam": "14–18 and 21 Dec 2026",
+    "result": "To be announced"
+   },
+   "site": "ugcnet.nta.nic.in",
+   "links": [
+    [
+     "UGC NET official website",
+     "https://ugcnet.nta.nic.in/"
+    ],
+    [
+     "UGC NET December 2026 information bulletin (PDF)",
+     "https://cdnbbsr.s3waas.gov.in/s301eee509ee2f68dc6014898c309e86bf/uploads/2026/10/20261016860019603.pdf"
+    ],
+    [
+     "UGC NET documents and notices",
+     "https://ugcnet.nta.nic.in/documents/"
+    ]
+   ],
+   "src": "https://cdnbbsr.s3waas.gov.in/s301eee509ee2f68dc6014898c309e86bf/uploads/2026/10/20261016860019603.pdf",
+   "checked": "2026-11-05"
+  },
+  "upsc-capf": {
+   "cycle": "2026",
+   "body": "Union Public Service Commission (UPSC)",
+   "fee": "₹200; no fee for women and SC/ST candidates",
+   "mode": "Written, then physical tests, interview and medical",
+   "duration": "Paper I 2 hours; Paper II 3 hours",
+   "pattern": "Paper I General Ability and Intelligence (250, objective, one-third negative marking). Paper II GS, Essay and Comprehension (200, written)",
+   "age": "20 to 25 on 1 Aug of the exam year. Relaxation: SC/ST 5 years, OBC 3",
+   "eligibility": "Bachelor's degree; men and women. Physical standards apply (e.g. height 165 cm men, 157 cm women)",
+   "last": {
+    "reg": "20 Feb – 12 Mar 2026",
+    "exam": "19 Jul 2026",
+    "result": "Written result 25 Aug 2026"
+   },
+   "site": "upsc.gov.in",
+   "links": [
+    [
+     "UPSC official website",
+     "https://www.upsc.gov.in/"
+    ],
+    [
+     "CAPF (ACs) 2026 notice (PDF)",
+     "https://www.upsc.gov.in/sites/default/files/ExamNotifi_CAPF_AC_Exam_2026_Eng_20022026.pdf"
+    ],
+    [
+     "CAPF (ACs) 2026 written result (PDF)",
+     "https://www.upsc.gov.in/sites/default/files/WR-CAPF-2026-Roll-Engl-250826.pdf"
+    ]
+   ],
+   "src": "https://www.upsc.gov.in/sites/default/files/ExamNotifi_CAPF_AC_Exam_2026_Eng_20022026.pdf",
+   "checked": "2026-11-05"
+  },
+  "upsc-cse": {
+   "cycle": "2026",
+   "body": "Union Public Service Commission (UPSC)",
+   "fee": "Prelims ₹100; Mains ₹200. No fee for women, SC, ST and PwBD candidates",
+   "mode": "Prelims: objective (OMR). Mains: written. Then personality test",
+   "duration": "Prelims: two papers of 2 hours each",
+   "pattern": "Prelims: GS Paper I (200 marks, counts for merit) and CSAT Paper II (200 marks, qualifying at 33%). One-third negative marking",
+   "age": "21 to 32 on 1 Aug of the exam year. Relaxation: SC/ST 5 years, OBC 3, PwBD 10",
+   "attempts": "General/EWS 6; OBC 9; SC/ST no limit (within the age limit)",
+   "eligibility": "Bachelor's degree in any subject (final-year students can apply for prelims)",
+   "last": {
+    "reg": "4 – 24 Feb 2026",
+    "exam": "Prelims 24 May 2026",
+    "result": "Prelims result 18 Jun 2026; Mains results announced on upsc.gov.in"
+   },
+   "site": "upsc.gov.in",
+   "links": [
+    [
+     "UPSC official website",
+     "https://www.upsc.gov.in/"
+    ],
+    [
+     "CSE 2026 examination notice (PDF)",
+     "https://www.upsc.gov.in/sites/default/files/Notif-CSP-2026-Engl-060226Rev.pdf"
+    ],
+    [
+     "CSE (Prelims) 2026 result (PDF)",
+     "https://www.upsc.gov.in/sites/default/files/WR-NameList-CSP-2026-Engl-18062026.pdf"
+    ],
+    [
+     "UPSC exam calendar",
+     "https://www.upsc.gov.in/examinations/exam-calendar"
+    ]
+   ],
+   "src": "https://www.upsc.gov.in/sites/default/files/Notif-CSP-2026-Engl-060226Rev.pdf",
+   "checked": "2026-11-05"
+  },
+  "upsc-geo": {
+   "cycle": "2027",
+   "body": "Union Public Service Commission (UPSC)",
+   "fee": "₹200; no fee for women, SC, ST and PwBD candidates",
+   "mode": "Prelims: objective (OMR). Mains: written. Then personality test",
+   "duration": "Prelims: two papers of 2 hours each",
+   "pattern": "Prelims 400 marks: Paper I General Studies (100), Paper II stream paper (300). One-third negative marking",
+   "age": "21 to 32 on 1 Jan 2027 (born 2 Jan 1995 – 1 Jan 2006), with relaxations",
+   "eligibility": "Master's degree in Geology, Geophysics, Chemistry or Hydrogeology, depending on the post",
+   "next": {
+    "exam": "2027-01-10",
+    "regOpens": "2026-09-02",
+    "regCloses": "2026-09-22",
+    "status": "Official",
+    "short": "Prelims 10 Jan 2027; Mains 19–20 Jun 2027",
+    "regText": "2 – 22 Sep 2026 (closed)"
+   },
+   "last": {
+    "reg": "2 – 22 Sep 2026",
+    "exam": "Prelims 10 Jan 2027; Mains 19–20 Jun 2027"
+   },
+   "site": "upsc.gov.in",
+   "links": [
+    [
+     "UPSC official website",
+     "https://www.upsc.gov.in/"
+    ],
+    [
+     "Combined Geo-Scientist 2027 notice (PDF)",
+     "https://www.upsc.gov.in/sites/default/files/Notif-CGSPE-2027-Engl-020926.pdf"
+    ]
+   ],
+   "src": "https://www.upsc.gov.in/sites/default/files/Notif-CGSPE-2027-Engl-020926.pdf",
+   "checked": "2026-11-05"
+  },
+  "upsc-ifos": {
+   "cycle": "2026",
+   "body": "Union Public Service Commission (UPSC)",
+   "fee": "Prelims ₹100; Mains ₹200. No fee for women, SC, ST and PwBD candidates",
+   "mode": "Prelims is the Civil Services prelims (one common form). Then IFoS Mains and interview",
+   "age": "21 to 32 on 1 Aug of the exam year, with relaxations",
+   "attempts": "General/EWS 6; OBC 9; SC/ST no limit",
+   "eligibility": "Bachelor's degree with Animal Husbandry and Veterinary Science, Botany, Chemistry, Geology, Maths, Physics, Statistics or Zoology, or a degree in Agriculture, Forestry or Engineering",
+   "last": {
+    "reg": "4 – 24 Feb 2026",
+    "exam": "Prelims 24 May 2026 (with Civil Services)"
+   },
+   "site": "upsc.gov.in",
+   "links": [
+    [
+     "UPSC official website",
+     "https://www.upsc.gov.in/"
+    ],
+    [
+     "IFoS 2026 examination notice (PDF)",
+     "https://www.upsc.gov.in/sites/default/files/Notif-IFSP-2026-Engl-060226Rev.pdf"
+    ]
+   ],
+   "src": "https://www.upsc.gov.in/sites/default/files/Notif-IFSP-2026-Engl-060226Rev.pdf",
+   "checked": "2026-11-05"
+  },
+  "upsc-iss": {
+   "cycle": "2026",
+   "body": "Union Public Service Commission (UPSC)",
+   "fee": "₹200; no fee for women, SC, ST and PwBD candidates",
+   "mode": "Written (1,000 marks), then interview (200)",
+   "pattern": "ISS: General English, General Studies, Statistics I–IV (I and II objective). IES: General English, General Studies, Economics I–III, Indian Economics",
+   "age": "21 to 30 on 1 Aug of the exam year, with relaxations",
+   "eligibility": "ISS: bachelor's with Statistics (or master's in Statistics). IES: master's in Economics, Applied, Business Economics or Econometrics",
+   "last": {
+    "reg": "11 Feb – 3 Mar 2026",
+    "exam": "From 19 Jun 2026",
+    "result": "Written result 4 Aug 2026"
+   },
+   "site": "upsc.gov.in",
+   "links": [
+    [
+     "UPSC official website",
+     "https://www.upsc.gov.in/"
+    ],
+    [
+     "IES/ISS 2026 notice (PDF)",
+     "https://www.upsc.gov.in/sites/default/files/Exam_Notification_IES_ISS_Eng_11022026.pdf"
+    ]
+   ],
+   "src": "https://www.upsc.gov.in/sites/default/files/Exam_Notification_IES_ISS_Eng_11022026.pdf",
+   "checked": "2026-11-05"
+  },
   "wbjee": {
    "cycle": "2026",
    "fee": "General: ₹500 (male), ₹400 (female), ₹300 (third gender). SC/ST/OBC/EWS/PwD/TFW: ₹400 / ₹300 / ₹200",
@@ -167,5 +818,5 @@
    "checked": "2026-11-05"
   }
  },
- "count": 8
+ "count": 28
 }
