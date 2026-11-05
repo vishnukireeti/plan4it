@@ -56,6 +56,22 @@ def main():
             print("College directory check FAILED:\n" + "\n".join("  - " + x for x in problems))
             sys.exit(1)
 
+    # verified exam facts: every entry must name its official source and the day it was checked
+    ev_path = DATA_DIR / "exams_verified.json"
+    if ev_path.exists():
+        ev = json.loads(ev_path.read_text(encoding="utf-8"))
+        bad = []
+        for k, v in ev.get("exams", {}).items():
+            for f in ("cycle", "src", "checked"):
+                if not v.get(f):
+                    bad.append(f"{k}: missing {f}")
+            for lab, url in v.get("links", []):
+                if not str(url).startswith(("https://", "http://")):
+                    bad.append(f"{k}: bad link {url}")
+        if bad:
+            print("Verified exam facts check FAILED:\n" + "\n".join("  - " + x for x in bad))
+            sys.exit(1)
+
     print(f"JSON OK: {len(files)} file(s) in {DATA_DIR}/ all parse.")
 
 
