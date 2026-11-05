@@ -9265,6 +9265,10 @@
         // Turn the raw answers into the fields the rest of the app reads. Safe to call after every answer.
         function deriveWizard() {
             const a = wizardAnswers;
+            // Class 9 was removed as a quiz option, but students who took the quiz before that
+            // change still have it saved (locally or in their account) -- treat it the same as
+            // Class 10 always did, rather than letting it fall through to "Graduate".
+            if (a.cls === '9') a.cls = '10';
             if (a.cls) a.stage = (a.cls === '10') ? 'School 8-10'
                 : (a.cls === '11' || a.cls === '12') ? 'School 11-12'
                 : a.cls === 'ug' ? 'Undergraduate' : 'Graduate'; // 'grad' or 'working'
