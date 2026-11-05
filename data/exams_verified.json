@@ -171,6 +171,23 @@
     "status": "Tentative"
    }
   },
+  "amu-entrance": {
+   "cycle": "2026–27",
+   "body": "Aligarh Muslim University",
+   "site": "amucontrollerexams.com",
+   "links": [
+    [
+     "AMU Guide to Admissions 2026–27 (PDF)",
+     "https://www.amucontrollerexams.com/uploads/files/56efe6409845a0a304202f40811c1e39.pdf"
+    ],
+    [
+     "AMU Guide to Admissions (Schools) 2026–27 (PDF)",
+     "https://www.amucontrollerexams.com/uploads/files/af1ac58b09fdb67868ae41b8139524f8.pdf"
+    ]
+   ],
+   "src": "https://www.amucontrollerexams.com/uploads/files/56efe6409845a0a304202f40811c1e39.pdf",
+   "checked": "2026-11-05"
+  },
   "ap-eapcet": {
    "cycle": "2026",
    "links": [
@@ -1064,6 +1081,42 @@
    "src": "https://www.ibps.in/wp-content/uploads/Detailed-Notification-CRP-SPL-XVI_Final_V1_30.06.2026.pdf",
    "checked": "2026-11-05"
   },
+  "icar-aicejrf": {
+   "cycle": "2026",
+   "body": "National Testing Agency (NTA) for ICAR",
+   "mode": "Online (CBT), objective MCQs",
+   "site": "exams.nta.nic.in/icar",
+   "links": [
+    [
+     "ICAR exams on NTA",
+     "https://exams.nta.nic.in/icar/"
+    ],
+    [
+     "ICAR AICE-JRF/SRF (PhD) 2026 information bulletin (PDF)",
+     "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2026/05/202605091119545189.pdf"
+    ]
+   ],
+   "src": "https://exams.nta.nic.in/icar/",
+   "checked": "2026-11-05"
+  },
+  "icar-aieea-pg": {
+   "cycle": "2026",
+   "body": "National Testing Agency (NTA) for ICAR",
+   "mode": "Online (CBT), objective MCQs",
+   "site": "exams.nta.nic.in/icar",
+   "links": [
+    [
+     "ICAR exams on NTA",
+     "https://exams.nta.nic.in/icar/"
+    ],
+    [
+     "ICAR AIEEA PG 2026–27 information bulletin (PDF)",
+     "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2026/05/202605091397132773.pdf"
+    ]
+   ],
+   "src": "https://exams.nta.nic.in/icar/",
+   "checked": "2026-11-05"
+  },
   "icg-ac": {
    "cycle": "2027 batch",
    "body": "Indian Coast Guard",
@@ -1202,6 +1255,34 @@
    "src": "https://jam2026.iitb.ac.in/files/JAM2026_Brochure-2.pdf",
    "checked": "2026-11-05"
   },
+  "iitm-bs": {
+   "cycle": "January 2027 term",
+   "body": "IIT Madras",
+   "fee": "₹4,000 (General/OBC); ₹2,000 (SC/ST/PwD); ₹1,000 (SC/ST and PwD)",
+   "mode": "4 weeks of online coursework with weekly assignments, then a 4-hour in-person qualifier exam",
+   "pattern": "Courses: English I, Maths for Data Science I, Statistics I, Computational Thinking. Pass: 40% in each and 50% average (lower for reserved categories)",
+   "eligibility": "Class 12 passed (any stream, any age), with Maths and English in Class 10. Class 11 students can apply",
+   "next": {
+    "exam": "2027-01-29",
+    "regCloses": "2027-01-29",
+    "status": "Official",
+    "short": "Apply by 29 Jan 2027 for the January 2027 batch",
+    "regText": "open now; last date 29 Jan 2027"
+   },
+   "site": "study.iitm.ac.in",
+   "links": [
+    [
+     "IIT Madras BS admissions",
+     "https://study.iitm.ac.in/ds/admissions.html"
+    ],
+    [
+     "BS FAQs",
+     "https://study.iitm.ac.in/ds/faq.html"
+    ]
+   ],
+   "src": "https://study.iitm.ac.in/ds/admissions.html",
+   "checked": "2026-11-05"
+  },
   "ioqm": {
    "cycle": "2026–27",
    "body": "Mathematics Teachers' Association (India) with HBCSE",
@@ -1258,6 +1339,30 @@
    "src": "https://iimidr.ac.in/wp-content/uploads/2026/01/AdmissionProcedure_IPM-2026-31_-Domestic-Applicants.pdf",
    "checked": "2026-11-05"
   },
+  "ipu-cet": {
+   "cycle": "2026",
+   "body": "Guru Gobind Singh Indraprastha University (GGSIPU)",
+   "last": {
+    "exam": "Remaining CETs on 3–4 Jul 2026, Delhi centres only (most programmes now admit through CUET, JEE, NEET, CLAT, CAT or other national tests)"
+   },
+   "site": "ipu.ac.in",
+   "links": [
+    [
+     "GGSIPU admissions 2026",
+     "https://ipu.ac.in/adm2026/adm2026main.php"
+    ],
+    [
+     "GGSIPU CET 2026 schedule (PDF)",
+     "https://www.ipu.ac.in/Pubinfo2026/nt230620260348.pdf"
+    ],
+    [
+     "GGSIPU counselling portal",
+     "https://ipu.admissions.nic.in/"
+    ]
+   ],
+   "src": "https://www.ipu.ac.in/Pubinfo2026/nt230620260348.pdf",
+   "checked": "2026-11-05"
+  },
   "isi-admission": {
    "cycle": "2026",
    "body": "Indian Statistical Institute",
@@ -1283,6 +1388,27 @@
     ]
    ],
    "src": "https://admission.isical.ac.in/Documents/IsiAdmission2026/Admission-Notice-2026.pdf",
+   "checked": "2026-11-05"
+  },
+  "jamia-entrance": {
+   "cycle": "2026–27",
+   "body": "Jamia Millia Islamia",
+   "site": "admission.jmi.ac.in",
+   "links": [
+    [
+     "JMI admission portal",
+     "https://admission.jmi.ac.in/"
+    ],
+    [
+     "JMI university prospectus 2025–26 (PDF)",
+     "https://admission.jmi.ac.in/application/assets/pdfFile/prospectus/UniversityProspectus/University_Prospectus_2025-2026.pdf"
+    ],
+    [
+     "Jamia Schools prospectus 2026–27 (PDF)",
+     "https://admission.jmi.ac.in/application/assets/pdfFile/prospectus/SchoolProspectusEN/Combined_Prospectus_Jamia_Schools_2026_2027.pdf"
+    ]
+   ],
+   "src": "https://admission.jmi.ac.in/application/assets/pdfFile/prospectus/UniversityProspectus/University_Prospectus_2025-2026.pdf",
    "checked": "2026-11-05"
   },
   "jee-advanced": {
@@ -2905,6 +3031,27 @@
    "src": "https://cdnbbsr.s3waas.gov.in/s301eee509ee2f68dc6014898c309e86bf/uploads/2026/10/20261016860019603.pdf",
    "checked": "2026-11-05"
   },
+  "ugee-iiit": {
+   "cycle": "2026",
+   "body": "IIIT Hyderabad",
+   "site": "ugadmissions.iiit.ac.in",
+   "links": [
+    [
+     "UGEE 2026",
+     "https://ugadmissions.iiit.ac.in/ugee/"
+    ],
+    [
+     "Admission through JEE Main 2026",
+     "https://ugadmissions.iiit.ac.in/jee/"
+    ],
+    [
+     "Olympiad admissions 2026",
+     "https://ugadmissions.iiit.ac.in/olympiad/"
+    ]
+   ],
+   "src": "https://ugadmissions.iiit.ac.in/ugee/",
+   "checked": "2026-11-05"
+  },
   "uppsc-pcs": {
    "cycle": "2026",
    "body": "Uttar Pradesh Public Service Commission (UPPSC)",
@@ -3173,5 +3320,5 @@
    "checked": "2026-11-05"
   }
  },
- "count": 118
+ "count": 125
 }
