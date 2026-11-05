@@ -77,6 +77,28 @@
    "src": "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2026/07/202607111067394464.pdf",
    "checked": "2026-11-05"
   },
+  "aibe": {
+   "cycle": "AIBE XXII",
+   "body": "Bar Council of India",
+   "eligibility": "LL.B (3- or 5-year) graduates of BCI-approved colleges; final-year/semester students without backlogs",
+   "last": {
+    "reg": "AIBE XXII payment window extended to 29 Oct 2026",
+    "exam": "AIBE XXI held 7 Jun 2026 (result 18 Jul 2026)"
+   },
+   "site": "allindiabarexamination.com",
+   "links": [
+    [
+     "AIBE official website",
+     "https://www.allindiabarexamination.com/"
+    ],
+    [
+     "AIBE FAQ (PDF)",
+     "https://www.allindiabarexamination.com/img/AIBE_FAQ.pdf"
+    ]
+   ],
+   "src": "https://www.allindiabarexamination.com/",
+   "checked": "2026-11-05"
+  },
   "aiims-ini-cet": {
    "cycle": "2026–27",
    "body": "AIIMS New Delhi",
@@ -950,6 +972,36 @@
    "src": "https://dsssb.delhi.gov.in/dsssb/vacancy-notice-advertisement-no-022026-various-posts-post-code-0126-2026-closing-date",
    "checked": "2026-11-05"
   },
+  "fddi-aist": {
+   "cycle": "2026",
+   "body": "Footwear Design and Development Institute (FDDI)",
+   "fee": "₹600 (General/OBC/EWS); ₹300 (SC/ST/PwD)",
+   "mode": "Pen and paper, English or Hindi, in 36 cities",
+   "pattern": "Bachelor's: 126 questions, 200 marks (analytical, design or business aptitude, general awareness, comprehension, grammar)",
+   "age": "Bachelor's: up to 25 on 1 Jul 2026. Master's: no age limit",
+   "eligibility": "Bachelor's: Class 12 any stream. Master's: any degree",
+   "last": {
+    "reg": "Late applications till 30 Apr 2026",
+    "exam": "10 May 2026"
+   },
+   "site": "fddiindia.com",
+   "links": [
+    [
+     "FDDI admission process",
+     "https://fddiindia.com/admission-process"
+    ],
+    [
+     "FDDI admission guidelines 2026 (PDF)",
+     "https://fddiindia.com/pdf/admission-guideline2026.pdf"
+    ],
+    [
+     "FDDI prospectus 2026 (PDF)",
+     "https://fddiindia.com/pdf/prospectus2026.pdf"
+    ]
+   ],
+   "src": "https://fddiindia.com/pdf/admission-guideline2026.pdf",
+   "checked": "2026-11-05"
+  },
   "fmge": {
    "cycle": "October 2026",
    "body": "National Board of Examinations in Medical Sciences (NBEMS)",
@@ -978,6 +1030,27 @@
     ]
    ],
    "src": "https://nbe.edu.in/IB/FMGE%20october%202026%20information%20bulletin%20v2.2.pdf",
+   "checked": "2026-11-05"
+  },
+  "ftii-jet": {
+   "cycle": "2025–26",
+   "body": "Film and Television Institute of India (FTII), Pune",
+   "site": "ftii.ac.in",
+   "links": [
+    [
+     "FTII admissions",
+     "https://ftii.ac.in/admission-2"
+    ],
+    [
+     "FTII notifications",
+     "https://ftii.ac.in/notifications"
+    ],
+    [
+     "FTII entrance test 2025–26 prospectus (PDF)",
+     "https://ftii.ac.in/uploads/userfiles/files/Admission_Prospectus_FTII-ET-2025-26.pdf"
+    ]
+   ],
+   "src": "https://ftii.ac.in/notifications",
    "checked": "2026-11-05"
   },
   "gmat-focus": {
@@ -1357,6 +1430,33 @@
    "src": "https://www.upsc.gov.in/sites/default/files/Notif-ESEP-2027-Engl-160926.pdf",
    "checked": "2026-11-05"
   },
+  "iimc-entrance": {
+   "cycle": "2026–27",
+   "body": "Indian Institute of Mass Communication (Deemed to be University)",
+   "mode": "Admission through CUET PG (NTA); no separate IIMC entrance test",
+   "age": "PG Diplomas: up to 25 (OBC 28, SC/ST/PwD 30) on 1 Aug 2026. MA: no age limit",
+   "eligibility": "PG Diplomas: any degree. MA: any degree with 55%",
+   "last": {
+    "reg": "CUET PG 2026 applications closed 20 Jan 2026"
+   },
+   "site": "iimc.gov.in",
+   "links": [
+    [
+     "IIMC admission notice 2026–27 (PDF)",
+     "https://iimc.gov.in/files/downloads_documents/Admission-Notice-2026-27.pdf"
+    ],
+    [
+     "IIMC downloads",
+     "https://iimc.gov.in/index.php/downloads"
+    ],
+    [
+     "CUET PG on NTA",
+     "https://exams.nta.nic.in/document/cuet-pg-information-bulletin/"
+    ]
+   ],
+   "src": "https://iimc.gov.in/files/downloads_documents/Admission-Notice-2026-27.pdf",
+   "checked": "2026-11-05"
+  },
   "iit-jam": {
    "cycle": "2026",
    "body": "IITs (JAM 2026 organised by IIT Bombay)",
@@ -1412,6 +1512,27 @@
     "reg": "Open now; apply by 29 Jan 2027",
     "exam": "Qualifier exam after 4 weeks of coursework"
    }
+  },
+  "imu-cet": {
+   "cycle": "2026",
+   "body": "Indian Maritime University",
+   "site": "imu.edu.in",
+   "links": [
+    [
+     "IMU notifications",
+     "https://www.imu.edu.in/imunew/page/Notifications"
+    ],
+    [
+     "IMU CET 2026 admit card notice (PDF)",
+     "https://www.imu.edu.in/imunew/uploads/files/admissions/2026/IMUCET_AdminCard_15052026.pdf"
+    ],
+    [
+     "IMU CET 2026 cut-off notice (PDF)",
+     "https://www.imu.edu.in/imunew/uploads/files/admissions/2026/Notification_CET_Cutoff_17062026.pdf"
+    ]
+   ],
+   "src": "https://www.imu.edu.in/imunew/page/Notifications",
+   "checked": "2026-11-05"
   },
   "india-post-gds": {
    "cycle": "2026 (Schedule II, July 2026)",
@@ -2328,6 +2449,27 @@
    "src": "https://www.nestexam.in/docs/26/NEST2026_Brochure_Syllabus_Updated_12Jan2026.pdf",
    "checked": "2026-11-05"
   },
+  "nid-dat": {
+   "cycle": "2027–28",
+   "body": "National Institute of Design (NID)",
+   "site": "admissions.nid.edu",
+   "links": [
+    [
+     "NID admissions 2027–28",
+     "https://admissions.nid.edu/"
+    ],
+    [
+     "B.Des (integrated pathway) admissions handbook 2027–28 (PDF)",
+     "https://admissions.nid.edu/NIDA2027/download/BDES_IntegratedPathway_AdmissionsHandbook2027_28.pdf"
+    ],
+    [
+     "M.Des admissions handbook 2027–28 (PDF)",
+     "https://admissions.nid.edu/NIDA2027/download/MDES_AdmissionsHandbook2027-28.pdf"
+    ]
+   ],
+   "src": "https://admissions.nid.edu/",
+   "checked": "2026-11-05"
+  },
   "nift-entrance": {
    "cycle": "2027",
    "body": "National Testing Agency (NTA) for NIFT",
@@ -2842,6 +2984,28 @@
     ]
    ],
    "src": "https://www.snaptest.org/documents/SNAP-2026-Bulletin.pdf",
+   "checked": "2026-11-05"
+  },
+  "srfti": {
+   "cycle": "2026",
+   "body": "Satyajit Ray Film and Television Institute (Deemed to be University)",
+   "mode": "Stage 1 written test (100 marks: 50 aptitude + 50 subject MCQs), then Stage 2 (written, practical or interaction)",
+   "last": {
+    "reg": "5 Jan – 4 Feb 2026",
+    "exam": "Stage 1: 22 Feb 2026"
+   },
+   "site": "srfti.ac.in",
+   "links": [
+    [
+     "SRFTI prospectus 2026 (PDF)",
+     "https://srfti.ac.in/wp-content/uploads/2026/01/SRFTI-Prospectus-2026.pdf"
+    ],
+    [
+     "FTII Itanagar prospectus 2026 (PDF)",
+     "https://srfti.ac.in/wp-content/uploads/2026/01/FTII-ITANAGAR-Prospectus-2026.pdf"
+    ]
+   ],
+   "src": "https://srfti.ac.in/wp-content/uploads/2026/01/SRFTI-Prospectus-2026.pdf",
    "checked": "2026-11-05"
   },
   "srmjeee": {
@@ -3545,5 +3709,5 @@
    "checked": "2026-11-05"
   }
  },
- "count": 135
+ "count": 142
 }
