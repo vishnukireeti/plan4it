@@ -6868,285 +6868,789 @@
         const branchData = {
             'Class 10': {
                 title: "Class 10th Stream Selection",
-                subtitle: "This choice feels huge, but it's a starting lane, not a life sentence — plenty of people switch tracks after 12th or even after their degree.",
+                subtitle: "This choice feels huge, but it's a starting lane, not a life sentence — plenty of people switch tracks after 12th or even after their degree. Here's the fuller map, including the combinations most students never hear about.",
                 branches: [
-                    { name: "Science (PCM/PCB)", note: "Keeps the most doors open, but is also the most exam-heavy route.", paths: [
-                        { label: "Opens Engineering (JEE) & Medical (NEET) routes" },
-                        { label: "Best if you're genuinely strong in Maths or Biology, not just 'supposed to' take Science" },
-                        { label: "Can still pivot into Commerce/Design fields later via CUET" }
-                    ]},
-                    { name: "Commerce", note: "A strong middle ground — practical, and doesn't lock you out of law or management later.", paths: [
-                        { label: "Opens B.Com, Chartered Accountant (CA), Company Secretary, BBA routes" },
-                        { label: "Company Secretary (CS)", careerId: "company-secretary" },
-                        { label: "Chartered Accountant (CA)", careerId: "chartered-accountant" },
-                        { label: "Head start: you can register for CA Foundation right after Class 10", goTo: "after10" }
-                    ]},
-                    { name: "Humanities / Arts", note: "Often underrated — it's the direct route into law, civil services, and media.", paths: [
-                        { label: "Opens BA, Design, Civil Services, Journalism" },
-                        { label: "Civil Services Officer (IAS/IPS)", careerId: "civil-services-officer" },
-                        { label: "Graphic Designer / Content Creator", careerId: "graphic-designer" }
-                    ]},
-                    { name: "Science with JEE/NEET coaching built in", note: "Not a separate stream. It is Science (PCM/PCB) with entrance coaching inside the timetable.", paths: [
-                        { label: "Integrated programmes: how they work, who they suit, and what to ask before paying", goTo: "integrated" },
-                        { label: "Worth a close look only if you already lean towards Science" },
-                        { label: "Fees are high and the pace is heavy, so compare with studying at your own school" }
-                    ]},
-                    { name: "Diploma / Polytechnic (about 3 years)", note: "A job-focused technical route that starts right after Class 10. No JEE needed.", paths: [
-                        { label: "Fields include mechanical, civil, electrical, computer and electronics" },
-                        { label: "Usually admitted through a state entrance exam or Class 10 marks; rules differ by state" },
-                        { label: "Diploma holders can often join the 2nd year of a B.Tech/B.E. (lateral entry), so a degree stays possible" },
-                        { label: "Mechanical Engineer", careerId: "mechanical-engineer" },
-                        { label: "Civil Engineer", careerId: "civil-engineer" },
-                        { label: "Where to apply in your state", goTo: "after10" }
-                    ]},
-                    { name: "ITI / skilled trade (6 months to 2 years)", note: "Hands-on training for a trade, often after Class 8 or 10 depending on the trade.", paths: [
-                        { label: "Electrician / Electrical Technician", careerId: "electrician" },
-                        { label: "Welder / Fabricator", careerId: "welder-fabricator" },
-                        { label: "Automobile Mechanic / Technician", careerId: "automobile-technician" },
-                        { label: "HVAC / Refrigeration Technician", careerId: "hvac-technician" },
-                        { label: "Apprenticeship and certification lead to jobs or self-employment; in many states you can study further later" },
-                        { label: "Where to apply in your state", goTo: "after10" }
-                    ]}
+                    {
+                        name: "Science — PCM (Physics, Chemistry, Maths)",
+                        tag: "Opens Engineering & Defence",
+                        duration: "2 years (Class 11–12)",
+                        entry: "No separate exam — admission is on your Class 10 marks and the school's own cutoff",
+                        note: "The default 'engineering' combination. Biology is dropped, so medicine (NEET) is off the table unless you also keep Biology.",
+                        paths: [
+                            { label: "Leads to JEE Main/Advanced → B.Tech, and NATA/JEE → B.Arch" },
+                            { label: "Mechanical Engineer", careerId: "mechanical-engineer" },
+                            { label: "Architect", careerId: "architect" },
+                            { label: "Also opens NDA (Maths is compulsory) if you're considering the armed forces" },
+                            { label: "Can still pivot into Commerce, Design, or Humanities degrees later via CUET" }
+                        ]
+                    },
+                    {
+                        name: "Science — PCB (Physics, Chemistry, Biology)",
+                        tag: "Opens Medicine & Life Sciences",
+                        duration: "2 years (Class 11–12)",
+                        entry: "No separate exam to pick the stream; most schools let you drop Maths here",
+                        note: "The medicine-focused combination. Without Maths, direct entry to most B.Tech/B.Arch programmes is closed — check if your target college runs a Maths bridge course.",
+                        paths: [
+                            { label: "Leads to NEET UG → MBBS/BDS/BAMS/BHMS" },
+                            { label: "Doctor (MBBS)", careerId: "doctor-mbbs" },
+                            { label: "Biotechnologist / Research Scientist", careerId: "biotechnologist" },
+                            { label: "B.Sc in life sciences is a strong no-entrance-exam fallback if NEET doesn't work out" }
+                        ]
+                    },
+                    {
+                        name: "Science — PCMB (Physics, Chemistry, Maths & Biology)",
+                        tag: "Keeps JEE and NEET both open",
+                        duration: "2 years — one extra subject on top of PCM or PCB alone",
+                        entry: "Offered at most schools; confirm it fits alongside your other electives",
+                        note: "The 'don't make me choose yet' option. Heavier timetable and more exams to juggle, but you walk into Class 12 still eligible for both JEE and NEET.",
+                        paths: [
+                            { label: "Best if you're genuinely torn between engineering and medicine, not just hedging out of anxiety" },
+                            { label: "The extra subject load is real — talk to seniors who've actually done it before committing" },
+                            { label: "You can narrow to a PCM-only or PCB-only focus for Class 12 boards once one route clearly wins" }
+                        ]
+                    },
+                    {
+                        name: "Science + Computer Science",
+                        tag: "Head start for coding careers",
+                        duration: "2 years, as an additional subject alongside PCM",
+                        entry: "Offered as an elective in many CBSE/state-board schools — confirm availability with your school first",
+                        note: "Not a separate stream by itself — it sits on top of PCM. Gives you real programming fundamentals a couple of years before most of your college batch starts.",
+                        paths: [
+                            { label: "Strong lead-in to B.Tech (CS/IT), BCA, or B.Sc Computer Science" },
+                            { label: "Software Engineer", careerId: "software-engineer" },
+                            { label: "Game Developer", careerId: "game-developer" },
+                            { label: "Doesn't reduce how much Maths you need for JEE — it adds to your plate, not replaces it" }
+                        ]
+                    },
+                    {
+                        name: "Science + Electronics / Engineering Graphics",
+                        tag: "Hands-on & hardware",
+                        duration: "2 years, alongside PCM",
+                        entry: "A vocational/skill elective offered by some schools — ask what's actually available locally",
+                        note: "For students who'd rather build and take things apart than sit through pure theory. Feeds naturally into electronics, instrumentation, and hardware-focused engineering.",
+                        paths: [
+                            { label: "Electronics / Electrical Engineer", careerId: "electronics-electrical-engineer" },
+                            { label: "Aircraft Maintenance Engineer", careerId: "aircraft-maintenance-engineer" },
+                            { label: "Useful head start for a Diploma or B.Tech in Electronics, Instrumentation or ECE" },
+                            { label: "Builds real circuit-building skills years before any entrance exam prep starts" }
+                        ]
+                    },
+                    {
+                        name: "Commerce",
+                        tag: "Fastest route to a stable career",
+                        duration: "2 years (Class 11–12)",
+                        entry: "No entrance exam; Commerce-with-Maths and Commerce-without-Maths are both usually offered — ask before you lock in",
+                        note: "A strong middle ground — practical, and it doesn't lock you out of law, design, or management later.",
+                        paths: [
+                            { label: "Commerce with Maths keeps BBA, Economics (Hons), and actuarial routes open" },
+                            { label: "Company Secretary (CS)", careerId: "company-secretary" },
+                            { label: "Chartered Accountant (CA)", careerId: "chartered-accountant" },
+                            { label: "Head start: you can register for CA Foundation right after Class 10", goTo: "after10" }
+                        ]
+                    },
+                    {
+                        name: "Humanities / Arts",
+                        tag: "Most underrated, most flexible",
+                        duration: "2 years (Class 11–12)",
+                        entry: "No entrance exam",
+                        note: "Often dismissed as a 'fallback' stream, but it's the most direct route into law, civil services, media, and design.",
+                        paths: [
+                            { label: "Opens BA, Design, Civil Services, and Journalism after Class 12" },
+                            { label: "Civil Services Officer (IAS/IPS)", careerId: "civil-services-officer" },
+                            { label: "Graphic Designer / Content Creator", careerId: "graphic-designer" },
+                            { label: "Journalist", careerId: "journalist" }
+                        ]
+                    },
+                    {
+                        name: "Science with JEE/NEET coaching built in (Integrated programmes)",
+                        tag: "Not a separate stream",
+                        duration: "Same 2 years, just a heavier timetable",
+                        entry: "Fees run high — always ask for a full fee breakup before enrolling",
+                        note: "It is Science (PCM/PCB) with entrance coaching folded into the school timetable, not a different curriculum.",
+                        paths: [
+                            { label: "Integrated programmes: how they work, who they suit, and what to ask before paying", goTo: "integrated" },
+                            { label: "Worth a close look only if you already lean towards Science" },
+                            { label: "Compare the total cost against studying at your own school plus outside coaching separately" }
+                        ]
+                    },
+                    {
+                        name: "Diploma / Polytechnic (about 3 years)",
+                        tag: "Skip Class 11–12 entirely",
+                        duration: "3 years, starts right after Class 10",
+                        entry: "Usually a state polytechnic entrance exam or direct admission on Class 10 marks — rules differ by state",
+                        note: "A job-focused technical route that starts right after Class 10. No JEE needed, and a full engineering degree still stays reachable.",
+                        paths: [
+                            { label: "Branches include Mechanical, Civil, Electrical, Computer Science, and Electronics & Communication" },
+                            { label: "Mechanical Engineer", careerId: "mechanical-engineer" },
+                            { label: "Civil Engineer", careerId: "civil-engineer" },
+                            { label: "IT Support / Network Administrator", careerId: "it-support-network-admin" },
+                            { label: "Lateral entry lets you join a B.Tech directly in the 2nd year, keeping a full degree on the table" },
+                            { label: "Where to apply in your state", goTo: "after10" }
+                        ]
+                    },
+                    {
+                        name: "ITI / Skilled Trade (6 months – 2 years)",
+                        tag: "Job-ready the fastest",
+                        duration: "6 months to 2 years, depending on the trade",
+                        entry: "Often open after Class 8 or Class 10 depending on the trade; usually no entrance exam",
+                        note: "Hands-on training for a specific trade — the quickest route on this page from classroom to paycheque.",
+                        paths: [
+                            { label: "Electrician / Electrical Technician", careerId: "electrician" },
+                            { label: "Welder / Fabricator", careerId: "welder-fabricator" },
+                            { label: "Automobile Mechanic / Technician", careerId: "automobile-technician" },
+                            { label: "HVAC / Refrigeration Technician", careerId: "hvac-technician" },
+                            { label: "Carpenter / Furniture Maker", careerId: "carpenter-furniture-maker" },
+                            { label: "Apprenticeship and certification lead to jobs or self-employment; in many states you can study further later" },
+                            { label: "Where to apply in your state", goTo: "after10" }
+                        ]
+                    }
                 ]
             },
             'Class 12': {
                 title: "Class 12th Exit Options",
-                subtitle: "Whatever you scored, there is almost always more than one entry point into the field you actually want.",
+                subtitle: "Whatever you scored, there is almost always more than one entry point into the field you actually want — here's the fuller map, not just Science, Commerce and Humanities.",
                 branches: [
-                    { name: "Science Stream (PCM/PCB)", note: "JEE/NEET aren't the only exits — B.Sc and design routes exist too.", paths: [
-                        { label: "Software Engineer (via JEE → B.Tech)", careerId: "software-engineer" },
-                        { label: "Doctor (via NEET → MBBS)", careerId: "doctor-mbbs" },
-                        { label: "Architect (via NATA/JEE → B.Arch)", careerId: "architect" },
-                        { label: "Data Analyst (via B.Sc Data Science, no JEE needed)", careerId: "data-analyst" }
-                    ]},
-                    { name: "Commerce Stream", note: "The cheapest, fastest professional routes in the whole platform live here.", paths: [
-                        { label: "Chartered Accountant (CA)", careerId: "chartered-accountant" },
-                        { label: "Company Secretary (CS)", careerId: "company-secretary" },
-                        { label: "Investment Banking Analyst (via B.Com/BBA)", careerId: "investment-banker" }
-                    ]},
-                    { name: "Humanities / Vocational", note: "Good if you want to avoid another high-stakes entrance exam right away.", paths: [
-                        { label: "Graphic Designer / Content Creator", careerId: "graphic-designer" },
-                        { label: "Civil Services Officer (via BA → UPSC)", careerId: "civil-services-officer" },
-                        { label: "Corporate Lawyer (via CLAT → BA LLB)", careerId: "lawyer-advocate" }
-                    ]}
+                    {
+                        name: "Science → Engineering & Core Tech",
+                        tag: "JEE / state CET route",
+                        duration: "4 years (B.Tech/B.E.)",
+                        entry: "JEE Main (+ JEE Advanced for IITs), or a state CET like MHT-CET/KCET",
+                        note: "The most well-trodden Science exit — but far from the only one on this card.",
+                        paths: [
+                            { label: "Software Engineer (via JEE → B.Tech)", careerId: "software-engineer" },
+                            { label: "Architect (via NATA/JEE → B.Arch)", careerId: "architect" },
+                            { label: "Mechanical Engineer", careerId: "mechanical-engineer" },
+                            { label: "Electronics / Electrical Engineer", careerId: "electronics-electrical-engineer" }
+                        ]
+                    },
+                    {
+                        name: "Science → Medicine & Health Sciences",
+                        tag: "NEET route",
+                        duration: "5.5 years (MBBS) or shorter for allied health degrees",
+                        entry: "NEET UG — required for MBBS/BDS/BAMS/BHMS and most allied health courses",
+                        note: "NEET is the gatekeeper exam here, but the routes beyond it branch out more than most students realize.",
+                        paths: [
+                            { label: "Doctor (via NEET → MBBS)", careerId: "doctor-mbbs" },
+                            { label: "Pharmacist", careerId: "pharmacist" },
+                            { label: "Biotechnologist / Research Scientist", careerId: "biotechnologist" },
+                            { label: "Physiotherapist", careerId: "physiotherapist" }
+                        ]
+                    },
+                    {
+                        name: "Science → No Entrance Exam Needed",
+                        tag: "Skip JEE/NEET entirely",
+                        duration: "3 years (B.Sc)",
+                        entry: "Based on Class 12 marks or CUET — no separate JEE/NEET required",
+                        note: "The route most Science students don't realize exists until it feels too late — a straight B.Sc, no gatekeeper exam attached.",
+                        paths: [
+                            { label: "Data Analyst (via B.Sc Data Science, no JEE needed)", careerId: "data-analyst" },
+                            { label: "Environmental Scientist", careerId: "environmental-scientist" },
+                            { label: "Actuary (via B.Sc Statistics/Maths + actuarial exams)", careerId: "actuary" }
+                        ]
+                    },
+                    {
+                        name: "Commerce Stream",
+                        tag: "Cheapest & fastest route",
+                        duration: "3 years (B.Com) or direct professional-body exams",
+                        entry: "No entrance exam for B.Com at most colleges; CA/CS are separate professional-body exams you can start right after Class 12",
+                        note: "The cheapest, fastest professional routes on the whole platform live here.",
+                        paths: [
+                            { label: "Chartered Accountant (CA)", careerId: "chartered-accountant" },
+                            { label: "Company Secretary (CS)", careerId: "company-secretary" },
+                            { label: "Investment Banking Analyst (via B.Com/BBA)", careerId: "investment-banker" },
+                            { label: "Financial Analyst", careerId: "financial-analyst" }
+                        ]
+                    },
+                    {
+                        name: "Humanities / Arts",
+                        tag: "Law, civil services, media",
+                        duration: "3 years (BA) or 5 years (integrated BA LLB)",
+                        entry: "CLAT for most law colleges; otherwise based on Class 12 marks or CUET",
+                        note: "Good if you want more than one serious exit — law, government, or media all start from the same base here.",
+                        paths: [
+                            { label: "Graphic Designer / Content Creator", careerId: "graphic-designer" },
+                            { label: "Civil Services Officer (via BA → UPSC)", careerId: "civil-services-officer" },
+                            { label: "Corporate Lawyer (via CLAT → BA LLB)", careerId: "lawyer-advocate" },
+                            { label: "Journalist", careerId: "journalist" }
+                        ]
+                    },
+                    {
+                        name: "Vocational / Skill-Based After 12",
+                        tag: "Start earning the soonest",
+                        duration: "6 months – 2 years depending on the course",
+                        entry: "No entrance exam for most; hotel management and aviation run their own written test plus interview",
+                        note: "Good if you want to avoid another high-stakes entrance exam right away and start working sooner.",
+                        paths: [
+                            { label: "Hotel Management Professional", careerId: "hotel-management-professional" },
+                            { label: "Cabin Crew / Flight Attendant", careerId: "cabin-crew-flight-attendant" },
+                            { label: "Fashion Designer", careerId: "fashion-designer" },
+                            { label: "Paramedic / Emergency Care", careerId: "paramedic-emergency-care" }
+                        ]
+                    }
                 ]
             },
             'B.Com': {
                 title: "Bachelor of Commerce (B.Com)",
                 subtitle: "B.Com keeps you closer to \"safe and employable\" than most degrees — the real decision is how much more study you're willing to do.",
                 branches: [
-                    { name: "Accounting & Tax", note: "Longest prep (CA), but the strongest long-term ceiling and prestige.", paths: [
-                        { label: "Chartered Accountant (CA)", careerId: "chartered-accountant" },
-                        { label: "Company Secretary (CS)", careerId: "company-secretary" },
-                        { label: "Corporate Tax Consultant" }
-                    ]},
-                    { name: "Finance & Banking", note: "Faster paying jobs, but long hours especially in banking.", paths: [
-                        { label: "Investment Banking Analyst", careerId: "investment-banker" },
-                        { label: "Actuary", careerId: "actuary" },
-                        { label: "Banking PO (IBPS / SBI)" }
-                    ]},
-                    { name: "Analytics & Strategy", note: "Good if numbers interest you more than compliance/rules.", paths: [
-                        { label: "Data Analyst / Business Intelligence", careerId: "data-analyst" },
-                        { label: "MBA in Finance/Marketing (via CAT)" },
-                        { label: "Management Consultant" }
-                    ]}
+                    {
+                        name: "Accounting & Tax",
+                        tag: "Highest long-term ceiling",
+                        duration: "CA: ~4–5 years including articleship, alongside your B.Com",
+                        entry: "CA Foundation → Inter → Final (ICAI exams); CS has its own 3-stage exam track",
+                        note: "Longest prep (CA), but the strongest long-term ceiling and prestige.",
+                        paths: [
+                            { label: "Chartered Accountant (CA)", careerId: "chartered-accountant" },
+                            { label: "Company Secretary (CS)", careerId: "company-secretary" },
+                            { label: "Corporate Tax Consultant" }
+                        ]
+                    },
+                    {
+                        name: "Finance & Banking",
+                        tag: "Faster-paying jobs",
+                        duration: "0–2 years of extra certification/exam prep",
+                        entry: "Campus placement for most roles; IBPS/SBI PO exams for public-sector banking",
+                        note: "Faster paying jobs, but long hours especially in banking.",
+                        paths: [
+                            { label: "Investment Banking Analyst", careerId: "investment-banker" },
+                            { label: "Actuary", careerId: "actuary" },
+                            { label: "Banking Probationary Officer (IBPS / SBI)", careerId: "bank-probationary-officer" }
+                        ]
+                    },
+                    {
+                        name: "Analytics & Strategy",
+                        tag: "Numbers over compliance",
+                        duration: "MBA adds 2 more years",
+                        entry: "CAT/XAT for an MBA; no separate exam needed for analytics roles directly",
+                        note: "Good if numbers interest you more than compliance and rules.",
+                        paths: [
+                            { label: "Data Analyst / Business Intelligence", careerId: "data-analyst" },
+                            { label: "MBA in Finance/Marketing (via CAT)" },
+                            { label: "Management Consultant", careerId: "management-consultant" }
+                        ]
+                    },
+                    {
+                        name: "Government & PSU Route",
+                        tag: "Stability-first",
+                        duration: "6 months – 2 years of exam prep",
+                        entry: "SSC CGL, banking exams (IBPS/SBI), or a state PSC — all open to any B.Com graduate",
+                        note: "Often overlooked, but B.Com graduates are eligible for a wide spread of stable government postings.",
+                        paths: [
+                            { label: "SSC CGL (various government departments)" },
+                            { label: "Banking Probationary Officer (IBPS / SBI)", careerId: "bank-probationary-officer" },
+                            { label: "State PSC accounts/audit posts" }
+                        ]
+                    }
                 ]
             },
             'BBA': {
                 title: "Bachelor of Business Administration (BBA)",
                 subtitle: "BBA is a generalist degree by design — most people use it as a launchpad into an MBA, not as the final stop.",
                 branches: [
-                    { name: "Higher Management Studies", note: "The most common next step — but usually worth 2–4 years of work experience first.", paths: [
-                        { label: "MBA / PGDM (via CAT/XAT)" },
-                        { label: "MBA Abroad (GMAT route)" },
-                        { label: "Executive Management Trainee Programs" }
-                    ]},
-                    { name: "Operations & Marketing", note: "Direct-entry roles if you don't want to study further right away.", paths: [
-                        { label: "Digital Marketing Specialist", careerId: "digital-marketing-manager" },
-                        { label: "Business Development Executive" },
-                        { label: "Operations Analyst" }
-                    ]},
-                    { name: "Entrepreneurship", note: "Higher risk, no fixed roadmap — best with a specific idea, not just \"I want to start something\".", paths: [
-                        { label: "Startup Founder" },
-                        { label: "Family Business Management" },
-                        { label: "Business Consultant" }
-                    ]}
+                    {
+                        name: "Higher Management Studies",
+                        tag: "The most common next step",
+                        duration: "MBA/PGDM: 2 more years",
+                        entry: "CAT/XAT (India) or GMAT (abroad); most top programmes want 2–4 years of work experience first",
+                        note: "The most common next step — but usually worth 2–4 years of work experience first.",
+                        paths: [
+                            { label: "MBA / PGDM (via CAT/XAT)" },
+                            { label: "MBA Abroad (GMAT route)" },
+                            { label: "Executive Management Trainee Programs" }
+                        ]
+                    },
+                    {
+                        name: "Operations & Marketing",
+                        tag: "Direct-entry roles",
+                        duration: "Start working immediately after graduating",
+                        entry: "Campus placement or direct hiring — no extra exam needed",
+                        note: "Direct-entry roles if you don't want to study further right away.",
+                        paths: [
+                            { label: "Digital Marketing Specialist", careerId: "digital-marketing-manager" },
+                            { label: "Business Development Executive" },
+                            { label: "Operations Manager", careerId: "operations-manager" }
+                        ]
+                    },
+                    {
+                        name: "Entrepreneurship",
+                        tag: "Higher risk, no fixed roadmap",
+                        duration: "Variable — no fixed timeline",
+                        entry: "No formal entry point — needs a specific idea and some capital, not just a degree",
+                        note: "Higher risk, no fixed roadmap — best with a specific idea, not just \"I want to start something\".",
+                        paths: [
+                            { label: "Startup Founder", careerId: "entrepreneur-startup-founder" },
+                            { label: "Family Business Management" },
+                            { label: "Business Consultant" }
+                        ]
+                    },
+                    {
+                        name: "Specialized Business Roles",
+                        tag: "Niche but steady",
+                        duration: "Certifications: 3–12 months",
+                        entry: "Sector-specific certifications (HR, supply chain, events) rather than a university entrance exam",
+                        note: "For BBA grads who'd rather go deep into one business function than stay a generalist.",
+                        paths: [
+                            { label: "HR Manager", careerId: "hr-manager" },
+                            { label: "Supply Chain & Logistics Manager", careerId: "supply-chain-logistics-manager" },
+                            { label: "Event Manager", careerId: "event-manager" }
+                        ]
+                    }
                 ]
             },
             'BCA': {
                 title: "Bachelor of Computer Applications (BCA)",
                 subtitle: "BCA vs B.Tech is one of the most common confusions — BCA is cheaper and faster, and for most software roles employers care about your skills, not the degree name.",
                 branches: [
-                    { name: "Software Development", note: "Same job outcomes as many B.Tech CS grads if your project portfolio is strong.", paths: [
-                        { label: "Software Engineer", careerId: "software-engineer" },
-                        { label: "AI / Machine Learning Engineer", careerId: "ai-ml-engineer" },
-                        { label: "Cybersecurity Analyst", careerId: "cybersecurity-analyst" }
-                    ]},
-                    { name: "Data & Analytics", note: "One of the fastest ROI paths from a BCA — no extra degree strictly required.", paths: [
-                        { label: "Data Analyst / Business Intelligence", careerId: "data-analyst" },
-                        { label: "MCA (Master's) for a deeper CS foundation" },
-                        { label: "Business Intelligence Developer" }
-                    ]},
-                    { name: "Product & Design Crossover", note: "For people who like tech but don't want to code full-time forever.", paths: [
-                        { label: "Product Manager", careerId: "product-manager" },
-                        { label: "UI/UX Product Designer", careerId: "ux-ui-designer" }
-                    ]}
+                    {
+                        name: "Software Development",
+                        tag: "Same outcomes, cheaper",
+                        duration: "3 years",
+                        entry: "No JEE needed — admission is on Class 12 marks or a college-specific entrance test",
+                        note: "Same job outcomes as many B.Tech CS grads if your project portfolio is strong.",
+                        paths: [
+                            { label: "Software Engineer", careerId: "software-engineer" },
+                            { label: "AI / Machine Learning Engineer", careerId: "ai-ml-engineer" },
+                            { label: "Mobile App Developer", careerId: "mobile-app-developer" },
+                            { label: "Cybersecurity Analyst", careerId: "cybersecurity-analyst" }
+                        ]
+                    },
+                    {
+                        name: "Data & Analytics",
+                        tag: "Fast ROI, no extra degree needed",
+                        duration: "MCA adds 2 more years, if you want it",
+                        entry: "No extra entrance exam required for most analytics roles",
+                        note: "One of the fastest ROI paths from a BCA — no extra degree strictly required.",
+                        paths: [
+                            { label: "Data Analyst / Business Intelligence", careerId: "data-analyst" },
+                            { label: "MCA (Master's) for a deeper CS foundation" },
+                            { label: "Database Administrator", careerId: "database-administrator" }
+                        ]
+                    },
+                    {
+                        name: "Product & Design Crossover",
+                        tag: "Tech without full-time coding",
+                        duration: "Varies — portfolio matters more than a formal timeline",
+                        entry: "No extra entrance exam; a strong portfolio matters more than the degree here",
+                        note: "For people who like tech but don't want to code full-time forever.",
+                        paths: [
+                            { label: "Product Manager", careerId: "product-manager" },
+                            { label: "UI/UX Product Designer", careerId: "ux-ui-designer" }
+                        ]
+                    },
+                    {
+                        name: "Specialized Tech Tracks",
+                        tag: "High-growth niches",
+                        duration: "Certifications: 3–6 months each",
+                        entry: "Stackable industry certifications, no formal entrance exam",
+                        note: "For BCA grads who want to specialize early into a specific high-demand niche rather than stay a generalist developer.",
+                        paths: [
+                            { label: "Cloud / DevOps Engineer", careerId: "cloud-devops-engineer" },
+                            { label: "Blockchain Developer", careerId: "blockchain-developer" },
+                            { label: "IT Support / Network Administrator", careerId: "it-support-network-admin" }
+                        ]
+                    }
                 ]
             },
             'B.Tech': {
                 title: "Bachelor of Technology (B.Tech / B.E.)",
-                subtitle: "Not every B.Tech grad becomes a coder, and that's fine — the degree opens management and government routes too.",
+                subtitle: "Not every B.Tech grad becomes a coder, and that's fine — the degree opens management, government, and core-engineering routes too.",
                 branches: [
-                    { name: "Software & Core Tech", note: "The default path most people picture — highest volume of jobs.", paths: [
-                        { label: "Software Engineer", careerId: "software-engineer" },
-                        { label: "Cybersecurity Analyst", careerId: "cybersecurity-analyst" },
-                        { label: "Cloud / DevOps Engineer" }
-                    ]},
-                    { name: "Data & Artificial Intelligence", note: "Highest pay ceiling right now, but the steepest extra learning curve.", paths: [
-                        { label: "AI / Machine Learning Engineer", careerId: "ai-ml-engineer" },
-                        { label: "Data Analyst / Business Intelligence", careerId: "data-analyst" },
-                        { label: "AI Researcher (via M.Tech/PhD)" }
-                    ]},
-                    { name: "Management & Govt", note: "Good if you enjoyed engineering but don't want to code as your day job.", paths: [
-                        { label: "Product Manager", careerId: "product-manager" },
-                        { label: "Civil Services Officer (IAS/IPS)", careerId: "civil-services-officer" },
-                        { label: "GATE → M.Tech / PSU Jobs" }
-                    ]}
+                    {
+                        name: "Software & Core Tech",
+                        tag: "Highest volume of jobs",
+                        duration: "4 years",
+                        entry: "JEE Main/Advanced or a state CET to get in",
+                        note: "The default path most people picture — highest volume of jobs.",
+                        paths: [
+                            { label: "Software Engineer", careerId: "software-engineer" },
+                            { label: "Cybersecurity Analyst", careerId: "cybersecurity-analyst" },
+                            { label: "Cloud / DevOps Engineer", careerId: "cloud-devops-engineer" }
+                        ]
+                    },
+                    {
+                        name: "Data & Artificial Intelligence",
+                        tag: "Highest pay ceiling right now",
+                        duration: "4 years, + optional M.Tech/PhD",
+                        entry: "Same JEE entry; AI/Data Science is usually a specific branch choice at counselling",
+                        note: "Highest pay ceiling right now, but the steepest extra learning curve.",
+                        paths: [
+                            { label: "AI / Machine Learning Engineer", careerId: "ai-ml-engineer" },
+                            { label: "Data Scientist", careerId: "data-scientist" },
+                            { label: "AI Researcher (via M.Tech/PhD)" }
+                        ]
+                    },
+                    {
+                        name: "Management & Govt",
+                        tag: "Engineering without daily coding",
+                        duration: "MBA/GATE adds 2 more years",
+                        entry: "CAT for an MBA; GATE for PSU jobs or an M.Tech",
+                        note: "Good if you enjoyed engineering but don't want to code as your day job.",
+                        paths: [
+                            { label: "Product Manager", careerId: "product-manager" },
+                            { label: "Civil Services Officer (IAS/IPS)", careerId: "civil-services-officer" },
+                            { label: "GATE → M.Tech / PSU Jobs" }
+                        ]
+                    },
+                    {
+                        name: "Core & Specialized Engineering Branches",
+                        tag: "Beyond computer science",
+                        duration: "4 years",
+                        entry: "Same JEE/CET entry route, with the branch chosen at admission/counselling",
+                        note: "B.Tech isn't only computer science — these branches lead to very different, equally real careers.",
+                        paths: [
+                            { label: "Aerospace Engineer", careerId: "aerospace-engineer" },
+                            { label: "Biomedical Engineer", careerId: "biomedical-engineer" },
+                            { label: "Metallurgical & Materials Engineer", careerId: "metallurgical-materials-engineer" }
+                        ]
+                    }
                 ]
             },
             'B.Sc': {
                 title: "Bachelor of Science (B.Sc)",
                 subtitle: "B.Sc feels open-ended, which is exactly the point — it's a base you can specialize from in several directions.",
                 branches: [
-                    { name: "Research & Higher Education", note: "Best if you genuinely enjoy the subject, not just a fallback.", paths: [
-                        { label: "M.Sc / Ph.D in Specialization" },
-                        { label: "CSIR NET Research Fellow" },
-                        { label: "Academic Lecturer" }
-                    ]},
-                    { name: "Applied Sciences & Health", note: "A realistic non-MBBS way into healthcare and biotech.", paths: [
-                        { label: "Biotechnologist / Research Scientist", careerId: "biotechnologist" },
-                        { label: "Pharmacist (with a bridging B.Pharm/diploma)", careerId: "pharmacist" },
-                        { label: "Clinical Data Analyst" }
-                    ]},
-                    { name: "Corporate Switch", note: "The most common pivot — B.Sc grads move into data/finance roles via certifications.", paths: [
-                        { label: "Data Analyst / Business Intelligence", careerId: "data-analyst" },
-                        { label: "Actuary", careerId: "actuary" },
-                        { label: "Banking Associate" }
-                    ]}
+                    {
+                        name: "Research & Higher Education",
+                        tag: "For genuine subject lovers",
+                        duration: "M.Sc: 2 years, PhD: 4–5 more years",
+                        entry: "University entrance test or merit for M.Sc; CSIR NET/JRF to fund a PhD",
+                        note: "Best if you genuinely enjoy the subject, not just a fallback.",
+                        paths: [
+                            { label: "M.Sc / Ph.D in Specialization" },
+                            { label: "CSIR NET Research Fellow" },
+                            { label: "Academic Lecturer" }
+                        ]
+                    },
+                    {
+                        name: "Applied Sciences & Health",
+                        tag: "A non-MBBS way into healthcare",
+                        duration: "Bridging diploma/course: 1–2 years, where needed",
+                        entry: "GPAT/NIPER JEE for a pharmacy bridge; no extra entrance exam for biotech roles directly",
+                        note: "A realistic non-MBBS way into healthcare and biotech.",
+                        paths: [
+                            { label: "Biotechnologist / Research Scientist", careerId: "biotechnologist" },
+                            { label: "Pharmacist (with a bridging B.Pharm/diploma)", careerId: "pharmacist" },
+                            { label: "Medical Lab Technologist", careerId: "medical-lab-technologist" }
+                        ]
+                    },
+                    {
+                        name: "Corporate Switch",
+                        tag: "The most common pivot",
+                        duration: "Certifications: 3–12 months",
+                        entry: "No formal exam — certifications and a portfolio matter more than the degree title",
+                        note: "The most common pivot — B.Sc grads move into data/finance roles via certifications.",
+                        paths: [
+                            { label: "Data Analyst / Business Intelligence", careerId: "data-analyst" },
+                            { label: "Actuary", careerId: "actuary" },
+                            { label: "Banking Associate" }
+                        ]
+                    },
+                    {
+                        name: "Teaching & Civil Services",
+                        tag: "Stable, widely respected routes",
+                        duration: "B.Ed: 2 years; UPSC prep: typically 1–2 years",
+                        entry: "UGC NET or a B.Ed entrance for teaching; UPSC CSE for civil services — open to any graduate",
+                        note: "Two of the steadiest exits from a B.Sc, and both stay open regardless of which science subject you majored in.",
+                        paths: [
+                            { label: "School Teacher", careerId: "school-teacher" },
+                            { label: "Civil Services Officer (IAS/IPS)", careerId: "civil-services-officer" },
+                            { label: "Professor / Academic (via NET)", careerId: "professor-academic" }
+                        ]
+                    }
                 ]
             },
             'BA': {
                 title: "Bachelor of Arts (BA)",
                 subtitle: "BA is one of the most flexible degrees on this platform — the \"no future\" reputation doesn't match the actual outcomes below.",
                 branches: [
-                    { name: "Civil Services & Public Policy", note: "The classic BA-to-UPSC route — long prep, huge upside.", paths: [
-                        { label: "Civil Services Officer (IAS/IPS)", careerId: "civil-services-officer" },
-                        { label: "State PSC Exams" },
-                        { label: "Public Policy Research Analyst" }
-                    ]},
-                    { name: "Media, Law & Communication", note: "If you enjoy arguing your point or writing persuasively, start here.", paths: [
-                        { label: "Corporate Lawyer (via CLAT → BA LLB)", careerId: "lawyer-advocate" },
-                        { label: "Judicial Services Officer (Judge)", careerId: "judge-judicial-services" },
-                        { label: "Journalism & Mass Communication" }
-                    ]},
-                    { name: "Higher Education", note: "Slower path, but strong if you want to study or work abroad later.", paths: [
-                        { label: "MA / M.Phil / Ph.D in Specialization" },
-                        { label: "Study Abroad Master's (Social Sciences)" },
-                        { label: "UGC NET → Lecturer" }
-                    ]}
+                    {
+                        name: "Civil Services & Public Policy",
+                        tag: "The classic BA-to-UPSC route",
+                        duration: "Prep typically runs 1–3 years",
+                        entry: "UPSC CSE (Prelims, Mains, Interview) or a state PSC exam",
+                        note: "The classic BA-to-UPSC route — long prep, huge upside.",
+                        paths: [
+                            { label: "Civil Services Officer (IAS/IPS)", careerId: "civil-services-officer" },
+                            { label: "State PSC Exams" },
+                            { label: "Public Policy Analyst", careerId: "public-policy-analyst" }
+                        ]
+                    },
+                    {
+                        name: "Media, Law & Communication",
+                        tag: "For persuasive writers and arguers",
+                        duration: "BA LLB: 5 years integrated, or a 3-year LLB after BA",
+                        entry: "CLAT for most law colleges; no entrance exam needed for journalism/mass comm in most cases",
+                        note: "If you enjoy arguing your point or writing persuasively, start here.",
+                        paths: [
+                            { label: "Corporate Lawyer (via CLAT → BA LLB)", careerId: "lawyer-advocate" },
+                            { label: "Judicial Services Officer (Judge)", careerId: "judge-judicial-services" },
+                            { label: "Journalist", careerId: "journalist" }
+                        ]
+                    },
+                    {
+                        name: "Higher Education",
+                        tag: "Slower, strong for study abroad",
+                        duration: "MA: 2 years, M.Phil/PhD: several more",
+                        entry: "University entrance test or merit for MA; UGC NET for a lecturer role",
+                        note: "Slower path, but strong if you want to study or work abroad later.",
+                        paths: [
+                            { label: "MA / M.Phil / Ph.D in Specialization" },
+                            { label: "Study Abroad Master's (Social Sciences)" },
+                            { label: "UGC NET → Lecturer" }
+                        ]
+                    },
+                    {
+                        name: "Design & Creative Crossover",
+                        tag: "BA isn't just office jobs",
+                        duration: "Varies — some paths need a bridging diploma",
+                        entry: "Mostly portfolio-based, not exam-based",
+                        note: "A BA in English, History, Psychology or Sociology transfers into creative and content careers more directly than most students expect.",
+                        paths: [
+                            { label: "Graphic Designer / Content Creator", careerId: "graphic-designer" },
+                            { label: "Content Writer", careerId: "content-writer" },
+                            { label: "Photographer", careerId: "photographer" }
+                        ]
+                    }
                 ]
             },
             'B.Des': {
                 title: "Bachelor of Design (B.Des)",
                 subtitle: "A B.Des opens more than \"fashion designer\" — most graduates end up in product, UX, or brand roles, not runway design.",
                 branches: [
-                    { name: "Digital Product Design", note: "The highest-demand, most portable design career track right now.", paths: [
-                        { label: "UI/UX Product Designer", careerId: "ux-ui-designer" },
-                        { label: "Product Manager (design-led)", careerId: "product-manager" }
-                    ]},
-                    { name: "Brand & Content", note: "Good if you'd rather build a personal portfolio/audience than join a big firm.", paths: [
-                        { label: "Graphic Designer / Content Creator", careerId: "graphic-designer" },
-                        { label: "Digital Marketing Specialist", careerId: "digital-marketing-manager" }
-                    ]},
-                    { name: "Built Environment", note: "Needs a further degree, but design thinking transfers directly.", paths: [
-                        { label: "Architect (with a bridging B.Arch/M.Des)", careerId: "architect" },
-                        { label: "Interior/Spatial Designer" }
-                    ]}
+                    {
+                        name: "Digital Product Design",
+                        tag: "The highest-demand design track",
+                        duration: "Portfolio-driven — no fixed extra timeline",
+                        entry: "Hiring is almost entirely portfolio-based, not exam-based",
+                        note: "The highest-demand, most portable design career track right now.",
+                        paths: [
+                            { label: "UI/UX Product Designer", careerId: "ux-ui-designer" },
+                            { label: "Product Manager (design-led)", careerId: "product-manager" }
+                        ]
+                    },
+                    {
+                        name: "Brand & Content",
+                        tag: "Build your own audience",
+                        duration: "Varies — many build this alongside freelance work",
+                        entry: "No formal exam — a strong portfolio or personal brand matters most",
+                        note: "Good if you'd rather build a personal portfolio/audience than join a big firm.",
+                        paths: [
+                            { label: "Graphic Designer / Content Creator", careerId: "graphic-designer" },
+                            { label: "Digital Marketing Specialist", careerId: "digital-marketing-manager" }
+                        ]
+                    },
+                    {
+                        name: "Built Environment",
+                        tag: "Needs a further degree",
+                        duration: "B.Arch/M.Des bridge: 2–5 more years",
+                        entry: "NATA/JEE for B.Arch; CEED or portfolio-based entry for M.Des",
+                        note: "Needs a further degree, but design thinking transfers directly.",
+                        paths: [
+                            { label: "Architect (with a bridging B.Arch/M.Des)", careerId: "architect" },
+                            { label: "Interior Designer", careerId: "interior-designer" }
+                        ]
+                    },
+                    {
+                        name: "Further Study & Specialization",
+                        tag: "Specialize further",
+                        duration: "M.Des/MA: 2 more years",
+                        entry: "CEED for IIT/IISc M.Des; portfolio + interview for most other design schools, including abroad",
+                        note: "For B.Des grads who want to specialize deeper rather than enter the workforce straight away.",
+                        paths: [
+                            { label: "M.Des via CEED (IITs / IISc)" },
+                            { label: "Study Abroad (Fashion/Industrial Design)" },
+                            { label: "Industrial / Product Designer", careerId: "industrial-product-designer" }
+                        ]
+                    }
                 ]
             },
             'Diploma / Polytechnic': {
                 title: "Diploma (Polytechnic) Holders",
                 subtitle: "A diploma is not a dead end — lateral entry lets you join a B.Tech/B.E. directly into 2nd year, skipping a year most students spend on Class 12 basics.",
                 branches: [
-                    { name: "Continue to Degree", note: "The most common and highest-ROI next step for most diploma holders.", paths: [
-                        { label: "Lateral entry into B.Tech / B.E. (2nd year)" },
-                        { label: "Software Engineer (after completing B.Tech)", careerId: "software-engineer" }
-                    ]},
-                    { name: "Direct Industry Entry", note: "Skip further study and start earning immediately — common in core engineering trades.", paths: [
-                        { label: "Junior Engineer / Technician role" },
-                        { label: "Cybersecurity Analyst (with certifications)", careerId: "cybersecurity-analyst" }
-                    ]},
-                    { name: "Government Route", note: "Diploma holders are eligible for several stable technical government posts.", paths: [
-                        { label: "SSC JE (Junior Engineer) Exam" },
-                        { label: "PSU Technician Recruitment" }
-                    ]}
+                    {
+                        name: "Continue to Degree",
+                        tag: "Highest-ROI next step",
+                        duration: "B.Tech via lateral entry: 3 more years",
+                        entry: "Lateral entry exam/merit based on diploma marks — no need to repeat JEE",
+                        note: "The most common and highest-ROI next step for most diploma holders.",
+                        paths: [
+                            { label: "Lateral entry into B.Tech / B.E. (2nd year)" },
+                            { label: "Software Engineer (after completing B.Tech)", careerId: "software-engineer" }
+                        ]
+                    },
+                    {
+                        name: "Direct Industry Entry",
+                        tag: "Start earning immediately",
+                        duration: "No further study required",
+                        entry: "Campus placement or direct hiring in core engineering trades",
+                        note: "Skip further study and start earning immediately — common in core engineering trades.",
+                        paths: [
+                            { label: "Junior Engineer / Technician role" },
+                            { label: "Cybersecurity Analyst (with certifications)", careerId: "cybersecurity-analyst" }
+                        ]
+                    },
+                    {
+                        name: "Government Route",
+                        tag: "Stable technical government posts",
+                        duration: "Exam prep: 6 months – 1 year",
+                        entry: "SSC JE (Junior Engineer) exam or PSU-specific technician recruitment",
+                        note: "Diploma holders are eligible for several stable technical government posts.",
+                        paths: [
+                            { label: "SSC JE (Junior Engineer) Exam" },
+                            { label: "PSU Technician Recruitment" }
+                        ]
+                    },
+                    {
+                        name: "Start Your Own Setup",
+                        tag: "Independent route",
+                        duration: "Variable — depends on capital and client base",
+                        entry: "No formal exam — needs working capital and, for many trades, a contractor registration",
+                        note: "A realistic option once you've built a few years of hands-on experience and a bit of savings.",
+                        paths: [
+                            { label: "Small workshop / fabrication business" },
+                            { label: "Government contractor empanelment" },
+                            { label: "Entrepreneur / Startup Founder", careerId: "entrepreneur-startup-founder" }
+                        ]
+                    }
                 ]
             },
             'LLB Graduate': {
                 title: "After LLB — Practicing Law Graduates",
-                subtitle: "Finishing an LLB doesn't lock you into courtroom litigation — corporate, judicial, and policy tracks are all realistic from here.",
+                subtitle: "Finishing an LLB doesn't lock you into courtroom litigation — corporate, judicial, academic, and policy tracks are all realistic from here.",
                 branches: [
-                    { name: "Corporate Track", note: "Highest pay, but usually means long hours at a top firm early on.", paths: [
-                        { label: "Corporate Lawyer", careerId: "lawyer-advocate" },
-                        { label: "Company Secretary (dual qualification)", careerId: "company-secretary" }
-                    ]},
-                    { name: "Judiciary & Government", note: "Slower to start, but extremely stable once cleared.", paths: [
-                        { label: "Judicial Services Officer (Judge)", careerId: "judge-judicial-services" },
-                        { label: "Civil Services Officer (IAS/IPS)", careerId: "civil-services-officer" }
-                    ]},
-                    { name: "Litigation & Independent Practice", note: "Low starting pay, but full independence and long-term upside.", paths: [
-                        { label: "Junior Associate under a Senior Advocate" },
-                        { label: "Independent Practice (District/High Court)" }
-                    ]}
+                    {
+                        name: "Corporate Track",
+                        tag: "Highest pay, long hours early on",
+                        duration: "Immediate entry; partnership track runs 8–10+ years",
+                        entry: "Campus placement at top firms, or lateral hiring based on internships",
+                        note: "Highest pay, but usually means long hours at a top firm early on.",
+                        paths: [
+                            { label: "Corporate Lawyer", careerId: "lawyer-advocate" },
+                            { label: "Company Secretary (dual qualification)", careerId: "company-secretary" }
+                        ]
+                    },
+                    {
+                        name: "Judiciary & Government",
+                        tag: "Slow to start, extremely stable",
+                        duration: "Exam prep: 1–3 years",
+                        entry: "State Judicial Services exam, or UPSC CSE for civil services",
+                        note: "Slower to start, but extremely stable once cleared.",
+                        paths: [
+                            { label: "Judicial Services Officer (Judge)", careerId: "judge-judicial-services" },
+                            { label: "Civil Services Officer (IAS/IPS)", careerId: "civil-services-officer" }
+                        ]
+                    },
+                    {
+                        name: "Litigation & Independent Practice",
+                        tag: "Low starting pay, full independence",
+                        duration: "Several years to build a client base",
+                        entry: "Bar Council enrolment, then apprenticing under a Senior Advocate",
+                        note: "Low starting pay, but full independence and long-term upside.",
+                        paths: [
+                            { label: "Junior Associate under a Senior Advocate" },
+                            { label: "Independent Practice (District/High Court)" }
+                        ]
+                    },
+                    {
+                        name: "Academia & Policy",
+                        tag: "For the research-minded lawyer",
+                        duration: "LLM: 1–2 more years",
+                        entry: "CLAT PG or a university-specific LLM entrance",
+                        note: "For graduates who found the ideas behind the law more interesting than arguing cases.",
+                        paths: [
+                            { label: "LLM (Master of Laws)" },
+                            { label: "Public Policy Analyst", careerId: "public-policy-analyst" },
+                            { label: "Corporate Counsel (in-house legal)", careerId: "corporate-counsel" }
+                        ]
+                    }
                 ]
             },
             'MBBS Graduate': {
                 title: "After MBBS — What Comes Next",
                 subtitle: "MBBS alone already qualifies you to practice — specialization (MD/MS) is a choice for a higher ceiling, not a requirement.",
                 branches: [
-                    { name: "General Practice", note: "Fastest way to start earning post-internship.", paths: [
-                        { label: "Doctor (MBBS) — General Physician", careerId: "doctor-mbbs" },
-                        { label: "Government Medical Officer (via state PSC)" }
-                    ]},
-                    { name: "Specialization", note: "3 more years via NEET-PG, but significantly higher long-term earning potential.", paths: [
-                        { label: "MD/MS Specialization (Cardiology, Surgery, etc.)" },
-                        { label: "DNB (alternative specialization route)" }
-                    ]},
-                    { name: "Non-Clinical Pivot", note: "For doctors who want to step away from daily patient care.", paths: [
-                        { label: "Hospital Administration / Healthcare Management" },
-                        { label: "Medical Research / Pharma Industry" }
-                    ]}
+                    {
+                        name: "General Practice",
+                        tag: "Fastest way to start earning",
+                        duration: "Starts right after internship",
+                        entry: "No further exam — your MBBS + internship is enough to practice",
+                        note: "Fastest way to start earning post-internship.",
+                        paths: [
+                            { label: "Doctor (MBBS) — General Physician", careerId: "doctor-mbbs" },
+                            { label: "Government Medical Officer (via state PSC)" }
+                        ]
+                    },
+                    {
+                        name: "Specialization",
+                        tag: "Higher ceiling, 3 more years",
+                        duration: "MD/MS: 3 more years; DNB: similar timeline",
+                        entry: "NEET-PG",
+                        note: "3 more years via NEET-PG, but significantly higher long-term earning potential.",
+                        paths: [
+                            { label: "MD/MS Specialization (Cardiology, Surgery, etc.)" },
+                            { label: "DNB (alternative specialization route)" }
+                        ]
+                    },
+                    {
+                        name: "Non-Clinical Pivot",
+                        tag: "Step away from daily patient care",
+                        duration: "MBA/MHA: 1–2 more years, where needed",
+                        entry: "No extra exam for a direct industry move; MBA/MHA entrance (CAT or university-specific) for a formal management route",
+                        note: "For doctors who want to step away from daily patient care.",
+                        paths: [
+                            { label: "Hospital Administrator", careerId: "hospital-administrator" },
+                            { label: "Medical Research / Pharma Industry" }
+                        ]
+                    },
+                    {
+                        name: "Civil Services, Armed Forces & Public Health",
+                        tag: "Non-traditional medical careers",
+                        duration: "Varies — AFMS entry is near-immediate; UPSC prep runs 1–2 years",
+                        entry: "AFMS (Armed Forces Medical Services) direct entry, or UPSC CSE for civil services, or an MPH degree",
+                        note: "For doctors drawn to public systems and policy rather than a single hospital or clinic.",
+                        paths: [
+                            { label: "Armed Forces Medical Services (AFMS)" },
+                            { label: "Civil Services Officer (IAS/IPS)", careerId: "civil-services-officer" },
+                            { label: "Public Health (MPH) → WHO / Government health programmes" }
+                        ]
+                    }
                 ]
             },
             'Gap Year / Confused': {
                 title: "Gap Year, Backlogs, or Just Feeling Stuck",
                 subtitle: "This is more common than it feels from the inside — a gap year or a backlog is a delay, not a disqualification. Here's how people actually move forward from here.",
                 branches: [
-                    { name: "If You Took a Gap Year", note: "Use it deliberately — admissions committees and employers mainly care what you did with it.", paths: [
-                        { label: "Use the time for a certification or a real project in a field you're curious about" },
-                        { label: "Retake an entrance exam with a focused, structured plan" },
-                        { label: "Try the Find my path quiz to narrow down a direction before you resume" }
-                    ]},
-                    { name: "If You Have Backlogs", note: "One or two backlogs rarely block you long-term — clearing them on a plan matters more than panicking.", paths: [
-                        { label: "Prioritize clearing core/major-subject backlogs first" },
-                        { label: "Talk to your department about supplementary exam timelines" },
-                        { label: "Start building skills/portfolio in parallel — it doesn't have to wait" }
-                    ]},
-                    { name: "If You Genuinely Don't Know What You Want", note: "That's a completely normal place to be — don't let it turn into paralysis.", paths: [
-                        { label: "Take the Find my path quiz for a data-backed starting point" },
-                        { label: "Browse the Career Explorer by category instead of trying to decide top-down" },
-                        { label: "Talk to 1–2 people already working in a field that vaguely interests you" }
-                    ]}
+                    {
+                        name: "If You Took a Gap Year",
+                        tag: "Use it on purpose",
+                        note: "Use it deliberately — admissions committees and employers mainly care what you did with it.",
+                        paths: [
+                            { label: "Use the time for a certification or a real project in a field you're curious about" },
+                            { label: "Retake an entrance exam with a focused, structured plan" },
+                            { label: "Try the Find my path quiz to narrow down a direction before you resume" }
+                        ]
+                    },
+                    {
+                        name: "If You Have Backlogs",
+                        tag: "Rarely as fatal as it feels",
+                        note: "One or two backlogs rarely block you long-term — clearing them on a plan matters more than panicking.",
+                        paths: [
+                            { label: "Prioritize clearing core/major-subject backlogs first" },
+                            { label: "Talk to your department about supplementary exam timelines" },
+                            { label: "Start building skills/portfolio in parallel — it doesn't have to wait" }
+                        ]
+                    },
+                    {
+                        name: "If You Genuinely Don't Know What You Want",
+                        tag: "A normal place to be",
+                        note: "That's a completely normal place to be — don't let it turn into paralysis.",
+                        paths: [
+                            { label: "Take the Find my path quiz for a data-backed starting point" },
+                            { label: "Browse the Career Explorer by category instead of trying to decide top-down" },
+                            { label: "Talk to 1–2 people already working in a field that vaguely interests you" }
+                        ]
+                    }
                 ]
             }
         };
@@ -10779,8 +11283,16 @@
                 <p class="text-sm text-slate-600 mb-6 leading-relaxed">${data.subtitle}</p>
                 <div class="grid grid-cols-1 ${data.branches.length >= 4 ? 'md:grid-cols-2 lg:grid-cols-3' : 'md:grid-cols-3'} gap-4">
                     ${data.branches.map(b => `
-                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col">
-                            <h4 class="font-bold text-brand-700 text-sm mb-2 border-b pb-2">${b.name}</h4>
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-brand-300 hover:shadow-md transition flex flex-col">
+                            <div class="flex flex-wrap items-start gap-x-2 gap-y-1 mb-2 pb-2 border-b border-slate-100">
+                                <h4 class="font-bold text-brand-700 text-sm leading-snug flex-1 min-w-[60%]">${b.name}</h4>
+                                ${b.tag ? `<span class="text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200">${b.tag}</span>` : ''}
+                            </div>
+                            ${(b.duration || b.entry) ? `
+                                <div class="flex flex-col gap-1 mb-3">
+                                    ${b.duration ? `<span class="inline-flex items-start gap-1.5 text-[11px] font-semibold text-slate-600"><svg class="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg><span>${b.duration}</span></span>` : ''}
+                                    ${b.entry ? `<span class="inline-flex items-start gap-1.5 text-[11px] font-semibold text-slate-600"><svg class="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0z"/></svg><span>${b.entry}</span></span>` : ''}
+                                </div>` : ''}
                             ${b.note ? `<p class="text-[11px] text-slate-500 italic mb-3">${b.note}</p>` : ''}
                             <ul class="space-y-2 text-sm text-slate-700">
                                 ${b.paths.map(p => `
