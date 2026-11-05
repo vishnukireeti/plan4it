@@ -293,6 +293,30 @@
    "src": "https://admissions.bits-pilani.ac.in/FD/downloads/BITSAT-2026_brochure.pdf",
    "checked": "2026-11-05"
   },
+  "bpsc": {
+   "cycle": "72nd CCE (2026)",
+   "body": "Bihar Public Service Commission (BPSC)",
+   "last": {
+    "exam": "72nd Integrated CCE prelims: 26 Jul 2026 (exam calendar)"
+   },
+   "site": "bpsc.bihar.gov.in",
+   "links": [
+    [
+     "BPSC official website",
+     "https://bpsc.bihar.gov.in/"
+    ],
+    [
+     "BPSC exam calendar",
+     "https://bpsc.bihar.gov.in/exam-calendar/"
+    ],
+    [
+     "BPSC what's new",
+     "https://bpsc.bihar.gov.in/whats-new/"
+    ]
+   ],
+   "src": "https://bpsc.bihar.gov.in/exam-calendar/",
+   "checked": "2026-11-05"
+  },
   "ca-final": {
    "cycle": "2026–27",
    "body": "Institute of Chartered Accountants of India (ICAI)",
@@ -1178,6 +1202,32 @@
    "src": "https://jam2026.iitb.ac.in/files/JAM2026_Brochure-2.pdf",
    "checked": "2026-11-05"
   },
+  "ioqm": {
+   "cycle": "2026–27",
+   "body": "Mathematics Teachers' Association (India) with HBCSE",
+   "last": {
+    "reg": "1 Jun – 27 Jul 2026",
+    "exam": "6 Sep 2026",
+    "result": "Scores 7 Oct 2026; RMO cut-offs 22 Oct 2026"
+   },
+   "site": "ioqm.mtai.org.in",
+   "links": [
+    [
+     "IOQM 2026–27 portal",
+     "https://ioqm.mtai.org.in/"
+    ],
+    [
+     "IOQM 2026 page (MTA India)",
+     "https://www.mtai.org.in/ioqm-2026/"
+    ],
+    [
+     "HBCSE Mathematical Olympiad 2026–27",
+     "https://olympiads.hbcse.tifr.res.in/mathematical-olympiad-2026-2027/"
+    ]
+   ],
+   "src": "https://www.mtai.org.in/ioqm-2026/",
+   "checked": "2026-11-05"
+  },
   "ipmat": {
    "cycle": "2026",
    "body": "IIM Indore",
@@ -1313,6 +1363,23 @@
     ]
    ],
    "src": "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2026/04/20260416666062493.pdf",
+   "checked": "2026-11-05"
+  },
+  "jnvst": {
+   "cycle": "2027",
+   "body": "Navodaya Vidyalaya Samiti",
+   "site": "navodaya.gov.in",
+   "links": [
+    [
+     "JNVST 2027 Class 6 registration",
+     "https://cbseitms.rcil.gov.in/nvs/Index/Registration"
+    ],
+    [
+     "NVS admissions portal",
+     "https://cbseitms.rcil.gov.in/nvs/"
+    ]
+   ],
+   "src": "https://cbseitms.rcil.gov.in/nvs/Index/Registration",
    "checked": "2026-11-05"
   },
   "keam": {
@@ -1952,6 +2019,31 @@
    "src": "https://www.nift.ac.in/sites/default/files/2026-10/Information%20Bulletin%20-NIFTEE%202027%20-16.10.2026.pdf",
    "checked": "2026-11-05"
   },
+  "nimcet": {
+   "cycle": "2026",
+   "body": "NITs (NIMCET 2026)",
+   "site": "nimcet.admissions.nic.in",
+   "links": [
+    [
+     "NIMCET official website",
+     "https://nimcet.admissions.nic.in/"
+    ],
+    [
+     "NIMCET 2026 information brochure",
+     "https://nimcet.admissions.nic.in/document/information-brochure-2026/"
+    ],
+    [
+     "NIMCET 2026 schedule",
+     "https://nimcet.admissions.nic.in/document/schedule-3/"
+    ],
+    [
+     "NIMCET 2026 seat matrix",
+     "https://nimcet.admissions.nic.in/document/seat-matrix-nimcet-2026/"
+    ]
+   ],
+   "src": "https://nimcet.admissions.nic.in/document/information-brochure-2026/",
+   "checked": "2026-11-05"
+  },
   "nmat": {
    "cycle": "2026–27",
    "body": "GMAC",
@@ -1981,6 +2073,80 @@
     ]
    ],
    "src": "https://www.mba.com/exams/nmat/about/important-dates-fees",
+   "checked": "2026-11-05"
+  },
+  "nse-olympiads": {
+   "cycle": "2026–27",
+   "body": "Indian Association of Physics Teachers (IAPT) with HBCSE",
+   "fee": "₹300 per subject",
+   "mode": "Pen and paper, at your NSE centre",
+   "duration": "2 hours per subject",
+   "pattern": "Part A: 48 MCQs (+3, −1). Part B: 12 multi-correct questions (6 marks each). 216 marks",
+   "eligibility": "Indian students born 1 Jul 2007 – 30 Jun 2012 who haven't finished Class 12 boards before 30 Nov 2026",
+   "next": {
+    "exam": "2026-11-21",
+    "regCloses": "2026-09-14",
+    "status": "Official",
+    "short": "NSEA 21 Nov; NSEP, NSEC, NSEB 22 Nov 2026"
+   },
+   "last": {
+    "reg": "Closed 14 Sep 2026",
+    "exam": "NSEA 21 Nov 2026; NSEP, NSEC, NSEB 22 Nov 2026",
+    "result": "Next stage (INOs): first week of Feb 2027"
+   },
+   "site": "iapt.org.in",
+   "links": [
+    [
+     "IAPT official website",
+     "https://iapt.org.in/"
+    ],
+    [
+     "NSE 2026 student brochure (PDF)",
+     "https://iapt.org.in/wp-content/uploads/NSE-2026-Student-Brochure.pdf"
+    ],
+    [
+     "HBCSE Science Olympiad 2026–27",
+     "https://olympiads.hbcse.tifr.res.in/science-olympiad-2026-2027/"
+    ],
+    [
+     "National Olympiad Programme brochure 2026–27 (PDF)",
+     "https://olympiads.hbcse.tifr.res.in/wp-content/uploads/2026/10/Brochure-2026-27-English-1.pdf"
+    ]
+   ],
+   "src": "https://iapt.org.in/wp-content/uploads/NSE-2026-Student-Brochure.pdf",
+   "checked": "2026-11-05"
+  },
+  "nsejs": {
+   "cycle": "2026–27",
+   "body": "Indian Association of Physics Teachers (IAPT) with HBCSE",
+   "fee": "₹300",
+   "mode": "Pen and paper, at your NSE centre",
+   "duration": "2 hours",
+   "pattern": "Part A: 48 MCQs (+3, −1). Part B: 12 multi-correct questions. 216 marks",
+   "eligibility": "Indian students born 1 Jan 2012 – 31 Dec 2013 who haven't finished Class 10 boards before 30 Nov 2026",
+   "next": {
+    "exam": "2026-11-22",
+    "regCloses": "2026-09-14",
+    "status": "Official",
+    "short": "22 Nov 2026, 2:30–4:30 PM"
+   },
+   "last": {
+    "reg": "Closed 14 Sep 2026",
+    "exam": "22 Nov 2026",
+    "result": "Next stage (INJSO): first week of Feb 2027"
+   },
+   "site": "iapt.org.in",
+   "links": [
+    [
+     "IAPT NSEC/B/A/JS page",
+     "https://iapt.org.in/nsec-b-a-js/"
+    ],
+    [
+     "NSE 2026 student brochure (PDF)",
+     "https://iapt.org.in/wp-content/uploads/NSE-2026-Student-Brochure.pdf"
+    ]
+   ],
+   "src": "https://iapt.org.in/wp-content/uploads/NSE-2026-Student-Brochure.pdf",
    "checked": "2026-11-05"
   },
   "ojee": {
@@ -2087,6 +2253,23 @@
     ]
    ],
    "src": "https://nta.ac.in/Download/Notice/Notice_20261026114247.pdf",
+   "checked": "2026-11-05"
+  },
+  "rpsc-ras": {
+   "cycle": "2026",
+   "body": "Rajasthan Public Service Commission (RPSC)",
+   "site": "rpsc.rajasthan.gov.in",
+   "links": [
+    [
+     "RPSC official website",
+     "https://rpsc.rajasthan.gov.in/"
+    ],
+    [
+     "RPSC advertisements",
+     "https://rpsc.rajasthan.gov.in/advertisements?Pie=326"
+    ]
+   ],
+   "src": "https://rpsc.rajasthan.gov.in/",
    "checked": "2026-11-05"
   },
   "rrb-alp": {
@@ -2577,6 +2760,31 @@
    "src": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_steno_2026.pdf",
    "checked": "2026-11-05"
   },
+  "tancet": {
+   "cycle": "2026",
+   "body": "Anna University, Chennai",
+   "site": "tancet.annauniv.edu",
+   "links": [
+    [
+     "TANCET official website",
+     "https://tancet.annauniv.edu/"
+    ],
+    [
+     "TANCET 2026 information brochure (PDF)",
+     "https://tancet.annauniv.edu/tancet/Information%20Brochure%202026.pdf"
+    ],
+    [
+     "TANCET 2026 fees",
+     "https://tancet.annauniv.edu/tancet/fees.html"
+    ],
+    [
+     "Eligibility 2026 (PDF)",
+     "https://tancet.annauniv.edu/tancet/QUALIFYING%20EXAMINATION%20AND%20ELIGIBILITY.pdf"
+    ]
+   ],
+   "src": "https://tancet.annauniv.edu/tancet/Information%20Brochure%202026.pdf",
+   "checked": "2026-11-05"
+  },
   "toefl-ibt": {
    "cycle": "2026–27",
    "body": "ETS",
@@ -2695,6 +2903,27 @@
     ]
    ],
    "src": "https://cdnbbsr.s3waas.gov.in/s301eee509ee2f68dc6014898c309e86bf/uploads/2026/10/20261016860019603.pdf",
+   "checked": "2026-11-05"
+  },
+  "uppsc-pcs": {
+   "cycle": "2026",
+   "body": "Uttar Pradesh Public Service Commission (UPPSC)",
+   "site": "uppsc.up.nic.in",
+   "links": [
+    [
+     "UPPSC official website",
+     "https://uppsc.up.nic.in/"
+    ],
+    [
+     "UPPSC all notifications",
+     "https://uppsc.up.nic.in/CandidatePages/Notifications.aspx"
+    ],
+    [
+     "UPPSC advertisement A-1/E-1/2026",
+     "https://uppsc.up.nic.in/OuterPages/View_Enclosure.aspx?ID=114&amp=&flag=E&amp=&FID=929"
+    ]
+   ],
+   "src": "https://uppsc.up.nic.in/CandidatePages/Notifications.aspx",
    "checked": "2026-11-05"
   },
   "upsc-capf": {
@@ -2944,5 +3173,5 @@
    "checked": "2026-11-05"
   }
  },
- "count": 109
+ "count": 118
 }
