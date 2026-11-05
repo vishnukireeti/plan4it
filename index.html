@@ -631,11 +631,11 @@
 
                 <!-- Step 5: A few practical things (state, budget, marks). Used to put realistic colleges, exams and careers first. -->
                 <div id="wizard-q9" class="wizard-step hidden">
-                    <p class="text-lg font-medium text-slate-700 mb-1">Optional: a few practical things</p>
-                    <p class="text-xs text-slate-400 mb-6">This lets us put colleges, exams and careers that are realistic for you first, not only the most famous ones. It is not a test, and you can skip any part of it.</p>
+                    <p class="text-lg font-medium text-slate-700 mb-1" id="wiz-practical-title">Optional: a few practical things</p>
+                    <p class="text-xs text-slate-400 mb-6" id="wiz-practical-sub">This lets us put colleges, exams and careers that are realistic for you first, not only the most famous ones. It is not a test, and you can skip any part of it.</p>
                     <div class="space-y-6">
                         <div>
-                            <label for="wiz-state" class="block text-sm font-semibold text-slate-700 mb-2">Which state do you live in?</label>
+                            <label for="wiz-state" class="block text-sm font-semibold text-slate-700 mb-2" id="wiz-state-label">Which state do you live in?</label>
                             <select id="wiz-state" onchange="wizardSit('state', this.value)" class="w-full sm:w-80 px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:outline-none focus:ring-2 focus:ring-brand-500">
                                 <option value="">Select your state...</option>
                                 <option value="any">I can study in any state</option>
@@ -656,7 +656,7 @@
                         </div>
                         <div class="flex flex-col sm:flex-row gap-3">
                             <button id="wiz-sit-go" type="button" onclick="wizardSitDone()" class="flex-grow bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3.5 rounded-xl transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed" disabled>See my results →</button>
-                            <button type="button" onclick="wizardSitSkip()" class="sm:w-auto bg-white border border-slate-300 text-slate-700 font-semibold py-3.5 px-6 rounded-xl transition hover:bg-slate-50">Skip this step</button>
+                            <button id="wiz-sit-skip" type="button" onclick="wizardSitSkip()" class="sm:w-auto bg-white border border-slate-300 text-slate-700 font-semibold py-3.5 px-6 rounded-xl transition hover:bg-slate-50">Skip this step</button>
                         </div>
                     </div>
                 </div>
@@ -9193,7 +9193,7 @@
            ============================================================ */
         const QUIZ = [
             { key: 'cls', multi: 0, title: 'Which best describes you right now?', sub: 'This decides which exams, routes and tools actually apply to you — the rest of the quiz works the same either way.',
-              opts: [['9', 'Class 9'], ['10', 'Class 10'], ['11', 'Class 11'], ['12', 'Class 12'], ['ug', 'In an undergraduate degree', 'Undergraduate'], ['grad', 'Graduated, not working yet', 'Recently graduated'], ['working', 'Already working — exploring or switching careers', 'Already working']] },
+              opts: [['10', 'Class 10'], ['11', 'Class 11'], ['12', 'Class 12'], ['ug', 'In an undergraduate degree', 'Undergraduate'], ['grad', 'Graduated, not working yet', 'Recently graduated'], ['working', 'Already working — exploring or switching careers', 'Already working']] },
             { key: 'interests', multi: 3, exclusive: 'none', title: 'Which subjects or topics do you genuinely enjoy learning about?', sub: 'Pick up to 3. Choose what you enjoy, not what sounds impressive.',
               opts: [['maths', 'Maths and logical problems'], ['science', 'Science and how things work'], ['tech', 'Technology and computers'], ['business', 'Business, money and entrepreneurship'], ['people', 'People, society and human behaviour'], ['words', 'Writing, languages and communication'], ['art', 'Art, design and creative work'], ['bio', 'Biology, health and living things'], ['civics', 'History, politics and current affairs'], ['none', 'I haven\'t found my favourite yet']] },
             { key: 'activity', multi: 0, title: 'If you had a free afternoon to explore something, what would you choose?', sub: 'Go with your first instinct.',
@@ -9257,7 +9257,7 @@
         // Turn the raw answers into the fields the rest of the app reads. Safe to call after every answer.
         function deriveWizard() {
             const a = wizardAnswers;
-            if (a.cls) a.stage = (a.cls === '9' || a.cls === '10') ? 'School 8-10'
+            if (a.cls) a.stage = (a.cls === '10') ? 'School 8-10'
                 : (a.cls === '11' || a.cls === '12') ? 'School 11-12'
                 : a.cls === 'ug' ? 'Undergraduate' : 'Graduate'; // 'grad' or 'working'
             a.working = a.cls === 'working';
@@ -9320,7 +9320,9 @@
             const open = WIZARD_KEYS.map(function (k, i) { return wizardHas(k) ? 0 : i + 1; }).filter(Boolean);
             const next = open.find(function (n) { return n > from; }) || open[0];
             if (next) { showWizardStep(next); return; }
-            if (QZ_NEEDS_PRACTICAL.indexOf(wizardAnswers.help) > -1 && !wizardAnswers.situation) { showWizardStep(WIZARD_PRACTICAL); return; }
+            // School-stage results are colleges, and a college list means nothing without a state —
+            // so that step is mandatory for them no matter what they picked for "help", not just the usual trigger list.
+            if ((wizardNeedsState() || QZ_NEEDS_PRACTICAL.indexOf(wizardAnswers.help) > -1) && !wizardAnswers.situation) { showWizardStep(WIZARD_PRACTICAL); return; }
             showWizardResults();
         }
         function showWizardResults() {
@@ -9447,13 +9449,21 @@
             if (FIT_LEVEL[wizardAnswers.level]) p.push(FIT_LEVEL[wizardAnswers.level][0]);
             return p.join(' · ');
         }
+        // A school-stage student can't work yet, so their main results are colleges, not careers —
+        // and a college list is only honest once we know which state they can realistically study in.
+        function wizardNeedsState() { return wizardAnswers.stage === 'School 8-10' || wizardAnswers.stage === 'School 11-12'; }
         function markSit() {
             document.querySelectorAll('#wizard-q9 [data-sit]').forEach(function (b) {
                 const parts = b.getAttribute('data-sit').split(':'), on = wizardAnswers[parts[0]] === parts[1];
                 b.classList.toggle('border-brand-600', on); b.classList.toggle('bg-brand-50', on); b.classList.toggle('border-slate-200', !on); b.setAttribute('aria-pressed', on);
             });
             const sel = document.getElementById('wiz-state'); if (sel) sel.value = wizardAnswers.state || '';
-            const go = document.getElementById('wiz-sit-go'); if (go) go.disabled = !(wizardAnswers.state || wizardAnswers.budget || wizardAnswers.level);
+            const needsState = wizardNeedsState();
+            const title = document.getElementById('wiz-practical-title'); if (title) title.textContent = needsState ? 'One more thing: where are you studying?' : 'Optional: a few practical things';
+            const sub = document.getElementById('wiz-practical-sub'); if (sub) sub.textContent = needsState ? 'Colleges are only useful if they are realistic for you, so we need your state before showing any. Budget and marks are still optional.' : 'This lets us put colleges, exams and careers that are realistic for you first, not only the most famous ones. It is not a test, and you can skip any part of it.';
+            const stateLabel = document.getElementById('wiz-state-label'); if (stateLabel) stateLabel.textContent = needsState ? 'Which state do you live in? *' : 'Which state do you live in?';
+            const skipBtn = document.getElementById('wiz-sit-skip'); if (skipBtn) skipBtn.classList.toggle('hidden', needsState);
+            const go = document.getElementById('wiz-sit-go'); if (go) go.disabled = needsState ? !wizardAnswers.state : !(wizardAnswers.state || wizardAnswers.budget || wizardAnswers.level);
         }
         function wizardSit(k, v) { wizardSitSet(k, v); markSit(); }
         function wizardSitDone() { wizardAnswers.situation = 'done'; showWizardResults(); }
@@ -9839,19 +9849,26 @@
             deriveWizard(); saveWizardAnswers(wizardAnswers);
             const { constraint } = wizardAnswers;
             const e = escapeAuth;
-            const pool = careersData.map(c => { const r = scoreCareerForWizard(c, wizardAnswers); return { ...c, score: r.score, reasons: r.reasons }; });
-            pool.sort((a, b) => b.score - a.score);
-            let top = pool.slice(0, 3);
-            // nothing stood out yet: show three very different, in-demand careers to react to, instead of an arbitrary three
-            const noSignal = wizardAnswers.interest === 'Undecided' && wizardAnswers.workStyle === 'Mixed' && !(wizardAnswers.values || []).some(function (v) { return v !== 'enjoy'; });
-            if (noSignal) {
-                const seen = {}; top = [];
-                pool.filter(function (c) { return (c.demandScore || 0) >= 4; }).sort(function (x, y) { return (y.demandScore - x.demandScore) || (y.score - x.score); }).forEach(function (c) { if (top.length < 3 && !seen[c.category]) { seen[c.category] = 1; top.push(c); } });
-                if (top.length < 3) top = pool.slice(0, 3);
+            const A = wizardAnswers;
+            // A school-stage student can't legally work yet, so the headline results are colleges they
+            // could realistically get into, not careers; careers lead the results once they're past Class 12.
+            const schoolStage = A.stage === 'School 8-10' || A.stage === 'School 11-12';
+            let pool = [], top = [], noSignal = false, shared = [];
+            if (!schoolStage) {
+                pool = careersData.map(c => { const r = scoreCareerForWizard(c, wizardAnswers); return { ...c, score: r.score, reasons: r.reasons }; });
+                pool.sort((a, b) => b.score - a.score);
+                top = pool.slice(0, 3);
+                // nothing stood out yet: show three very different, in-demand careers to react to, instead of an arbitrary three
+                noSignal = wizardAnswers.interest === 'Undecided' && wizardAnswers.workStyle === 'Mixed' && !(wizardAnswers.values || []).some(function (v) { return v !== 'enjoy'; });
+                if (noSignal) {
+                    const seen = {}; top = [];
+                    pool.filter(function (c) { return (c.demandScore || 0) >= 4; }).sort(function (x, y) { return (y.demandScore - x.demandScore) || (y.score - x.score); }).forEach(function (c) { if (top.length < 3 && !seen[c.category]) { seen[c.category] = 1; top.push(c); } });
+                    if (top.length < 3) top = pool.slice(0, 3);
+                }
+                // reasons every match shares (your interest, how you like to work) are said once; each card keeps only what is different
+                shared = top[0].reasons.filter(function (r) { return top.every(function (t) { return t.reasons.indexOf(r) > -1; }); });
             }
-            // reasons every match shares (your interest, how you like to work) are said once; each card keeps only what is different
-            const shared = top[0].reasons.filter(function (r) { return top.every(function (t) { return t.reasons.indexOf(r) > -1; }); });
-            const A = wizardAnswers, styleWords = { Logic: 'solving problems', People: 'working with people', 'Hands-on': 'hands-on work', Creative: 'creative work', Leadership: 'leading and organising', Research: 'researching', Mixed: 'a mix of styles' };
+            const styleWords = { Logic: 'solving problems', People: 'working with people', 'Hands-on': 'hands-on work', Creative: 'creative work', Leadership: 'leading and organising', Research: 'researching', Mixed: 'a mix of styles' };
             const valueLabels = (A.values || []).map(function (v) { const o = QUIZ[5].opts.find(function (p) { return p[0] === v; }); return o ? o[1] : v; });
             const chips = [wizardAnswerLabel(0), A.interests3 && A.interests3.length ? 'Interests: ' + A.interests3.join(', ') : 'Interests: still exploring', 'Work style: ' + (styleWords[A.workStyle] || A.workStyle)];
             if (valueLabels.length) chips.push('Matters: ' + valueLabels.join('; '));
@@ -9860,8 +9877,9 @@
             document.getElementById('wizard-results-summary').innerHTML =
                 '<span class="block font-semibold text-slate-800 mb-2">You told us</span>' +
                 '<span class="flex flex-wrap gap-2 mb-3">' + chips.map(function (t) { return '<span class="text-xs font-semibold bg-white border border-brand-200 text-brand-800 rounded-full px-3 py-1">' + e(t) + '</span>'; }).join('') + '</span>' +
-                (A.clarity === 'none' || A.clarity === 'unsure' ? '<span class="block text-sm text-slate-700 mb-2">You said you are still exploring, and that is completely fine. Treat these as places to start looking, not answers.' + (noSignal ? ' Nothing stood out yet, so these are three very different careers in high demand, just to react to: which one feels closest, and which feels furthest?' : '') + '</span>' : '') +
-                (A.careerNote ? '<span class="block text-sm text-slate-700 mb-2">You mentioned <strong>' + e(A.careerNote) + '</strong>.' + (A.mentioned && A.mentioned.length ? ' We matched ' + A.mentioned.length + ' career' + (A.mentioned.length === 1 ? '' : 's') + ' to it' + (A.mentioned.length ? ': ' + A.mentioned.slice(0, 3).map(function (id) { const c = careersData.find(function (x) { return x.id === id; }); return c ? '<button type="button" onclick="openCareerDetail(\'' + c.id + '\')" class="font-semibold text-brand-700 underline">' + e(c.title) + '</button>' : ''; }).join(', ') : '') + '.' : ' We could not find a close match, so try the search box in the Career Explorer.') + '</span>' : '') +
+                (schoolStage ? '<span class="block text-sm text-slate-700 mb-2">You can\'t legally work yet, so we\'re leading with colleges worth a look instead of job titles — careers come into the picture once you\'re past Class 12.</span>' : '') +
+                (!schoolStage && (A.clarity === 'none' || A.clarity === 'unsure') ? '<span class="block text-sm text-slate-700 mb-2">You said you are still exploring, and that is completely fine. Treat these as places to start looking, not answers.' + (noSignal ? ' Nothing stood out yet, so these are three very different careers in high demand, just to react to: which one feels closest, and which feels furthest?' : '') + '</span>' : '') +
+                (!schoolStage && A.careerNote ? '<span class="block text-sm text-slate-700 mb-2">You mentioned <strong>' + e(A.careerNote) + '</strong>.' + (A.mentioned && A.mentioned.length ? ' We matched ' + A.mentioned.length + ' career' + (A.mentioned.length === 1 ? '' : 's') + ' to it' + (A.mentioned.length ? ': ' + A.mentioned.slice(0, 3).map(function (id) { const c = careersData.find(function (x) { return x.id === id; }); return c ? '<button type="button" onclick="openCareerDetail(\'' + c.id + '\')" class="font-semibold text-brand-700 underline">' + e(c.title) + '</button>' : ''; }).join(', ') : '') + '.' : ' We could not find a close match, so try the search box in the Career Explorer.') + '</span>' : '') +
                 '<span class="block text-xs text-slate-600">These are starting ideas based on your answers, not a test of your ability or a verdict on what suits you. Check each one against your marks, eligibility and the official details before you decide.</span>';
             const facts = function (c) {
                 const f = {
@@ -9875,27 +9893,31 @@
                 const order = constraint === 'Fast' ? ['entry', 'cost', 'salary'] : constraint === 'Budget' ? ['cost', 'entry', 'salary'] : constraint === 'Deep' ? ['hard', 'demand', 'salary'] : ['demand', 'entry', 'salary'];
                 return order.map(function (k) { return f[k]; });
             };
-            document.getElementById('wizard-matches-list').innerHTML = top.map(function (c) {
-                const fit = fitInfo(Math.min(97, Math.max(45, Math.round((c.score / WIZARD_MAX_SCORE) * 100))));
-                const own = c.reasons.filter(function (r) { return shared.indexOf(r) < 0 && !top.some(function (t) { return t !== c && t.reasons.indexOf(r) > -1; }); });
-                const what = String(c.overview || '').split(/(?<=[.!?])\s/)[0];
-                const exams = examsForCareer(c).slice(0, 2), cols = collegesForCareer(c).slice(0, 2);
-                const chip = 'text-xs font-semibold bg-slate-50 border border-slate-200 text-slate-800 hover:border-brand-400 rounded-full px-3 min-h-[36px]';
-                return '<div class="p-4 bg-white border border-slate-200 rounded-xl">' +
-                    '<div class="flex items-start justify-between gap-3"><div class="min-w-0">' +
-                    '<div class="flex items-center gap-2 mb-1"><span class="text-xs font-bold px-2.5 py-0.5 rounded ' + fit.cls + '">' + fit.text + '</span><span class="text-brand-600 text-xs tracking-widest" aria-hidden="true">' + '\u25cf'.repeat(fit.dots) + '<span class="text-slate-300">' + '\u25cf'.repeat(3 - fit.dots) + '</span></span></div>' +
-                    '<h4 class="font-bold text-slate-900">' + e(c.title) + '</h4></div>' +
-                    '<button type="button" onclick="openCareerDetail(\'' + c.id + '\')" class="shrink-0 text-brand-700 text-sm font-semibold hover:underline min-h-[44px]">Full roadmap \u2192</button></div>' +
-                    (what ? '<p class="text-xs text-slate-700 mt-1">' + e(what) + '</p>' : '') +
-                    '<p class="text-xs text-slate-600 mt-2"><span class="font-semibold text-slate-800">What stands out:</span> ' + e(facts(c).join(' \u00b7 ')) + '</p>' +
-                    (c.skills && c.skills.length ? '<p class="text-xs text-slate-600 mt-1"><span class="font-semibold text-slate-800">Skills you would build:</span> ' + e(c.skills.slice(0, 3).join(', ')) + '</p>' : '') +
-                    (own.length ? '<p class="text-xs text-brand-800 mt-1"><span class="font-semibold">Why this one:</span> ' + e(own.join('; ')) + '</p>' : '') +
-                    '<div class="mt-3 pt-3 border-t border-slate-100"><p class="text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5">Next steps</p><div class="flex flex-wrap gap-2">' +
-                    (exams.length ? exams.map(function (x) { return '<button type="button" onclick="openExamDetail(\'' + x.id + '\')" class="' + chip + '">Exam: ' + e(x.name) + '</button>'; }).join('') : '') +
-                    (cols.length ? cols.map(function (x) { return '<button type="button" onclick="openCollegeDetail(\'' + x.id + '\')" class="' + chip + '">College: ' + e(x.name.replace(/\s*\(.*?\)\s*/g, ' ').trim()) + '</button>'; }).join('') : '') +
-                    ((exams.length || cols.length) ? '' : '<span class="text-xs text-slate-600">Open the full roadmap to see the exams and colleges on this route.</span>') +
-                    '</div></div></div>';
-            }).join('');
+            if (schoolStage) {
+                renderWizardCollegeMatches();
+            } else {
+                document.getElementById('wizard-matches-list').innerHTML = top.map(function (c) {
+                    const fit = fitInfo(Math.min(97, Math.max(45, Math.round((c.score / WIZARD_MAX_SCORE) * 100))));
+                    const own = c.reasons.filter(function (r) { return shared.indexOf(r) < 0 && !top.some(function (t) { return t !== c && t.reasons.indexOf(r) > -1; }); });
+                    const what = String(c.overview || '').split(/(?<=[.!?])\s/)[0];
+                    const exams = examsForCareer(c).slice(0, 2), cols = collegesForCareer(c).slice(0, 2);
+                    const chip = 'text-xs font-semibold bg-slate-50 border border-slate-200 text-slate-800 hover:border-brand-400 rounded-full px-3 min-h-[36px]';
+                    return '<div class="p-4 bg-white border border-slate-200 rounded-xl">' +
+                        '<div class="flex items-start justify-between gap-3"><div class="min-w-0">' +
+                        '<div class="flex items-center gap-2 mb-1"><span class="text-xs font-bold px-2.5 py-0.5 rounded ' + fit.cls + '">' + fit.text + '</span><span class="text-brand-600 text-xs tracking-widest" aria-hidden="true">' + '\u25cf'.repeat(fit.dots) + '<span class="text-slate-300">' + '\u25cf'.repeat(3 - fit.dots) + '</span></span></div>' +
+                        '<h4 class="font-bold text-slate-900">' + e(c.title) + '</h4></div>' +
+                        '<button type="button" onclick="openCareerDetail(\'' + c.id + '\')" class="shrink-0 text-brand-700 text-sm font-semibold hover:underline min-h-[44px]">Full roadmap \u2192</button></div>' +
+                        (what ? '<p class="text-xs text-slate-700 mt-1">' + e(what) + '</p>' : '') +
+                        '<p class="text-xs text-slate-600 mt-2"><span class="font-semibold text-slate-800">What stands out:</span> ' + e(facts(c).join(' \u00b7 ')) + '</p>' +
+                        (c.skills && c.skills.length ? '<p class="text-xs text-slate-600 mt-1"><span class="font-semibold text-slate-800">Skills you would build:</span> ' + e(c.skills.slice(0, 3).join(', ')) + '</p>' : '') +
+                        (own.length ? '<p class="text-xs text-brand-800 mt-1"><span class="font-semibold">Why this one:</span> ' + e(own.join('; ')) + '</p>' : '') +
+                        '<div class="mt-3 pt-3 border-t border-slate-100"><p class="text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5">Next steps</p><div class="flex flex-wrap gap-2">' +
+                        (exams.length ? exams.map(function (x) { return '<button type="button" onclick="openExamDetail(\'' + x.id + '\')" class="' + chip + '">Exam: ' + e(x.name) + '</button>'; }).join('') : '') +
+                        (cols.length ? cols.map(function (x) { return '<button type="button" onclick="openCollegeDetail(\'' + x.id + '\')" class="' + chip + '">College: ' + e(x.name.replace(/\s*\(.*?\)\s*/g, ' ').trim()) + '</button>'; }).join('') : '') +
+                        ((exams.length || cols.length) ? '' : '<span class="text-xs text-slate-600">Open the full roadmap to see the exams and colleges on this route.</span>') +
+                        '</div></div></div>';
+                }).join('');
+            }
             document.getElementById('family-expectation').value = '';
             document.getElementById('family-reflection-result').classList.add('hidden');
             document.getElementById('family-your-interest').textContent = wizardAnswers.interest && wizardAnswers.interest !== 'Undecided' ? wizardAnswers.interest : 'Not clear yet \u2014 that\'s okay';
@@ -9906,6 +9928,40 @@
             FIT_OFF = false;
             const cs = document.getElementById('college-sort'); if (cs) delete cs.dataset.touched;
             try { renderColleges(); renderExams(); renderExplorerCareers(); } catch (er) { console.error(er); }
+        }
+
+        // Main results for a school-stage student (Class 10-12): colleges they could realistically get
+        // into, scored the same way the Colleges page scores them, not an arbitrary "popular colleges" list.
+        function renderWizardCollegeMatches() {
+            const box = document.getElementById('wizard-matches-list');
+            if (!box) return;
+            const e = escapeAuth, f = getFit();
+            if (!f || !f.state) {
+                box.innerHTML = '<div class="p-5 bg-amber-50 border border-amber-200 rounded-xl text-center">' +
+                    '<p class="text-sm font-semibold text-amber-800">Add your state to see colleges picked for you</p>' +
+                    '<p class="text-xs text-amber-700 mt-1">Which colleges make sense depends a lot on where you can study.</p>' +
+                    '<button type="button" onclick="showWizardStep(WIZARD_PRACTICAL)" class="mt-3 min-h-[44px] px-5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl text-sm">Add my state</button>' +
+                    '</div>';
+                return;
+            }
+            const ranked = collegesData.map(function (c) { const r = collegeFit(c, f); return { c: c, score: r.score, tags: r.tags }; });
+            ranked.sort(function (a, b) { return b.score - a.score; });
+            const top = ranked.slice(0, 6);
+            box.innerHTML = top.map(function (r) {
+                const c = r.c;
+                const fit = fitInfo(Math.min(97, Math.max(45, Math.round((r.score / 120) * 100))));
+                const name = c.name.replace(/\s*\(.*?\)\s*/g, ' ').trim();
+                const chip = 'text-xs font-semibold bg-slate-50 border border-slate-200 text-slate-800 hover:border-brand-400 rounded-full px-3 min-h-[36px]';
+                return '<div class="p-4 bg-white border border-slate-200 rounded-xl">' +
+                    '<div class="flex items-start justify-between gap-3"><div class="min-w-0">' +
+                    '<div class="flex items-center gap-2 mb-1"><span class="text-xs font-bold px-2.5 py-0.5 rounded ' + fit.cls + '">' + fit.text + '</span><span class="text-brand-600 text-xs tracking-widest" aria-hidden="true">' + '●'.repeat(fit.dots) + '<span class="text-slate-300">' + '●'.repeat(3 - fit.dots) + '</span></span>' + (c.nirf ? '<span class="text-[11px] font-semibold text-slate-500">NIRF #' + c.nirf + '</span>' : '') + '</div>' +
+                    '<h4 class="font-bold text-slate-900">' + e(name) + '</h4><p class="text-xs text-slate-600">' + e(c.location || '') + '</p></div>' +
+                    '<button type="button" onclick="openCollegeDetail(\'' + c.id + '\')" class="shrink-0 text-brand-700 text-sm font-semibold hover:underline min-h-[44px]">Full details →</button></div>' +
+                    '<p class="text-xs text-slate-600 mt-2"><span class="font-semibold text-slate-800">What stands out:</span> ' + e([c.fees ? c.fees + ' / yr' : '', c.relatedExam ? 'Entry via ' + c.relatedExam : '', c.placementNote ? c.placementNote.split('.')[0] : ''].filter(Boolean).join(' · ')) + '</p>' +
+                    (c.courses && c.courses.length ? '<p class="text-xs text-slate-600 mt-1"><span class="font-semibold text-slate-800">Popular courses:</span> ' + e(c.courses.slice(0, 3).join(', ')) + '</p>' : '') +
+                    '<div class="mt-3 pt-3 border-t border-slate-100">' + fitTagsHTML(r.tags) + '</div>' +
+                    '</div>';
+            }).join('');
         }
 
         function renderFamilyReflection() {
@@ -11113,13 +11169,13 @@
         }
 
         // Where the student's own "Find my path" class answer lands on a career's roadmap.
-        // Every roadmap's step 0 is the Class 12 step, so: Class 9/10 → not reached yet,
-        // Class 11/12 → step 0, "done" (already past Class 12) → step 1 if there is one.
+        // Every roadmap's step 0 is the Class 12 step, so: Class 10 → not reached yet,
+        // Class 11/12 → step 0, already past Class 12 (undergrad, graduated, or working) → step 1 if there is one.
         function roadmapStageInfo(wizardAns) {
             if (!wizardAns || !wizardAns.cls) return null;
             const cls = wizardAns.cls;
-            if (cls === '9' || cls === '10') return { before: true, cls };
-            if (cls === 'done') return { before: false, idx: 1, cls };
+            if (cls === '10') return { before: true, cls };
+            if (cls === 'ug' || cls === 'grad' || cls === 'working') return { before: false, idx: 1, cls };
             return { before: false, idx: 0, cls }; // 11 or 12
         }
         function roadmapYouAreHereNote(stage) {
