@@ -834,6 +834,51 @@
    "src": "https://cdnbbsr.s3waas.gov.in/s3d1a21da7bca4abff8b0b61b87597de73/uploads/2026/01/202601031633478370.pdf",
    "checked": "2026-11-05"
   },
+  "dsssb": {
+   "cycle": "2026",
+   "body": "Delhi Subordinate Services Selection Board",
+   "site": "dsssb.delhi.gov.in",
+   "links": [
+    [
+     "DSSSB vacancies",
+     "https://dsssb.delhi.gov.in/dsssb-vacancies"
+    ],
+    [
+     "DSSSB notifications",
+     "https://dsssb.delhi.gov.in/notifications"
+    ],
+    [
+     "DSSSB online applications",
+     "https://dsssbonline.nic.in/"
+    ]
+   ],
+   "src": "https://dsssb.delhi.gov.in/dsssb-vacancies",
+   "checked": "2026-11-05"
+  },
+  "dsssb-teacher": {
+   "cycle": "2026",
+   "body": "Delhi Subordinate Services Selection Board",
+   "last": {
+    "reg": "Advertisement 02/2026 (post codes 01/26–20/26): closed 28 Mar 2026"
+   },
+   "site": "dsssb.delhi.gov.in",
+   "links": [
+    [
+     "DSSSB vacancies",
+     "https://dsssb.delhi.gov.in/dsssb-vacancies"
+    ],
+    [
+     "DSSSB advertisement 02/2026",
+     "https://dsssb.delhi.gov.in/dsssb/vacancy-notice-advertisement-no-022026-various-posts-post-code-0126-2026-closing-date"
+    ],
+    [
+     "DSSSB online applications",
+     "https://dsssbonline.nic.in/"
+    ]
+   ],
+   "src": "https://dsssb.delhi.gov.in/dsssb/vacancy-notice-advertisement-no-022026-various-posts-post-code-0126-2026-closing-date",
+   "checked": "2026-11-05"
+  },
   "fmge": {
    "cycle": "October 2026",
    "body": "National Board of Examinations in Medical Sciences (NBEMS)",
@@ -959,6 +1004,23 @@
     ]
    ],
    "src": "https://gseb.org/GUJCETBooklet(English).pdf",
+   "checked": "2026-11-05"
+  },
+  "htet": {
+   "cycle": "2026",
+   "body": "Board of School Education Haryana (BSEH)",
+   "site": "bseh.org.in",
+   "links": [
+    [
+     "BSEH official website",
+     "https://bseh.org.in/home"
+    ],
+    [
+     "HTET information bulletin (PDF)",
+     "https://bseh.org.in/uploads/files/5ddfeeb4ca6a5eab9c75476fb24dc838.pdf"
+    ]
+   ],
+   "src": "https://bseh.org.in/uploads/files/5ddfeeb4ca6a5eab9c75476fb24dc838.pdf",
    "checked": "2026-11-05"
   },
   "iat-iiser": {
@@ -1256,19 +1318,12 @@
    "checked": "2026-11-05"
   },
   "iitm-bs": {
-   "cycle": "January 2027 term",
+   "cycle": "January 2027 batch",
    "body": "IIT Madras",
    "fee": "₹4,000 (General/OBC); ₹2,000 (SC/ST/PwD); ₹1,000 (SC/ST and PwD)",
    "mode": "4 weeks of online coursework with weekly assignments, then a 4-hour in-person qualifier exam",
    "pattern": "Courses: English I, Maths for Data Science I, Statistics I, Computational Thinking. Pass: 40% in each and 50% average (lower for reserved categories)",
    "eligibility": "Class 12 passed (any stream, any age), with Maths and English in Class 10. Class 11 students can apply",
-   "next": {
-    "exam": "2027-01-29",
-    "regCloses": "2027-01-29",
-    "status": "Official",
-    "short": "Apply by 29 Jan 2027 for the January 2027 batch",
-    "regText": "open now; last date 29 Jan 2027"
-   },
    "site": "study.iitm.ac.in",
    "links": [
     [
@@ -1281,7 +1336,11 @@
     ]
    ],
    "src": "https://study.iitm.ac.in/ds/admissions.html",
-   "checked": "2026-11-05"
+   "checked": "2026-11-05",
+   "last": {
+    "reg": "Open now; apply by 29 Jan 2027",
+    "exam": "Qualifier exam after 4 weeks of coursework"
+   }
   },
   "ioqm": {
    "cycle": "2026–27",
@@ -1556,6 +1615,27 @@
     ]
    ],
    "src": "https://kiitee.kiit.ac.in/kiitee-2026/",
+   "checked": "2026-11-05"
+  },
+  "kvs-recruit": {
+   "cycle": "2026",
+   "body": "Kendriya Vidyalaya Sangathan",
+   "site": "kvsangathan.nic.in",
+   "links": [
+    [
+     "KVS notifications and recruitment",
+     "https://kvsangathan.nic.in/en/interview-notice/"
+    ],
+    [
+     "KVS direct recruitment notice (PGT, TGT, Principal and others)",
+     "https://kvsangathan.nic.in/en/document/regarding-direct-recruitment-for-the-posts-of-assistant-commissioner-principal-vice-principal-pgt-tgt-librarian-and-non-teaching-post-in-kendriya-vidyalaya-sangathan/"
+    ],
+    [
+     "KVS results and answer keys",
+     "https://kvsangathan.nic.in/en/results-misc-answer-keys/"
+    ]
+   ],
+   "src": "https://kvsangathan.nic.in/en/interview-notice/",
    "checked": "2026-11-05"
   },
   "mah-bba-cet": {
@@ -3320,5 +3400,5 @@
    "checked": "2026-11-05"
   }
  },
- "count": 125
+ "count": 129
 }
