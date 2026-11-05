@@ -714,8 +714,11 @@
                     </div>
 
                     <div class="flex flex-col sm:flex-row gap-3">
-                        <button onclick="restartWizard()" class="w-full sm:w-auto bg-white border border-slate-300 text-slate-700 font-semibold py-3.5 px-6 rounded-xl transition hover:bg-slate-50">
+                        <button onclick="retakeQuiz()" class="w-full sm:w-auto bg-white border border-slate-300 text-slate-700 font-semibold py-3.5 px-6 rounded-xl transition hover:bg-slate-50">
                             ↺ Retake Quiz
+                        </button>
+                        <button type="button" onclick="removeQuizResults()" class="w-full sm:w-auto bg-white border border-rose-200 text-rose-700 font-semibold py-3.5 px-6 rounded-xl transition hover:bg-rose-50">
+                            Remove my quiz results
                         </button>
                         <button onclick="switchView('dashboard')" class="flex-grow bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3.5 rounded-xl transition shadow-sm">
                             Lock Profile & View Full Dashboard →
@@ -754,7 +757,7 @@
                 </div>
                 <div class="flex items-center gap-3 shrink-0">
                     <button onclick="sortExplorerByQuizMatch()" class="text-xs font-semibold bg-brand-600 text-white px-3 py-2 rounded-lg hover:bg-brand-700 transition whitespace-nowrap">Sort by My Matches</button>
-                    <button onclick="clearWizardAnswersAndRefresh()" class="text-xs font-semibold text-brand-600 hover:underline whitespace-nowrap">Not you? Clear</button>
+                    <button onclick="removeQuizResults()" class="text-xs font-semibold text-brand-600 hover:underline whitespace-nowrap min-h-[44px]">Remove quiz results</button>
                 </div>
             </div>
 
@@ -7865,7 +7868,7 @@
               lead: 'The earlier you act, the cheaper it is to change. There are more ways back than most people know.',
               week: ['Write down what you dislike: the subjects, the daily work, or the career at the end.', 'Read the "Picked the wrong course?" guide just above for your stage.', 'Ask your college about branch change or transfer windows, and the last date.'],
               months: ['Compare 2 alternatives: how many credits carry over, how many extra years, and the cost.', 'Talk to 2 people who already work in the field you want.', 'Use the career switch planner to see what is missing between where you are and where you want to be.'],
-              doors: [['Picked the wrong course?', 'Step-by-step guide for your stage.', "goToBlock('wrong-course-block')"], ['Plan a career switch', 'See the gap between two careers.', "goToBlock('career-switch-block')"], ['Find my path', 'Take the 5-minute quiz again.', "switchView('confusedMode');restartWizard()"]],
+              doors: [['Picked the wrong course?', 'Step-by-step guide for your stage.', "goToBlock('wrong-course-block')"], ['Plan a career switch', 'See the gap between two careers.', "goToBlock('career-switch-block')"], ['Find my path', 'Take the 5-minute quiz again.', "switchView('confusedMode');retakeQuiz()"]],
               avoid: ['Leaving before you know what you are moving to.', 'Switching only because a friend did.'] },
             { id: 'no-campus-placement', icon: '💼', label: 'No campus placement', title: 'Missing campus placement is a delay, not a dead end',
               lead: 'Most jobs in India are filled off campus. Treat it as your main route now, with a fixed weekly routine.',
@@ -8035,7 +8038,7 @@
                 }).join('') + '</div>' +
                 '<div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 mt-4"><h4 class="font-bold text-emerald-900 text-sm mb-1">What to do this week</h4><ul class="list-disc pl-5 space-y-1 text-sm text-emerald-900">' + d.week.map(function (s) { return '<li>' + escapeAuth(s) + '</li>'; }).join('') + '</ul></div>' +
                 '<div class="flex flex-col sm:flex-row flex-wrap gap-2 mt-4">' +
-                '<button type="button" onclick="switchView(\'confusedMode\');restartWizard()" class="min-h-[44px] bg-white border border-slate-300 text-slate-700 font-semibold py-2.5 px-4 rounded-xl hover:bg-slate-50 text-sm">Retake the career quiz</button>' +
+                '<button type="button" onclick="switchView(\'confusedMode\');retakeQuiz()" class="min-h-[44px] bg-white border border-slate-300 text-slate-700 font-semibold py-2.5 px-4 rounded-xl hover:bg-slate-50 text-sm">Retake the career quiz</button>' +
                 '<button type="button" onclick="goToTool(\'afterDegree\', \'career-switch-block\')" class="min-h-[44px] bg-white border border-slate-300 text-slate-700 font-semibold py-2.5 px-4 rounded-xl hover:bg-slate-50 text-sm">Plan a career switch</button>' +
                 '<button type="button" onclick="goToTool(\'govAndAbroad\', \'scholarship-matcher-block\')" class="min-h-[44px] bg-white border border-slate-300 text-slate-700 font-semibold py-2.5 px-4 rounded-xl hover:bg-slate-50 text-sm">Look at scholarships</button></div>' +
                 '<p class="text-[11px] text-slate-500 mt-3">Rules differ by school, board, university and state, so confirm each step with the institution. Plan4it is a guide, not official advice.</p>';
@@ -8533,7 +8536,7 @@
         const REVEAL_ZONES = [
             { zone: '#view-colleges [data-nav="Search and filters"]', ctl: 'select, input, button', skip: '#college-filters-toggle', target: '#colleges-result-count' },
             { zone: '#after10-colleges', ctl: 'select, input, button', skip: '#a10c-grid, #a10c-more, #a10c-empty', target: '#a10c-count' },
-            { zone: '#view-explorer', ctl: 'select, input[type="checkbox"], .cat-pill, button[onclick*="resetExplorerFilters"], button[onclick*="sortExplorerByQuizMatch"], button[onclick*="clearWizardAnswers"]', target: '#explorer-result-count' },
+            { zone: '#view-explorer', ctl: 'select, input[type="checkbox"], .cat-pill, button[onclick*="resetExplorerFilters"], button[onclick*="sortExplorerByQuizMatch"], button[onclick*="removeQuizResults"]', target: '#explorer-result-count' },
             { zone: '#view-exams', ctl: 'select, input[type="checkbox"], button[onclick*="resetExamFilters"], [data-nav="Search and filters"] button', target: '#exams-result-count' },
             { zone: '#nirf-panel', ctl: 'select, input', target: '#nirf-count' },
             { zone: '#scholarship-matcher-block', ctl: 'select, input', target: '#scholarship-results' },
@@ -8871,7 +8874,7 @@
                         '<span class="block text-sm font-bold ' + (lab ? 'text-slate-900' : isCur ? 'text-slate-700' : 'text-slate-500') + '">' + (lab ? e(lab) : 'Not chosen yet') + '</span>' +
                         (lab ? '<span class="block text-[11px] font-semibold text-brand-600 mt-0.5">Tap to change</span>' : '') + '</button></li>';
                 }).join('') + '</ol><p class="text-[11px] text-slate-500 mt-3">Tap any answer to go back and change it. Your other answers are kept.</p>' +
-                    (done ? '<button type="button" onclick="restartWizard()" class="mt-3 text-xs font-semibold text-brand-600 hover:underline min-h-[44px]">Start over</button>' : '');
+                    (done ? '<button type="button" onclick="retakeQuiz()" class="mt-3 text-xs font-semibold text-brand-600 hover:underline min-h-[44px]">Start over</button>' : '');
                 // Every other page's mobile dropdown self-labels via a visible placeholder
                 // option ("On this page ▾" below) -- the quiz one used to skip that and just
                 // showed "1. Not chosen yet" above the "Find my path" heading with nothing
@@ -9614,8 +9617,11 @@
         function fitBannerHTML(what) {
             const f = getFit();
             if (!f) return '';
-            if (FIT_OFF) return '<div class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 flex flex-wrap items-center justify-between gap-2"><p class="text-sm text-slate-700">Showing everything, the same for all students.</p><button type="button" onclick="setFitOff(false)" class="text-sm font-semibold text-brand-600 hover:underline min-h-[44px] px-1">Show ' + what + ' that suit me</button></div>';
-            return '<div class="bg-brand-50 border border-brand-100 rounded-xl px-4 py-3 flex flex-wrap items-center justify-between gap-2"><div><p class="text-[11px] font-bold text-brand-700 uppercase tracking-wide">Picked for you, from your quiz</p><p class="text-sm text-brand-900">' + escapeAuth(fitSummaryText(f)) + '. This is a rough guide based on rank and fees, not a cutoff.</p></div><button type="button" onclick="setFitOff(true)" class="text-sm font-semibold text-brand-700 hover:underline min-h-[44px] px-1 whitespace-nowrap">Show everything</button></div>';
+            if (FIT_OFF) return '<div class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 flex flex-wrap items-center justify-between gap-2"><p class="text-sm text-slate-700">Showing everything, the same for all students.</p><span class="flex flex-wrap gap-x-3"><button type="button" onclick="setFitOff(false)" class="text-sm font-semibold text-brand-600 hover:underline min-h-[44px] px-1">Show ' + what + ' that suit me</button>' + removeQuizBtn() + '</span></div>';
+            return '<div class="bg-brand-50 border border-brand-100 rounded-xl px-4 py-3 flex flex-wrap items-center justify-between gap-2"><div><p class="text-[11px] font-bold text-brand-700 uppercase tracking-wide">Picked for you, from your quiz</p><p class="text-sm text-brand-900">' + escapeAuth(fitSummaryText(f)) + '. This is a rough guide based on rank and fees, not a cutoff.</p></div><span class="flex flex-wrap gap-x-3"><button type="button" onclick="setFitOff(true)" class="text-sm font-semibold text-brand-700 hover:underline min-h-[44px] px-1 whitespace-nowrap">Show everything</button>' + removeQuizBtn() + '</span></div>';
+        }
+        function removeQuizBtn() {
+            return getStoredWizardAnswers() ? '<button type="button" onclick="removeQuizResults()" class="text-sm font-semibold text-rose-700 hover:underline min-h-[44px] px-1 whitespace-nowrap">Remove quiz results</button>' : '';
         }
         function setFitOff(v) {
             FIT_OFF = !!v;
@@ -9805,7 +9811,7 @@
             if (wizardAnswers.stage !== 'School 8-10') { box.classList.add('hidden'); box.innerHTML = ''; return; }
             const routes = computeWizardRoutes(wizardAnswers);
             const unsure = wizardAnswers.interest === 'Undecided';
-            box.innerHTML = '<h4 class="font-bold text-slate-900 mb-1">Routes worth a closer look after Class 10</h4>' +
+            box.innerHTML = '<div class="flex flex-wrap items-start justify-between gap-x-3"><h4 class="font-bold text-slate-900 mb-1">Routes worth a closer look after Class 10</h4><button type="button" onclick="removeQuizResults()" class="text-xs font-semibold text-rose-700 hover:underline min-h-[44px]">Remove quiz results</button></div>' +
                 '<p class="text-xs text-slate-600 mb-3">These are starting ideas, not a decision. Talk them over with a parent, a teacher or your school counsellor.' + (unsure ? ' Not sure yet? That is fine. Each route below keeps a different set of doors open, so notice which subjects you enjoy and do well in.' : '') + '</p>' +
                 '<div class="space-y-3">' + routes.map(function (s) {
                     return '<div class="p-4 bg-white border border-slate-200 rounded-xl">' +
@@ -11228,11 +11234,35 @@
             renderExplorerCareers();
         }
 
-        function clearWizardAnswersAndRefresh() {
+        function clearWizardAnswersAndRefresh() { removeQuizResults(); }
+
+        // Takes the quiz out of every page that used it: the exam and college "picked for you"
+        // lists, the career matches, the Class 10 routes and the saved answers themselves.
+        // Details the student typed on the dashboard profile are not touched.
+        function removeQuizResults() {
             clearStoredWizardAnswers();
-            showToast('Quiz answers cleared from Career Explorer');
-            if (document.getElementById('career-sort').value === 'quizMatch') document.getElementById('career-sort').value = 'relevance';
-            renderExplorerCareers();
+            wizardAnswers = {};
+            FIT_OFF = false;
+            const sort = document.getElementById('career-sort');
+            if (sort && sort.value === 'quizMatch') sort.value = 'relevance';
+            const cs = document.getElementById('college-sort'); if (cs && cs.value === 'fit') cs.value = 'nirf';
+            if (typeof syncCollegeSortOptions === 'function') syncCollegeSortOptions();
+            const box = document.getElementById('wizard-routes'); if (box) { box.classList.add('hidden'); box.innerHTML = ''; }
+            if (typeof renderColleges === 'function') renderColleges();
+            if (typeof renderExams === 'function') renderExams();
+            if (typeof renderExplorerCareers === 'function') renderExplorerCareers();
+            const wizView = document.getElementById('view-confusedMode');
+            if (wizView && !wizView.classList.contains('hidden')) restartWizard();
+            showToast('Quiz results removed. Exams, colleges and careers are back to the full list.');
+        }
+        // "Retake" starts fresh and drops the old results straight away, so nothing stale lingers.
+        function retakeQuiz() {
+            clearStoredWizardAnswers();
+            FIT_OFF = false;
+            restartWizard();
+            if (typeof renderColleges === 'function') renderColleges();
+            if (typeof renderExams === 'function') renderExams();
+            if (typeof renderExplorerCareers === 'function') renderExplorerCareers();
         }
 
         /* ============================================================
