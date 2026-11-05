@@ -11629,13 +11629,14 @@
                 if (v.age) e.ageLimit = v.age;
                 e.verifiedLinks = v.links || [];
                 e.verifiedSrc = v.src; e.verifiedOn = v.checked; e.verifiedCycle = v.cycle;
-                e.verifiedFacts = !!(v.fee || v.last || v.mode || v.duration || v.pattern);
+                e.verifiedFacts = !!(v.fee || v.last || v.next || v.mode || v.duration || v.pattern);
                 if (v.last) e.lastCycle = Object.assign({ year: v.cycle }, v.last);
                 const nx = v.next;
                 if (nx && nx.exam && !(daysUntil(nx.exam) < 0)) {
                     e.examDate = nx.exam; e.regOpens = nx.regOpens || ''; e.regCloses = nx.regCloses || '';
                     e.dateStatus = nx.status || 'Official'; if (nx.short) e.dateShort = nx.short;
                     if (nx.regText) { e.regText = nx.regText; e.regConfirmed = !!nx.regCloses; }
+                    if (!nx.regCloses) { e.regCloses = nx.exam; e.regConfirmed = false; e.regText = nx.regText || 'see the official site for the dates.'; }
                     e.datesUnknown = false;
                 } else if (e.datesUnknown === undefined && e.examDate && daysUntil(e.examDate) < 0 && e.lastCycle) {
                     e.datesUnknown = true; // core exam whose stored date has passed: show the verified last cycle instead

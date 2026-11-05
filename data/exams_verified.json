@@ -56,6 +56,39 @@
    "src": "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2026/07/202607111067394464.pdf",
    "checked": "2026-11-05"
   },
+  "ailet": {
+   "cycle": "2027",
+   "body": "National Law University Delhi",
+   "duration": "2 hours (2–4 PM)",
+   "next": {
+    "exam": "2026-12-13",
+    "regOpens": "2026-08-07",
+    "status": "Official",
+    "short": "13 Dec 2026, 2–4 PM",
+    "regText": "opened 7 Aug 2026; see the NLU Delhi site for the last date"
+   },
+   "last": {
+    "reg": "From 7 Aug 2026",
+    "exam": "13 Dec 2026"
+   },
+   "site": "nationallawuniversitydelhi.in",
+   "links": [
+    [
+     "AILET 2027 official website",
+     "https://nationallawuniversitydelhi.in/"
+    ],
+    [
+     "AILET 2027 notification (PDF)",
+     "https://nationallawuniversitydelhi.in/notification/AILET_2027.pdf"
+    ],
+    [
+     "AILET FAQ",
+     "https://nationallawuniversitydelhi.in/faq.html"
+    ]
+   ],
+   "src": "https://nationallawuniversitydelhi.in/notification/AILET_2027.pdf",
+   "checked": "2026-11-05"
+  },
   "aissee": {
    "cycle": "2026",
    "body": "National Testing Agency (NTA) for the Sainik Schools Society",
@@ -82,10 +115,19 @@
     [
      "AISSAC 2026 counselling",
      "https://exams.nta.nic.in/document/all-india-sainik-schools-admission-counselling-aissac-2026/"
+    ],
+    [
+     "NTA examination calendar 2026–27 (PDF)",
+     "https://nta.ac.in/Download/Notice/Notice_20261026114247.pdf"
     ]
    ],
    "src": "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2025/10/20251010937989896.pdf",
-   "checked": "2026-11-05"
+   "checked": "2026-11-05",
+   "next": {
+    "exam": "2027-01-31",
+    "short": "31 Jan 2027 (proposed)",
+    "status": "Tentative"
+   }
   },
   "ap-eapcet": {
    "cycle": "2026",
@@ -221,6 +263,102 @@
    "src": "https://www.upsc.gov.in/sites/default/files/Notif-CDS-II-2026-Engl-200526.pdf",
    "checked": "2026-11-05"
   },
+  "ceed": {
+   "cycle": "2027",
+   "body": "IIT Bombay",
+   "fee": "₹4,000; ₹2,000 for women and SC/ST/PwD. Late fee ₹500",
+   "mode": "Part A on computer; Part B drawn and written on paper",
+   "duration": "3 hours (Part A 1 hour, Part B 2 hours)",
+   "pattern": "Part A: 44 questions, 150 marks (some negative marking). Part B: 5 questions, 100 marks. Final score = 25% Part A + 75% Part B",
+   "attempts": "No limit; score valid for one year",
+   "eligibility": "3-year degree, diploma or PG programme after Class 12 (or final year), or a 5-year GD Art diploma. No age limit",
+   "next": {
+    "exam": "2027-01-17",
+    "regOpens": "2026-10-01",
+    "regCloses": "2026-11-06",
+    "status": "Official",
+    "short": "17 Jan 2027, 9 AM – 12 noon"
+   },
+   "last": {
+    "reg": "1 – 31 Oct 2026 (late fee till 6 Nov)",
+    "exam": "17 Jan 2027",
+    "result": "3 Mar 2027"
+   },
+   "site": "ceed.iitb.ac.in",
+   "links": [
+    [
+     "CEED 2027 information brochure (PDF)",
+     "https://www.ceed.iitb.ac.in/2027/downloads/CEED2027_Brochure.pdf"
+    ]
+   ],
+   "src": "https://www.ceed.iitb.ac.in/2027/downloads/CEED2027_Brochure.pdf",
+   "checked": "2026-11-05"
+  },
+  "clat-pg": {
+   "cycle": "2027",
+   "body": "Consortium of National Law Universities",
+   "fee": "₹4,000 (General/OBC); ₹3,500 (SC/ST/BPL/PwD)",
+   "mode": "Offline (pen and paper)",
+   "next": {
+    "exam": "2026-12-06",
+    "regOpens": "2026-08-03",
+    "regCloses": "2026-10-31",
+    "status": "Official",
+    "short": "6 Dec 2026"
+   },
+   "last": {
+    "reg": "3 Aug – 31 Oct 2026",
+    "exam": "6 Dec 2026"
+   },
+   "site": "consortiumofnlus.ac.in",
+   "links": [
+    [
+     "CLAT 2027 official page",
+     "https://consortiumofnlus.ac.in/clat-2027/"
+    ],
+    [
+     "CLAT 2027 PG instructions",
+     "https://consortiumofnlus.ac.in/clat-2027/pg-instructions.html"
+    ]
+   ],
+   "src": "https://consortiumofnlus.ac.in/clat-2027/ug-instructions.html",
+   "checked": "2026-11-05"
+  },
+  "clat-ug": {
+   "cycle": "2027",
+   "body": "Consortium of National Law Universities",
+   "fee": "₹4,000 (General/OBC); ₹3,500 (SC/ST/BPL/PwD)",
+   "mode": "Offline (pen and paper)",
+   "duration": "2 hours (2–4 PM); 2 hours 40 minutes for eligible PwD candidates",
+   "next": {
+    "exam": "2026-12-06",
+    "regOpens": "2026-08-03",
+    "regCloses": "2026-10-31",
+    "status": "Official",
+    "short": "6 Dec 2026, 2–4 PM"
+   },
+   "last": {
+    "reg": "3 Aug – 31 Oct 2026",
+    "exam": "6 Dec 2026"
+   },
+   "site": "consortiumofnlus.ac.in",
+   "links": [
+    [
+     "CLAT 2027 official page",
+     "https://consortiumofnlus.ac.in/clat-2027/"
+    ],
+    [
+     "CLAT 2027 UG instructions",
+     "https://consortiumofnlus.ac.in/clat-2027/ug-instructions.html"
+    ],
+    [
+     "CLAT 2027 press release (PDF)",
+     "https://consortiumofnlus.ac.in/clat-2027/notifications/Press_Release_CLAT_2027.pdf"
+    ]
+   ],
+   "src": "https://consortiumofnlus.ac.in/clat-2027/ug-instructions.html",
+   "checked": "2026-11-05"
+  },
   "cmat": {
    "cycle": "2026",
    "body": "National Testing Agency (NTA)",
@@ -248,10 +386,19 @@
     [
      "CMAT 2026 answer key notice (exam held 25 Jan 2026)",
      "https://nta.ac.in/Download/Notice/Notice_20260217190549.pdf"
+    ],
+    [
+     "NTA examination calendar 2026–27 (PDF)",
+     "https://nta.ac.in/Download/Notice/Notice_20261026114247.pdf"
     ]
    ],
    "src": "https://cdnbbsr.s3waas.gov.in/s3a381c2c35c9157f6b67fd07d5a200ae1/uploads/2025/10/202510171049586023.pdf",
-   "checked": "2026-11-05"
+   "checked": "2026-11-05",
+   "next": {
+    "exam": "2027-02-07",
+    "short": "7 Feb 2027 (proposed)",
+    "status": "Tentative"
+   }
   },
   "csir-net": {
    "cycle": "December 2026",
@@ -339,10 +486,19 @@
     [
      "CUET PG participating universities",
      "https://exams.nta.nic.in/cuet-pg/participating-universities/"
+    ],
+    [
+     "NTA examination calendar 2026–27 (PDF)",
+     "https://nta.ac.in/Download/Notice/Notice_20261026114247.pdf"
     ]
    ],
    "src": "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2025/12/202512161583029269.pdf",
-   "checked": "2026-11-05"
+   "checked": "2026-11-05",
+   "next": {
+    "exam": "2027-03-02",
+    "short": "2 – 31 Mar 2027, 17 days (proposed)",
+    "status": "Tentative"
+   }
   },
   "cuet-ug": {
    "cycle": "2026",
@@ -1074,6 +1230,48 @@
    "src": "https://cdnbbsr.s3waas.gov.in/s37bc1ec1d9c3426357e69acd5bf320061/uploads/2026/02/202602081576322299.pdf",
    "checked": "2026-11-05"
   },
+  "nift-entrance": {
+   "cycle": "2027",
+   "body": "National Testing Agency (NTA) for NIFT",
+   "fee": "One programme: ₹2,000 (₹500 for SC/ST/PwBD). Two programmes: ₹3,000 (₹750). NRI/foreign: ₹11,100. Late fee ₹5,000 extra",
+   "mode": "GAT on computer; CAT (creative test) on paper",
+   "duration": "B.Des: GAT 2 hours + CAT 3 hours. B.F.Tech: GAT 3 hours",
+   "age": "B.Des and B.F.Tech: under 24 on 1 Aug of the admission year (5 years' relaxation for SC/ST/PwBD). No limit for master's",
+   "eligibility": "B.Des: Class 12 any stream. B.F.Tech: Class 12 with Maths",
+   "next": {
+    "exam": "2027-01-10",
+    "regOpens": "2026-10-16",
+    "regCloses": "2026-11-16",
+    "status": "Official",
+    "short": "10 Jan 2027",
+    "regText": "16 Oct – 16 Nov 2026 (late fee till 21 Nov)"
+   },
+   "last": {
+    "reg": "16 Oct – 16 Nov 2026 (late fee till 21 Nov; correction 22–25 Nov)",
+    "exam": "10 Jan 2027"
+   },
+   "site": "nift.ac.in/admissions",
+   "links": [
+    [
+     "NIFT admissions",
+     "https://www.nift.ac.in/admissions"
+    ],
+    [
+     "NIFTEE 2027 information bulletin (PDF)",
+     "https://www.nift.ac.in/sites/default/files/2026-10/Information%20Bulletin%20-NIFTEE%202027%20-16.10.2026.pdf"
+    ],
+    [
+     "NIFTEE 2027 public notice (PDF)",
+     "https://www.nift.ac.in/sites/default/files/2026-10/Public%20Notice-NIFTEE%202027_16.10.2026%20Latest.pdf"
+    ],
+    [
+     "NTA examination calendar 2026–27 (PDF)",
+     "https://nta.ac.in/Download/Notice/Notice_20261026114247.pdf"
+    ]
+   ],
+   "src": "https://www.nift.ac.in/sites/default/files/2026-10/Information%20Bulletin%20-NIFTEE%202027%20-16.10.2026.pdf",
+   "checked": "2026-11-05"
+  },
   "ojee": {
    "cycle": "2026",
    "fee": "₹1,000 for one course; ₹500 for each extra course",
@@ -1135,6 +1333,28 @@
     ]
    ],
    "src": "https://opportunities.rbi.org.in/scripts/bs_viewcontent.aspx?Id=4997",
+   "checked": "2026-11-05"
+  },
+  "rimc": {
+   "cycle": "2026–27",
+   "body": "National Testing Agency (NTA) for RIMC Dehradun",
+   "next": {
+    "exam": "2026-12-06",
+    "status": "Tentative",
+    "short": "6 Dec 2026 (proposed)"
+   },
+   "site": "rimc.gov.in",
+   "links": [
+    [
+     "RIMC official website",
+     "https://rimc.gov.in/"
+    ],
+    [
+     "NTA examination calendar 2026–27 (PDF)",
+     "https://nta.ac.in/Download/Notice/Notice_20261026114247.pdf"
+    ]
+   ],
+   "src": "https://nta.ac.in/Download/Notice/Notice_20261026114247.pdf",
    "checked": "2026-11-05"
   },
   "rrb-alp": {
@@ -1559,6 +1779,39 @@
    "src": "https://sbtet.telangana.gov.in/downloads/Circular/Brief%20Notification.pdf",
    "checked": "2026-11-05"
   },
+  "uceed": {
+   "cycle": "2027",
+   "body": "IIT Bombay",
+   "next": {
+    "exam": "2027-01-17",
+    "regOpens": "2026-10-01",
+    "regCloses": "2026-11-10",
+    "status": "Official",
+    "short": "17 Jan 2027, 9 AM – 12 noon"
+   },
+   "last": {
+    "reg": "1 Oct – 5 Nov 2026 (late fee till 10 Nov)",
+    "exam": "17 Jan 2027",
+    "result": "6 Mar 2027"
+   },
+   "site": "uceed.iitb.ac.in",
+   "links": [
+    [
+     "UCEED 2027 official website",
+     "https://www.uceed.iitb.ac.in/"
+    ],
+    [
+     "UCEED 2027 important dates",
+     "https://www.uceed.iitb.ac.in/2027/important-dates.html"
+    ],
+    [
+     "UCEED 2027 information brochure (PDF)",
+     "https://www.uceed.iitb.ac.in/2027/assets/downloads/docs/UCEED2027_Information_Brochure.pdf"
+    ]
+   ],
+   "src": "https://www.uceed.iitb.ac.in/2027/important-dates.html",
+   "checked": "2026-11-05"
+  },
   "ugc-net": {
    "cycle": "December 2026",
    "body": "National Testing Agency (NTA) for UGC",
@@ -1783,5 +2036,5 @@
    "checked": "2026-11-05"
   }
  },
- "count": 66
+ "count": 73
 }
