@@ -11575,6 +11575,7 @@
             return '<span class="inline-block text-[11px] font-semibold px-2 py-0.5 rounded-full ' + (ok ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-800 border border-amber-200') + '">' + escapeAuth(ok ? 'Official dates' : e.dateStatus === 'Tentative' ? 'Dates tentative' : 'Partly official dates') + '</span>';
         }
         function examRegLine(e, long) {
+            if (e.datesUnknown && e.lastCycle && e.lastCycle.reg) return 'Registration (' + e.lastCycle.year + ' cycle): ' + e.lastCycle.reg + '. Next cycle not announced yet.';
             if (e.datesUnknown) return 'Registration: dates not added yet. Check the official site.';
             const d = daysUntil(e.regCloses);
             if (isNaN(d)) return 'Registration: open year-round';
@@ -11584,6 +11585,7 @@
             return 'Registration closes: ' + examDateText(e.regCloses) + ' ' + (d > 0 ? '· ' + d + ' days left' : '· closed for this cycle');
         }
         function examDateLine(e, long) {
+            if (e.datesUnknown && e.lastCycle && e.lastCycle.exam) return (long ? 'Last held (' + e.lastCycle.year + '): ' : 'Last held: ') + e.lastCycle.exam + (long ? '. The next exam date has not been announced yet.' : '');
             if (e.datesUnknown) return long ? 'Exam date: not added yet. Please check the official website for this year\'s schedule.' : 'Exam date: not added yet';
             if (isNaN(daysUntil(e.regCloses))) return long ? 'Test dates: year-round — book a slot on the official site' : 'Test dates: year-round, book a slot';
             const label = e.dateShort || examDateText(e.examDate, long ? 'long' : undefined);
@@ -11606,6 +11608,57 @@
                         '<p class="text-[11px] text-slate-500 mb-2">' + x(i.category) + ' · ' + x(i.body) + '</p><dl>' + row('Exam date', i.dates) + row('Registration', i.registration) + row('Admit card', i.admit) + row('Result', i.result) + row('Model and previous papers', i.papers) + '</dl>' +
                         '<div class="flex flex-wrap gap-4 mt-2">' + link(i.site, 'Official website') + link(i.source, 'Source: ' + host(i.source)) + '</div></div>';
                 }).join('') + '</div>';
+        }
+
+        /* Verified exam facts (data/exams_verified.json): each entry was read from the exam's own
+           official notification or brochure. They replace placeholders, never invent anything. */
+        function applyVerifiedExams(pack) {
+            const map = (pack && pack.exams) || {};
+            let n = 0;
+            examsData.forEach(function (e) {
+                const v = map[e.id]; if (!v) return;
+                n++;
+                if (v.fee) { e.examFee = v.fee; e.feeUnknown = false; e.feeVerified = v.cycle; e.feeSrc = v.feeSrc || v.src; }
+                if (v.mode) e.mode = v.mode;
+                if (v.duration) e.duration = v.duration;
+                if (v.attempts) e.attempts = v.attempts;
+                if (v.eligibility) e.eligibility = v.eligibility;
+                if (v.body) e.body = v.body;
+                if (v.site) { e.site = v.site; e.moreData = false; }
+                if (v.pattern) e.pattern = v.pattern;
+                if (v.age) e.ageLimit = v.age;
+                e.verifiedLinks = v.links || [];
+                e.verifiedSrc = v.src; e.verifiedOn = v.checked; e.verifiedCycle = v.cycle;
+                e.verifiedFacts = !!(v.fee || v.last || v.mode || v.duration || v.pattern);
+                if (v.last) e.lastCycle = Object.assign({ year: v.cycle }, v.last);
+                const nx = v.next;
+                if (nx && nx.exam && !(daysUntil(nx.exam) < 0)) {
+                    e.examDate = nx.exam; e.regOpens = nx.regOpens || ''; e.regCloses = nx.regCloses || '';
+                    e.dateStatus = nx.status || 'Official'; if (nx.short) e.dateShort = nx.short;
+                    if (nx.regText) { e.regText = nx.regText; e.regConfirmed = !!nx.regCloses; }
+                    e.datesUnknown = false;
+                } else if (e.datesUnknown === undefined && e.examDate && daysUntil(e.examDate) < 0 && e.lastCycle) {
+                    e.datesUnknown = true; // core exam whose stored date has passed: show the verified last cycle instead
+                }
+            });
+            return n;
+        }
+        function examSourcesHTML(e) {
+            if (!e.verifiedSrc && !(e.verifiedLinks && e.verifiedLinks.length)) return '';
+            const x = escapeAuth;
+            const host = function (u) { try { return new URL(u).hostname.replace(/^www\./, ''); } catch (er) { return 'official source'; } };
+            const ok = function (u) { return /^https?:\/\//.test(u || ''); };
+            const links = (e.verifiedLinks || []).filter(function (l) { return ok(l[1]); });
+            const lc = e.lastCycle;
+            const row = function (k, v) { return v ? '<div class="flex flex-col sm:flex-row sm:gap-3 py-1.5 border-b border-slate-100"><dt class="sm:w-40 shrink-0 text-xs font-semibold text-slate-500">' + k + '</dt><dd class="text-sm text-slate-800">' + x(v) + '</dd></div>' : ''; };
+            return '<div class="bg-white border border-emerald-200 rounded-2xl p-5 space-y-3">' +
+                '<div class="flex flex-wrap items-center justify-between gap-2"><h3 class="font-bold text-slate-900 text-lg">Official links and sources</h3>' +
+                '<span class="inline-block text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">Checked ' + x(examDateText(e.verifiedOn, 'long') || e.verifiedOn || '') + '</span></div>' +
+                (lc || e.pattern || e.ageLimit ? '<dl>' + (lc ? row('Registration (' + lc.year + ')', lc.reg) + row('Exam (' + lc.year + ')', lc.exam) + row('Result (' + lc.year + ')', lc.result) : '') + row('Pattern', e.pattern) + row('Age limit', e.ageLimit) + '</dl>' : '') +
+                (links.length ? '<ul class="space-y-1.5">' + links.map(function (l) { return '<li><a href="' + x(l[1]) + '" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold text-brand-600 hover:underline">' + x(l[0]) + ' ↗</a> <span class="text-[11px] text-slate-500">' + x(host(l[1])) + '</span></li>'; }).join('') + '</ul>' : '') +
+                (ok(e.verifiedSrc) && !e.verifiedFacts ? '<p class="text-xs text-slate-500">These are the official pages for the ' + x(e.verifiedCycle || '') + ' cycle. We could not read the details from them automatically, so open them for the fee, dates and pattern.</p>' : '') +
+                (ok(e.verifiedSrc) && e.verifiedFacts ? '<p class="text-xs text-slate-500">The fee, dates and pattern shown here were read from <a href="' + x(e.verifiedSrc) + '" target="_blank" rel="noopener noreferrer" class="font-semibold text-brand-600 hover:underline">this official document ↗</a> (' + x(e.verifiedCycle || '') + ' cycle). Rules can change each year, so check the newest notification before you apply.</p>' : '') +
+                '</div>';
         }
 
         function examCardHTML(e) {
@@ -11774,6 +11827,8 @@
                     <span class="${e.moreData ? 'text-slate-500' : 'text-emerald-600'} font-medium">${e.moreData ? 'Official website (please confirm it is current)' : 'Verified Official Source'}</span>
                     <a href="https://${e.site}" target="_blank" rel="noopener noreferrer" class="text-brand-600 font-semibold hover:underline">Official Portal ↗</a>
                 </div>` : `<p class="text-xs text-slate-500 italic">${e.moreData ? 'We do not have a confirmed official link for this exam yet. Use the search link above, and check the conducting body\'s own website.' : 'No single national portal — this exam is administered at the state level; check your state\'s official site.'}</p>`}
+
+                ${examSourcesHTML(e)}
 
                 ${relatedColleges.length ? `
                 <div>
@@ -14283,7 +14338,8 @@
                 get('data/exams_more.json').then(function (list) {
                     const have = new Set(examsData.map(function (x) { return x.id; }));
                     list.forEach(function (x) { if (!have.has(x.id)) examsData.push(x); });
-                    return true;
+                    return get('data/exams_verified.json').then(function (pack) { applyVerifiedExams(pack); return true; })
+                        .catch(function (e) { console.warn('Verified exam facts not loaded:', e); return true; });
                 }).catch(function (e) { console.warn('More exams not loaded:', e); return false; })
             ]).then(function (ok) { if (ok[0] || ok[1] || ok[2]) afterMoreData(); });
         }

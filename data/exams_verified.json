@@ -1,0 +1,171 @@
+{
+ "v": 1,
+ "exams": {
+  "ap-eapcet": {
+   "cycle": "2026",
+   "links": [
+    [
+     "AP EAPCET 2026 important dates",
+     "https://cets.apsche.ap.gov.in/EAPCET/EapcetHomePages/ImportantDates"
+    ],
+    [
+     "AP EAPCET 2026 engineering instruction booklet (PDF)",
+     "https://cets.apsche.ap.gov.in/EAPCET/PDF/APEAPCET2026_Instruction_Booklet_Engineering_V4.pdf"
+    ]
+   ],
+   "src": "https://cets.apsche.ap.gov.in/EAPCET/PDF/APEAPCET2026_Instruction_Booklet_Engineering_V4.pdf",
+   "checked": "2026-11-05"
+  },
+  "ap-ecet": {
+   "cycle": "2026",
+   "site": "cets.apsche.ap.gov.in/ECET",
+   "links": [
+    [
+     "AP ECET 2026 instruction booklet (PDF)",
+     "https://cets.apsche.ap.gov.in/ECET/PDF/APECET2026_InstructionBooklet_V6.pdf"
+    ]
+   ],
+   "src": "https://cets.apsche.ap.gov.in/ECET/PDF/APECET2026_InstructionBooklet_V6.pdf",
+   "checked": "2026-11-05"
+  },
+  "ap-icet": {
+   "cycle": "2026",
+   "site": "cets.apsche.ap.gov.in/ICET",
+   "links": [
+    [
+     "AP ICET 2026 instruction booklet (PDF)",
+     "https://cets.apsche.ap.gov.in/ICET/PDF/APICET2026_InstructionBooklet_V2.pdf"
+    ]
+   ],
+   "src": "https://cets.apsche.ap.gov.in/ICET/PDF/APICET2026_InstructionBooklet_V2.pdf",
+   "checked": "2026-11-05"
+  },
+  "bihar-dcece": {
+   "cycle": "2026",
+   "last": {
+    "reg": "19 Mar – 21 Apr 2026",
+    "exam": "23 May 2026 (PE); 24 May 2026 (PMM and PM)"
+   },
+   "links": [
+    [
+     "BCECE Board DCECE page",
+     "https://www.bceceboard.bihar.gov.in/index.php/DCECEIndex.php"
+    ],
+    [
+     "DCECE 2026 advertisement (PDF)",
+     "https://bceceboard.bihar.gov.in/pdf_Adv/ADV_DCECE26_01.pdf"
+    ],
+    [
+     "DCECE(PE) 2026 round 1 opening and closing ranks (PDF)",
+     "https://bceceboard.bihar.gov.in/pdf_Web/PE26_OCR_R1.pdf"
+    ]
+   ],
+   "src": "https://bceceboard.bihar.gov.in/pdf_Adv/ADV_DCECE26_01.pdf",
+   "checked": "2026-11-05"
+  },
+  "jeecup": {
+   "cycle": "2026",
+   "links": [
+    [
+     "JEECUP official website",
+     "https://jeecup.admissions.nic.in/"
+    ],
+    [
+     "Information brochure for UPJEE 2026",
+     "https://jeecup.admissions.nic.in/document/information-brochure-for-upjee-2026/"
+    ],
+    [
+     "Information bulletins and counselling instructions",
+     "https://jeecup.admissions.nic.in/information-bulletin/"
+    ],
+    [
+     "JEECUP notices",
+     "https://jeecup.admissions.nic.in/notices/"
+    ]
+   ],
+   "src": "https://jeecup.admissions.nic.in/document/information-brochure-for-upjee-2026/",
+   "checked": "2026-11-05"
+  },
+  "ojee": {
+   "cycle": "2026",
+   "fee": "₹1,000 for one course; ₹500 for each extra course",
+   "mode": "Online (CBT), English",
+   "duration": "2 hours for most papers (1 hour for some)",
+   "pattern": "MCQs: +4 for a correct answer, −1 for a wrong one",
+   "attempts": "No limit stated in the 2026 brochure",
+   "last": {
+    "reg": "28 Jan – 22 Mar 2026",
+    "exam": "4–9 May 2026",
+    "result": "First week of June 2026 (probable)"
+   },
+   "site": "ojee.nic.in",
+   "links": [
+    [
+     "OJEE official website",
+     "https://ojee.nic.in/"
+    ],
+    [
+     "OJEE 2026 information brochure (PDF)",
+     "https://cdnbbsr.s3waas.gov.in/s36832a7b24bc06775d02b7406880b93fc/uploads/2026/01/202601281538483605.pdf"
+    ]
+   ],
+   "src": "https://cdnbbsr.s3waas.gov.in/s36832a7b24bc06775d02b7406880b93fc/uploads/2026/01/202601281538483605.pdf",
+   "checked": "2026-11-05"
+  },
+  "ts-polycet": {
+   "cycle": "2026",
+   "body": "State Board of Technical Education and Training (SBTET), Telangana",
+   "fee": "₹500 (₹250 for SC/ST); late fee ₹100, tatkal ₹300",
+   "eligibility": "Passed or appearing Class 10 (SSC) or equivalent",
+   "last": {
+    "reg": "2 Feb – 20 Apr 2026 (late fee till 21 Apr, tatkal till 22 Apr)",
+    "exam": "13 May 2026",
+    "result": "About 12 days after the exam"
+   },
+   "site": "polycet.sbtet.telangana.gov.in",
+   "links": [
+    [
+     "TG POLYCET official website",
+     "https://polycet.sbtet.telangana.gov.in/"
+    ],
+    [
+     "POLYCET 2026 brief notification (PDF)",
+     "https://sbtet.telangana.gov.in/downloads/Circular/Brief%20Notification.pdf"
+    ],
+    [
+     "POLYCET 2026 counselling notification (PDF)",
+     "https://tgpolycetd.nic.in/files/TG_POLYCET_2026_DETAILEDNOTIFICATION.pdf"
+    ]
+   ],
+   "src": "https://sbtet.telangana.gov.in/downloads/Circular/Brief%20Notification.pdf",
+   "checked": "2026-11-05"
+  },
+  "wbjee": {
+   "cycle": "2026",
+   "fee": "General: ₹500 (male), ₹400 (female), ₹300 (third gender). SC/ST/OBC/EWS/PwD/TFW: ₹400 / ₹300 / ₹200",
+   "mode": "Offline, OMR sheet",
+   "duration": "Two papers of 2 hours each (Maths; Physics and Chemistry)",
+   "pattern": "Maths 75 MCQs (100 marks); Physics 40 and Chemistry 40 MCQs (50 marks each). Wrong answers lose ¼ of the marks in single-answer questions; no negative marking in multi-correct questions",
+   "age": "At least 17 years by 31 Dec of the exam year; no upper limit (25 for Marine Engineering)",
+   "attempts": "No attempt limit stated in the 2026 bulletin",
+   "eligibility": "Class 12 with Physics and Maths plus Chemistry or another listed subject, 45% in these (40% reserved) and 30% in English",
+   "last": {
+    "exam": "24 May 2026"
+   },
+   "site": "wbjeeb.nic.in",
+   "links": [
+    [
+     "WBJEE official website",
+     "https://wbjeeb.nic.in/"
+    ],
+    [
+     "WBJEE 2026 information bulletin (PDF)",
+     "https://cdnbbsr.s3waas.gov.in/s3d2a27e83d429f0dcae6b937cf440aeb1/uploads/2026/03/202603091037766684.pdf"
+    ]
+   ],
+   "src": "https://cdnbbsr.s3waas.gov.in/s3d2a27e83d429f0dcae6b937cf440aeb1/uploads/2026/03/202603091037766684.pdf",
+   "checked": "2026-11-05"
+  }
+ },
+ "count": 8
+}
