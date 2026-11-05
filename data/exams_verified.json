@@ -230,6 +230,27 @@
    "src": "https://bceceboard.bihar.gov.in/pdf_Adv/ADV_DCECE26_01.pdf",
    "checked": "2026-11-05"
   },
+  "bitsat": {
+   "cycle": "2026",
+   "body": "BITS Pilani",
+   "site": "bitsadmission.com",
+   "links": [
+    [
+     "BITSAT 2026 page",
+     "https://admissions.bits-pilani.ac.in/BITSAT_LP/index.html"
+    ],
+    [
+     "BITSAT 2026 brochure (PDF)",
+     "https://admissions.bits-pilani.ac.in/FD/downloads/BITSAT-2026_brochure.pdf"
+    ],
+    [
+     "Admission modality (PDF)",
+     "https://admissions.bits-pilani.ac.in/FD/downloads/Admission_Modality_FD.pdf?02122025="
+    ]
+   ],
+   "src": "https://admissions.bits-pilani.ac.in/FD/downloads/BITSAT-2026_brochure.pdf",
+   "checked": "2026-11-05"
+  },
   "cds": {
    "cycle": "2026 (II)",
    "body": "Union Public Service Commission (UPSC)",
@@ -589,6 +610,31 @@
    "src": "https://gseb.org/GUJCETBooklet(English).pdf",
    "checked": "2026-11-05"
   },
+  "iat-iiser": {
+   "cycle": "2026",
+   "body": "IISERs",
+   "site": "iiseradmission.in",
+   "links": [
+    [
+     "IISER admissions",
+     "https://www.iiseradmission.in/"
+    ],
+    [
+     "IAT 2026 information brochure (PDF)",
+     "https://www.iiseradmission.in/assets/pdfs/IB_IAT_2026_ENG.pdf"
+    ],
+    [
+     "Important dates",
+     "https://www.iiseradmission.in/pages/admission/dates.html"
+    ],
+    [
+     "Eligibility",
+     "https://www.iiseradmission.in/pages/admission/eligibility.html"
+    ]
+   ],
+   "src": "https://www.iiseradmission.in/assets/pdfs/IB_IAT_2026_ENG.pdf",
+   "checked": "2026-11-05"
+  },
   "ibps-clerk": {
    "cycle": "2026 (CRP CSA-XVI)",
    "links": [
@@ -773,6 +819,120 @@
    "src": "https://www.upsc.gov.in/sites/default/files/Notif-ESEP-2027-Engl-160926.pdf",
    "checked": "2026-11-05"
   },
+  "iit-jam": {
+   "cycle": "2026",
+   "body": "IITs (JAM 2026 organised by IIT Bombay)",
+   "fee": "One paper: ₹2,000 (₹1,000 for women, SC/ST, PwD). Two papers: ₹2,700 (₹1,350)",
+   "mode": "Online (CBT)",
+   "duration": "3 hours per paper",
+   "pattern": "60 questions, 100 marks: 30 MCQs (negative marking), 10 multiple-select, 20 numerical (no negative marking). 7 papers: Biotech, Chemistry, Economics, Geology, Maths, Mathematical Statistics, Physics",
+   "age": "No age limit",
+   "eligibility": "Bachelor's degree (final-year students can apply)",
+   "last": {
+    "reg": "5 Sep – 12 Oct 2025",
+    "exam": "15 Feb 2026"
+   },
+   "site": "jam.iitm.ac.in",
+   "links": [
+    [
+     "JAM office (IIT Madras)",
+     "https://jam.iitm.ac.in/"
+    ],
+    [
+     "JAM 2026 information brochure (PDF)",
+     "https://jam2026.iitb.ac.in/files/JAM2026_Brochure-2.pdf"
+    ],
+    [
+     "JAM 2026 admission brochure (PDF)",
+     "https://jam2026.iitb.ac.in/files/JAM2026_Admission_Brochure.pdf"
+    ]
+   ],
+   "src": "https://jam2026.iitb.ac.in/files/JAM2026_Brochure-2.pdf",
+   "checked": "2026-11-05"
+  },
+  "ipmat": {
+   "cycle": "2026",
+   "body": "IIM Indore",
+   "fee": "₹4,130 (General/EWS/OBC-NCL); ₹2,065 (SC/ST/PwD), including GST",
+   "duration": "2 hours (40 minutes per section)",
+   "pattern": "Quant MCQ, Quant short answer and Verbal MCQ sections. +4 correct; −1 wrong in MCQ sections",
+   "age": "Born on or after 1 Aug 2006 for the 2026 intake (5 years' relaxation for SC/ST/PwD)",
+   "eligibility": "Class 12 passed in the last two years or appearing",
+   "last": {
+    "reg": "2 Feb – 14 Mar 2026",
+    "exam": "4 May 2026"
+   },
+   "site": "iimidr.ac.in",
+   "links": [
+    [
+     "IIM Indore IPM admissions",
+     "https://iimidr.ac.in/programmes/academic-programmes/five-year-integrated-programme-in-management-ipm/ipm-admissions-details/"
+    ],
+    [
+     "IPM 2026–31 admission procedure (PDF)",
+     "https://iimidr.ac.in/wp-content/uploads/2026/01/AdmissionProcedure_IPM-2026-31_-Domestic-Applicants.pdf"
+    ],
+    [
+     "IPM FAQs (PDF)",
+     "https://iimidr.ac.in/wp-content/uploads/2026/01/FAQs-IPM.pdf"
+    ]
+   ],
+   "src": "https://iimidr.ac.in/wp-content/uploads/2026/01/AdmissionProcedure_IPM-2026-31_-Domestic-Applicants.pdf",
+   "checked": "2026-11-05"
+  },
+  "isi-admission": {
+   "cycle": "2026",
+   "body": "Indian Statistical Institute",
+   "fee": "₹1,500 (General men); ₹1,000 (General women); ₹750 (OBC-NCL, SC, ST, PwBD, EWS)",
+   "eligibility": "B.Stat and B.Math: Class 12 with Maths and English",
+   "last": {
+    "reg": "12 Feb – 26 Mar 2026",
+    "exam": "10 May 2026"
+   },
+   "site": "admission.isical.ac.in",
+   "links": [
+    [
+     "ISI admission portal",
+     "https://admission.isical.ac.in/"
+    ],
+    [
+     "ISI admission notice 2026 (PDF)",
+     "https://admission.isical.ac.in/Documents/IsiAdmission2026/Admission-Notice-2026.pdf"
+    ],
+    [
+     "ISI admission schedule 2026 (PDF)",
+     "https://admission.isical.ac.in/Documents/IsiAdmission2026/ISI-Admission-Schedule-2026.pdf"
+    ]
+   ],
+   "src": "https://admission.isical.ac.in/Documents/IsiAdmission2026/Admission-Notice-2026.pdf",
+   "checked": "2026-11-05"
+  },
+  "jee-advanced": {
+   "cycle": "2026",
+   "body": "IITs (JEE Advanced 2026 organised by IIT Roorkee)",
+   "fee": "₹3,200; ₹1,600 for women and SC/ST/PwD candidates. Foreign centres USD 200–300",
+   "site": "jeeadv.ac.in",
+   "links": [
+    [
+     "JEE Advanced official website",
+     "https://jeeadv.ac.in/"
+    ],
+    [
+     "Registration fee",
+     "https://jeeadv.ac.in/regfee.html"
+    ],
+    [
+     "Admission criteria",
+     "https://jeeadv.ac.in/admission_criteria.html"
+    ],
+    [
+     "FAQs",
+     "https://jeeadv.ac.in/faq.html"
+    ]
+   ],
+   "src": "https://jeeadv.ac.in/regfee.html",
+   "checked": "2026-11-05"
+  },
   "jeecup": {
    "cycle": "2026",
    "links": [
@@ -938,6 +1098,40 @@
     ]
    ],
    "src": "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf",
+   "checked": "2026-11-05"
+  },
+  "mat": {
+   "cycle": "December 2026",
+   "body": "All India Management Association (AIMA)",
+   "fee": "₹2,300 (paper or computer test); ₹4,000 for both",
+   "mode": "Paper-based (PBT) or computer-based (CBT)",
+   "duration": "120 minutes",
+   "pattern": "150 MCQs in 5 sections of 30 (Language, Reasoning, Maths, Data Analysis, Economic and Business Environment). −0.25 per wrong answer",
+   "attempts": "Held several times a year",
+   "next": {
+    "exam": "2026-12-20",
+    "regCloses": "2026-12-14",
+    "status": "Official",
+    "short": "PBT 20 Dec 2026; CBT 27 Dec 2026",
+    "regText": "PBT closes 14 Dec, CBT closes 21 Dec 2026"
+   },
+   "last": {
+    "reg": "Open till 14 Dec (PBT) / 21 Dec 2026 (CBT)",
+    "exam": "PBT 20 Dec 2026; CBT 27 Dec 2026",
+    "result": "First week of January 2027"
+   },
+   "site": "mat.aima.in",
+   "links": [
+    [
+     "MAT registration and fees (AIMA)",
+     "https://www.aima.in/content/testing-and-assessment/mat/mat"
+    ],
+    [
+     "MAT portal",
+     "https://mat.aima.in/"
+    ]
+   ],
+   "src": "https://www.aima.in/content/testing-and-assessment/mat/mat",
    "checked": "2026-11-05"
   },
   "mh-bped-cet": {
@@ -1230,6 +1424,38 @@
    "src": "https://cdnbbsr.s3waas.gov.in/s37bc1ec1d9c3426357e69acd5bf320061/uploads/2026/02/202602081576322299.pdf",
    "checked": "2026-11-05"
   },
+  "nest": {
+   "cycle": "2026",
+   "body": "NISER Bhubaneswar and UM-DAE CEBS Mumbai",
+   "fee": "₹1,400 (General/OBC men); ₹700 (EWS, SC/ST, PwD and all women)",
+   "mode": "Online (CBT)",
+   "duration": "3 hours (2–5 PM)",
+   "pattern": "4 sections (Biology, Chemistry, Maths, Physics), 20 MCQs each, 60 marks each; best 3 count. +3 correct, −1 wrong",
+   "age": "No age limit",
+   "eligibility": "Class 12 with 60% (55% SC/ST/PwD) and three of Biology, Chemistry, Maths, Physics; passed in the last two years or appearing",
+   "last": {
+    "reg": "5 Jan – 6 Apr 2026",
+    "exam": "6 Jun 2026",
+    "result": "Merit list by 25 Jun 2026"
+   },
+   "site": "nestexam.in",
+   "links": [
+    [
+     "NEST official website",
+     "https://nestexam.in/"
+    ],
+    [
+     "NEST 2026 brochure and syllabus (PDF)",
+     "https://www.nestexam.in/docs/26/NEST2026_Brochure_Syllabus_Updated_12Jan2026.pdf"
+    ],
+    [
+     "NEST 2026 result",
+     "https://nestexam.in/check-result/"
+    ]
+   ],
+   "src": "https://www.nestexam.in/docs/26/NEST2026_Brochure_Syllabus_Updated_12Jan2026.pdf",
+   "checked": "2026-11-05"
+  },
   "nift-entrance": {
    "cycle": "2027",
    "body": "National Testing Agency (NTA) for NIFT",
@@ -1270,6 +1496,37 @@
     ]
    ],
    "src": "https://www.nift.ac.in/sites/default/files/2026-10/Information%20Bulletin%20-NIFTEE%202027%20-16.10.2026.pdf",
+   "checked": "2026-11-05"
+  },
+  "nmat": {
+   "cycle": "2026–27",
+   "body": "GMAC",
+   "fee": "₹3,000 per attempt (plus taxes); rescheduling ₹1,200",
+   "mode": "Online, at a test centre or from home",
+   "next": {
+    "exam": "2026-11-02",
+    "regOpens": "2026-08-20",
+    "regCloses": "2026-10-31",
+    "status": "Official",
+    "short": "Test window 2 Nov – 20 Dec 2026"
+   },
+   "last": {
+    "reg": "20 Aug – 31 Oct 2026 (retakes 3 Nov – 17 Dec)",
+    "exam": "2 Nov – 20 Dec 2026"
+   },
+   "attempts": "Retakes allowed within the window",
+   "site": "mba.com/exams/nmat",
+   "links": [
+    [
+     "NMAT dates and fees",
+     "https://www.mba.com/exams/nmat/about/important-dates-fees"
+    ],
+    [
+     "Register and schedule",
+     "https://www.mba.com/exams/nmat/register-schedule"
+    ]
+   ],
+   "src": "https://www.mba.com/exams/nmat/about/important-dates-fees",
    "checked": "2026-11-05"
   },
   "ojee": {
@@ -1507,6 +1764,41 @@
     ]
    ],
    "src": "https://sbi.bank.in/csfile/18062026_1_Detailed_Adv.2026.pdf?t=1781759726353",
+   "checked": "2026-11-05"
+  },
+  "snap": {
+   "cycle": "2026",
+   "body": "Symbiosis International (Deemed University)",
+   "fee": "₹2,550 per test + ₹1,000 per programme (plus taxes)",
+   "mode": "Online (CBT) at test centres",
+   "duration": "60 minutes",
+   "pattern": "60 MCQs, 60 marks: English 10, Reasoning 20, Quant/DI 20, Ethics and values 10. −25% per wrong answer",
+   "attempts": "Up to 3 tests; the best score counts",
+   "eligibility": "Bachelor's degree with 50% (45% SC/ST)",
+   "next": {
+    "exam": "2026-12-13",
+    "regCloses": "2026-11-25",
+    "status": "Official",
+    "short": "13, 19 and 26 Dec 2026",
+    "regText": "closes 25 Nov 2026"
+   },
+   "last": {
+    "reg": "Closes 25 Nov 2026",
+    "exam": "13, 19 and 26 Dec 2026",
+    "result": "12 Jan 2027"
+   },
+   "site": "snaptest.org",
+   "links": [
+    [
+     "SNAP official website",
+     "https://www.snaptest.org/"
+    ],
+    [
+     "SNAP 2026 bulletin (PDF)",
+     "https://www.snaptest.org/documents/SNAP-2026-Bulletin.pdf"
+    ]
+   ],
+   "src": "https://www.snaptest.org/documents/SNAP-2026-Bulletin.pdf",
    "checked": "2026-11-05"
   },
   "ssc-cgl": {
@@ -2034,7 +2326,41 @@
    ],
    "src": "https://cdnbbsr.s3waas.gov.in/s3d2a27e83d429f0dcae6b937cf440aeb1/uploads/2026/03/202603091037766684.pdf",
    "checked": "2026-11-05"
+  },
+  "xat": {
+   "cycle": "2027",
+   "body": "XLRI Jamshedpur",
+   "fee": "₹2,300 (+₹200 for each XLRI programme)",
+   "duration": "3 hours (2–5 PM)",
+   "next": {
+    "exam": "2027-01-03",
+    "regOpens": "2026-07-15",
+    "regCloses": "2026-12-06",
+    "status": "Official",
+    "short": "3 Jan 2027, 2–5 PM"
+   },
+   "last": {
+    "reg": "15 Jul – 6 Dec 2026",
+    "exam": "3 Jan 2027"
+   },
+   "site": "xatonline.in",
+   "links": [
+    [
+     "XAT official website",
+     "https://xatonline.in./"
+    ],
+    [
+     "XAT 2027 registration details",
+     "https://xatonline.in/registration"
+    ],
+    [
+     "XAT 2027 application portal",
+     "https://applications.xatonline.in/"
+    ]
+   ],
+   "src": "https://xatonline.in/registration",
+   "checked": "2026-11-05"
   }
  },
- "count": 73
+ "count": 84
 }
