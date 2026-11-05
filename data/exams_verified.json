@@ -1,6 +1,29 @@
 {
  "v": 1,
  "exams": {
+  "afcat": {
+   "cycle": "2026–27",
+   "body": "Indian Air Force",
+   "mode": "Online written test (AFCAT), then AFSB (screening, psychological and group tests, interview; pilot aptitude test for flying), then medical",
+   "attempts": "Held twice a year: tests in February and August, applications in June and December",
+   "site": "afcat.cdac.in",
+   "links": [
+    [
+     "AFCAT official website",
+     "https://afcat.cdac.in/AFCAT/selectionProcess"
+    ],
+    [
+     "Branches you can join",
+     "https://afcat.cdac.in/AFCAT/careerAsPerBranches"
+    ],
+    [
+     "Careers by qualification",
+     "https://afcat.cdac.in/AFCAT/careerAsPerQualification"
+    ]
+   ],
+   "src": "https://afcat.cdac.in/AFCAT/selectionProcess",
+   "checked": "2026-11-05"
+  },
   "aiapget": {
    "cycle": "2026",
    "body": "National Testing Agency (NTA)",
@@ -101,6 +124,45 @@
     ]
    ],
    "src": "https://cets.apsche.ap.gov.in/ICET/PDF/APICET2026_InstructionBooklet_V2.pdf",
+   "checked": "2026-11-05"
+  },
+  "army-agniveer": {
+   "cycle": "2026–27",
+   "body": "Indian Army",
+   "site": "joinindianarmy.nic.in",
+   "links": [
+    [
+     "Join Indian Army",
+     "https://joinindianarmy.nic.in/alpha/index.htm"
+    ],
+    [
+     "Agniveer eligibility criteria",
+     "https://joinindianarmy.nic.in/alpha/eligibility-criteria-for-agniveer-recruitment-process.htm"
+    ],
+    [
+     "JCO/OR notifications",
+     "https://joinindianarmy.nic.in/Bravo/~/~/~/jco-notifications.htm"
+    ]
+   ],
+   "src": "https://joinindianarmy.nic.in/alpha/eligibility-criteria-for-agniveer-recruitment-process.htm",
+   "checked": "2026-11-05"
+  },
+  "army-tes": {
+   "cycle": "2026–27",
+   "body": "Indian Army",
+   "eligibility": "Class 12 with Physics, Chemistry and Maths; a JEE Main score is required",
+   "site": "joinindianarmy.nic.in",
+   "links": [
+    [
+     "10+2 entries (TES)",
+     "https://joinindianarmy.nic.in/alpha/Intermediate.htm"
+    ],
+    [
+     "Officer entry notifications",
+     "https://www.joinindianarmy.nic.in/Default.aspx?id=156&lg=eng"
+    ]
+   ],
+   "src": "https://joinindianarmy.nic.in/Notificationdetail.htm?741=",
    "checked": "2026-11-05"
   },
   "bihar-dcece": {
@@ -231,6 +293,27 @@
    "src": "https://cdnbbsr.s3waas.gov.in/s3efdf562ce2fb0ad460fd8e9d33e57f57/uploads/2026/10/202610071407707951.pdf",
    "checked": "2026-11-05"
   },
+  "ctet": {
+   "cycle": "2026 (22nd edition)",
+   "body": "Central Board of Secondary Education (CBSE)",
+   "site": "ctet.nic.in",
+   "links": [
+    [
+     "CTET official website",
+     "https://ctet.nic.in/"
+    ],
+    [
+     "CTET information bulletins",
+     "https://ctet.nic.in/information-bulletin/"
+    ],
+    [
+     "Exam dates for the 22nd edition (notice)",
+     "https://ctet.nic.in/document/public-notice-exam-dates-for-22nd-edition-of-ctet/"
+    ]
+   ],
+   "src": "https://ctet.nic.in/",
+   "checked": "2026-11-05"
+  },
   "cuet-pg": {
    "cycle": "2026",
    "body": "National Testing Agency (NTA)",
@@ -325,6 +408,175 @@
    "src": "https://nbe.edu.in/IB/Information%20bulletin%20GPAT%202026.pdf",
    "checked": "2026-11-05"
   },
+  "gujcet": {
+   "cycle": "2026",
+   "body": "Gujarat Secondary and Higher Secondary Education Board (GSEB)",
+   "fee": "₹350",
+   "mode": "Pen and paper (OMR)",
+   "duration": "Physics and Chemistry 2 hours; Biology 1 hour; Maths 1 hour",
+   "pattern": "40 MCQs each in Physics, Chemistry, Biology and Maths. +1 correct, −0.25 wrong",
+   "eligibility": "Class 12 Science from GSEB, CBSE or CISCE through a recognised Gujarat school (Group A, B or AB)",
+   "last": {
+    "exam": "29 Mar 2026"
+   },
+   "site": "gujcet.gseb.org",
+   "links": [
+    [
+     "GSEB official website",
+     "https://www.gseb.org./"
+    ],
+    [
+     "GUJCET 2026 booklet (English, PDF)",
+     "https://gseb.org/GUJCETBooklet(English).pdf"
+    ]
+   ],
+   "src": "https://gseb.org/GUJCETBooklet(English).pdf",
+   "checked": "2026-11-05"
+  },
+  "ibps-clerk": {
+   "cycle": "2026 (CRP CSA-XVI)",
+   "links": [
+    [
+     "IBPS official website",
+     "https://www.ibps.in/"
+    ],
+    [
+     "CRP CSA-XVI notification (PDF)",
+     "https://www.ibps.in/wp-content/uploads/Notification_CRP_CSA_XVI-Final.pdf"
+    ],
+    [
+     "IBPS tentative calendar 2026–27 (PDF)",
+     "https://www.ibps.in/wp-content/uploads/IBPS_CALENDAR_2026-27_final.pdf"
+    ]
+   ],
+   "src": "https://www.ibps.in/wp-content/uploads/Notification_CRP_CSA_XVI-Final.pdf",
+   "checked": "2026-11-05"
+  },
+  "ibps-po": {
+   "cycle": "2026 (CRP PO/MT-XVI)",
+   "links": [
+    [
+     "IBPS official website",
+     "https://www.ibps.in/"
+    ],
+    [
+     "CRP PO/MT-XVI detailed notification (PDF)",
+     "https://www.ibps.in/wp-content/uploads/Detailed-Notification_CRP-PO-XVI_Final_V1_30.06.2026.pdf"
+    ],
+    [
+     "IBPS tentative calendar 2026–27 (PDF)",
+     "https://www.ibps.in/wp-content/uploads/IBPS_CALENDAR_2026-27_final.pdf"
+    ]
+   ],
+   "src": "https://www.ibps.in/wp-content/uploads/Detailed-Notification_CRP-PO-XVI_Final_V1_30.06.2026.pdf",
+   "checked": "2026-11-05"
+  },
+  "ibps-rrb-clerk": {
+   "cycle": "2026 (CRP RRBs-XV)",
+   "links": [
+    [
+     "IBPS official website",
+     "https://www.ibps.in/"
+    ],
+    [
+     "CRP RRBs-XV notification (PDF)",
+     "https://www.ibps.in/wp-content/uploads/CRP-RRBs-XV-notification.pdf"
+    ],
+    [
+     "IBPS tentative calendar 2026–27 (PDF)",
+     "https://www.ibps.in/wp-content/uploads/IBPS_CALENDAR_2026-27_final.pdf"
+    ]
+   ],
+   "src": "https://www.ibps.in/wp-content/uploads/CRP-RRBs-XV-notification.pdf",
+   "checked": "2026-11-05"
+  },
+  "ibps-rrb-po": {
+   "cycle": "2026 (CRP RRBs-XV)",
+   "links": [
+    [
+     "IBPS official website",
+     "https://www.ibps.in/"
+    ],
+    [
+     "CRP RRBs-XV notification (PDF)",
+     "https://www.ibps.in/wp-content/uploads/CRP-RRBs-XV-notification.pdf"
+    ],
+    [
+     "IBPS tentative calendar 2026–27 (PDF)",
+     "https://www.ibps.in/wp-content/uploads/IBPS_CALENDAR_2026-27_final.pdf"
+    ]
+   ],
+   "src": "https://www.ibps.in/wp-content/uploads/CRP-RRBs-XV-notification.pdf",
+   "checked": "2026-11-05"
+  },
+  "ibps-so": {
+   "cycle": "2026 (CRP SPL-XVI)",
+   "links": [
+    [
+     "IBPS official website",
+     "https://www.ibps.in/"
+    ],
+    [
+     "CRP SPL-XVI detailed notification (PDF)",
+     "https://www.ibps.in/wp-content/uploads/Detailed-Notification-CRP-SPL-XVI_Final_V1_30.06.2026.pdf"
+    ],
+    [
+     "IBPS tentative calendar 2026–27 (PDF)",
+     "https://www.ibps.in/wp-content/uploads/IBPS_CALENDAR_2026-27_final.pdf"
+    ]
+   ],
+   "src": "https://www.ibps.in/wp-content/uploads/Detailed-Notification-CRP-SPL-XVI_Final_V1_30.06.2026.pdf",
+   "checked": "2026-11-05"
+  },
+  "icg-ac": {
+   "cycle": "2027 batch",
+   "body": "Indian Coast Guard",
+   "site": "joinindiancoastguard.cdac.in",
+   "links": [
+    [
+     "Assistant Commandant 2027 batch advertisement (PDF)",
+     "https://joinindiancoastguard.cdac.in/cgcat/assets/img/news/Advertisement_for_Asst_Comdt_2027_Batch.pdf"
+    ],
+    [
+     "Indian Coast Guard recruitment",
+     "https://indiancoastguard.gov.in/recruitment"
+    ]
+   ],
+   "src": "https://joinindiancoastguard.cdac.in/cgcat/assets/img/news/Advertisement_for_Asst_Comdt_2027_Batch.pdf",
+   "checked": "2026-11-05"
+  },
+  "icg-navik": {
+   "cycle": "2027 (CGEPT 01/27 and 02/27)",
+   "body": "Indian Coast Guard",
+   "last": {
+    "reg": "From 6 Oct 2026, on ssc.gov.in (CGEPT 01/27 and 02/27 batches)"
+   },
+   "site": "joinindiancoastguard.cdac.in",
+   "links": [
+    [
+     "Indian Coast Guard recruitment",
+     "https://indiancoastguard.gov.in/recruitment"
+    ],
+    [
+     "CGEPT 01/27 and 02/27 registration notice",
+     "https://indiancoastguard.gov.in/registration-process-cgept-0127-cgept-0227-batches-scheduled-commence-06-oct-26-all-candidates-are"
+    ],
+    [
+     "Navik (GD) details",
+     "https://joinindiancoastguard.cdac.in/cgept/careerOpportunity/navik/gd"
+    ],
+    [
+     "Yantrik details",
+     "https://joinindiancoastguard.cdac.in/cgept/careerOpportunity/yantrik"
+    ],
+    [
+     "SSC website (applications)",
+     "https://ssc.gov.in/"
+    ]
+   ],
+   "src": "https://indiancoastguard.gov.in/registration-process-cgept-0127-cgept-0227-batches-scheduled-commence-06-oct-26-all-candidates-are",
+   "checked": "2026-11-05"
+  },
   "ies-ese": {
    "cycle": "2027",
    "body": "Union Public Service Commission (UPSC)",
@@ -417,6 +669,288 @@
     ]
    ],
    "src": "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2026/04/20260416666062493.pdf",
+   "checked": "2026-11-05"
+  },
+  "keam": {
+   "cycle": "2026",
+   "body": "Commissioner for Entrance Examinations (CEE), Kerala",
+   "mode": "Engineering entrance: 3 hours (2–5 PM). Medical and allied courses use NEET UG; architecture uses NATA",
+   "duration": "3 hours",
+   "eligibility": "Engineering rank: entrance score and Class 12 Maths, Physics and Chemistry marks weighted 50:50",
+   "last": {
+    "reg": "5 – 31 Jan 2026 (documents till 7 Feb)",
+    "exam": "Engineering: 13 – 25 Apr 2026",
+    "result": "Entrance result by 10 May 2026; rank lists by 20 Jun 2026"
+   },
+   "site": "cee.kerala.gov.in",
+   "links": [
+    [
+     "CEE Kerala official website",
+     "https://cee.kerala.gov.in/"
+    ],
+    [
+     "KEAM 2026 prospectus (PDF)",
+     "https://cee.kerala.gov.in/keam2026/pdf/Prospectus.pdf"
+    ],
+    [
+     "KEAM 2026 application portal",
+     "https://cee.kerala.gov.in/keamonline2026/"
+    ]
+   ],
+   "src": "https://cee.kerala.gov.in/keam2026/pdf/Prospectus.pdf",
+   "checked": "2026-11-05"
+  },
+  "mah-bba-cet": {
+   "cycle": "2026",
+   "body": "State CET Cell, Maharashtra",
+   "last": {
+    "exam": "28–30 Apr 2026 (B.HMCT/BCA/BBA/BMS/BBM CET, tentative)"
+   },
+   "site": "cetcell.mahacet.org",
+   "links": [
+    [
+     "Maharashtra CET Cell official website",
+     "https://cetcell.mahacet.org/"
+    ],
+    [
+     "Maharashtra CET 2026 tentative schedule (PDF)",
+     "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf"
+    ]
+   ],
+   "src": "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf",
+   "checked": "2026-11-05"
+  },
+  "mah-bed-cet": {
+   "cycle": "2026",
+   "body": "State CET Cell, Maharashtra",
+   "last": {
+    "exam": "27–29 Mar 2026 (tentative)"
+   },
+   "site": "cetcell.mahacet.org",
+   "links": [
+    [
+     "Maharashtra CET Cell official website",
+     "https://cetcell.mahacet.org/"
+    ],
+    [
+     "Maharashtra CET 2026 tentative schedule (PDF)",
+     "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf"
+    ]
+   ],
+   "src": "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf",
+   "checked": "2026-11-05"
+  },
+  "mah-mba-cet": {
+   "cycle": "2026",
+   "body": "State CET Cell, Maharashtra",
+   "last": {
+    "exam": "6–8 Apr 2026; second attempt 9 May 2026 (tentative)"
+   },
+   "site": "cetcell.mahacet.org",
+   "links": [
+    [
+     "Maharashtra CET Cell official website",
+     "https://cetcell.mahacet.org/"
+    ],
+    [
+     "MBA/MMS CET 2026 registration notice (PDF)",
+     "https://cetcell.mahacet.org/wp-content/uploads/2023/12/CET-Registration-Notice_MBA-MHT-CET-CET-2026.pdf"
+    ],
+    [
+     "Maharashtra CET 2026 tentative schedule (PDF)",
+     "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf"
+    ]
+   ],
+   "src": "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf",
+   "checked": "2026-11-05"
+  },
+  "mah-mca-cet": {
+   "cycle": "2026",
+   "body": "State CET Cell, Maharashtra",
+   "last": {
+    "exam": "30 Mar 2026 (tentative)"
+   },
+   "site": "cetcell.mahacet.org",
+   "links": [
+    [
+     "Maharashtra CET Cell official website",
+     "https://cetcell.mahacet.org/"
+    ],
+    [
+     "Maharashtra CET 2026 tentative schedule (PDF)",
+     "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf"
+    ]
+   ],
+   "src": "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf",
+   "checked": "2026-11-05"
+  },
+  "mh-bped-cet": {
+   "cycle": "2026",
+   "body": "State CET Cell, Maharashtra",
+   "last": {
+    "exam": "4 Apr 2026; field test 5–7 Apr 2026 (tentative)"
+   },
+   "site": "cetcell.mahacet.org",
+   "links": [
+    [
+     "Maharashtra CET Cell official website",
+     "https://cetcell.mahacet.org/"
+    ],
+    [
+     "Maharashtra CET 2026 tentative schedule (PDF)",
+     "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf"
+    ]
+   ],
+   "src": "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf",
+   "checked": "2026-11-05"
+  },
+  "mh-hm-cet": {
+   "cycle": "2026",
+   "body": "State CET Cell, Maharashtra",
+   "last": {
+    "exam": "B.HMCT: 28–30 Apr 2026 (with BCA/BBA/BMS CET); M.HMCT: 25 Mar 2026 (tentative)"
+   },
+   "site": "cetcell.mahacet.org",
+   "links": [
+    [
+     "Maharashtra CET Cell official website",
+     "https://cetcell.mahacet.org/"
+    ],
+    [
+     "M.HMCT CET 2026 information brochure (PDF)",
+     "https://cetcell.mahacet.org/wp-content/uploads/2023/12/IB_MHMCT_CET_-2026.pdf"
+    ],
+    [
+     "Maharashtra CET 2026 tentative schedule (PDF)",
+     "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf"
+    ]
+   ],
+   "src": "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf",
+   "checked": "2026-11-05"
+  },
+  "mh-llb-3": {
+   "cycle": "2026",
+   "body": "State CET Cell, Maharashtra",
+   "last": {
+    "exam": "1–2 Apr 2026 (tentative)"
+   },
+   "site": "cetcell.mahacet.org",
+   "links": [
+    [
+     "Maharashtra CET Cell official website",
+     "https://cetcell.mahacet.org/"
+    ],
+    [
+     "Maharashtra CET 2026 tentative schedule (PDF)",
+     "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf"
+    ]
+   ],
+   "src": "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf",
+   "checked": "2026-11-05"
+  },
+  "mh-llb-5": {
+   "cycle": "2026",
+   "body": "State CET Cell, Maharashtra",
+   "last": {
+    "exam": "8 May 2026 (tentative)"
+   },
+   "site": "cetcell.mahacet.org",
+   "links": [
+    [
+     "Maharashtra CET Cell official website",
+     "https://cetcell.mahacet.org/"
+    ],
+    [
+     "Maharashtra CET 2026 tentative schedule (PDF)",
+     "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf"
+    ]
+   ],
+   "src": "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf",
+   "checked": "2026-11-05"
+  },
+  "mh-nursing-cet": {
+   "cycle": "2026",
+   "body": "State CET Cell, Maharashtra",
+   "last": {
+    "exam": "6–7 May 2026 (tentative)"
+   },
+   "site": "cetcell.mahacet.org",
+   "links": [
+    [
+     "Maharashtra CET Cell official website",
+     "https://cetcell.mahacet.org/"
+    ],
+    [
+     "Nursing CET 2026 brochure (PDF)",
+     "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Nursing-CET-2026-brochure-1.pdf"
+    ],
+    [
+     "Maharashtra CET 2026 tentative schedule (PDF)",
+     "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf"
+    ]
+   ],
+   "src": "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf",
+   "checked": "2026-11-05"
+  },
+  "mht-cet": {
+   "cycle": "2026",
+   "body": "State CET Cell, Maharashtra",
+   "fee": "General and outside Maharashtra: ₹1,300 for one attempt (₹2,600 for both). Maharashtra reserved categories and PwD: ₹1,000 (₹2,000 for both)",
+   "mode": "Online (CBT)",
+   "duration": "3 hours (Physics and Chemistry 90 min, then Maths or Biology 90 min)",
+   "pattern": "PCM: 150 questions (Maths 2 marks each, Physics and Chemistry 1 mark). PCB: 200 questions, 1 mark each. No negative marking",
+   "age": "No age limit",
+   "attempts": "Two attempts each year; the better percentile counts",
+   "eligibility": "Passed or appearing Class 12 (HSC) or equivalent",
+   "last": {
+    "reg": "10 Jan – 12 Feb 2026",
+    "exam": "First attempt: PCM 11–19 Apr, PCB 21–26 Apr 2026. Second attempt: PCB 10–11 May, PCM 14–17 May 2026 (tentative)"
+   },
+   "site": "cetcell.mahacet.org",
+   "links": [
+    [
+     "Maharashtra CET Cell official website",
+     "https://cetcell.mahacet.org/"
+    ],
+    [
+     "MHT CET 2026 information brochure (PDF)",
+     "https://cetcell.mahacet.org/wp-content/uploads/2023/12/MHT-CET-2026-Information-Brochure-Updated-on-11.04.2026.pdf"
+    ],
+    [
+     "Maharashtra CET 2026 tentative schedule (PDF)",
+     "https://cetcell.mahacet.org/wp-content/uploads/2023/12/Tentative-Schedule-CET-2026-.pdf"
+    ]
+   ],
+   "src": "https://cetcell.mahacet.org/wp-content/uploads/2023/12/MHT-CET-2026-Information-Brochure-Updated-on-11.04.2026.pdf",
+   "checked": "2026-11-05"
+  },
+  "navy-agniveer-ssr": {
+   "cycle": "2026–27",
+   "body": "Indian Navy",
+   "site": "agniveernavy.cdac.in",
+   "links": [
+    [
+     "Navy Agniveer application portal",
+     "https://agniveernavy.cdac.in/"
+    ],
+    [
+     "Agniveer (SSR) details",
+     "https://www.joinindiannavy.gov.in/en/page/agniveer-ssr.html"
+    ],
+    [
+     "Agniveer (MR) details",
+     "https://www.joinindiannavy.gov.in/en/page/agniveer-mr.html"
+    ],
+    [
+     "Selection procedure",
+     "https://www.joinindiannavy.gov.in/en/page/selection-procedure-agniveer-ssr-and-agniveer-mr.html"
+    ],
+    [
+     "Pay scale",
+     "https://www.joinindiannavy.gov.in/en/page/pay-scale-of-agniveer-ssr-agniveer-mr.html"
+    ]
+   ],
+   "src": "https://www.joinindiannavy.gov.in/en/page/agniveer-ssr.html",
    "checked": "2026-11-05"
   },
   "ncet": {
@@ -566,6 +1100,43 @@
    "src": "https://cdnbbsr.s3waas.gov.in/s36832a7b24bc06775d02b7406880b93fc/uploads/2026/01/202601281538483605.pdf",
    "checked": "2026-11-05"
   },
+  "rbi-assistant": {
+   "cycle": "2025",
+   "last": {
+    "exam": "7 Jun 2026 (Assistant 2025 main exam)"
+   },
+   "links": [
+    [
+     "RBI recruitment (opportunities) site",
+     "https://opportunities.rbi.org.in/scripts/bs_viewcontent.aspx?Id=4912"
+    ],
+    [
+     "RBI Assistant 2025 notice, exam date 7 Jun 2026 (PDF)",
+     "https://rbidocs.rbi.org.in/rdocs/content/pdfs/03ASSISTANT2025_24092026.pdf"
+    ],
+    [
+     "RBI recruitment results",
+     "https://opportunities.rbi.org.in/scripts/resultsnew.aspx"
+    ]
+   ],
+   "src": "https://rbidocs.rbi.org.in/rdocs/content/pdfs/03ASSISTANT2025_24092026.pdf",
+   "checked": "2026-11-05"
+  },
+  "rbi-grade-b": {
+   "cycle": "2026",
+   "links": [
+    [
+     "RBI recruitment (opportunities) site",
+     "https://opportunities.rbi.org.in/scripts/bs_viewcontent.aspx?Id=4997"
+    ],
+    [
+     "RBI recruitment results",
+     "https://opportunities.rbi.org.in/scripts/resultsnew.aspx"
+    ]
+   ],
+   "src": "https://opportunities.rbi.org.in/scripts/bs_viewcontent.aspx?Id=4997",
+   "checked": "2026-11-05"
+  },
   "rrb-alp": {
    "cycle": "2026 (CEN 01/2026)",
    "body": "Railway Recruitment Boards (RRBs)",
@@ -653,6 +1224,69 @@
     ]
    ],
    "src": "https://www.rrbcdg.gov.in/uploads/2024/06-NTPCUG/Detailed%20CEN%2006-2024%20NTPC.pdf",
+   "checked": "2026-11-05"
+  },
+  "sbi-clerk": {
+   "cycle": "2026–27",
+   "body": "State Bank of India",
+   "fee": "₹750 (General/OBC/EWS); no fee for SC, ST, PwBD and ex-servicemen",
+   "mode": "Online: prelims, mains, then a local language test",
+   "duration": "Prelims: 1 hour (20 minutes per section)",
+   "pattern": "Prelims: 100 MCQs (English 30, Numerical 35, Reasoning 35). ¼ negative marking. Prelims marks don't count for the final merit",
+   "age": "20 to 28 on 1 Apr 2026 (born 2 Apr 1998 – 1 Apr 2006), with relaxations",
+   "eligibility": "Graduation in any discipline; must know the local language of the state you apply for (one state only)",
+   "last": {
+    "reg": "11 – 31 Aug 2026",
+    "exam": "Prelims September 2026; Mains November 2026"
+   },
+   "site": "sbi.bank.in/web/careers",
+   "links": [
+    [
+     "SBI careers: current openings",
+     "https://sbi.bank.in/web/careers/current-openings"
+    ],
+    [
+     "SBI Junior Associates 2026 detailed advertisement (PDF)",
+     "https://sbi.bank.in/webfiles/uploads/files_2627/08/JA_2026_Detailed_Advt_Eng.pdf"
+    ],
+    [
+     "SBI Junior Associates mains information handout (PDF)",
+     "https://sbi.bank.in/webfiles/uploads/files_2627/19102026_SBI_Junior_Associates_Mains_IH_Eng_29.10.206.pdf"
+    ]
+   ],
+   "src": "https://sbi.bank.in/webfiles/uploads/files_2627/08/JA_2026_Detailed_Advt_Eng.pdf",
+   "checked": "2026-11-05"
+  },
+  "sbi-po": {
+   "cycle": "2026–27",
+   "body": "State Bank of India",
+   "fee": "₹750 (General/EWS/OBC); no fee for SC, ST and PwBD",
+   "mode": "Online: prelims, mains, then psychometric test, group exercise and interview",
+   "duration": "Prelims: 1 hour (20 minutes per section)",
+   "pattern": "Prelims: 100 marks (English 40, Quant 30, Reasoning 30). ¼ negative marking",
+   "age": "21 to 30 on 1 Apr 2026 (born 2 Apr 1996 – 1 Apr 2005), with relaxations",
+   "attempts": "General/EWS 6; OBC and PwBD 9; SC/ST no limit (only the mains counts as an attempt)",
+   "eligibility": "Graduation in any discipline (final-year students can apply)",
+   "last": {
+    "reg": "18 Jun – 8 Jul 2026",
+    "exam": "Prelims August 2026; Mains September 2026"
+   },
+   "site": "sbi.bank.in/web/careers",
+   "links": [
+    [
+     "SBI careers: current openings",
+     "https://sbi.bank.in/web/careers/current-openings"
+    ],
+    [
+     "SBI PO 2026–27 detailed advertisement (PDF)",
+     "https://sbi.bank.in/csfile/18062026_1_Detailed_Adv.2026.pdf?t=1781759726353"
+    ],
+    [
+     "SBI PO prelims 2026 results",
+     "https://sbi.bank.in/web/careers/popre-results-2026"
+    ]
+   ],
+   "src": "https://sbi.bank.in/csfile/18062026_1_Detailed_Adv.2026.pdf?t=1781759726353",
    "checked": "2026-11-05"
   },
   "ssc-cgl": {
@@ -1149,5 +1783,5 @@
    "checked": "2026-11-05"
   }
  },
- "count": 38
+ "count": 66
 }
