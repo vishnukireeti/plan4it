@@ -751,6 +751,27 @@
    "src": "https://cdnbbsr.s3waas.gov.in/s3d1a21da7bca4abff8b0b61b87597de73/uploads/2026/01/202601031633478370.pdf",
    "checked": "2026-11-05"
   },
+  "gmat-focus": {
+   "cycle": "2026–27",
+   "body": "GMAC",
+   "site": "mba.com/exams/gmat-exam",
+   "links": [
+    [
+     "GMAT exam payment (choose India for pricing)",
+     "https://www.mba.com/exams/gmat-exam/register/exam-payment"
+    ],
+    [
+     "GMAT exam policies",
+     "https://www.mba.com/exams/gmat-exam/register/exam-policies"
+    ],
+    [
+     "Taking the exam online",
+     "https://www.mba.com/exams/gmat-exam/plan-for-exam-day/taking-the-exam-online"
+    ]
+   ],
+   "src": "https://www.mba.com/exams/gmat-exam/register/exam-payment",
+   "checked": "2026-11-05"
+  },
   "gpat": {
    "cycle": "2026",
    "body": "National Board of Examinations in Medical Sciences (NBEMS) for the Pharmacy Council of India",
@@ -781,6 +802,25 @@
     ]
    ],
    "src": "https://nbe.edu.in/IB/Information%20bulletin%20GPAT%202026.pdf",
+   "checked": "2026-11-05"
+  },
+  "gre": {
+   "cycle": "2026–27",
+   "body": "ETS",
+   "fee": "USD 249 outside China (from 1 Aug 2026); rescheduling USD 55. India pricing is listed on ETS India",
+   "mode": "Computer-delivered",
+   "site": "ets.org/india/gre.html",
+   "links": [
+    [
+     "GRE General Test fees",
+     "https://www.in.ets.org/gre/test-takers/general-test/register/fees.html"
+    ],
+    [
+     "GRE for India (ETS India)",
+     "https://www.ets.org/india/gre.html"
+    ]
+   ],
+   "src": "https://www.in.ets.org/gre/test-takers/general-test/register/fees.html",
    "checked": "2026-11-05"
   },
   "gujcet": {
@@ -975,6 +1015,24 @@
     ]
    ],
    "src": "https://indiancoastguard.gov.in/registration-process-cgept-0127-cgept-0227-batches-scheduled-commence-06-oct-26-all-candidates-are",
+   "checked": "2026-11-05"
+  },
+  "ielts": {
+   "cycle": "2026–27",
+   "body": "IELTS (British Council and IDP)",
+   "mode": "Academic, General Training and UKVI versions; paper or computer; One Skill Retake available",
+   "site": "ielts.org",
+   "links": [
+    [
+     "Booking your IELTS test",
+     "https://ielts.org/take-a-test/booking-your-test"
+    ],
+    [
+     "IDP test centre, New Delhi (fees and dates)",
+     "https://ielts.org/test-centres/idp-education-india-new-delhi-nehru-place"
+    ]
+   ],
+   "src": "https://ielts.org/take-a-test/booking-your-test",
    "checked": "2026-11-05"
   },
   "ies-ese": {
@@ -1799,6 +1857,27 @@
    "src": "https://cdnbbsr.s3waas.gov.in/s36832a7b24bc06775d02b7406880b93fc/uploads/2026/01/202601281538483605.pdf",
    "checked": "2026-11-05"
   },
+  "pte": {
+   "cycle": "2026–27",
+   "body": "Pearson",
+   "site": "pearsonpte.com",
+   "links": [
+    [
+     "PTE Academic",
+     "https://www.pearsonpte.com/pte-academic/"
+    ],
+    [
+     "Booking and managing your test",
+     "https://www.pearsonpte.com/help-center/booking-managing-test/"
+    ],
+    [
+     "PTE Academic test taker handbook (PDF)",
+     "https://www.pearsonpte.com/content/dam/ELL/pte/pearsonpte/pdfs/test-taker-handbook-pte-academic.pdf"
+    ]
+   ],
+   "src": "https://www.pearsonpte.com/pte-academic/",
+   "checked": "2026-11-05"
+  },
   "rbi-assistant": {
    "cycle": "2025",
    "last": {
@@ -1945,6 +2024,40 @@
     ]
    ],
    "src": "https://www.rrbcdg.gov.in/uploads/2024/06-NTPCUG/Detailed%20CEN%2006-2024%20NTPC.pdf",
+   "checked": "2026-11-05"
+  },
+  "sat": {
+   "cycle": "2026–27",
+   "body": "College Board",
+   "fee": "USD 68 + USD 43 international fee = USD 111. Late registration USD 38",
+   "mode": "Digital (on a device at a test centre)",
+   "attempts": "Several dates a year; no fixed limit",
+   "next": {
+    "exam": "2026-12-05",
+    "regCloses": "2026-11-20",
+    "status": "Official",
+    "short": "5 Dec 2026; then 6 Mar, 1 May, 5 Jun 2027",
+    "regText": "for 5 Dec: closes 20 Nov 2026 (late till 24 Nov)"
+   },
+   "last": {
+    "exam": "2026–27 dates: 22 Aug, 12 Sep, 3 Oct, 7 Nov, 5 Dec 2026; 6 Mar, 1 May, 5 Jun 2027"
+   },
+   "site": "satsuite.collegeboard.org",
+   "links": [
+    [
+     "SAT international fees",
+     "https://satsuite.collegeboard.org/sat/registration/international-testing/fees"
+    ],
+    [
+     "2026–27 international SAT dates (PDF)",
+     "https://international.collegeboard.org/media/pdf/2627-sat-suite-important-dates-flyer-intl.pdf"
+    ],
+    [
+     "SAT registration",
+     "https://satsuite.collegeboard.org/sat/registration"
+    ]
+   ],
+   "src": "https://satsuite.collegeboard.org/sat/registration/international-testing/fees",
    "checked": "2026-11-05"
   },
   "sbi-clerk": {
@@ -2312,6 +2425,25 @@
    "src": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_steno_2026.pdf",
    "checked": "2026-11-05"
   },
+  "toefl-ibt": {
+   "cycle": "2026–27",
+   "body": "ETS",
+   "fee": "₹15,729 in India. Late registration ₹3,305; rescheduling ₹5,000",
+   "mode": "Computer-delivered, at a centre or at home",
+   "site": "ets.org/toefl",
+   "links": [
+    [
+     "TOEFL iBT fees in India",
+     "https://www.in.ets.org/toefl/test-takers/ibt/register/fees.html"
+    ],
+    [
+     "TOEFL iBT information bulletin for India 2026–27 (PDF)",
+     "https://www.in.ets.org/content/dam/ets-india/pdfs/toefl/toefl-ibt-bulletin.pdf"
+    ]
+   ],
+   "src": "https://www.in.ets.org/toefl/test-takers/ibt/register/fees.html",
+   "checked": "2026-11-05"
+  },
   "ts-polycet": {
    "cycle": "2026",
    "body": "State Board of Technical Education and Training (SBTET), Telangana",
@@ -2660,5 +2792,5 @@
    "checked": "2026-11-05"
   }
  },
- "count": 97
+ "count": 103
 }
