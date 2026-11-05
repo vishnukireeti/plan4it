@@ -56,6 +56,48 @@
    "src": "https://cdnbbsr.s3waas.gov.in/s388a839f2f6f1427879fc33ee4acf4f66/uploads/2026/07/202607111067394464.pdf",
    "checked": "2026-11-05"
   },
+  "aiims-ini-cet": {
+   "cycle": "2026–27",
+   "body": "AIIMS New Delhi",
+   "site": "aiimsexams.ac.in",
+   "links": [
+    [
+     "INI-CET on AIIMS exams portal",
+     "https://www.aiimsexams.ac.in/landingpage/courses/advertisement/68dbf0b6d6fe8f55c65468aa"
+    ],
+    [
+     "AIIMS exams key dates",
+     "https://www.aiimsexams.ac.in/landingpage/key-dates"
+    ],
+    [
+     "AIIMS exams notices",
+     "https://www.aiimsexams.ac.in/landingpage/notice"
+    ]
+   ],
+   "src": "https://www.aiimsexams.ac.in/landingpage/courses/advertisement/68dbf0b6d6fe8f55c65468aa",
+   "checked": "2026-11-05"
+  },
+  "aiims-norcet": {
+   "cycle": "2026–27",
+   "body": "AIIMS New Delhi",
+   "site": "aiimsexams.ac.in",
+   "links": [
+    [
+     "NORCET on AIIMS exams portal",
+     "https://aiimsexams.ac.in/landingpage/courses/advertisement/66ab7926ebb3815a4b707804"
+    ],
+    [
+     "AIIMS exams key dates",
+     "https://aiimsexams.ac.in/landingpage/key-dates"
+    ],
+    [
+     "NORCET-10 seat allocation result",
+     "https://aiimsexams.ac.in/result/699d90c3a5c5ab7d59ac721b"
+    ]
+   ],
+   "src": "https://aiimsexams.ac.in/landingpage/courses/advertisement/66ab7926ebb3815a4b707804",
+   "checked": "2026-11-05"
+  },
   "ailet": {
    "cycle": "2027",
    "body": "National Law University Delhi",
@@ -749,6 +791,36 @@
     ]
    ],
    "src": "https://cdnbbsr.s3waas.gov.in/s3d1a21da7bca4abff8b0b61b87597de73/uploads/2026/01/202601031633478370.pdf",
+   "checked": "2026-11-05"
+  },
+  "fmge": {
+   "cycle": "October 2026",
+   "body": "National Board of Examinations in Medical Sciences (NBEMS)",
+   "fee": "₹4,650 (₹3,940.68 + 18% GST)",
+   "mode": "Online (CBT)",
+   "attempts": "Held twice a year (June and October sessions in 2026)",
+   "eligibility": "Indian citizen or OCI with a foreign primary medical qualification recognised in that country; NMC eligibility certificate or NEET UG as required",
+   "last": {
+    "reg": "11 – 25 Sep 2026",
+    "exam": "31 Oct 2026",
+    "result": "By 30 Nov 2026"
+   },
+   "site": "natboard.edu.in",
+   "links": [
+    [
+     "FMGE on NBEMS",
+     "https://natboard.edu.in/viewnbeexam?exam=fmge"
+    ],
+    [
+     "FMGE October 2026 information bulletin (PDF)",
+     "https://nbe.edu.in/IB/FMGE%20october%202026%20information%20bulletin%20v2.2.pdf"
+    ],
+    [
+     "FMGE June 2026 information bulletin (PDF)",
+     "https://nbe.edu.in/IB/FMGE%20JUNE%202026%20information%20bulletin.pdf"
+    ]
+   ],
+   "src": "https://nbe.edu.in/IB/FMGE%20october%202026%20information%20bulletin%20v2.2.pdf",
    "checked": "2026-11-05"
   },
   "gmat-focus": {
@@ -1692,6 +1764,86 @@
     ]
    ],
    "src": "https://www.upsc.gov.in/sites/default/files/Notif-NDA-II-2026-Engl-200526.pdf",
+   "checked": "2026-11-05"
+  },
+  "neet-mds": {
+   "cycle": "2026",
+   "body": "National Board of Examinations in Medical Sciences (NBEMS)",
+   "fee": "₹3,500 (General/OBC/EWS); ₹2,500 (SC/ST/PwD)",
+   "mode": "Online (CBT), English only, one session",
+   "duration": "3 hours (Part A 75 min, Part B 105 min)",
+   "pattern": "240 MCQs; +4 correct, −1 wrong",
+   "eligibility": "BDS with State Dental Council registration and internship completed by the cut-off date",
+   "last": {
+    "reg": "14 – 30 Mar 2026",
+    "exam": "2 May 2026",
+    "result": "By 2 Jun 2026"
+   },
+   "site": "natboard.edu.in",
+   "links": [
+    [
+     "NEET MDS on NBEMS",
+     "https://natboard.edu.in/viewnbeexam?exam=neetmds"
+    ],
+    [
+     "NEET MDS 2026 information bulletin (PDF)",
+     "https://nbe.edu.in/IB/NEET-MDS%202026%20Information%20Bulletin_v1_VG%2011.03.2026.pdf"
+    ],
+    [
+     "NEET MDS 2026 result",
+     "https://natboard.edu.in/viewUpload?xyz=a0Uyd1liWVQ4L2cyQUNLUGtDdFlDZz09"
+    ]
+   ],
+   "src": "https://nbe.edu.in/IB/NEET-MDS%202026%20Information%20Bulletin_v1_VG%2011.03.2026.pdf",
+   "checked": "2026-11-05"
+  },
+  "neet-pg": {
+   "cycle": "2026",
+   "body": "National Board of Examinations in Medical Sciences (NBEMS)",
+   "site": "natboard.edu.in",
+   "links": [
+    [
+     "NEET PG on NBEMS",
+     "https://natboard.edu.in/viewnbeexam?exam=neetpg"
+    ],
+    [
+     "NBEMS notices",
+     "https://natboard.edu.in/allnotice.php"
+    ]
+   ],
+   "src": "https://natboard.edu.in/viewnbeexam?exam=neetpg",
+   "checked": "2026-11-05"
+  },
+  "neet-ss": {
+   "cycle": "2026",
+   "body": "National Board of Examinations in Medical Sciences (NBEMS)",
+   "fee": "₹3,500 per group (no GST)",
+   "mode": "Online (CBT), morning or afternoon shift",
+   "eligibility": "MD/MS/DNB in a feeder specialty (or due by 31 Jan 2027) with NMC or State Medical Council registration",
+   "next": {
+    "exam": "2026-12-11",
+    "regOpens": "2026-10-29",
+    "regCloses": "2026-11-18",
+    "status": "Official",
+    "short": "11 and 12 Dec 2026"
+   },
+   "last": {
+    "reg": "29 Oct – 18 Nov 2026",
+    "exam": "11 – 12 Dec 2026",
+    "result": "By 12 Jan 2027"
+   },
+   "site": "natboard.edu.in",
+   "links": [
+    [
+     "NEET SS on NBEMS",
+     "https://natboard.edu.in/viewnbeexam?exam=neetss"
+    ],
+    [
+     "NEET SS 2026 information bulletin (PDF)",
+     "https://nbe.edu.in/IB/NEET-SS%202026%20Information%20Bulletin%20-%20Final%20Version%20for%20Website.pdf"
+    ]
+   ],
+   "src": "https://nbe.edu.in/IB/NEET-SS%202026%20Information%20Bulletin%20-%20Final%20Version%20for%20Website.pdf",
    "checked": "2026-11-05"
   },
   "neet-ug": {
@@ -2792,5 +2944,5 @@
    "checked": "2026-11-05"
   }
  },
- "count": 103
+ "count": 109
 }
