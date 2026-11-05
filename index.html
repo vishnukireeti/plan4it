@@ -601,7 +601,7 @@
         <section id="view-confusedMode" class="view-section hidden max-w-2xl mx-auto bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-sm">
             <div class="flex items-center justify-between mb-4">
                 <div>
-                    <span class="text-brand-600 text-xs font-bold uppercase tracking-wider">Not sure what to study?</span>
+                    <span class="text-brand-600 text-xs font-bold uppercase tracking-wider">For students and working professionals</span>
                     <h2 class="text-2xl font-bold text-slate-900">Find my path</h2>
                 </div>
                 <button onclick="switchView('home')" class="text-slate-400 hover:text-slate-600 text-sm font-semibold">✕ Close</button>
@@ -8797,7 +8797,7 @@
            Sections come from data-nav tags in the page; detail pages use their headings.
            ============================================================ */
         const WIZARD_KEYS = ['cls', 'interests', 'activity', 'challenge', 'clarity', 'values', 'learning', 'help'];
-        const WIZARD_QLABEL = ['Your class', 'What you enjoy', 'A free afternoon', 'A satisfying challenge', 'Your career idea', 'What would matter', 'How you learn', 'What you need help with'];
+        const WIZARD_QLABEL = ['Your stage', 'What you enjoy', 'A free afternoon', 'A satisfying challenge', 'Your career idea', 'What would matter', 'How you learn', 'What you need help with'];
         const WIZARD_STEPS = 8, WIZARD_PRACTICAL = 9;
         const WIZARD_STAGE_NAMES = { 'School 8-10': 'Class 9–10', 'School 11-12': 'Class 11–12 or just finished', 'Undergraduate': 'Undergraduate', 'Graduate': 'Graduate' };
         const PN_ON = ['border-brand-600', 'bg-brand-50', 'text-brand-800', 'font-semibold'];
@@ -8812,7 +8812,7 @@
         function wizardAnswerLabel(i) {
             const k = WIZARD_KEYS[i], q = QUIZ[i], v = wizardAnswers[k];
             if (!q || v == null || (Array.isArray(v) && !v.length)) return '';
-            const lab = function (x) { const o = q.opts.find(function (p) { return p[0] === x; }); return o ? (o[2] || o[1]) : x; };
+            const lab = function (x) { const o = quizOpts(q).find(function (p) { return p[0] === x; }); return o ? (o[2] || o[1]) : x; };
             const cut = function (s) { return s.length > 34 ? s.slice(0, 32).replace(/\s+\S*$/, '') + '…' : s; };
             return Array.isArray(v) ? cut(lab(v[0])) + (v.length > 1 ? ' +' + (v.length - 1) : '') : cut(lab(v));
         }
@@ -9192,8 +9192,8 @@
            understands (interest, workStyle, constraint, stage), so careers, exams, colleges and routes all keep working from the same answers.
            ============================================================ */
         const QUIZ = [
-            { key: 'cls', multi: 0, title: 'Which class are you currently studying in?', sub: 'This tells us which exams and timelines matter for you right now.',
-              opts: [['9', 'Class 9'], ['10', 'Class 10'], ['11', 'Class 11'], ['12', 'Class 12'], ['done', 'Other / Already completed Class 12', 'Finished Class 12 or other']] },
+            { key: 'cls', multi: 0, title: 'Which best describes you right now?', sub: 'This decides which exams, routes and tools actually apply to you — the rest of the quiz works the same either way.',
+              opts: [['9', 'Class 9'], ['10', 'Class 10'], ['11', 'Class 11'], ['12', 'Class 12'], ['ug', 'In an undergraduate degree', 'Undergraduate'], ['grad', 'Graduated, not working yet', 'Recently graduated'], ['working', 'Already working — exploring or switching careers', 'Already working']] },
             { key: 'interests', multi: 3, exclusive: 'none', title: 'Which subjects or topics do you genuinely enjoy learning about?', sub: 'Pick up to 3. Choose what you enjoy, not what sounds impressive.',
               opts: [['maths', 'Maths and logical problems'], ['science', 'Science and how things work'], ['tech', 'Technology and computers'], ['business', 'Business, money and entrepreneurship'], ['people', 'People, society and human behaviour'], ['words', 'Writing, languages and communication'], ['art', 'Art, design and creative work'], ['bio', 'Biology, health and living things'], ['civics', 'History, politics and current affairs'], ['none', 'I haven\'t found my favourite yet']] },
             { key: 'activity', multi: 0, title: 'If you had a free afternoon to explore something, what would you choose?', sub: 'Go with your first instinct.',
@@ -9207,8 +9207,27 @@
             { key: 'learning', multi: 0, title: 'Which kind of learning experience suits you best?', sub: 'Think about how you learn best, not what you are told to do.',
               opts: [['concepts', 'Understanding concepts and theories in depth'], ['apply', 'Applying ideas to real-world problems'], ['practical', 'Practical work, projects and experiments'], ['discuss', 'Discussion, collaboration and presentations'], ['mix', 'A mix of these'], ['unsure', 'I\'m still figuring that out']] },
             { key: 'help', multi: 0, title: 'What would you most like help figuring out right now?', sub: 'We will start there.',
-              opts: [['stream', 'Which stream or subjects to choose'], ['careers', 'Which careers match my interests'], ['exams', 'Which entrance exams I should prepare for'], ['colleges', 'Which colleges and courses to target'], ['scholarships', 'Scholarships and affordable study options'], ['backup', 'Backup options if my first choice doesn\'t work out'], ['start', 'I need help figuring out where to start']] }
+              optsFor: function (a) {
+                  if (a.cls === 'working') return [
+                      ['switch', 'Whether and how to switch into a new field'],
+                      ['careers', 'Which careers match my skills and interests'],
+                      ['colleges', 'Courses or certifications to upskill'],
+                      ['start', 'I need help figuring out where to start']
+                  ];
+                  if (a.cls === 'grad') return [
+                      ['switch', 'Switching into a field different from what I studied'],
+                      ['careers', 'Which careers match my interests'],
+                      ['exams', 'Entrance exams for further study (MBA, M.Tech, etc.)'],
+                      ['colleges', 'Which colleges and courses to target'],
+                      ['backup', 'Backup options if my first choice doesn\'t work out'],
+                      ['start', 'I need help figuring out where to start']
+                  ];
+                  return [['stream', 'Which stream or subjects to choose'], ['careers', 'Which careers match my interests'], ['exams', 'Which entrance exams I should prepare for'], ['colleges', 'Which colleges and courses to target'], ['scholarships', 'Scholarships and affordable study options'], ['backup', 'Backup options if my first choice doesn\'t work out'], ['start', 'I need help figuring out where to start']];
+              } }
         ];
+        // Some questions' options depend on earlier answers (e.g. "help" for a working professional vs a student).
+        // Everywhere that needs a question's option list should call this instead of reading q.opts directly.
+        function quizOpts(q) { return typeof q.optsFor === 'function' ? q.optsFor(wizardAnswers) : q.opts; }
         // topic or answer → [[interest the app understands, weight], ...]
         const QZ_INTEREST = {
             interests: {
@@ -9238,7 +9257,10 @@
         // Turn the raw answers into the fields the rest of the app reads. Safe to call after every answer.
         function deriveWizard() {
             const a = wizardAnswers;
-            if (a.cls) a.stage = (a.cls === '9' || a.cls === '10') ? 'School 8-10' : 'School 11-12';
+            if (a.cls) a.stage = (a.cls === '9' || a.cls === '10') ? 'School 8-10'
+                : (a.cls === '11' || a.cls === '12') ? 'School 11-12'
+                : a.cls === 'ug' ? 'Undergraduate' : 'Graduate'; // 'grad' or 'working'
+            a.working = a.cls === 'working';
             const tot = {}, add = function (list) { (list || []).forEach(function (p) { tot[p[0]] = (tot[p[0]] || 0) + p[1]; }); };
             (a.interests || []).forEach(function (t) { add(QZ_INTEREST.interests[t]); });
             if (a.activity) add(QZ_INTEREST.activity[a.activity]);
@@ -9316,7 +9338,7 @@
             const e = escapeAuth, cur = wizardAnswers[q.key], sel = Array.isArray(cur) ? cur : (cur ? [cur] : []);
             const base = 'w-full text-left p-4 rounded-xl border transition min-h-[56px] ';
             let h = '<p class="text-lg font-medium text-slate-700 mb-1">' + n + '. ' + e(q.title) + '</p><p class="text-xs text-slate-600 mb-5">' + e(q.sub) + (q.multi ? ' <span class="font-semibold">Selected: <span id="wiz-count-' + n + '">' + sel.length + '</span> of up to ' + q.multi + '.</span>' : '') + '</p>';
-            h += '<div class="space-y-2.5" role="' + (q.multi ? 'group' : 'radiogroup') + '" aria-label="' + e(q.title) + '">' + q.opts.map(function (o) {
+            h += '<div class="space-y-2.5" role="' + (q.multi ? 'group' : 'radiogroup') + '" aria-label="' + e(q.title) + '">' + quizOpts(q).map(function (o) {
                 const on = sel.indexOf(o[0]) > -1;
                 return '<button type="button" data-qv="' + o[0] + '" aria-pressed="' + on + '" onclick="quizPick(' + n + ', \'' + o[0] + '\')" class="' + base + (on ? 'border-brand-600 bg-brand-50' : 'border-slate-200 hover:border-brand-600 hover:bg-brand-50/50') + '"><span class="flex items-start gap-3"><span aria-hidden="true" class="mt-0.5 w-5 h-5 shrink-0 border-2 ' + (q.multi ? 'rounded-md' : 'rounded-full') + ' flex items-center justify-center text-[11px] font-bold ' + (on ? 'border-brand-600 bg-brand-600 text-white' : 'border-slate-300 text-transparent') + '">✓</span><span class="font-semibold text-slate-800">' + e(o[1]) + '</span></span></button>';
             }).join('') + '</div>';
@@ -9772,6 +9794,11 @@
                     title = 'You wanted help finding careers that match';
                     text = 'These are your closest matches. The Career Explorer ranks all ' + careersData.length + ' careers by your answers, and you can clear the ranking any time.';
                     actions = btn('See all my career matches', "sortExplorerByQuizMatch(); switchView('explorer')", true);
+                    break;
+                case 'switch':
+                    title = 'You wanted help switching careers';
+                    text = 'Start from where you want to end up and work backwards: what you already bring, what\'s missing, and a realistic route that doesn\'t require quitting first. We\'ve pre-filled the planner below with your closest match from this quiz.';
+                    actions = btn('Build my switch plan', 'wizardOpenSwitchPlanner()', true) + btn('See all my career matches', "sortExplorerByQuizMatch(); switchView('explorer')", false);
                     break;
                 case 'exams': {
                     const ex = topExams();
@@ -13129,6 +13156,16 @@
                 const gated = SWITCH_GATES[c.id];
                 return `<option value="${c.id}">${c.title}${gated ? ' (needs a formal qualification)' : ''}</option>`;
             }).join('');
+        }
+
+        // Opens the reverse career-switch planner with the quiz's top career match pre-selected,
+        // so a working professional doesn't have to re-type what they just told the quiz.
+        function wizardOpenSwitchPlanner() {
+            const pool = careersData.map(function (c) { return { id: c.id, score: scoreCareerForWizard(c, wizardAnswers).score }; });
+            pool.sort(function (x, y) { return y.score - x.score; });
+            const sel = document.getElementById('switch-target');
+            if (sel && pool.length && pool[0].score > 0) sel.value = pool[0].id;
+            goToBlock('career-switch-block');
         }
 
         function matchSkillToRole(skillName, role) {
