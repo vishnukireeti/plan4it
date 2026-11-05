@@ -7832,7 +7832,7 @@
               lead: 'The earlier you act, the cheaper it is to change. There are more ways back than most people know.',
               week: ['Write down what you dislike: the subjects, the daily work, or the career at the end.', 'Read the "Picked the wrong course?" guide just above for your stage.', 'Ask your college about branch change or transfer windows, and the last date.'],
               months: ['Compare 2 alternatives: how many credits carry over, how many extra years, and the cost.', 'Talk to 2 people who already work in the field you want.', 'Use the career switch planner to see what is missing between where you are and where you want to be.'],
-              doors: [['Picked the wrong course?', 'Step-by-step guide for your stage.', "goToBlock('wrong-course-block')"], ['Plan a career switch', 'See the gap between two careers.', "goToBlock('career-switch-block')"], ['Find my path', 'Take the 5-minute quiz again.', "switchView('confusedMode')"]],
+              doors: [['Picked the wrong course?', 'Step-by-step guide for your stage.', "goToBlock('wrong-course-block')"], ['Plan a career switch', 'See the gap between two careers.', "goToBlock('career-switch-block')"], ['Find my path', 'Take the 5-minute quiz again.', "switchView('confusedMode');restartWizard()"]],
               avoid: ['Leaving before you know what you are moving to.', 'Switching only because a friend did.'] },
             { id: 'no-campus-placement', icon: '💼', label: 'No campus placement', title: 'Missing campus placement is a delay, not a dead end',
               lead: 'Most jobs in India are filled off campus. Treat it as your main route now, with a fixed weekly routine.',
@@ -8002,7 +8002,7 @@
                 }).join('') + '</div>' +
                 '<div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 mt-4"><h4 class="font-bold text-emerald-900 text-sm mb-1">What to do this week</h4><ul class="list-disc pl-5 space-y-1 text-sm text-emerald-900">' + d.week.map(function (s) { return '<li>' + escapeAuth(s) + '</li>'; }).join('') + '</ul></div>' +
                 '<div class="flex flex-col sm:flex-row flex-wrap gap-2 mt-4">' +
-                '<button type="button" onclick="switchView(\'confusedMode\')" class="min-h-[44px] bg-white border border-slate-300 text-slate-700 font-semibold py-2.5 px-4 rounded-xl hover:bg-slate-50 text-sm">Retake the career quiz</button>' +
+                '<button type="button" onclick="switchView(\'confusedMode\');restartWizard()" class="min-h-[44px] bg-white border border-slate-300 text-slate-700 font-semibold py-2.5 px-4 rounded-xl hover:bg-slate-50 text-sm">Retake the career quiz</button>' +
                 '<button type="button" onclick="goToTool(\'afterDegree\', \'career-switch-block\')" class="min-h-[44px] bg-white border border-slate-300 text-slate-700 font-semibold py-2.5 px-4 rounded-xl hover:bg-slate-50 text-sm">Plan a career switch</button>' +
                 '<button type="button" onclick="goToTool(\'govAndAbroad\', \'scholarship-matcher-block\')" class="min-h-[44px] bg-white border border-slate-300 text-slate-700 font-semibold py-2.5 px-4 rounded-xl hover:bg-slate-50 text-sm">Look at scholarships</button></div>' +
                 '<p class="text-[11px] text-slate-500 mt-3">Rules differ by school, board, university and state, so confirm each step with the institution. Plan4it is a guide, not official advice.</p>';
@@ -9142,7 +9142,15 @@
             if (!skipHash) { history.pushState({ view: viewId }, '', '#' + viewId); }
 
             if (viewId === 'home') renderHome();
-            if (viewId === 'confusedMode') restartWizard();
+            // Returning to "Find my path" should show the student their own saved answers and
+            // matches, not wipe them and start over -- a completed quiz is data, not a one-time
+            // interaction. Only an explicit "Retake Quiz" action (see restartWizard() call sites)
+            // should reset it.
+            if (viewId === 'confusedMode') {
+                const saved = getStoredWizardAnswers();
+                if (saved) { wizardAnswers = Object.assign({}, saved); showWizardResults(); }
+                else restartWizard();
+            }
             if (viewId === 'explorer') renderExplorerCareers();
             if (viewId === 'exams') renderExams();
             if (viewId === 'colleges') renderColleges();
