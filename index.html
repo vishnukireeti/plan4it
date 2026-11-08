@@ -542,9 +542,9 @@
         <section id="view-home" class="view-section py-8 md:py-12 max-w-3xl mx-auto">
             <!-- 1. Hero: one question, one main button, shortcuts by stage -->
             <div class="text-center">
-                <p class="text-xs sm:text-sm text-brand-700 font-semibold mb-3 tracking-wide">Built for Class 10–12 students and their families, across India</p>
+                <p class="text-xs sm:text-sm text-brand-700 font-semibold mb-3 tracking-wide">Built for every student and family across India</p>
                 <h1 class="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight mb-4">Not sure what to do next? Let's map it out.</h1>
-                <p class="text-base md:text-lg text-slate-600 mb-7 leading-relaxed max-w-xl mx-auto">Answer a few quick questions and see the careers, exams and colleges that fit you. No sign-up needed.</p>
+                <p class="text-base md:text-lg text-slate-600 mb-7 leading-relaxed max-w-xl mx-auto">Answer a few quick questions and see the careers, exams and colleges that fit you.</p>
                 <div class="flex flex-col sm:flex-row justify-center items-center gap-3">
                     <button type="button" onclick="switchView('confusedMode')" class="w-full sm:w-auto min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white font-semibold px-7 py-3 rounded-xl text-base shadow-lg shadow-brand-200 transition">Take the 2-minute quiz</button>
                     <button type="button" onclick="switchView('explorer')" class="w-full sm:w-auto min-h-[48px] bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-semibold px-7 py-3 rounded-xl text-base transition">Browse careers</button>
@@ -667,7 +667,7 @@
                         <span class="bg-brand-600 text-white text-xs font-bold px-2.5 py-1 rounded-full">🎉 Discovery Complete</span>
                         <h3 class="text-xl font-bold text-slate-900 mt-3 mb-2">Your Exploration Map</h3>
                         <p class="text-slate-600 text-sm" id="wizard-results-summary">Based on your inputs, here are your matching tracks:</p>
-                        <p class="text-xs text-brand-800 bg-white/60 border border-brand-100 rounded-lg px-3 py-2 mt-3">This is guidance based on your answers, not a substitute for advice from a counsellor, teacher, or doctor. Please discuss big decisions with someone you trust.</p>
+                        <p class="text-xs text-brand-800 bg-white/60 border border-brand-100 rounded-lg px-3 py-2 mt-3">This is guidance based on your answers and interests.</p>
                     </div>
 
                     <div id="wizard-nextstep" class="mb-6"></div>
@@ -6904,7 +6904,7 @@
         const branchData = {
             'Class 10': {
                 title: "Class 10th Stream Selection",
-                subtitle: "This choice feels huge, but it's a starting lane, not a life sentence — plenty of people switch tracks after 12th or even after their degree. Here's the fuller map, including the combinations most students never hear about.",
+                subtitle: "This is a starting lane — plenty of people switch tracks after 12th or even after their degree. Here are the combinations:",
                 branches: [
                     {
                         name: "Science — PCM (Physics, Chemistry, Maths)",
@@ -9250,7 +9250,7 @@
               opts: [['enjoy', 'Doing work I genuinely enjoy'], ['earn', 'Earning well and achieving financial independence'], ['help', 'Helping people or making a difference'], ['creative', 'Being creative and expressing ideas'], ['own', 'Building something of my own'], ['stable', 'Having stability and a predictable future'], ['freedom', 'Having freedom and flexibility'], ['skilled', 'Becoming highly skilled or recognised in my field']] },
             { key: 'learning', multi: 0, title: 'Which kind of learning experience suits you best?', sub: 'Think about how you learn best, not what you are told to do.',
               opts: [['concepts', 'Understanding concepts and theories in depth'], ['apply', 'Applying ideas to real-world problems'], ['practical', 'Practical work, projects and experiments'], ['discuss', 'Discussion, collaboration and presentations'], ['mix', 'A mix of these'], ['unsure', 'I\'m still figuring that out']] },
-            { key: 'help', multi: 0, title: 'What would you most like help figuring out right now?', sub: 'We will start there.',
+            { key: 'help', multi: 0, title: 'What help do you need to figure out right now?', sub: 'We will start there.',
               optsFor: function (a) {
                   if (a.cls === 'working') return [
                       ['switch', 'Whether and how to switch into a new field'],
@@ -9868,6 +9868,9 @@
         function renderWizardNextStep() {
             const box = document.getElementById('wizard-nextstep');
             if (!box) return;
+            // The "next step" card is for undergraduates and above; school students see their stream routes instead.
+            if (wizardAnswers.stage === 'School 8-10' || wizardAnswers.stage === 'School 11-12') { box.classList.add('hidden'); box.innerHTML = ''; return; }
+            box.classList.remove('hidden');
             const a = wizardAnswers, e = escapeAuth, f = getFit();
             const btn = function (label, js, primary) { return '<button type="button" onclick="' + js + '" class="min-h-[44px] px-4 py-2.5 rounded-xl text-sm font-semibold transition ' + (primary ? 'bg-brand-600 hover:bg-brand-700 text-white' : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50') + '">' + label + '</button>'; };
             const chip = 'text-xs font-semibold bg-white border border-slate-200 text-slate-800 hover:border-brand-400 rounded-full px-3 min-h-[36px]';
@@ -11456,6 +11459,7 @@
            BRANCHING ENGINE
            ============================================================ */
         let currentBranchKey = 'B.Com';
+        const BRANCH_LABELS = { 'Class 10': 'Class 10th stream selection' };
         function renderBranchButtons(activeKey) {
             const key = activeKey || currentBranchKey;
             const query = (document.getElementById('branch-search').value || '').toLowerCase();
@@ -11474,7 +11478,7 @@
                         <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">${group.label}</p>
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
                             ${visibleKeys.map(k => `
-                                <button onclick="loadBranchTree('${k}')" class="p-3 rounded-xl border-2 font-bold text-xs sm:text-sm transition text-left ${k === key ? 'border-brand-600 bg-brand-50 text-brand-700' : 'border-slate-200 text-slate-700 hover:border-slate-300'}">${k}</button>
+                                <button onclick="loadBranchTree('${k}')" class="p-3 rounded-xl border-2 font-bold text-xs sm:text-sm transition text-left ${k === key ? 'border-brand-600 bg-brand-50 text-brand-700' : 'border-slate-200 text-slate-700 hover:border-slate-300'}">${BRANCH_LABELS[k] || k}</button>
                             `).join('')}
                         </div>
                     </div>`;
