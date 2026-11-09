@@ -1574,9 +1574,8 @@
         <section id="view-dashboard" class="view-section hidden space-y-8">
             <div class="bg-gradient-to-r from-brand-900 to-brand-800 text-white p-8 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
-                    <span id="profile-active-badge" class="bg-brand-500/40 text-brand-200 text-xs font-semibold px-3 py-1 rounded-full hidden">Student Profile Active</span>
                     <h2 data-nav="Your dashboard" id="dashboard-title" class="text-3xl font-extrabold mt-3">Your Personalized Career Dashboard</h2>
-                    <p class="text-brand-200 text-sm mt-1">Saved careers, action checklist, and your profile — kept in your account if you're signed in, or in this browser if not.</p>
+                    <p class="text-brand-200 text-sm mt-1">Saved careers and your action checklist — kept in your account if you're signed in, or in this browser if not.</p>
                 </div>
                 <div class="bg-white/10 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/10 text-sm">
                     <p class="text-brand-200">Saved Items</p>
@@ -1650,35 +1649,6 @@
                         <div id="att-result" class="text-sm bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-slate-600">Enter your numbers above to see where you stand.</div>
                     </div>
 
-                    <div id="profile-block" class="scroll-mt-32 bg-white border border-slate-200 p-6 rounded-2xl space-y-4">
-                        <h3 data-nav="Your profile" class="font-bold text-slate-900 text-lg">Student Profile</h3>
-                        <hr class="border-slate-100">
-                        <form id="profile-form" class="text-sm space-y-3" onsubmit="event.preventDefault(); saveProfile();">
-                            <div>
-                                <label class="text-slate-600 block text-xs mb-1">Stage</label>
-                                <select id="profile-stage" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white focus:ring-2 focus:ring-brand-500">
-                                    <option>School (Class 8–10)</option>
-                                    <option selected>School (Class 11–12)</option>
-                                    <option>Undergraduate</option>
-                                    <option>Graduate</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-slate-600 block text-xs mb-1">Location</label>
-                                <input id="profile-location" type="text" placeholder="e.g. Jaipur, Rajasthan" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500">
-                            </div>
-                            <div>
-                                <label class="text-slate-600 block text-xs mb-1">Budget Constraint</label>
-                                <select id="profile-budget" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white focus:ring-2 focus:ring-brand-500">
-                                    <option>Low (Under ₹1L/yr)</option>
-                                    <option selected>Moderate (Under ₹2L/yr)</option>
-                                    <option>Flexible (₹2L–5L/yr)</option>
-                                    <option>Open (5L+/yr)</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="w-full bg-slate-900 text-white py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 transition">Save Profile</button>
-                        </form>
-                    </div>
 
                 </div>
             </div>
@@ -9038,17 +9008,18 @@
         const DEFAULT_CHECKLIST = [
             { id: 'c1', text: 'Take the 2-minute career quiz to get your first matches.', done: false },
             { id: 'c2', text: 'Browse the Career Explorer and save 2-3 careers that interest you.', done: false },
-            { id: 'c3', text: 'Fill in your Student Profile so advice here is tailored to you.', done: false },
             { id: 'c4', text: 'Check entrance exam dates for the stream you are leaning towards.', done: false },
             { id: 'c5', text: 'Once you have a top match, come back here to track real next steps for it.', done: false }
         ];
+        // The Student Profile form was removed, so its starter task is dropped from lists saved earlier.
+        function dropProfileTask(list) { return Array.isArray(list) ? list.filter(function (t) { return !(t && t.id === 'c3' && /Student Profile/.test(t.text || '')); }) : list; }
         function getChecklist() {
             if (authGetSession()) {
-                const stored = cloudData && cloudData.checklist;
+                const stored = dropProfileTask(cloudData && cloudData.checklist);
                 return stored && stored.length ? stored : DEFAULT_CHECKLIST;
             }
             try {
-                const stored = JSON.parse(localStorage.getItem(STORAGE_KEYS.checklist));
+                const stored = dropProfileTask(JSON.parse(localStorage.getItem(STORAGE_KEYS.checklist)));
                 return stored && stored.length ? stored : DEFAULT_CHECKLIST;
             } catch(e) { return DEFAULT_CHECKLIST; }
         }
@@ -9077,22 +9048,8 @@
             if (authGetSession()) return (cloudData && cloudData.profile) || null;
             try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.profile)) || null; } catch(e) { return null; }
         }
-        function saveProfile() {
-            if (!requireAuth('Sign in to save your profile.', saveProfile)) return;
-            const profile = {
-                stage: document.getElementById('profile-stage').value,
-                location: document.getElementById('profile-location').value,
-                budget: document.getElementById('profile-budget').value
-            };
-            if (cloudData) { cloudData.profile = profile; scheduleCloudSave(); }
-            showToast('Profile saved');
-        }
         function loadProfileIntoForm() {
-            const p = getProfile();
-            if (!p) return;
-            if (p.stage) document.getElementById('profile-stage').value = p.stage;
-            if (p.location) document.getElementById('profile-location').value = p.location;
-            if (p.budget) document.getElementById('profile-budget').value = p.budget;
+            // The profile form is no longer on the dashboard; nothing to fill in.
         }
 
         // Per-career skill self-check — which skills the person says they already have.
@@ -10632,7 +10589,7 @@
 
         // Give every form control without a visible <label> an accessible name (screen readers).
         function labelControls() {
-            const names = { 'branch-search': 'Search branches', 'exam-search': 'Search exams', 'exam-filter': 'Filter exams by stream', 'exam-difficulty-filter': 'Filter exams by difficulty', 'college-search': 'Search colleges', 'college-stream-filter': 'Filter colleges by field', 'college-sort': 'Sort colleges', 'nirf-category': 'NIRF ranking category', 'nirf-search': 'Search NIRF ranked institutes', 'abroad-country': 'Destination country', 'profile-stage': 'Education stage', 'profile-location': 'Location', 'profile-budget': 'Yearly budget' };
+            const names = { 'branch-search': 'Search branches', 'exam-search': 'Search exams', 'exam-filter': 'Filter exams by stream', 'exam-difficulty-filter': 'Filter exams by difficulty', 'college-search': 'Search colleges', 'college-stream-filter': 'Filter colleges by field', 'college-sort': 'Sort colleges', 'nirf-category': 'NIRF ranking category', 'nirf-search': 'Search NIRF ranked institutes', 'abroad-country': 'Destination country', };
             document.querySelectorAll('input,select,textarea').forEach(x => {
                 if (x.type === 'hidden' || x.getAttribute('aria-label') || x.closest('label') || (x.id && document.querySelector('label[for="' + x.id + '"]'))) return;
                 const n = names[x.id] || x.getAttribute('placeholder') || x.title;
@@ -12867,8 +12824,6 @@
             // Only claim the profile is active once the student has actually filled in at
             // least one field -- it used to show unconditionally, which told every brand-new
             // visitor "Active" before they'd typed anything at all.
-            const prof = getProfile();
-            document.getElementById('profile-active-badge').classList.toggle('hidden', !(prof && (prof.stage || prof.location || prof.budget)));
         }
 
         function renderDashboardChecklist() {
@@ -14187,7 +14142,6 @@
             { group: 'track', view: 'dashboard', block: 'dash-saved-block', label: '🔖 Saved items', title: 'Saved items', desc: 'The careers, colleges, and exams you have bookmarked, in one place.', kw: 'saved bookmarks shortlist' },
             { group: 'track', view: 'dashboard', block: 'dash-checklist-block', label: '✅ Checklist', title: 'Action checklist', desc: 'Steps to keep you moving, including any plan you add from the other tools.', kw: 'checklist tasks todo progress' },
             { group: 'track', view: 'dashboard', block: 'attendance-block', label: '📊 Attendance', title: 'Attendance calculator', desc: 'See how many classes you can miss, or must attend in a row, to stay above the required percentage.', kw: 'attendance percentage 75 classes bunk shortage' },
-            { group: 'track', view: 'dashboard', block: 'profile-block', label: '👤 Profile', title: 'Student profile', desc: 'Your stage, location, and budget, saved in this browser.', kw: 'profile stage location budget' }
         ];
 
         function goToTool(view, block) {
