@@ -1892,7 +1892,7 @@
         </p>
     </footer>
 
-    <!-- AGE / ROLE NOTICE: shown once on first visit, dismissed by picking an option, never shown again on this device. -->
+    <!-- WELCOME / ROLE NOTICE (also the 13+ age confirmation): shown once on first visit, dismissed by picking an option, never shown again on this device. -->
     <div id="age-gate-modal" class="hidden fixed inset-0 z-[95] items-end sm:items-center justify-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="age-gate-title">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
         <div class="relative bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-sm p-6 sm:p-7 text-center">
@@ -1900,13 +1900,13 @@
                 <img src="/assets/logo-mark-96.png" alt="" width="20" height="20" class="w-5 h-5 rounded-md shrink-0 bg-black" aria-hidden="true">
                 <span class="font-display font-bold text-sm text-slate-900">Plan4it</span>
             </div>
-            <h2 id="age-gate-title" class="font-display text-lg font-bold text-slate-900 mb-2">Before you start</h2>
-            <p class="text-sm text-slate-600 mb-5">Plan4it is guidance for students and families. Quick check — who's using it right now?</p>
+            <h2 id="age-gate-title" class="font-display text-lg font-bold text-slate-900 mb-2">Welcome to Plan4it</h2>
+            <p class="text-sm text-slate-600 mb-5">Free career guidance for school students, college students and working professionals. Which one are you?</p>
             <div class="space-y-2">
-                <button type="button" onclick="ageGateAck('student')" class="w-full min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold transition">I'm a student (age 13 or older)</button>
-                <button type="button" onclick="ageGateAck('parent')" class="w-full min-h-[48px] border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl font-semibold transition">I'm a parent or guardian</button>
+                <button type="button" onclick="ageGateAck('student')" class="w-full min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold transition">I'm a student</button>
+                <button type="button" onclick="ageGateAck('professional')" class="w-full min-h-[48px] border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl font-semibold transition">I'm a graduate or working professional</button>
             </div>
-            <p class="text-xs text-slate-500 mt-4">See our <button type="button" onclick="ageGateAck('student'); switchView('privacy')" class="underline hover:text-brand-600">Privacy Policy</button> for what we collect and why.</p>
+            <p class="text-xs text-slate-500 mt-4">By continuing, you confirm you're 13 or older. See our <button type="button" onclick="ageGateAck('student'); switchView('privacy')" class="underline hover:text-brand-600">Privacy Policy</button> for what we collect and why.</p>
         </div>
     </div>
 
