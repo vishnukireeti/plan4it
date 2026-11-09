@@ -1925,7 +1925,6 @@
         <p class="text-xs text-slate-400 mt-2">Fees, cutoffs, dates, and eligibility change every year. Always confirm on the official website before you apply or pay.</p>
         <p class="mt-3">
             <button type="button" onclick="switchView('privacy')" class="text-xs text-slate-400 underline hover:text-brand-600 min-h-[44px] px-3">Privacy Policy</button>
-            <button type="button" onclick="openAdmin()" class="text-xs text-slate-400 underline hover:text-brand-600 min-h-[44px] px-3">Admin mode</button>
         </p>
     </footer>
 
@@ -8086,8 +8085,10 @@
         // through this so a blocked write degrades to "changes work for this session" instead of a
         // silent JS error that aborts whatever the user just clicked.
         /* ============================================================
-           ADMIN MODE: local data tools. NOT a security feature.
-           There is no server or login behind this, so anyone who opens the page can switch it on.
+           ADMIN MODE: local data tools, owner only.
+           Only visible and usable when signed in as the site owner (checked against a hash of the owner's
+           email, so the address is not in the page). This is a convenience gate in the browser, not server
+           security: the tools only ever change the copy of the data held in the owner's own browser.
            Edits live only in this browser (localStorage) and can be exported as JSON for whoever maintains the master data.
            ============================================================ */
         const ADMIN_KEYS = { flag: 'marg_admin', exams: 'marg_admin_exams', inst: 'marg_admin_inst' };
@@ -8097,7 +8098,25 @@
         function adminRead(key, fallback) {
             try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch (e) { return fallback; }
         }
+        const ADMIN_OWNER_HASH = '35fe503698b0b445ec3f5d420420170289e712e309afdcc0332a51fe2f882f6a';
+        let adminOwnerOk = false;
+        function adminCheckOwner() {
+            const s = authGetSession(), email = s && s.user && s.user.email ? String(s.user.email).trim().toLowerCase() : '';
+            if (!email || !(window.crypto && crypto.subtle)) { const was = adminOwnerOk; adminOwnerOk = false; if (was) adminOwnerChanged(); return; }
+            crypto.subtle.digest('SHA-256', new TextEncoder().encode(email)).then(function (buf) {
+                const hex = Array.prototype.map.call(new Uint8Array(buf), function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+                const ok = hex === ADMIN_OWNER_HASH;
+                if (ok !== adminOwnerOk) { adminOwnerOk = ok; adminOwnerChanged(); }
+            }).catch(function () {});
+        }
+        function adminOwnerChanged() {
+            try { applyAdminOverrides(); } catch (e) {}
+            adminSyncUI();
+            if (!adminOwnerOk) { const m = document.getElementById('admin-modal'); if (m && !m.classList.contains('hidden')) closeAdmin(); }
+            try { if (typeof renderExams === 'function') renderExams(); } catch (e) {}
+        }
         function adminOn() {
+            if (!adminOwnerOk) return false;
             try { return localStorage.getItem(ADMIN_KEYS.flag) === '1'; } catch (e) { return false; }
         }
         function applyAdminOverrides() {
@@ -8115,9 +8134,10 @@
         }
         function adminSyncUI() {
             const b = document.getElementById('admin-header-btn');
-            if (b) b.classList.toggle('hidden', !adminOn());
+            if (b) b.classList.toggle('hidden', !adminOwnerOk);
         }
         function openAdmin() {
+            if (!adminOwnerOk) return;
             adminState.opener = document.activeElement;
             const m = document.getElementById('admin-modal');
             m.classList.remove('hidden'); m.classList.add('flex');
@@ -8133,6 +8153,7 @@
             if (adminState.opener && adminState.opener.focus) adminState.opener.focus();
         }
         function enableAdmin(on) {
+            if (!adminOwnerOk) return;
             safeSetItem(ADMIN_KEYS.flag, on ? '1' : '0');
             if (on) { applyAdminOverrides(); if (typeof renderExams === 'function') renderExams(); renderAfter10Colleges(); }
             adminSyncUI(); renderAdmin();
@@ -10493,6 +10514,7 @@
         }
         function updateAuthUI() {
             const s = authGetSession();
+            try { adminCheckOwner(); } catch (e) {}
             const btn = document.getElementById('auth-header-btn');
             if (!btn) return;
             if (s) {
