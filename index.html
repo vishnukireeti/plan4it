@@ -477,8 +477,9 @@
                         <input id="auth-login-password" type="password" autocomplete="current-password" placeholder="Your password" aria-describedby="auth-login-err" class="w-full min-h-[48px] px-4 border border-slate-300 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-brand-500">
                     </div>
                     <p id="auth-login-err" role="alert" class="hidden text-sm text-rose-700 bg-rose-50 border border-rose-200 rounded-xl px-3 py-2"></p>
+                    <p id="auth-login-ok" role="status" class="hidden text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2"></p>
                     <button type="submit" id="auth-login-submit" class="w-full min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold transition">Log in</button>
-                    <button type="button" onclick="authForgotPassword()" class="w-full min-h-[40px] text-sm font-semibold text-brand-700 hover:underline">Forgot password?</button>
+                    <button type="button" id="auth-forgot-btn" onclick="authForgotPassword()" class="w-full min-h-[40px] text-sm font-semibold text-brand-700 hover:underline">Forgot password?</button>
                 </form>
             </div>
 
@@ -10301,7 +10302,7 @@
             el.textContent = msg; el.classList.toggle('hidden', !msg);
             const inp = document.getElementById(id.replace(/-err$/, '')); if (inp) inp.setAttribute('aria-invalid', msg ? 'true' : 'false');
         }
-        function authClearErrs() { ['auth-name-err', 'auth-email-err', 'auth-password-err', 'auth-consent-err', 'auth-signup-err', 'auth-signup-ok', 'auth-login-err', 'auth-google-err'].forEach(function (id) { authErr(id, ''); }); }
+        function authClearErrs() { ['auth-name-err', 'auth-email-err', 'auth-password-err', 'auth-consent-err', 'auth-signup-err', 'auth-signup-ok', 'auth-login-ok', 'auth-login-err', 'auth-google-err'].forEach(function (id) { authErr(id, ''); }); }
         function authValidEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
         function authBusy(formId, submitId, busy) {
             const btn = document.getElementById(submitId);
@@ -10437,11 +10438,17 @@
             if (!sb) { authErr('auth-login-err', "Can't reach the server right now."); return; }
             const email = document.getElementById('auth-login-email').value.trim().toLowerCase();
             if (!authValidEmail(email)) { authErr('auth-login-err', 'Enter your email above first, then tap "Forgot password?" again.'); return; }
+            const fb = document.getElementById('auth-forgot-btn');
+            if (fb) { fb.disabled = true; fb.textContent = 'Sending…'; }
+            function done() { if (fb) { fb.disabled = false; fb.textContent = 'Forgot password?'; } }
             sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname }).then(function (res) {
+                done();
                 if (res.error) { authErr('auth-login-err', res.error.message || 'Could not send a reset email.'); return; }
                 authErr('auth-login-err', '');
+                // Shown inside the sign-in box (the corner toast alone is easy to miss on a phone).
+                authErr('auth-login-ok', 'We have sent a password reset link to ' + email + '. Open it from your inbox (check spam too) to choose a new password.');
                 showToast('Password reset link sent to ' + email);
-            });
+            }).catch(function () { done(); authErr('auth-login-err', 'Something went wrong. Please try again.'); });
         }
         // Real OAuth redirect — this leaves the page. authGetSession() picks up the result
         // automatically on return, via onAuthStateChange, since supabase-js reads the token
