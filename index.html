@@ -482,6 +482,22 @@
                 </form>
             </div>
 
+            <div id="auth-step-reset" class="hidden">
+                <form id="auth-form-reset" class="space-y-3" novalidate onsubmit="authSetNewPassword(event)">
+                    <input type="email" autocomplete="username" class="hidden" id="auth-reset-user" tabindex="-1" aria-hidden="true">
+                    <div>
+                        <label for="auth-reset-password" class="block text-sm font-semibold text-slate-700 mb-1">New password</label>
+                        <input id="auth-reset-password" type="password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" class="w-full min-h-[48px] px-4 border border-slate-300 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    </div>
+                    <div>
+                        <label for="auth-reset-password2" class="block text-sm font-semibold text-slate-700 mb-1">Confirm new password</label>
+                        <input id="auth-reset-password2" type="password" autocomplete="new-password" minlength="8" placeholder="Type it again" class="w-full min-h-[48px] px-4 border border-slate-300 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    </div>
+                    <p id="auth-reset-err" role="alert" class="hidden text-sm text-rose-700 bg-rose-50 border border-rose-200 rounded-xl px-3 py-2"></p>
+                    <button type="submit" id="auth-reset-submit" class="w-full min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold transition">Save new password</button>
+                </form>
+            </div>
+
             <div id="auth-step-account" class="hidden space-y-4">
                 <div class="flex items-center gap-3">
                     <div id="auth-avatar" class="w-12 h-12 rounded-full bg-brand-100 text-brand-700 font-display font-bold text-xl flex items-center justify-center shrink-0"></div>
@@ -10296,6 +10312,7 @@
             authClearErrs();
             const forms = step === 'signup' || step === 'login';
             document.getElementById('auth-forms').classList.toggle('hidden', !forms);
+            document.getElementById('auth-step-reset').classList.toggle('hidden', step !== 'reset');
             document.getElementById('auth-step-account').classList.toggle('hidden', step !== 'account');
             if (forms) {
                 authState.tab = step;
@@ -10310,7 +10327,8 @@
             const titles = {
                 signup: ['Create your account', 'Keep your saved careers, colleges, exams and checklist in one place.'],
                 login: ['Welcome back', 'Log in to pick up where you left off.'],
-                account: ['Your account', '']
+                account: ['Your account', ''],
+                reset: ['Set a new password', 'Choose a new password for your Plan4it account.']
             };
             document.getElementById('auth-title').textContent = titles[step][0];
             document.getElementById('auth-sub').textContent = titles[step][1];
@@ -10394,6 +10412,25 @@
                 authBusy('auth-form-login', 'auth-login-submit', false);
                 authErr('auth-login-err', "Can't reach the server right now. Check your connection and try again.");
             });
+        }
+        // Step 2 of "Forgot password?": the emailed link signs the student in with a short-lived
+        // recovery session (event PASSWORD_RECOVERY); this saves the new password on that session.
+        function authSetNewPassword(ev) {
+            ev.preventDefault();
+            const pw = document.getElementById('auth-reset-password').value, pw2 = document.getElementById('auth-reset-password2').value;
+            const btn = document.getElementById('auth-reset-submit');
+            authErr('auth-reset-err', '');
+            if (pw.length < 8) { authErr('auth-reset-err', 'Use at least 8 characters.'); return; }
+            if (pw !== pw2) { authErr('auth-reset-err', "The two passwords don't match."); return; }
+            if (!sb) { authErr('auth-reset-err', "Can't reach the server right now."); return; }
+            btn.disabled = true;
+            sb.auth.updateUser({ password: pw }).then(function (res) {
+                btn.disabled = false;
+                if (res.error) { authErr('auth-reset-err', res.error.message || 'Could not save the new password. Please request a new reset link.'); return; }
+                document.getElementById('auth-form-reset').reset();
+                closeAuth();
+                showToast('Password updated. You are signed in.');
+            }).catch(function () { btn.disabled = false; authErr('auth-reset-err', 'Something went wrong. Please try again.'); });
         }
         function authForgotPassword() {
             authClearErrs();
@@ -10523,6 +10560,15 @@
         if (sb) {
             sb.auth.onAuthStateChange(function (event, session) {
                 const wasSignedIn = !!currentAuthSession;
+                if (event === 'PASSWORD_RECOVERY') {
+                    // Opened from the reset-email link: ask for the new password straight away.
+                    setTimeout(function () {
+                        const m = document.getElementById('auth-modal');
+                        m.classList.remove('hidden'); m.classList.add('flex');
+                        document.body.style.overflow = 'hidden';
+                        authShow('reset');
+                    }, 0);
+                }
                 currentAuthSession = session;
                 updateAuthUI();
                 if (session && !wasSignedIn) {
