@@ -497,6 +497,12 @@
                     <p id="auth-reset-err" role="alert" class="hidden text-sm text-rose-700 bg-rose-50 border border-rose-200 rounded-xl px-3 py-2"></p>
                     <button type="submit" id="auth-reset-submit" class="w-full min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold transition">Save new password</button>
                 </form>
+                <div id="auth-reset-done" class="hidden space-y-4 text-center py-2" role="status">
+                    <div class="mx-auto w-14 h-14 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl" aria-hidden="true">✓</div>
+                    <p class="font-display text-lg font-bold text-slate-900">Password changed</p>
+                    <p class="text-sm text-slate-600">Your Plan4it password has been updated and you are signed in. Use the new password next time you log in.</p>
+                    <button type="button" onclick="closeAuth()" class="w-full min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold transition">Continue</button>
+                </div>
             </div>
 
             <div id="auth-step-account" class="hidden space-y-4">
@@ -10314,6 +10320,10 @@
             const forms = step === 'signup' || step === 'login';
             document.getElementById('auth-forms').classList.toggle('hidden', !forms);
             document.getElementById('auth-step-reset').classList.toggle('hidden', step !== 'reset');
+            if (step === 'reset') {
+                document.getElementById('auth-form-reset').classList.remove('hidden');
+                document.getElementById('auth-reset-done').classList.add('hidden');
+            }
             document.getElementById('auth-step-account').classList.toggle('hidden', step !== 'account');
             if (forms) {
                 authState.tab = step;
@@ -10429,8 +10439,11 @@
                 btn.disabled = false;
                 if (res.error) { authErr('auth-reset-err', res.error.message || 'Could not save the new password. Please request a new reset link.'); return; }
                 document.getElementById('auth-form-reset').reset();
-                closeAuth();
-                showToast('Password updated. You are signed in.');
+                document.getElementById('auth-form-reset').classList.add('hidden');
+                document.getElementById('auth-reset-done').classList.remove('hidden');
+                document.getElementById('auth-title').textContent = 'All set';
+                document.getElementById('auth-sub').textContent = '';
+                showToast('Password changed successfully.');
             }).catch(function () { btn.disabled = false; authErr('auth-reset-err', 'Something went wrong. Please try again.'); });
         }
         function authForgotPassword() {
