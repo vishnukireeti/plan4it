@@ -10281,6 +10281,18 @@
         let authPendingRetry = null;
 
         function authGetSession() { return currentAuthSession; }
+        // Best display name for the signed-in student: the name they gave (sign-up form or Google),
+        // otherwise a tidy name made from the email, e.g. "vishnu.kireeti6@gmail.com" -> "Vishnu Kireeti".
+        function authDisplayName(s) {
+            s = s || currentAuthSession;
+            if (!s || !s.user) return '';
+            const m = s.user.user_metadata || {};
+            const given = String(m.full_name || m.name || m.display_name || '').trim();
+            if (given) return given;
+            const local = String(s.user.email || '').split('@')[0].replace(/\d+/g, ' ');
+            const words = local.split(/[._\-+\s]+/).filter(Boolean);
+            return words.map(function (w) { return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase(); }).join(' ');
+        }
         // Browsing (the career explorer, detail pages, guides) never needs an account.
         // Anything that saves something for the student -- the quiz, bookmarking a
         // career/college/exam, the checklist, the profile, the backup-plan generator --
@@ -10342,7 +10354,7 @@
             m.classList.remove('hidden'); m.classList.add('flex');
             document.body.style.overflow = 'hidden';
             if (s) {
-                const name = (s.user.user_metadata && s.user.user_metadata.full_name) || s.user.email;
+                const name = authDisplayName(s) || s.user.email;
                 document.getElementById('auth-avatar').textContent = (name || '?').trim().charAt(0).toUpperCase();
                 document.getElementById('auth-acct-name').textContent = name;
                 document.getElementById('auth-acct-id').textContent = s.user.email || '';
@@ -10405,7 +10417,7 @@
             sb.auth.signInWithPassword({ email: email, password: password }).then(function (res) {
                 authBusy('auth-form-login', 'auth-login-submit', false);
                 if (res.error) { authErr('auth-login-err', res.error.message || 'Could not log in. Check your email and password.'); return; }
-                showToast('Welcome back' + (res.data.user.user_metadata && res.data.user.user_metadata.full_name ? ', ' + res.data.user.user_metadata.full_name.split(' ')[0] : '') + '!');
+                showToast('Welcome back' + (authDisplayName({ user: res.data.user }) ? ', ' + authDisplayName({ user: res.data.user }).split(' ')[0] : '') + '!');
                 closeAuth();
             }, function () {
                 authBusy('auth-form-login', 'auth-login-submit', false);
@@ -10456,7 +10468,7 @@
             const btn = document.getElementById('auth-header-btn');
             if (!btn) return;
             if (s) {
-                const name = (s.user.user_metadata && s.user.user_metadata.full_name) || s.user.email || 'Account';
+                const name = authDisplayName(s) || s.user.email || 'Account';
                 const first = name.split(' ')[0];
                 btn.innerHTML = '<span class="inline-flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-brand-600 text-white text-xs font-bold inline-flex items-center justify-center">' + escapeAuth(first.charAt(0).toUpperCase()) + '</span><span class="hidden sm:inline max-w-[90px] truncate">' + escapeAuth(first) + '</span></span>';
                 btn.setAttribute('aria-label', 'Account menu for ' + first);
@@ -12848,7 +12860,7 @@
             }
 
             const sess = authGetSession();
-            document.getElementById('dashboard-title').textContent = sess ? (sess.name || '').split(' ')[0] + "'s Career Dashboard" : 'Your Personalized Career Dashboard';
+            document.getElementById('dashboard-title').textContent = (sess && authDisplayName(sess).split(' ')[0]) ? authDisplayName(sess).split(' ')[0] + "'s Career Dashboard" : 'Your Personalized Career Dashboard';
             renderDeadlines();
             renderDashboardChecklist();
             loadProfileIntoForm();
