@@ -10557,9 +10557,17 @@
 
         // Wired to supabase-js: fires on load with whatever session exists (including right
         // after a Google redirect comes back), and again on every sign-in/sign-out.
+        // Coming back from the "Confirm my account" email: the link lands on the site with type=signup in
+        // the URL. Remember it before supabase-js clears the URL, so we can say the account is confirmed.
+        const CAME_FROM_CONFIRM_EMAIL = /[#&?]type=signup\b/.test(location.hash + location.search);
+        let confirmWelcomeShown = false;
         if (sb) {
             sb.auth.onAuthStateChange(function (event, session) {
                 const wasSignedIn = !!currentAuthSession;
+                if (CAME_FROM_CONFIRM_EMAIL && session && !confirmWelcomeShown) {
+                    confirmWelcomeShown = true;
+                    setTimeout(function () { showToast('Email confirmed. Welcome to Plan4it, you are signed in!'); }, 600);
+                }
                 if (event === 'PASSWORD_RECOVERY') {
                     // Opened from the reset-email link: ask for the new password straight away.
                     setTimeout(function () {
