@@ -562,7 +562,7 @@
 
     <!-- NAVIGATION BAR -->
     <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-3 min-[360px]:px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-1">
                 <button id="mobile-menu-btn" type="button" onclick="toggleMobileMenu()" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu-panel" class="xl:hidden -ml-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl hover:bg-slate-100 transition">
                     <svg class="w-6 h-6" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
@@ -1695,7 +1695,7 @@
                             <select id="p4-wait-stage" class="mt-1 w-full border border-slate-300 rounded-xl px-3 min-h-[44px] bg-white">
                                 <option value="">Select</option><option>1st year (UG)</option><option>2nd year (UG)</option><option>3rd year (UG)</option><option>Final year (UG)</option><option>Postgraduate</option><option>Class 11-12</option><option>Working professional</option></select></label>
                         <div class="sm:col-span-2"><span class="font-semibold text-slate-700">How long do you want your learnership to be?</span>
-                            <div id="p4-wait-dur" role="radiogroup" aria-label="Learnership duration" class="mt-1 grid grid-cols-3 md:grid-cols-6 gap-2"></div>
+                            <div id="p4-wait-dur" role="group" aria-label="Learnership duration" class="mt-1 grid grid-cols-3 md:grid-cols-6 gap-2"></div>
                             <div id="p4-dur-plan" class="mt-2 text-xs text-slate-700 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2" aria-live="polite">Pick a duration to see what your project will look like.</div></div>
                         <label class="block sm:col-span-2"><span class="font-semibold text-slate-700">College or company (optional)</span>
                             <input id="p4-wait-college" maxlength="120" class="mt-1 w-full border border-slate-300 rounded-xl px-3 min-h-[44px]" placeholder="e.g. your college name"></label>
@@ -8879,7 +8879,8 @@
             { id: 'careers', label: 'Careers', key: 'career', items: function () { return careersData; }, fields: careerSearchFields, title: function (c) { return c.title; }, sub: function (c) { return c.category + (c.salary ? ' \u00b7 ' + c.salary + approxText(c, 'salary') : ''); }, open: function (id) { openCareerDetail(id); }, all: function (q) { switchView('explorer'); document.getElementById('career-search').value = q; renderExplorerCareers(); } },
             { id: 'exams', label: 'Exams', key: 'exam', items: function () { return examsData; }, fields: examSearchFields, title: function (e) { return e.name; }, sub: function (e) { return e.body + ' \u00b7 ' + e.stream; }, open: function (id) { openExamDetail(id); }, all: function (q) { switchView('exams'); document.getElementById('exam-search').value = q; renderExams(); } },
             { id: 'colleges', label: 'Colleges', key: 'college', items: function () { return collegesData; }, fields: collegeSearchFields, title: function (c) { return c.name; }, sub: function (c) { return c.location + ' \u00b7 ' + c.stream; }, open: function (id) { openCollegeDetail(id); }, all: function (q) { switchView('colleges'); setCollegesMode('degree'); document.getElementById('college-search').value = q; renderColleges(); } },
-            { id: 'a10c', label: 'Class 11\u201312 colleges and schools', key: 'inst', items: function () { return AFTER10_COLLEGES; }, fields: institutionSearchFields, title: function (c) { return c.name; }, sub: function (c) { return c.city + (c.state === 'All India' ? '' : ', ' + c.state); }, open: null, all: function (q) { switchView('colleges'); setCollegesMode('after10'); document.getElementById('a10c-search').value = q; renderAfter10Colleges(); } }
+            { id: 'a10c', label: 'Class 11\u201312 colleges and schools', key: 'inst', items: function () { return AFTER10_COLLEGES; }, fields: institutionSearchFields, title: function (c) { return c.name; }, sub: function (c) { return c.city + (c.state === 'All India' ? '' : ', ' + c.state); }, open: null, all: function (q) { switchView('colleges'); setCollegesMode('after10'); document.getElementById('a10c-search').value = q; renderAfter10Colleges(); } },
+            { id: 'tools', label: 'Pages and tools', key: 'tool', items: function () { return TOOL_DIRECTORY; }, fields: function (t) { return [{ t: t.title, w: 3 }, { t: t.label, w: 2.5 }, { t: t.kw, w: 2 }, { t: t.desc, w: 1 }]; }, title: function (t) { return t.title; }, sub: function (t) { return (VIEW_NAMES[t.view] || '') + ' \u00b7 ' + t.desc; }, all: function (q) { switchView('home'); const inp = document.getElementById('tool-search'); if (inp) { inp.value = q; filterToolDirectory(); } } },
         ];
         const GS_POPULAR = ['NEET', 'JEE', 'IIT', 'MBA', 'CA', 'Law', 'Scholarship', 'Class 11 admission'];
         let GS = { rows: [], idx: -1, q: '', opener: null };
@@ -8934,12 +8935,12 @@
             const r = GS.rows[k]; if (!r) return;
             const q = GS.q;
             closeGlobalSearch();
-            if (r.g.open) r.g.open(r.it.id); else r.g.all(q);
+            if (r.g.id === 'tools') { const t = r.it; goToTool(t.view, t.block); } else if (r.g.open) r.g.open(r.it.id); else r.g.all(q);
         }
         function gsSeeAll(gid) {
             const g = GS_GROUPS.filter(function (x) { return x.id === gid; })[0], q = GS.q;
             closeGlobalSearch();
-            if (g) { g.all(q); setTimeout(function () { revealResults(g.id === 'careers' ? '#explorer-result-count' : g.id === 'exams' ? '#exams-result-count' : g.id === 'colleges' ? '#colleges-result-count' : '#a10c-count'); }, 350); }
+            if (g) { g.all(q); setTimeout(function () { if (g.id !== 'tools') revealResults(g.id === 'careers' ? '#explorer-result-count' : g.id === 'exams' ? '#exams-result-count' : g.id === 'colleges' ? '#colleges-result-count' : '#a10c-count'); }, 350); }
         }
         function gsKey(ev) {
             const n = GS.rows.length;
@@ -9315,7 +9316,7 @@
         let p4Dur = '';
         function internshipDur(id) {
             p4Dur = id;
-            document.querySelectorAll('#p4-wait-dur button').forEach(function (b) { const on = b.getAttribute('data-dur') === id; b.setAttribute('aria-checked', on ? 'true' : 'false'); b.className = 'text-left border rounded-xl px-3 py-2 min-h-[44px] ' + (on ? 'border-brand-500 bg-brand-50 ring-1 ring-brand-300' : 'border-slate-300 bg-white hover:border-brand-400'); });
+            document.querySelectorAll('#p4-wait-dur button').forEach(function (b) { const on = b.getAttribute('data-dur') === id; b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.className = 'text-left border rounded-xl px-3 py-2 min-h-[44px] ' + (on ? 'border-brand-500 bg-brand-50 ring-1 ring-brand-300' : 'border-slate-300 bg-white hover:border-brand-400'); });
             internshipDurPlan();
         }
         function internshipDurPlan() {
@@ -9354,7 +9355,7 @@
             const st = document.getElementById('p4-wait-stage');
             if (st && !st.value) st.value = a && a.working ? 'Working professional' : a && a.stage === 'School 11-12' ? 'Class 11-12' : '';
             const dw = document.getElementById('p4-wait-dur');
-            if (dw && !dw.children.length) { dw.innerHTML = P4_DURATIONS.map(function (d) { return '<button type="button" role="radio" aria-checked="false" data-dur="' + d.id + '" onclick="internshipDur(\'' + d.id + '\')"><span class="block font-bold text-slate-900">' + e(d.label) + '</span><span class="block text-[11px] text-slate-500">' + e(d.sub) + '</span></button>'; }).join(''); internshipDur(p4Dur); if (sel) sel.addEventListener('change', internshipDurPlan); }
+            if (dw && !dw.children.length) { dw.innerHTML = P4_DURATIONS.map(function (d) { return '<button type="button" aria-pressed="false" data-dur="' + d.id + '" onclick="internshipDur(\'' + d.id + '\')"><span class="block font-bold text-slate-900">' + e(d.label) + '</span><span class="block text-[11px] text-slate-500">' + e(d.sub) + '</span></button>'; }).join(''); internshipDur(p4Dur); if (sel) sel.addEventListener('change', internshipDurPlan); }
             const cur = internshipStageIdx();
             const lad = document.getElementById('intern-ladder');
             if (lad) lad.innerHTML = P4_LADDER.map(function (l) {
@@ -14996,7 +14997,7 @@
             { id: 'switch', title: 'Already working?', blurb: 'Change fields without starting from zero.' },
             { id: 'track', title: 'Keep track of it all', blurb: 'Your saved items, checklist, and profile.' }
         ];
-        const VIEW_NAMES = { confusedMode: 'Find my path', explorer: 'Careers', afterDegree: 'Pathways', exams: 'Exams', colleges: 'Colleges', govAndAbroad: 'Govt & Money', backupPlan: 'Safety Net', dashboard: 'My Dashboard' };
+        const VIEW_NAMES = { confusedMode: 'Find my path', explorer: 'Careers', afterDegree: 'Pathways', exams: 'Exams', colleges: 'Colleges', govAndAbroad: 'Govt & Money', internships: 'Internships', backupPlan: 'Safety Net', dashboard: 'My Dashboard' };
         const TOOL_DIRECTORY = [
             { group: 'decide', view: 'confusedMode', block: '', label: '🧭 Career quiz', title: 'Career quiz', desc: 'Answer a few quick questions to get matched careers, then check how your family\'s expectations line up with your own interest.', kw: 'confused find my path direction wizard interest match parents family stuck' },
             { group: 'decide', view: 'explorer', block: '', label: '🔎 Careers', title: 'Career explorer', desc: 'Browse and filter every career by category, with salary, demand, skills, and a roadmap for each.', kw: 'careers browse salary skills roadmap' },
@@ -15069,7 +15070,7 @@
         }
 
         // ---------- Home: your path, step by step ----------
-        const HOME_STEP_ORDER = ['decide', 'money', 'recover', 'switch', 'track'];
+        const HOME_STEP_ORDER = ['decide', 'money', 'intern', 'recover', 'switch', 'track'];
         let homeStep = 'decide';
         function renderToolDirectory() {
             const home = document.getElementById('tool-directory-home');
