@@ -8098,7 +8098,7 @@
         function adminRead(key, fallback) {
             try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch (e) { return fallback; }
         }
-        const ADMIN_OWNER_HASH = '35fe503698b0b445ec3f5d420420170289e712e309afdcc0332a51fe2f882f6a';
+        const ADMIN_OWNER_HASH = '9961aa7282a77e47a4d55ee130265381e911da7cafb1f4b7f1c3385104871532';
         let adminOwnerOk = false;
         function adminCheckOwner() {
             const s = authGetSession(), email = s && s.user && s.user.email ? String(s.user.email).trim().toLowerCase() : '';
