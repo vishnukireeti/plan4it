@@ -1442,7 +1442,7 @@
                 <!-- Rendered dynamically -->
             </div>
             <div>
-                <h3 class="text-lg font-bold text-slate-900 mb-4">Similar Institutions</h3>
+                <h3 id="related-colleges-title" class="text-lg font-bold text-slate-900 mb-4">Similar Institutions</h3>
                 <div id="related-colleges-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
             </div>
         </section>
@@ -9657,6 +9657,8 @@
             c._tier = t; return t;
         }
         const FIT_NEAR_CACHE = {};
+        // "Bengaluru" (a college's city) and "Bengaluru Urban" (the district) are the same place.
+        function fitSameCity(a, b) { return a === b || (a.length > 3 && b.indexOf(a + ' ') === 0) || (b.length > 3 && a.indexOf(b + ' ') === 0); }
         function collegeFit(c, f) {
             let s = 40; const tags = [];
             if (c.dir) {
@@ -9682,7 +9684,7 @@
                 s += 18; tags.push(['In your state', 'g']);
                 if (f.district) {
                     const cd = String(c.district || String(c.location || '').split(',')[0]).trim().toLowerCase();
-                    if (cd && cd === f.district.toLowerCase()) { s += 22; tags.unshift(['In your district', 'g']); }
+                    if (cd && fitSameCity(cd, f.district.toLowerCase())) { s += 22; tags.unshift(['In your district', 'g']); }
                     else if (DIR.index && DIR.distLL) {
                         const key = f.state + '|' + f.district;
                         FIT_NEAR_CACHE[key] = FIT_NEAR_CACHE[key] || nearbyDistricts(f.state, f.district, 100);
@@ -9951,6 +9953,28 @@
             if (pct >= 55) return { text: 'Good fit', dots: 2, cls: 'bg-brand-100 text-brand-800' };
             return { text: 'Worth a look', dots: 1, cls: 'bg-slate-100 text-slate-700' };
         }
+        // Related-college lists follow the student: in their state when they gave one, their own district and
+        // nearby districts first. If nothing in their state matches, say so and fall back to nationwide.
+        function collegeLocalRank(c, f) {
+            const cd = String(c.district || String(c.location || '').split(',')[0]).trim().toLowerCase();
+            if (f.district && cd && fitSameCity(cd, f.district.toLowerCase())) return 0;
+            if (f.district && c.district && DIR.index && DIR.distLL) {
+                const key = f.state + '|' + f.district;
+                FIT_NEAR_CACHE[key] = FIT_NEAR_CACHE[key] || nearbyDistricts(f.state, f.district, 100);
+                if (FIT_NEAR_CACHE[key].has(f.state + '|' + c.district)) return 1;
+            }
+            return 2;
+        }
+        function localColleges(list, limit) {
+            const f = getFit();
+            if (!f || !f.state || f.state === 'any') return { list: list.slice(0, limit), scoped: false, none: false, where: '' };
+            const inState = list.filter(function (c) { return collegeState(c) === f.state; });
+            const where = f.district ? f.district + ', ' + f.state : f.state;
+            if (!inState.length) return { list: list.slice(0, limit), scoped: false, none: !!list.length, where: where };
+            const idx = new Map(inState.map(function (c, i) { return [c.id, i]; }));
+            inState.sort(function (x, y) { return collegeLocalRank(x, f) - collegeLocalRank(y, f) || idx.get(x.id) - idx.get(y.id); });
+            return { list: inState.slice(0, limit), scoped: true, none: false, where: where };
+        }
         function collegesForCareer(c) {
             return collegesData.filter(function (col) { return careersForCollege(col).some(function (x) { return x.id === c.id; }); })
                 .sort(function (x, y) { return (x.nirf || Infinity) - (y.nirf || Infinity) || x.name.localeCompare(y.name); });
@@ -10082,7 +10106,7 @@
                     const fit = fitInfo(Math.min(97, Math.max(45, Math.round((c.score / WIZARD_MAX_SCORE) * 100))));
                     const own = c.reasons.filter(function (r) { return shared.indexOf(r) < 0 && !top.some(function (t) { return t !== c && t.reasons.indexOf(r) > -1; }); });
                     const what = String(c.overview || '').split(/(?<=[.!?])\s/)[0];
-                    const exams = examsForCareer(c).slice(0, 2), cols = collegesForCareer(c).slice(0, 2);
+                    const exams = examsForCareer(c).slice(0, 2), lc = localColleges(collegesForCareer(c), 2), cols = lc.none ? [] : lc.list;
                     const chip = 'text-xs font-semibold bg-slate-50 border border-slate-200 text-slate-800 hover:border-brand-400 rounded-full px-3 min-h-[36px]';
                     return '<div class="p-4 bg-white border border-slate-200 rounded-xl">' +
                         '<div class="flex items-start justify-between gap-3"><div class="min-w-0">' +
@@ -10096,7 +10120,8 @@
                         '<div class="mt-3 pt-3 border-t border-slate-100"><p class="text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5">Next steps</p><div class="flex flex-wrap gap-2">' +
                         (exams.length ? exams.map(function (x) { return '<button type="button" onclick="openExamDetail(\'' + x.id + '\')" class="' + chip + '">Exam: ' + e(x.name) + '</button>'; }).join('') : '') +
                         (cols.length ? cols.map(function (x) { return '<button type="button" onclick="openCollegeDetail(\'' + x.id + '\')" class="' + chip + '">College: ' + e(x.name.replace(/\s*\(.*?\)\s*/g, ' ').trim()) + '</button>'; }).join('') : '') +
-                        ((exams.length || cols.length) ? '' : '<span class="text-xs text-slate-600">Open the full roadmap to see the exams and colleges on this route.</span>') +
+                        (lc.none ? '<span class="text-xs text-slate-600">No listed college for this career in ' + e(lc.where) + ' yet. Browse the Colleges page for your area.</span>' : '') +
+                        ((exams.length || cols.length || lc.none) ? '' : '<span class="text-xs text-slate-600">Open the full roadmap to see the exams and colleges on this route.</span>') +
                         '</div></div></div>';
                 }).join('');
             }
@@ -10989,7 +11014,7 @@
             const sd = c.skillDetails || [];
             const ready = sd.length ? Math.round(sd.filter(function (s) { return done.indexOf(s.name) > -1; }).length / sd.length * 100) : null;
             const exams = examsForCareer(c).slice(0, 4);
-            const cols = (seg === 'working') ? [] : collegesForCareer(c).slice(0, 3);
+            const lcr = localColleges(collegesForCareer(c), 3), cols = (seg === 'working' || lcr.none) ? [] : lcr.list;
             return '<div class="pp-card"><div class="pp-h3"><span>' + e(c.title) + ' <span class="pp-tag ' + (tag === 'Saved' ? '' : 'a') + '">' + e(tag) + '</span>' + (fitText ? ' <span class="pp-tag g">' + e(fitText) + '</span>' : '') + '</span><span class="pp-mut">' + e(c.category) + '</span></div>' +
                 '<div class="pp-facts"><span>Pay: ' + e(c.salary) + approxText(c, 'salary') + '</span><span>Demand: ' + e(c.demand) + '</span><span>Difficulty: ' + e(c.difficulty) + '</span><span>Start in ~' + e(c.entryYears) + ' yr</span><span>Cost: ' + e(c.costTier) + '</span>' + (c.workLife ? '<span>Work-life: ' + e(c.workLife) + '</span>' : '') + '</div>' +
                 (c.overview ? '<p>' + e(c.overview) + '</p>' : '') + (c.suitability ? '<p><b>Suits:</b> ' + e(c.suitability) + '</p>' : '') +
@@ -11035,7 +11060,7 @@
             }
             const shortlist = savedCareers.map(function (c) { return { c: c, tag: 'Saved' }; }).concat(recCareers.map(function (r) { return { c: r.c, tag: 'Recommended', fit: r.fit }; }));
             let recCols = [];
-            if (student && f) recCols = collegesData.filter(function (c) { return savedColIds.indexOf(c.id) < 0; }).map(function (c) { return { c: c, s: collegeFit(c, f).score }; }).sort(function (x, y) { return y.s - x.s; }).slice(0, savedCols.length >= 4 ? 2 : 4).map(function (r) { return r.c; });
+            if (student && f) recCols = collegesData.filter(function (c) { return savedColIds.indexOf(c.id) < 0 && (!f.state || f.state === 'any' || collegeState(c) === f.state); }).map(function (c) { return { c: c, s: collegeFit(c, f).score }; }).sort(function (x, y) { return y.s - x.s; }).slice(0, savedCols.length >= 4 ? 2 : 4).map(function (r) { return r.c; });
             const examSeen = {}; savedExams.forEach(function (x) { examSeen[x.id] = 1; });
             let recExams = [];
             shortlist.forEach(function (s) { examsForCareer(s.c).forEach(function (x) { if (!examSeen[x.id] && recExams.length < 5) { examSeen[x.id] = 1; recExams.push(x); } }); });
@@ -11124,8 +11149,10 @@
             h += sec('Plan B: if the first choice does not work out');
             if (student && bkIds.length) {
                 h += bkIds.slice(0, 3).map(function (k) {
-                    const list = BACKUP_COLLEGES[k].filter(function (b) { return !savedCols.some(function (c) { return backupNorm(c.name) === backupNorm(b.name); }); }).slice().sort(function (p, q) { return (p.cutoff || 0) - (q.cutoff || 0); }).slice(0, 6);
-                    return '<div class="pp-card"><b>If your ' + e(bkKeys[k].name) + ' result falls short</b><span class="pp-sm pp-mut"> (listed from easier to harder to get into)</span><table class="pp-t"><tr><th>Option</th><th>City</th><th>Placements</th><th>Avg. pay</th><th>Why keep it</th></tr>' + list.map(function (b) { return '<tr><td><b>' + e(b.name) + '</b></td><td>' + e(b.location) + '</td><td>' + (b.placementRate ? e(b.placementRate) + '%' : '–') + '</td><td>' + (b.avgSalary ? '₹' + e(b.avgSalary) + ' LPA' : '–') + '</td><td>' + e((b.pros || [])[0] || '') + '</td></tr>'; }).join('') + '</table></div>';
+                    let list = BACKUP_COLLEGES[k].filter(function (b) { return !savedCols.some(function (c) { return backupNorm(c.name) === backupNorm(b.name); }); }).slice().sort(function (p, q) { return (p.cutoff || 0) - (q.cutoff || 0); });
+                    const home = f && f.state && f.state !== 'any' ? list.filter(function (b) { return canonicalState(String(b.location || '').split(',').pop().trim()) === f.state || (f.district && String(b.location || '').toLowerCase().indexOf(f.district.toLowerCase()) > -1); }) : [];
+                    const local = home.length >= 2; if (local) list = home; list = list.slice(0, 6);
+                    return '<div class="pp-card"><b>If your ' + e(bkKeys[k].name) + ' result falls short</b><span class="pp-sm pp-mut"> (listed from easier to harder to get into' + (local ? ', in ' + e(f.district ? f.district + ' and ' + f.state : f.state) : (f && f.state && f.state !== 'any' ? '; we have no listed backups in ' + e(f.state) + ' for this exam, so these are nationwide' : '')) + ')</span><table class="pp-t"><tr><th>Option</th><th>City</th><th>Placements</th><th>Avg. pay</th><th>Why keep it</th></tr>' + list.map(function (b) { return '<tr><td><b>' + e(b.name) + '</b></td><td>' + e(b.location) + '</td><td>' + (b.placementRate ? e(b.placementRate) + '%' : '–') + '</td><td>' + (b.avgSalary ? '₹' + e(b.avgSalary) + ' LPA' : '–') + '</td><td>' + e((b.pros || [])[0] || '') + '</td></tr>'; }).join('') + '</table></div>';
                 }).join('');
             }
             const spare = careersData.filter(function (c) { return !shortlist.some(function (s) { return s.c.id === c.id; }); }).map(function (c) { return { c: c, s: a ? scoreCareerForWizard(c, a).score : 0 }; }).sort(function (x, y) { return y.s - x.s; }).slice(0, 3);
@@ -12278,6 +12305,7 @@
                 return c.relatedExam.split('/').map(x => x.trim()).some(tok => tok && (e.name.includes(tok) || tok.includes(e.name)));
             });
             const relatedCareers = careersForExam(e);
+            const relLocal = localColleges(relatedColleges, 24);
 
             content.innerHTML = `
                 ${shareBarHTML('exam', e.id, calendarLinksHTML(e))}
@@ -12326,9 +12354,10 @@
 
                 ${relatedColleges.length ? `
                 <div>
-                    <h3 class="font-bold text-slate-900 text-lg mb-2">Colleges That Accept This Exam</h3>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">Colleges That Accept This Exam${relLocal.scoped ? ' in ' + escapeAuth(relLocal.where) : ''}</h3>
+                    ${relLocal.none ? '<p class="text-xs text-slate-600 mb-2">None of our listed colleges for this exam are in ' + escapeAuth(relLocal.where) + ' yet, so these are from across India.</p>' : ''}
                     <div class="flex flex-wrap gap-2">
-                        ${relatedColleges.map(c => `<button onclick="openCollegeDetail('${c.id}')" class="text-xs bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-full font-semibold hover:bg-slate-50 transition">${c.name} →</button>`).join('')}
+                        ${relLocal.list.map(c => `<button onclick="openCollegeDetail('${c.id}')" class="text-xs bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-full font-semibold hover:bg-slate-50 transition">${c.name} →</button>`).join('')}
                     </div>
                 </div>` : ''}
 
@@ -13183,8 +13212,13 @@
             `;
 
             const relatedGrid = document.getElementById('related-colleges-grid');
-            const related = collegesData.filter(x => x.id !== c.id && x.stream === c.stream).slice(0, 3);
-            const fallback = related.length ? related : collegesData.filter(x => x.id !== c.id).slice(0, 3);
+            const fl = getFit(), homeState = fl && fl.state && fl.state !== 'any' ? fl.state : collegeState(c);
+            const inHome = collegesData.filter(x => x.id !== c.id && collegeState(x) === homeState);
+            const sameStream = inHome.filter(x => x.stream === c.stream);
+            const rankF = fl && fl.state === homeState ? fl : { district: c.district || String(c.location || '').split(',')[0].trim(), state: homeState };
+            const related = (sameStream.length ? sameStream : inHome).slice().sort(function (x, y) { return collegeLocalRank(x, rankF) - collegeLocalRank(y, rankF); }).slice(0, 3);
+            const fallback = related.length ? related : collegesData.filter(x => x.id !== c.id && x.stream === c.stream).slice(0, 3);
+            { const t = document.getElementById('related-colleges-title'); if (t) t.textContent = related.length ? 'Similar institutions in ' + homeState : 'Similar Institutions'; }
             relatedGrid.innerHTML = fallback.map(rc => `
                 <button onclick="openCollegeDetail('${rc.id}')" class="text-left bg-white border border-slate-200 rounded-xl p-4 hover:shadow-md transition">
                     <span class="text-[10px] font-semibold bg-brand-50 text-brand-700 px-2 py-0.5 rounded-full">${rc.stream}</span>
