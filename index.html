@@ -713,19 +713,21 @@
                     <p class="text-lg font-medium text-slate-700 mb-1" id="wiz-practical-title">Optional: a few practical things</p>
                     <p class="text-xs text-slate-400 mb-6" id="wiz-practical-sub">This lets us put colleges, exams and careers that are realistic for you first, not only the most famous ones. It is not a test, and you can skip any part of it.</p>
                     <div class="space-y-6">
-                        <div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
                             <label for="wiz-state" class="block text-sm font-semibold text-slate-700 mb-2" id="wiz-state-label">Which state do you live in?</label>
-                            <select id="wiz-state" onchange="wizardSit('state', this.value)" class="w-full sm:w-80 px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:outline-none focus:ring-2 focus:ring-brand-500">
+                            <select id="wiz-state" onchange="wizardSit('state', this.value)" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:outline-none focus:ring-2 focus:ring-brand-500">
                                 <option value="">Select your state...</option>
                                 <option value="any">I can study in any state</option>
                                 <option value="Andhra Pradesh">Andhra Pradesh</option><option value="Arunachal Pradesh">Arunachal Pradesh</option><option value="Assam">Assam</option><option value="Bihar">Bihar</option><option value="Chhattisgarh">Chhattisgarh</option><option value="Goa">Goa</option><option value="Gujarat">Gujarat</option><option value="Haryana">Haryana</option><option value="Himachal Pradesh">Himachal Pradesh</option><option value="Jharkhand">Jharkhand</option><option value="Karnataka">Karnataka</option><option value="Kerala">Kerala</option><option value="Madhya Pradesh">Madhya Pradesh</option><option value="Maharashtra">Maharashtra</option><option value="Manipur">Manipur</option><option value="Meghalaya">Meghalaya</option><option value="Mizoram">Mizoram</option><option value="Nagaland">Nagaland</option><option value="Odisha">Odisha</option><option value="Punjab">Punjab</option><option value="Rajasthan">Rajasthan</option><option value="Sikkim">Sikkim</option><option value="Tamil Nadu">Tamil Nadu</option><option value="Telangana">Telangana</option><option value="Tripura">Tripura</option><option value="Uttar Pradesh">Uttar Pradesh</option><option value="Uttarakhand">Uttarakhand</option><option value="West Bengal">West Bengal</option><option value="Andaman & Nicobar Islands">Andaman & Nicobar Islands</option><option value="Chandigarh">Chandigarh</option><option value="Dadra &amp; Nagar Haveli and Daman &amp; Diu">Dadra &amp; Nagar Haveli and Daman &amp; Diu</option><option value="Delhi">Delhi</option><option value="Jammu & Kashmir">Jammu & Kashmir</option><option value="Ladakh">Ladakh</option><option value="Lakshadweep">Lakshadweep</option><option value="Puducherry">Puducherry</option>
                             </select>
                         </div>
-                        <div id="wiz-district-wrap" class="hidden">
+<div id="wiz-district-wrap">
                             <label for="wiz-district" class="block text-sm font-semibold text-slate-700 mb-2">Which district or city are you in? <span class="font-normal text-slate-500">(optional)</span></label>
-                            <select id="wiz-district" onchange="wizardSit('district', this.value)" class="w-full sm:w-80 px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:outline-none focus:ring-2 focus:ring-brand-500"><option value="">Select your district or city...</option></select>
+                            <select id="wiz-district" onchange="wizardSit('district', this.value)" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:outline-none focus:ring-2 focus:ring-brand-500 disabled:opacity-60" disabled><option value="">Pick your state first</option></select>
                             <p class="text-xs text-slate-500 mt-1.5">We show colleges in your district and the ones nearby first. Pick the district your city is in.</p>
                         </div>
+</div>
                         <div>
                             <p class="text-sm font-semibold text-slate-700 mb-2">About how much can your family spend on college fees each year?</p>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -9631,7 +9633,8 @@
             const dw = document.getElementById('wiz-district-wrap'), ds = document.getElementById('wiz-district');
             if (dw && ds) {
                 const st = wizardAnswers.state, show = !!st && st !== 'any';
-                dw.classList.toggle('hidden', !show);
+                ds.disabled = !show;
+                if (!show) { ds.innerHTML = '<option value="">' + (st === 'any' ? 'Not needed for any state' : 'Pick your state first') + '</option>'; ds.removeAttribute('data-for'); }
                 if (show) {
                     if (!DIR.index && !DIR.failed) dirLoadIndex().then(function () { markSit(); });
                     const si = DIR.index && DIR.codeOf ? DIR.stateOf[DIR.codeOf[st]] : null;
