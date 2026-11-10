@@ -1675,7 +1675,7 @@
                     <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full">Opening soon: join the waitlist</span>
                 </div>
                 <h3 class="text-2xl md:text-3xl font-extrabold text-slate-900">Intern while you are still studying, with no experience needed</h3>
-                <p class="text-slate-700 text-sm md:text-base max-w-3xl">Most companies want interns in their final year, and ask for experience you cannot get without an internship. Plan4it closes that gap. In your first, second or third year you work on industry-style projects, get your work reviewed, and finish with a Plan4it certificate and a portfolio you can show recruiters.</p>
+                <p class="text-slate-700 text-sm md:text-base max-w-3xl">Most companies want interns in their final year, and ask for experience you cannot get without an internship. Plan4it closes that gap. In your first, second or third year you choose how long you want to intern (4 weeks to 6 months), work on industry-style projects sized to that time, get your work reviewed, and finish with a Plan4it certificate and a portfolio you can show recruiters.</p>
                 <div class="grid sm:grid-cols-3 gap-3 text-sm">
                     <div class="bg-white border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900">🛠️ Industry-style projects</p><p class="text-slate-600 mt-1">Briefs modelled on the work junior people do at real companies, using current tools.</p></div>
                     <div class="bg-white border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900">🧑‍🏫 Reviewed by mentors</p><p class="text-slate-600 mt-1">You get feedback on your work, so you know what to fix before a recruiter sees it.</p></div>
@@ -1694,6 +1694,9 @@
                         <label class="block"><span class="font-semibold text-slate-700">Where are you now?</span>
                             <select id="p4-wait-stage" class="mt-1 w-full border border-slate-300 rounded-xl px-3 min-h-[44px] bg-white">
                                 <option value="">Select</option><option>1st year (UG)</option><option>2nd year (UG)</option><option>3rd year (UG)</option><option>Final year (UG)</option><option>Postgraduate</option><option>Class 11-12</option><option>Working professional</option></select></label>
+                        <div class="sm:col-span-2"><span class="font-semibold text-slate-700">How long do you want to intern?</span>
+                            <div id="p4-wait-dur" role="radiogroup" aria-label="Internship duration" class="mt-1 grid grid-cols-2 md:grid-cols-4 gap-2"></div>
+                            <div id="p4-dur-plan" class="mt-2 text-xs text-slate-700 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2" aria-live="polite">Pick a duration to see what you will work on.</div></div>
                         <label class="block sm:col-span-2"><span class="font-semibold text-slate-700">College or company (optional)</span>
                             <input id="p4-wait-college" maxlength="120" class="mt-1 w-full border border-slate-300 rounded-xl px-3 min-h-[44px]" placeholder="e.g. your college name"></label>
                         <label class="block sm:col-span-2"><span class="font-semibold text-slate-700">Anything you want us to know (optional)</span>
@@ -9301,6 +9304,27 @@
                 ['Y Combinator: Work at a Startup', 'https://www.workatastartup.com', 'Roles at YC-backed startups.']
             ] }
         ];
+        const P4_DURATIONS = [
+            { id: '4w', label: '4 weeks', sub: 'About 6–8 hrs a week', projects: 1, plan: 'One guided project from your track, one mentor review, and a certificate of completion. Good for a first try or during exams.' },
+            { id: '8w', label: '8 weeks', sub: 'About 8–10 hrs a week', projects: 2, plan: 'Two projects that build on each other, a review after each, and a short write-up you can add to your resume.' },
+            { id: '12w', label: '12 weeks', sub: 'About 10–12 hrs a week', projects: 3, plan: 'All three projects in your track, regular mentor reviews, and a final portfolio case study. Fits a summer break.' },
+            { id: '24w', label: '6 months', sub: 'About 10–15 hrs a week', projects: 3, plan: 'All three track projects plus a larger capstone that brings them together, with reviews throughout. The closest thing to a full internship.' }
+        ];
+        let p4Dur = '';
+        function internshipDur(id) {
+            p4Dur = id;
+            document.querySelectorAll('#p4-wait-dur button').forEach(function (b) { const on = b.getAttribute('data-dur') === id; b.setAttribute('aria-checked', on ? 'true' : 'false'); b.className = 'text-left border rounded-xl px-3 py-2 min-h-[44px] ' + (on ? 'border-brand-500 bg-brand-50 ring-1 ring-brand-300' : 'border-slate-300 bg-white hover:border-brand-400'); });
+            internshipDurPlan();
+        }
+        function internshipDurPlan() {
+            const box = document.getElementById('p4-dur-plan'); if (!box) return;
+            const d = P4_DURATIONS.filter(function (x) { return x.id === p4Dur; })[0];
+            if (!d) { box.textContent = 'Pick a duration to see what you will work on.'; return; }
+            const tid = (document.getElementById('p4-wait-track') || {}).value;
+            const t = P4_TRACKS.filter(function (x) { return x.id === tid; })[0];
+            const e = escapeAuth;
+            box.innerHTML = '<b>' + e(d.label) + ':</b> ' + e(d.plan) + (t ? '<br><span class="font-semibold">Your ' + e(t.name) + ' work:</span> ' + t.projects.slice(0, d.projects).map(e).join('; ') + (d.id === '24w' ? '; plus a capstone project' : '') + '.' : '');
+        }
         function internshipStageIdx() {
             const a = getStoredWizardAnswers(); if (!a) return 0;
             if (a.working) return 0;
@@ -9327,6 +9351,8 @@
             if (sel && !sel.value && sug) sel.value = sug;
             const st = document.getElementById('p4-wait-stage');
             if (st && !st.value) st.value = a && a.working ? 'Working professional' : a && a.stage === 'School 11-12' ? 'Class 11-12' : '';
+            const dw = document.getElementById('p4-wait-dur');
+            if (dw && !dw.children.length) { dw.innerHTML = P4_DURATIONS.map(function (d) { return '<button type="button" role="radio" aria-checked="false" data-dur="' + d.id + '" onclick="internshipDur(\'' + d.id + '\')"><span class="block font-bold text-slate-900">' + e(d.label) + '</span><span class="block text-[11px] text-slate-500">' + e(d.sub) + '</span></button>'; }).join(''); internshipDur(p4Dur); if (sel) sel.addEventListener('change', internshipDurPlan); }
             const cur = internshipStageIdx();
             const lad = document.getElementById('intern-ladder');
             if (lad) lad.innerHTML = P4_LADDER.map(function (l) {
@@ -9342,6 +9368,7 @@
         }
         function internshipPick(id) {
             const sel = document.getElementById('p4-wait-track'); if (sel) sel.value = id;
+            internshipDurPlan();
             const f = document.getElementById('p4-wait-form'); if (f) f.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
         function internshipJoin(ev) {
@@ -9351,11 +9378,13 @@
             const track = document.getElementById('p4-wait-track').value, stage = document.getElementById('p4-wait-stage').value;
             if (!track) { say('Please choose a track.', false); return false; }
             if (!stage) { say('Please tell us where you are now.', false); return false; }
+            if (!p4Dur) { say('Please choose how long you want to intern.', false); return false; }
+            say('', true);
             if (!requireAuth('Sign in to join the Plan4it internship waitlist.', function () { internshipJoin(); })) return false;
             const s = authGetSession(); if (!s || !s.user) return false;
             btn.disabled = true; say('Saving…', true);
             sb.from('internship_waitlist').insert({
-                user_id: s.user.id, email: s.user.email || null, track: track, stage: stage,
+                user_id: s.user.id, email: s.user.email || null, track: track, stage: stage, duration: p4Dur,
                 college: (document.getElementById('p4-wait-college').value || '').trim().slice(0, 120) || null,
                 note: (document.getElementById('p4-wait-note').value || '').trim().slice(0, 400) || null
             }).then(function (res) {
@@ -9364,7 +9393,7 @@
                     if (res.error.code === '23505') { say('You are already on the waitlist for this track. We will email you before launch.', true); return; }
                     say('Could not save right now. Please try again in a moment.', false); return;
                 }
-                trackEvent('internship_waitlist', { track: track });
+                trackEvent('internship_waitlist', { track: track, duration: p4Dur });
                 say('You are on the list. We will email you when this track opens.', true);
             }, function () { btn.disabled = false; say('Could not save right now. Please try again in a moment.', false); });
             return false;
@@ -11441,7 +11470,7 @@
                 const pp = ['Internshala', 'LinkedIn Jobs', 'Unstop', 'PM Internship Scheme', 'AICTE Internship Portal', 'Forage', 'Google Summer of Code', 'Wellfound (AngelList Talent)'];
                 const items = []; P4_PORTALS.forEach(function (g) { g.items.forEach(function (it) { if (pp.indexOf(it[0]) > -1) items.push(it); }); });
                 h += '<div class="pp-card"><b>Where to look</b><ul>' + items.map(function (it) { return '<li>' + planLink(it[1], it[0]) + ' — ' + e(it[2]) + '</li>'; }).join('') + '</ul><p class="pp-sm pp-mut">Never pay anyone for an internship offer. Check each portal for the current eligibility.</p></div>';
-                h += '<div class="pp-card"><b>Plan4it Internship Program</b><p>Industry-style projects, mentor review and a Plan4it certificate of completion for students who cannot get an internship yet. Join the waitlist in the Internships section of the app.</p></div>';
+                h += '<div class="pp-card"><b>Plan4it Internship Program</b><p>Choose 4 weeks, 8 weeks, 12 weeks or 6 months; the number of industry-style projects is matched to the time you pick, with mentor review and a Plan4it certificate of completion. Join the waitlist in the Internships section of the app.</p></div>';
             }
 
             // ----- action plan

@@ -154,6 +154,7 @@ create table if not exists public.internship_waitlist (
   email text,
   track text not null check (char_length(track) <= 40),
   stage text not null check (char_length(stage) <= 40),
+  duration text not null check (duration in ('4w','8w','12w','24w')),
   college text check (char_length(college) <= 120),
   note text check (char_length(note) <= 400),
   created_at timestamptz not null default now(),
