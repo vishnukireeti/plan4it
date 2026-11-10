@@ -738,6 +738,11 @@
                                 <button type="button" data-sit="level:top" onclick="wizardSit('level','top')" class="p-4 rounded-xl border border-slate-200 hover:border-brand-600 hover:bg-brand-50/50 text-left transition min-h-[56px]"><span class="font-semibold text-slate-800 block">At the very top</span><span class="text-xs text-slate-500">Among the best in my class or in test rankings</span></button><button type="button" data-sit="level:strong" onclick="wizardSit('level','strong')" class="p-4 rounded-xl border border-slate-200 hover:border-brand-600 hover:bg-brand-50/50 text-left transition min-h-[56px]"><span class="font-semibold text-slate-800 block">Strong</span><span class="text-xs text-slate-500">Around the top 10%</span></button><button type="button" data-sit="level:mid" onclick="wizardSit('level','mid')" class="p-4 rounded-xl border border-slate-200 hover:border-brand-600 hover:bg-brand-50/50 text-left transition min-h-[56px]"><span class="font-semibold text-slate-800 block">Around the middle</span><span class="text-xs text-slate-500">Neither at the top nor struggling</span></button><button type="button" data-sit="level:low" onclick="wizardSit('level','low')" class="p-4 rounded-xl border border-slate-200 hover:border-brand-600 hover:bg-brand-50/50 text-left transition min-h-[56px]"><span class="font-semibold text-slate-800 block">Below average right now</span><span class="text-xs text-slate-500">I am working on improving</span></button><button type="button" data-sit="level:none" onclick="wizardSit('level','none')" class="p-4 rounded-xl border border-slate-200 hover:border-brand-600 hover:bg-brand-50/50 text-left transition min-h-[56px]"><span class="font-semibold text-slate-800 block">Not sure yet</span><span class="text-xs text-slate-500">I have not taken any test</span></button>
                             </div>
                         </div>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-700 mb-1">Are you aiming for a particular kind of institute? <span class="font-normal text-slate-500">(optional, pick any)</span></p>
+                            <p class="text-xs text-slate-500 mb-2">If you pick some, we show those first. If you skip this, you get a mix that fits your fees and marks, not only the famous names.</p>
+                            <div id="wiz-aim" class="flex flex-wrap gap-2" role="group" aria-label="Kinds of institute you are aiming for"></div>
+                        </div>
                         <div class="flex flex-col sm:flex-row gap-3">
                             <button id="wiz-sit-go" type="button" onclick="wizardSitDone()" class="flex-grow bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3.5 rounded-xl transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed" disabled>See my results →</button>
                             <button id="wiz-sit-skip" type="button" onclick="wizardSitSkip()" class="sm:w-auto bg-white border border-slate-300 text-slate-700 font-semibold py-3.5 px-6 rounded-xl transition hover:bg-slate-50">Skip this step</button>
@@ -9581,6 +9586,28 @@
             'Sports & Fitness': ['Teaching', 'Defence'], 'Aviation & Hospitality': ['Hospitality', 'Defence'], 'Skilled Trades': ['Diploma & ITI'],
             'Personal Services & Wellness': ['Medical', 'Diploma & ITI', 'Hospitality']
         };
+        // Kinds of institute a student can say they are aiming for (matched on the college's name and type).
+        const FIT_AIMS = {
+            iit: ['IITs', /\bIIT\b|Indian Institute of Technology/i], nit: ['NITs and IIITs', /\bNIT\b|National Institute of Technology|\bIIIT|Indian Institute of Information Technology/i],
+            iim: ['IIMs and top B-schools', /\bIIM\b|Indian Institute of Management|XLRI|\bFMS\b|SPJIMR|\bISB\b/i], aiims: ['AIIMS and top medical colleges', /AIIMS|JIPMER|Medical College|Medical Sciences|\bAFMC\b/i],
+            nlu: ['National Law Universities', /\bNLU\b|National Law|NALSAR|NLSIU|Law University/i], central: ['Central universities', null], pvt: ['Private and deemed universities', null]
+        };
+        function fitAimMatch(c, k) {
+            const d = FIT_AIMS[k]; if (!d) return false;
+            if (k === 'central') return /central/i.test(String(c.type || '')) && !/IIT|NIT|IIIT|AIIMS/.test(String(c.name || ''));
+            if (k === 'pvt') return /private|deemed/i.test(String(c.type || '')) || (c.dir && c.ownKey === 'pvt');
+            return d[1].test(String(c.name || ''));
+        }
+        function fitAimAny(c, aim) { return (aim || []).some(function (k) { return fitAimMatch(c, k); }); }
+        // Which "famous family" a college belongs to; used so one family cannot fill the whole list when no preference was given.
+        function fitFamily(c) { return ['iit', 'nit', 'iim', 'aiims', 'nlu'].find(function (k) { return fitAimMatch(c, k); }) || ''; }
+        function wizardAim(k) {
+            const cur = (wizardAnswers.aim || []).slice(), i = cur.indexOf(k);
+            if (k === 'none') { delete wizardAnswers.aim; markSit(); return; }
+            if (i > -1) cur.splice(i, 1); else cur.push(k);
+            if (cur.length) wizardAnswers.aim = cur; else delete wizardAnswers.aim;
+            markSit();
+        }
         let FIT_OFF = false; // set when the student chooses "show everything" or clears the filters
         function wizardSitSet(k, v) { wizardAnswers[k] = v; }
         function wizardSituationText() {
@@ -9589,6 +9616,7 @@
             if (wizardAnswers.state) p.push(wizardAnswers.state === 'any' ? 'Any state' : wizardAnswers.state);
             if (FIT_BUDGET[wizardAnswers.budget]) p.push(FIT_BUDGET[wizardAnswers.budget][0]);
             if (FIT_LEVEL[wizardAnswers.level]) p.push(FIT_LEVEL[wizardAnswers.level][0]);
+            if ((wizardAnswers.aim || []).length) p.push('Aiming for ' + wizardAnswers.aim.map(function (k) { return FIT_AIMS[k] ? FIT_AIMS[k][0] : k; }).join(', '));
             return p.join(' · ');
         }
         // A school-stage student can't work yet, so their main results are colleges, not careers —
@@ -9614,6 +9642,12 @@
                     ds.value = wizardAnswers.district || '';
                 } else ds.removeAttribute('data-for');
             }
+            const ab = document.getElementById('wiz-aim');
+            if (ab) {
+                const on = wizardAnswers.aim || [];
+                ab.innerHTML = Object.keys(FIT_AIMS).map(function (k) { const sel = on.indexOf(k) > -1; return '<button type="button" aria-pressed="' + sel + '" onclick="wizardAim(\'' + k + '\')" class="min-h-[44px] px-4 rounded-full border text-sm font-semibold transition ' + (sel ? 'border-brand-600 bg-brand-50 text-brand-800' : 'border-slate-300 bg-white text-slate-700 hover:border-brand-600') + '">' + escapeAuth(FIT_AIMS[k][0]) + '</button>'; }).join('') +
+                    '<button type="button" aria-pressed="' + (!on.length) + '" onclick="wizardAim(\'none\')" class="min-h-[44px] px-4 rounded-full border text-sm font-semibold transition ' + (!on.length ? 'border-brand-600 bg-brand-50 text-brand-800' : 'border-slate-300 bg-white text-slate-700 hover:border-brand-600') + '">No preference</button>';
+            }
             const needsState = wizardNeedsState();
             const title = document.getElementById('wiz-practical-title'); if (title) title.textContent = needsState ? 'One more thing: where are you studying?' : 'Optional: a few practical things';
             const sub = document.getElementById('wiz-practical-sub'); if (sub) sub.textContent = needsState ? 'Colleges are only useful if they are realistic for you, so we need your state before showing any. Budget and marks are still optional.' : 'This lets us put colleges, exams and careers that are realistic for you first, not only the most famous ones. It is not a test, and you can skip any part of it.';
@@ -9623,7 +9657,7 @@
         }
         function wizardSit(k, v) { if (k === 'state' && wizardAnswers.state !== v) delete wizardAnswers.district; if (k === 'district' && !v) { delete wizardAnswers.district; markSit(); return; } wizardSitSet(k, v); markSit(); }
         function wizardSitDone() { wizardAnswers.situation = 'done'; showWizardResults(); }
-        function wizardSitSkip() { delete wizardAnswers.state; delete wizardAnswers.district; delete wizardAnswers.budget; delete wizardAnswers.level; wizardAnswers.situation = 'skipped'; showWizardResults(); }
+        function wizardSitSkip() { delete wizardAnswers.state; delete wizardAnswers.district; delete wizardAnswers.aim; delete wizardAnswers.budget; delete wizardAnswers.level; wizardAnswers.situation = 'skipped'; showWizardResults(); }
 
         // What we know about the student: quiz answers first, then the saved profile on the dashboard.
         function getFit() {
@@ -9631,6 +9665,7 @@
             const f = { state: '', budget: '', level: '', interest: a.interest && a.interest !== 'Undecided' ? a.interest : '', interests: a.interests3 && a.interests3.length ? a.interests3.slice() : (a.interest && a.interest !== 'Undecided' ? [a.interest] : []), stage: a.stage || '' };
             if (a.state === 'any' || FIT_STATES.indexOf(a.state) > -1) f.state = a.state;
             if (a.district && f.state && f.state !== 'any') f.district = a.district;
+            f.aim = Array.isArray(a.aim) ? a.aim.filter(function (k) { return FIT_AIMS[k]; }) : [];
             if (FIT_BUDGET[a.budget]) f.budget = a.budget;
             if (FIT_LEVEL[a.level]) f.level = a.level;
             if (!f.state && p.location) { const t = String(p.location).toLowerCase(); const hit = FIT_STATES.filter(function (x) { return t.indexOf(x.toLowerCase()) > -1; })[0]; if (hit) f.state = hit; }
@@ -9699,6 +9734,7 @@
                 else if (cf.some(function (x) { return more.indexOf(x) > -1; })) { s += 12; tags.push(['Matches your interest', 'g']); }
                 else s -= 6;
             }
+            if (f.aim && f.aim.length && fitAimAny(c, f.aim)) { s += 30; tags.unshift(['The kind of institute you want', 'g']); }
             s += (c.placementScore || 0) * 0.6;
             return { score: s, tags: tags };
         }
@@ -9995,7 +10031,7 @@
             };
             const topColleges = function () {
                 if (!f) return [];
-                return collegesData.map(function (c) { return { c: c, s: collegeFit(c, f).score }; }).sort(function (p, q) { return q.s - p.s; }).slice(0, 4).map(function (r) { return r.c; });
+                return pickDiverseColleges(collegesData.filter(function (c) { return !f.state || f.state === 'any' || collegeState(c) === f.state; }).map(function (c) { return { c: c, score: collegeFit(c, f).score }; }).sort(function (p, q) { return q.score - p.score; }), f, 4).map(function (r) { return r.c; });
             };
             let title = '', text = '', body = '', actions = '';
             const examChips = function (list) { return list.length ? '<div class="flex flex-wrap gap-2 mt-3">' + list.map(function (x) { return '<button type="button" onclick="openExamDetail(\'' + x.id + '\')" class="' + chip + '">' + e(x.name) + '</button>'; }).join('') + '</div>' : ''; };
@@ -10139,6 +10175,27 @@
 
         // Main results for a school-stage student (Class 10-12): colleges they could realistically get
         // into, scored the same way the Colleges page scores them, not an arbitrary "popular colleges" list.
+        // Picks up to n colleges: what the student asked for first, then a mix. With no preference, no single famous
+        // family (IITs, NITs, IIMs...) takes more than one place, and colleges far above the fee budget are left out.
+        function pickDiverseColleges(ranked, f, n) {
+            const aim = (f && f.aim) || [], cap = f && f.budget && FIT_BUDGET[f.budget] ? FIT_BUDGET[f.budget][1] : 0;
+            const affordable = function (c) { return !cap || c.feesLakh == null || c.feesLakh <= cap * 1.3; };
+            const out = [], seen = {};
+            const add = function (r, famLimit) {
+                if (out.length >= n || seen[r.c.id]) return false;
+                const fam = fitFamily(r.c);
+                if (fam && famLimit && (seen['f:' + fam] || 0) >= famLimit) return false;
+                seen[r.c.id] = 1; if (fam) seen['f:' + fam] = (seen['f:' + fam] || 0) + 1; out.push(r); return true;
+            };
+            if (aim.length) {
+                const want = ranked.filter(function (r) { return fitAimAny(r.c, aim); });
+                const k = Math.min(want.length, Math.max(n - 2, Math.ceil(n / 2)));
+                want.slice(0, k).forEach(function (r) { add(r, 0); });
+            }
+            ranked.filter(function (r) { return affordable(r.c); }).forEach(function (r) { add(r, 1); });
+            ranked.filter(function (r) { return affordable(r.c); }).forEach(function (r) { add(r, 0); });
+            return out.sort(function (a, b) { return b.score - a.score; });
+        }
         function renderWizardCollegeMatches() {
             const box = document.getElementById('wizard-matches-list');
             if (!box) return;
@@ -10163,7 +10220,7 @@
             const ranked = pool.map(function (c) { const r = collegeFit(c, f); return { c: c, score: r.score, tags: r.tags }; });
             ranked.sort(function (a, b) { return b.score - a.score || collegeDetailRank(a.c) - collegeDetailRank(b.c); });
             // a student who named a state only sees colleges in that state (nearest first when a district is given)
-            const top = (f.state !== 'any' ? ranked.filter(function (r) { return collegeState(r.c) === f.state; }) : ranked).slice(0, 6);
+            const top = pickDiverseColleges(f.state !== 'any' ? ranked.filter(function (r) { return collegeState(r.c) === f.state; }) : ranked, f, 6);
             if (!top.length) { box.innerHTML = '<div class="p-5 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800">We could not find colleges listed for ' + e(f.state) + ' yet. Try the Colleges page to browse every state.</div>'; return; }
             const st = code && DIR.stateOf ? DIR.stateOf[code] : null;
             box.innerHTML = top.map(function (r) {
@@ -11060,7 +11117,7 @@
             }
             const shortlist = savedCareers.map(function (c) { return { c: c, tag: 'Saved' }; }).concat(recCareers.map(function (r) { return { c: r.c, tag: 'Recommended', fit: r.fit }; }));
             let recCols = [];
-            if (student && f) recCols = collegesData.filter(function (c) { return savedColIds.indexOf(c.id) < 0 && (!f.state || f.state === 'any' || collegeState(c) === f.state); }).map(function (c) { return { c: c, s: collegeFit(c, f).score }; }).sort(function (x, y) { return y.s - x.s; }).slice(0, savedCols.length >= 4 ? 2 : 4).map(function (r) { return r.c; });
+            if (student && f) recCols = pickDiverseColleges(collegesData.filter(function (c) { return savedColIds.indexOf(c.id) < 0 && (!f.state || f.state === 'any' || collegeState(c) === f.state); }).map(function (c) { return { c: c, score: collegeFit(c, f).score }; }).sort(function (x, y) { return y.score - x.score; }), f, savedCols.length >= 4 ? 2 : 4).map(function (r) { return r.c; });
             const examSeen = {}; savedExams.forEach(function (x) { examSeen[x.id] = 1; });
             let recExams = [];
             shortlist.forEach(function (s) { examsForCareer(s.c).forEach(function (x) { if (!examSeen[x.id] && recExams.length < 5) { examSeen[x.id] = 1; recExams.push(x); } }); });
@@ -11076,7 +11133,7 @@
             const styleWords = { Logic: 'solving problems', People: 'working with people', 'Hands-on': 'hands-on work', Creative: 'creative work', Leadership: 'leading and organising', Research: 'researching', Mixed: 'a mix of styles' };
             if (a) {
                 const lab = function (qi) { const q = QUIZ[qi], v = a[q.key]; if (v == null || (Array.isArray(v) && !v.length)) return ''; const opts = q.optsFor ? q.optsFor(a) : q.opts; return [].concat(v).map(function (x) { const o = opts.find(function (p) { return p[0] === x; }); return o ? (o[2] || o[1]) : x; }).join('; '); };
-                const rows = [['Stage', lab(0)], ['Interests', a.interests3 && a.interests3.length ? a.interests3.join(', ') : 'Still exploring'], ['Work style', styleWords[a.workStyle] || a.workStyle], ['Matters most', (WIZARD_PRIORITY_LABELS[a.constraint] || [''])[0]], ['Help needed with', lab(7)], ['Your situation', [a.state ? (a.state === 'any' ? 'Any state' : a.state) : '', FIT_BUDGET[a.budget] ? FIT_BUDGET[a.budget][0] : '', FIT_LEVEL[a.level] ? FIT_LEVEL[a.level][0] : ''].filter(Boolean).join(' · ')], ['Careers you mentioned', a.careerNote || '']].filter(function (r) { return r[1]; });
+                const rows = [['Stage', lab(0)], ['Interests', a.interests3 && a.interests3.length ? a.interests3.join(', ') : 'Still exploring'], ['Work style', styleWords[a.workStyle] || a.workStyle], ['Matters most', (WIZARD_PRIORITY_LABELS[a.constraint] || [''])[0]], ['Help needed with', lab(7)], ['Aiming for', (a.aim || []).map(function (k) { return FIT_AIMS[k] ? FIT_AIMS[k][0] : ''; }).filter(Boolean).join(', ')], ['Your situation', [a.district && a.state && a.state !== 'any' ? a.district : '', a.state ? (a.state === 'any' ? 'Any state' : a.state) : '', FIT_BUDGET[a.budget] ? FIT_BUDGET[a.budget][0] : '', FIT_LEVEL[a.level] ? FIT_LEVEL[a.level][0] : ''].filter(Boolean).join(' · ')], ['Careers you mentioned', a.careerNote || '']].filter(function (r) { return r[1]; });
                 h += sec('Your profile at a glance') + '<table class="pp-t pp-kv">' + rows.map(function (r) { return '<tr><th>' + e(r[0]) + '</th><td>' + e(r[1]) + '</td></tr>'; }).join('') + '</table>';
                 const top = shortlist.slice(0, 3).map(function (s) { return s.c.title; });
                 h += '<div class="pp-card pp-note"><b>Key takeaways</b><ul>' +
