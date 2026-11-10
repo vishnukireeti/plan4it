@@ -171,6 +171,27 @@
             .view-section { display: none !important; }
             #view-dashboard { display: block !important; }
             body.printing-parents #view-dashboard { display: none !important; }
+            body.printing-plan #view-dashboard, body.printing-plan .page-nav, body.printing-plan .page-nav-m { display: none !important; }
+            body.printing-plan #plan-print-sheet { display: block !important; color: #0f172a; font-family: Inter, Arial, sans-serif; font-size: 10.5px; line-height: 1.45; }
+            #plan-print-sheet * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #plan-print-sheet p { margin: 3px 0; } #plan-print-sheet ul { margin: 3px 0 3px 16px; padding: 0; } #plan-print-sheet b { color: #0f172a; }
+            #plan-print-sheet a { color: #0369a1 !important; text-decoration: underline; }
+            .pp-cover { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #0284c7; padding-bottom: 10px; margin-bottom: 12px; }
+            .pp-brand { display: flex; gap: 10px; align-items: center; } .pp-title { font-size: 22px; font-weight: 800; } .pp-right { text-align: right; }
+            .pp-h2 { font-size: 14px; margin: 16px 0 8px; padding: 6px 10px; background: #0c4a6e; color: #fff; border-radius: 6px; page-break-after: avoid; }
+            .pp-h3 { display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; font-weight: 700; }
+            .pp-card { border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 11px; margin: 7px 0; background: #fff; }
+            .pp-card.pp-slim { padding: 5px 10px; page-break-inside: avoid; } .pp-note { background: #f0f9ff; }
+            .pp-mut { color: #475569 !important; } .pp-sm { font-size: 9.5px; } .pp-u { font-size: 8.5px; color: #64748b; word-break: break-all; }
+            .pp-tag { display: inline-block; font-size: 9px; font-weight: 700; padding: 1px 7px; border-radius: 99px; background: #e0f2fe; color: #075985; }
+            .pp-tag.g { background: #dcfce7; color: #166534; } .pp-tag.a { background: #fef3c7; color: #92400e; }
+            .pp-facts { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 9.5px; color: #475569; margin: 3px 0; }
+            .pp-cols { display: flex; gap: 14px; } .pp-cols > * { flex: 1; min-width: 0; } .pp-cols3 { display: flex; gap: 8px; } .pp-cols3 > * { flex: 1; min-width: 0; }
+            .pp-t { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 9.5px; } .pp-t th { background: #f1f5f9; text-align: left; } .pp-t td, .pp-t th { border: 1px solid #cbd5e1; padding: 3px 6px; vertical-align: top; }
+            .pp-t tr { page-break-inside: avoid; } .pp-kv th { width: 22%; }
+            .pp-box { display: inline-block; width: 10px; height: 10px; border: 1.5px solid #334155; border-radius: 2px; margin-right: 6px; vertical-align: -1px; } .pp-box.on { background: #334155; }
+            .pp-links { columns: 2; } .pp-links li { margin-bottom: 3px; }
+            .pp-lines span { display: block; border-bottom: 1px solid #94a3b8; height: 20px; } .pp-foot { margin-top: 14px; border-top: 1px solid #cbd5e1; padding-top: 6px; }
             body.printing-parents #parent-print-sheet { display: block !important; color: #0f172a; font-family: Inter, Arial, sans-serif; font-size: 12px; line-height: 1.5; padding: 0; }
             #parent-print-sheet h1 { font-size: 20px; margin: 0 0 4px; }
             #parent-print-sheet h2 { font-size: 14px; margin: 14px 0 4px; }
@@ -1643,7 +1664,7 @@
                 <div class="lg:col-span-2 space-y-6">
                     <div class="flex items-center justify-between gap-3 flex-wrap print:hidden">
                         <h3 data-nav="Upcoming deadlines" class="text-xl font-bold text-slate-900">Upcoming Deadlines</h3>
-                        <button onclick="printPlan()" class="text-xs font-semibold px-3 min-h-[40px] rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Print / save my plan</button>
+                        <button onclick="printPlan()" class="text-xs font-semibold px-3 min-h-[40px] rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 transition">Download my plan (PDF)</button>
                     </div>
                     <div id="dashboard-deadlines" class="bg-white border border-slate-200 p-4 rounded-2xl space-y-2 print:hidden"></div>
 
@@ -10860,9 +10881,252 @@
             return '<div class="flex flex-wrap items-center gap-2 print:hidden">' + (extra || '') +
                 '<button onclick="shareItem(\'' + kind + '\',\'' + id + '\')" class="text-xs font-semibold px-3 min-h-[40px] rounded-lg border border-emerald-200 text-emerald-700 hover:bg-emerald-50 transition">Share on WhatsApp</button></div>';
         }
+        /* ============================================================
+           PRINTABLE CAREER PLAN REPORT -- built from the person's own data (quiz, saved items, checklist),
+           and shaped for who they are: Class 10, Class 11-12, undergraduate, graduate or working professional.
+           Every link goes to a provider's real home page or a search on it; nothing is invented.
+           ============================================================ */
+        const PLAN_PROVIDERS = [
+            [/NPTEL/i, 'NPTEL (free, IIT/IISc courses)', 'https://nptel.ac.in'], [/SWAYAM/i, 'SWAYAM (free, Govt. of India)', 'https://swayam.gov.in'],
+            [/Skill India/i, 'Skill India Digital', 'https://www.skillindiadigital.gov.in'], [/Microsoft Learn|Microsoft C#/i, 'Microsoft Learn', 'https://learn.microsoft.com'],
+            [/Kaggle/i, 'Kaggle Learn', 'https://www.kaggle.com/learn'], [/Mode SQL/i, 'Mode SQL Tutorial', 'https://mode.com/sql-tutorial'],
+            [/Khan Academy/i, 'Khan Academy', 'https://www.khanacademy.org'], [/freeCodeCamp/i, 'freeCodeCamp', 'https://www.freecodecamp.org'],
+            [/CS50/i, 'Harvard CS50', 'https://cs50.harvard.edu'], [/MIT OpenCourseWare/i, 'MIT OpenCourseWare', 'https://ocw.mit.edu'],
+            [/Coursera|Andrew Ng/i, 'Coursera', 'https://www.coursera.org'], [/Zerodha Varsity/i, 'Zerodha Varsity (free)', 'https://zerodha.com/varsity'],
+            [/NCERT/i, 'NCERT textbooks (free)', 'https://ncert.nic.in/textbook.php'], [/Google Analytics Academy|Google Skillshop/i, 'Google Skillshop', 'https://skillshop.withgoogle.com'],
+            [/Meta Blueprint/i, 'Meta Blueprint', 'https://www.facebook.com/business/learn'], [/HubSpot/i, 'HubSpot Academy', 'https://academy.hubspot.com'],
+            [/Unity Learn/i, 'Unity Learn', 'https://learn.unity.com'], [/Linux Journey/i, 'Linux Journey', 'https://linuxjourney.com'],
+            [/Professor Messer/i, 'Professor Messer', 'https://www.professormesser.com'], [/TryHackMe/i, 'TryHackMe', 'https://tryhackme.com'],
+            [/LeetCode/i, 'LeetCode', 'https://leetcode.com'], [/NeetCode/i, 'NeetCode', 'https://neetcode.io'], [/fast\.ai/i, 'fast.ai', 'https://www.fast.ai'],
+            [/AWS Skill Builder/i, 'AWS Skill Builder', 'https://skillbuilder.aws'], [/Adda247/i, 'Adda247', 'https://www.adda247.com'], [/Testbook/i, 'Testbook', 'https://testbook.com'],
+            [/ICAI/i, 'ICAI study material', 'https://www.icai.org'], [/PIB/i, 'PIB (Govt. press releases)', 'https://pib.gov.in'], [/Canva/i, 'Canva Design School', 'https://www.canva.com/designschool/'],
+            [/Arduino/i, 'Arduino tutorials', 'https://www.arduino.cc/en/Tutorial/HomePage'], [/QGIS/i, 'QGIS training manual', 'https://docs.qgis.org/latest/en/docs/training_manual/'],
+            [/Splunk/i, 'Splunk free training', 'https://www.splunk.com/en_us/training/free-courses/overview.html'], [/Blender/i, 'Blender tutorials', 'https://www.blender.org/support/tutorials/'],
+            [/Autodesk/i, 'Autodesk education', 'https://www.autodesk.com/education/edu-software/overview'], [/YouTube/i, 'YouTube', 'https://www.youtube.com']
+        ];
+        const PLAN_CERTS = [
+            [/^Google .*(Certificate|Professional)/i, 'Google Career Certificates', 'https://grow.google/certificates/'], [/AWS/i, 'AWS Certification', 'https://aws.amazon.com/certification/'],
+            [/Microsoft|Azure|\b(PL|DP|AZ|AI|SC)-\d{3}\b/i, 'Microsoft Credentials', 'https://learn.microsoft.com/credentials/'], [/DeepLearning\.AI/i, 'DeepLearning.AI', 'https://www.deeplearning.ai'],
+            [/CompTIA/i, 'CompTIA', 'https://www.comptia.org/certifications'], [/CISSP|ISC2/i, 'ISC2', 'https://www.isc2.org/certifications'], [/CEH|Ethical Hacker/i, 'EC-Council', 'https://www.eccouncil.org'],
+            [/Kubernetes|CKA/i, 'Linux Foundation Training', 'https://training.linuxfoundation.org'], [/Terraform|HashiCorp/i, 'HashiCorp Certifications', 'https://www.hashicorp.com/certification'],
+            [/PMP|Project Management Professional/i, 'PMI', 'https://www.pmi.org/certifications'], [/CFA/i, 'CFA Institute', 'https://www.cfainstitute.org'], [/FRM/i, 'GARP', 'https://www.garp.org'],
+            [/NISM/i, 'NISM', 'https://www.nism.ac.in'], [/Six Sigma/i, 'ASQ', 'https://asq.org/cert'], [/Scrum/i, 'Scrum Alliance', 'https://www.scrumalliance.org'], [/LEED/i, 'USGBC', 'https://www.usgbc.org/credentials'],
+            [/IBM/i, 'IBM Training', 'https://www.ibm.com/training/'], [/Unity Certified/i, 'Unity Certifications', 'https://unity.com/products/unity-certifications'], [/IELTS/i, 'IELTS', 'https://www.ielts.org'],
+            [/NMC/i, 'National Medical Commission', 'https://www.nmc.org.in'], [/Council of Architecture|CoA/i, 'Council of Architecture', 'https://www.coa.gov.in']
+        ];
+        const PLAN_HUBS = {
+            c10: [['NCERT textbooks (free)', 'https://ncert.nic.in/textbook.php'], ['DIKSHA (free, Govt. of India)', 'https://diksha.gov.in'], ['Khan Academy', 'https://www.khanacademy.org'], ['SWAYAM (free)', 'https://swayam.gov.in'], ['Skill India Digital (ITI / short courses)', 'https://www.skillindiadigital.gov.in']],
+            c1112: [['NCERT textbooks (free)', 'https://ncert.nic.in/textbook.php'], ['SWAYAM (free)', 'https://swayam.gov.in'], ['NPTEL (free)', 'https://nptel.ac.in'], ['Khan Academy', 'https://www.khanacademy.org'], ['DIKSHA (free)', 'https://diksha.gov.in']],
+            ug: [['SWAYAM (free, credit-eligible courses)', 'https://swayam.gov.in'], ['NPTEL (free, certificates for a small exam fee)', 'https://nptel.ac.in'], ['Coursera', 'https://www.coursera.org'], ['Google Career Certificates', 'https://grow.google/certificates/'], ['Microsoft Learn', 'https://learn.microsoft.com'], ['freeCodeCamp', 'https://www.freecodecamp.org'], ['Kaggle Learn', 'https://www.kaggle.com/learn'], ['Skill India Digital', 'https://www.skillindiadigital.gov.in']],
+            grad: [['SWAYAM (free)', 'https://swayam.gov.in'], ['NPTEL (free)', 'https://nptel.ac.in'], ['Coursera', 'https://www.coursera.org'], ['Google Career Certificates', 'https://grow.google/certificates/'], ['Microsoft Learn', 'https://learn.microsoft.com'], ['Skill India Digital', 'https://www.skillindiadigital.gov.in']],
+            working: [['Coursera', 'https://www.coursera.org'], ['edX', 'https://www.edx.org'], ['LinkedIn Learning', 'https://www.linkedin.com/learning/'], ['Google Career Certificates', 'https://grow.google/certificates/'], ['Microsoft Learn', 'https://learn.microsoft.com'], ['NPTEL (free, IIT/IISc)', 'https://nptel.ac.in'], ['SWAYAM (free)', 'https://swayam.gov.in'], ['Skill India Digital', 'https://www.skillindiadigital.gov.in']]
+        };
+        const PLAN_SEG_LABEL = { c10: 'Class 10 student', c1112: 'Class 11–12 student', ug: 'Undergraduate student', grad: 'Graduate', working: 'Working professional', student: 'Student' };
+        function planSegment() {
+            const a = getStoredWizardAnswers();
+            if (a) { if (a.working) return 'working'; if (a.stage === 'School 8-10') return 'c10'; if (a.stage === 'School 11-12') return 'c1112'; if (a.stage === 'Undergraduate') return 'ug'; return 'grad'; }
+            let role = ''; try { role = localStorage.getItem(AGE_GATE_KEY) || ''; } catch (e) {}
+            return role === 'professional' ? 'working' : 'student';
+        }
+        function planUrl(s) { s = String(s || '').trim(); return !s ? '' : /^https?:\/\//i.test(s) ? s : 'https://' + s.replace(/^\/+/, ''); }
+        function planLink(url, label, hideUrl) {
+            url = planUrl(url); if (!/^https:\/\//.test(url)) return '';
+            const e = escapeAuth; let shown = url.replace(/^https:\/\/(www\.)?/, '').replace(/\/$/, ''); if (shown.length > 46) shown = shown.slice(0, 44) + '…';
+            return '<a href="' + e(url) + '">' + e(label) + '</a>' + (hideUrl ? '' : ' <span class="pp-u">' + e(shown) + '</span>');
+        }
+        function planSearch(q) { return 'https://www.coursera.org/search?query=' + encodeURIComponent(q); }
+        function planResourceHTML(resource, skill) {
+            const e = escapeAuth, out = [], plain = [];
+            String(resource || '').split(/\s+\/\s+|\s+\+\s+/).forEach(function (tok) {
+                tok = tok.trim(); if (!tok) return;
+                const hit = PLAN_PROVIDERS.find(function (p) { return p[0].test(tok); });
+                if (hit && !out.some(function (o) { return o.u === hit[2]; })) out.push({ u: hit[2], l: hit[1] }); else if (!hit) plain.push(tok);
+            });
+            let h = out.map(function (o) { return planLink(o.u, o.l); }).join(' · ');
+            if (plain.length) h += (h ? ' · ' : '') + e(plain.join(' · '));
+            if (!out.length) h += (h ? ' · ' : '') + planLink(planSearch(skill + ' course'), 'Find courses', true);
+            return h;
+        }
+        function planCertHTML(name) {
+            const hit = PLAN_CERTS.find(function (p) { return p[0].test(name); });
+            return escapeAuth(name) + ' — ' + (hit ? planLink(hit[2], hit[1]) : planLink('https://www.google.com/search?q=' + encodeURIComponent(name + ' certification official'), 'Search official page', true));
+        }
+        function planCareerBlock(c, tag, seg, fitText) {
+            const e = escapeAuth, done = getCheckedSkills(c.id);
+            const sd = c.skillDetails || [];
+            const ready = sd.length ? Math.round(sd.filter(function (s) { return done.indexOf(s.name) > -1; }).length / sd.length * 100) : null;
+            const exams = examsForCareer(c).slice(0, 4);
+            const cols = (seg === 'working') ? [] : collegesForCareer(c).slice(0, 3);
+            return '<div class="pp-card"><div class="pp-h3"><span>' + e(c.title) + ' <span class="pp-tag ' + (tag === 'Saved' ? '' : 'a') + '">' + e(tag) + '</span>' + (fitText ? ' <span class="pp-tag g">' + e(fitText) + '</span>' : '') + '</span><span class="pp-mut">' + e(c.category) + '</span></div>' +
+                '<div class="pp-facts"><span>Pay: ' + e(c.salary) + approxText(c, 'salary') + '</span><span>Demand: ' + e(c.demand) + '</span><span>Difficulty: ' + e(c.difficulty) + '</span><span>Start in ~' + e(c.entryYears) + ' yr</span><span>Cost: ' + e(c.costTier) + '</span>' + (c.workLife ? '<span>Work-life: ' + e(c.workLife) + '</span>' : '') + '</div>' +
+                (c.overview ? '<p>' + e(c.overview) + '</p>' : '') + (c.suitability ? '<p><b>Suits:</b> ' + e(c.suitability) + '</p>' : '') +
+                (c.roadmap && c.roadmap.length ? '<p class="pp-road"><b>Roadmap:</b> ' + c.roadmap.map(e).join(' → ') + '</p>' : '') +
+                (sd.length ? '<table class="pp-t"><tr><th>Skill' + (ready !== null && done.length ? ' (' + ready + '% ticked as already known)' : '') + '</th><th>Level</th><th>Learn it</th></tr>' + sd.map(function (s) {
+                    return '<tr><td><span class="pp-box' + (done.indexOf(s.name) > -1 ? ' on' : '') + '"></span><b>' + e(s.name) + '</b><br><span class="pp-mut">' + e(s.why || '') + '</span></td><td>' + e(s.level || '') + '</td><td>' + planResourceHTML(s.resource, s.name) + '</td></tr>';
+                }).join('') + '</table>' : '') +
+                (c.certifications && c.certifications.length ? '<p><b>Certifications worth considering:</b></p><ul>' + c.certifications.map(function (x) { return '<li>' + planCertHTML(x) + '</li>'; }).join('') + '</ul>' : '') +
+                '<div class="pp-cols"><div><b>Good about it</b><ul>' + (c.pros || []).map(function (x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul></div><div><b>Watch out for</b><ul>' + (c.cons || []).map(function (x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul></div></div>' +
+                (exams.length ? '<p class="pp-sm"><b>Linked exams:</b> ' + exams.map(function (x) { return e(x.name) + (x.site ? ' (' + e(planUrl(x.site).replace(/^https:\/\/(www\.)?/, '').replace(/\/$/, '')) + ')' : ''); }).join(' · ') + '</p>' : '') +
+                (cols.length ? '<p class="pp-sm"><b>Colleges to look at:</b> ' + cols.map(function (x) { return e(x.name.replace(/\s*\(.*?\)\s*/g, ' ').trim()); }).join(' · ') + '</p>' : '') + '</div>';
+        }
+        function planCollegeBlock(c, tag) {
+            const e = escapeAuth;
+            if (c.dir) {
+                return '<div class="pp-card"><div class="pp-h3"><span>' + e(c.name) + ' <span class="pp-tag ' + (tag === 'Saved' ? '' : 'a') + '">' + e(tag) + '</span></span><span class="pp-mut">' + e(c.location) + '</span></div><p class="pp-sm">' + e(dirFacts(c) || 'Listed college') + (c.uni ? ' · Affiliated to ' + e(c.uni) : '') + '</p>' +
+                    (c.courseRows && c.courseRows.length ? '<p class="pp-sm"><b>Approved courses (' + c.courseRows.length + '):</b> ' + e(c.courses.slice(0, 8).join('; ')) + (c.courses.length > 8 ? '…' : '') + '</p>' : '') +
+                    '<p class="pp-sm pp-mut">Listed from official directories. We have no fee or placement data for it, so check those on the college\'s own site.</p></div>';
+            }
+            return '<div class="pp-card"><div class="pp-h3"><span>' + e(c.name) + ' <span class="pp-tag ' + (tag === 'Saved' ? '' : 'a') + '">' + e(tag) + '</span></span><span class="pp-mut">' + e(c.location) + '</span></div>' +
+                '<div class="pp-cols"><div>' + (c.courses ? '<p><b>Courses:</b> ' + e((Array.isArray(c.courses) ? c.courses : [c.courses]).join(', ')) + '</p>' : '') + (c.admissionProcess ? '<p><b>Admission:</b> ' + e(c.admissionProcess) + '</p>' : '') + (c.relatedExam ? '<p><b>Entrance exam:</b> ' + e(c.relatedExam) + '</p>' : '') + '</div>' +
+                '<div>' + (c.scholarships ? '<p><b>Scholarships:</b> ' + e(c.scholarships) + '</p>' : '') + (c.hostel ? '<p><b>Hostel:</b> ' + e(c.hostel) + '</p>' : '') + (c.placementNote && !/mock|illustrative/i.test(c.placementNote) ? '<p><b>Placements:</b> ' + e(c.placementNote) + '</p>' : '') + '</div></div>' +
+                '<div class="pp-cols"><div><b>Good about it</b><ul>' + (c.pros || []).map(function (x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul></div><div><b>Watch out for</b><ul>' + (c.cons || []).map(function (x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul></div></div>' +
+                (c.site ? '<p class="pp-sm"><b>Official site (courses, fees, admissions):</b> ' + planLink(c.site, 'College website') + '</p>' : '') + '</div>';
+        }
+        function planExamDates(x) {
+            const d = []; examEvents(x).forEach(function (ev) { d.push(ev); });
+            return d;
+        }
+        function planBuild() {
+            const e = escapeAuth, seg = planSegment(), a = getStoredWizardAnswers(), f = getFit();
+            const sess = authGetSession(), name = (sess && authDisplayName(sess)) || 'You';
+            const today = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+            const student = seg !== 'working';
+            // ----- what goes in: saved items first, then the best suggestions that are not saved yet
+            const savedCareerIds = getSavedCareers(), savedColIds = getSavedColleges(), savedExamIds = getSavedExams();
+            const savedCareers = savedCareerIds.map(function (id) { return careersData.find(function (x) { return x.id === id; }); }).filter(Boolean);
+            const savedCols = savedColIds.map(findCollege).filter(Boolean);
+            const savedExams = savedExamIds.map(function (id) { return examsData.find(function (x) { return x.id === id; }); }).filter(Boolean);
+            let recCareers = [];
+            if (a) {
+                recCareers = careersData.filter(function (c) { return savedCareerIds.indexOf(c.id) < 0; }).map(function (c) { const r = scoreCareerForWizard(c, a); return { c: c, s: r.score }; }).sort(function (x, y) { return y.s - x.s; }).slice(0, Math.max(3, 6 - savedCareers.length)).map(function (r) { return { c: r.c, fit: fitInfo(Math.min(97, Math.max(45, Math.round(r.s / WIZARD_MAX_SCORE * 100)))).text }; });
+            }
+            const shortlist = savedCareers.map(function (c) { return { c: c, tag: 'Saved' }; }).concat(recCareers.map(function (r) { return { c: r.c, tag: 'Recommended', fit: r.fit }; }));
+            let recCols = [];
+            if (student && f) recCols = collegesData.filter(function (c) { return savedColIds.indexOf(c.id) < 0; }).map(function (c) { return { c: c, s: collegeFit(c, f).score }; }).sort(function (x, y) { return y.s - x.s; }).slice(0, savedCols.length >= 4 ? 2 : 4).map(function (r) { return r.c; });
+            const examSeen = {}; savedExams.forEach(function (x) { examSeen[x.id] = 1; });
+            let recExams = [];
+            shortlist.forEach(function (s) { examsForCareer(s.c).forEach(function (x) { if (!examSeen[x.id] && recExams.length < 5) { examSeen[x.id] = 1; recExams.push(x); } }); });
+            if (student && f) examsData.map(function (x) { return { x: x, s: examFit(x, f) }; }).filter(function (r) { return r.s > 0 && !examSeen[r.x.id]; }).sort(function (p, q) { return q.s - p.s; }).slice(0, 2).forEach(function (r) { recExams.push(r.x); });
+            const exams = savedExams.map(function (x) { return { x: x, tag: 'Saved' }; }).concat(recExams.map(function (x) { return { x: x, tag: 'Suggested' }; }));
+            const nothing = !shortlist.length && !savedCols.length && !exams.length;
+            if (nothing) return null;
+
+            let n = 0; const sec = function (t) { n++; return '<h2 class="pp-h2">' + n + '. ' + e(t) + '</h2>'; };
+            let h = '<div class="pp-cover"><div class="pp-brand"><img src="/assets/logo-mark-96.png" width="40" height="40" alt=""><div><div class="pp-title">' + (seg === 'working' ? 'Career Transition Plan' : 'Career Plan Report') + '</div><div class="pp-mut">Prepared for <b>' + e(name) + '</b> · ' + e(today) + ' · ' + e(PLAN_SEG_LABEL[seg]) + ' edition</div></div></div><div class="pp-sm pp-mut pp-right">plan4it.co<br>Free career guidance for India</div></div>';
+
+            // ----- 1. profile
+            const styleWords = { Logic: 'solving problems', People: 'working with people', 'Hands-on': 'hands-on work', Creative: 'creative work', Leadership: 'leading and organising', Research: 'researching', Mixed: 'a mix of styles' };
+            if (a) {
+                const lab = function (qi) { const q = QUIZ[qi], v = a[q.key]; if (v == null || (Array.isArray(v) && !v.length)) return ''; const opts = q.optsFor ? q.optsFor(a) : q.opts; return [].concat(v).map(function (x) { const o = opts.find(function (p) { return p[0] === x; }); return o ? (o[2] || o[1]) : x; }).join('; '); };
+                const rows = [['Stage', lab(0)], ['Interests', a.interests3 && a.interests3.length ? a.interests3.join(', ') : 'Still exploring'], ['Work style', styleWords[a.workStyle] || a.workStyle], ['Matters most', (WIZARD_PRIORITY_LABELS[a.constraint] || [''])[0]], ['Help needed with', lab(7)], ['Your situation', [a.state ? (a.state === 'any' ? 'Any state' : a.state) : '', FIT_BUDGET[a.budget] ? FIT_BUDGET[a.budget][0] : '', FIT_LEVEL[a.level] ? FIT_LEVEL[a.level][0] : ''].filter(Boolean).join(' · ')], ['Careers you mentioned', a.careerNote || '']].filter(function (r) { return r[1]; });
+                h += sec('Your profile at a glance') + '<table class="pp-t pp-kv">' + rows.map(function (r) { return '<tr><th>' + e(r[0]) + '</th><td>' + e(r[1]) + '</td></tr>'; }).join('') + '</table>';
+                const top = shortlist.slice(0, 3).map(function (s) { return s.c.title; });
+                h += '<div class="pp-card pp-note"><b>Key takeaways</b><ul>' +
+                    (top.length ? '<li>Your answers point towards <b>' + e(top.join(', ')) + '</b>.</li>' : '') +
+                    (exams.length ? '<li>Exams to plan around: <b>' + e(exams.slice(0, 3).map(function (x) { return x.x.name; }).join(', ')) + '</b>.</li>' : '') +
+                    (seg === 'c10' ? '<li>Your next big decision is the <b>stream or route after Class 10</b>; the routes below show what each one opens up.</li>' : '') +
+                    (seg === 'working' ? '<li>The sections below compare your options, show the skills to build, and give a 30-60-90 day plan to move.</li>' : '<li>Keep a Plan B for every first choice. The Plan B section lists backups.</li>') + '</ul></div>';
+            } else {
+                h += sec('About this report') + '<div class="pp-card pp-note">This report is built from the careers, colleges and exams you saved on Plan4it. Take the 2-minute quiz in the app to add personalised matches and a plan for your stage.</div>';
+            }
+
+            // ----- Class 10 routes
+            if (seg === 'c10' && a) {
+                const routes = computeWizardRoutes(a);
+                if (routes.length) h += sec('Routes worth a closer look after Class 10') + routes.map(function (s) { return '<div class="pp-card"><div class="pp-h3"><span>' + e(s.r.title) + '</span></div><p class="pp-sm pp-mut">' + e(s.why) + '</p><p><b>What it opens up:</b> ' + e(s.r.opens) + '</p><p><b>Keep in mind:</b> ' + e(s.r.watch) + '</p></div>'; }).join('');
+            }
+
+            // ----- careers
+            if (shortlist.length) {
+                h += sec((seg === 'working' ? 'Careers you could move into' : 'Careers shortlist') + ' (' + savedCareers.length + ' saved' + (recCareers.length ? ', ' + recCareers.length + ' recommended' : '') + ')');
+                if (seg === 'working') {
+                    h += '<table class="pp-t"><tr><th>Career</th><th>Pay range</th><th>Demand</th><th>Starting point</th><th>Difficulty</th><th>Skills ticked</th></tr>' + shortlist.map(function (s) {
+                        const sd = s.c.skillDetails || [], dn = getCheckedSkills(s.c.id).filter(function (k) { return sd.some(function (x) { return x.name === k; }); }).length;
+                        return '<tr><td><b>' + e(s.c.title) + '</b></td><td>' + e(s.c.salary) + '</td><td>' + e(s.c.demand) + '</td><td>~' + e(s.c.entryYears) + ' yr · ' + e(s.c.costTier) + ' cost</td><td>' + e(s.c.difficulty) + '</td><td>' + (sd.length ? dn + ' of ' + sd.length : '–') + '</td></tr>';
+                    }).join('') + '</table>';
+                }
+                h += shortlist.map(function (s) { return planCareerBlock(s.c, s.tag, seg, s.fit); }).join('');
+            }
+
+            // ----- colleges
+            if (student && (savedCols.length || recCols.length)) {
+                const all = savedCols.map(function (c) { return { c: c, tag: 'Saved' }; }).concat(recCols.map(function (c) { return { c: c, tag: 'Suggested' }; }));
+                h += sec(seg === 'c10' ? 'Colleges and schools to know about' : 'Colleges: comparison');
+                const nd = all.filter(function (r) { return !r.c.dir; });
+                if (nd.length) h += '<table class="pp-t"><tr><th>College</th><th>City</th><th>Type</th><th>NIRF</th><th>Fees / yr</th><th>Median pay</th><th>Entrance</th></tr>' + nd.map(function (r) {
+                    const c = r.c; return '<tr><td><b>' + e(c.name) + '</b>' + (r.tag === 'Suggested' ? ' <span class="pp-mut">(suggested)</span>' : '') + '</td><td>' + e(c.location) + '</td><td>' + e(c.type || '') + '</td><td>' + e(nirfLabel(c)) + '</td><td>' + e(c.fees || '–') + '</td><td>' + (c.medianLPA ? '₹' + e(c.medianLPA) + ' LPA' + (c.placeYear ? ' (' + e(c.placeYear) + ')' : '') : '–') + '</td><td>' + e(c.relatedExam || '–') + '</td></tr>';
+                }).join('') + '</table><p class="pp-sm pp-mut">Fees and pay come from official sources and are only as recent as the year shown. Always confirm on the college\'s own website before you apply.</p>';
+                h += all.map(function (r) { return planCollegeBlock(r.c, r.tag); }).join('');
+            } else if (!student && savedCols.length) {
+                h += sec('Programmes and institutes you saved') + savedCols.map(function (c) { return planCollegeBlock(c, 'Saved'); }).join('');
+            }
+
+            // ----- exams + deadlines
+            if (exams.length) {
+                h += sec(seg === 'working' ? 'Exams and programmes linked to your options' : 'Entrance exams and deadlines') +
+                    '<table class="pp-t"><tr><th>Exam</th><th>Eligibility</th><th>Registration</th><th>Exam date</th><th>Fee</th><th>Difficulty</th></tr>' + exams.map(function (r) {
+                        const x = r.x; return '<tr><td><b>' + e(x.name) + '</b><br><span class="pp-mut">' + e(x.body || '') + (r.tag === 'Suggested' ? ' · suggested' : '') + '</span></td><td>' + e(x.eligibility || '') + '</td><td>' + e(examRegLine(x).replace(/^Registration( closes)?: /, '')) + '</td><td>' + e(examDateLine(x).replace(/^Exam date[^:]*: /, '')) + '</td><td>' + e(x.examFee || '–') + '</td><td>' + e(x.difficulty || '') + '</td></tr>';
+                    }).join('') + '</table>' +
+                    exams.map(function (r) {
+                        const x = r.x; return '<div class="pp-card pp-slim"><b>' + e(x.name) + '</b>' + (x.mode ? ' · ' + e(x.mode) : '') + (x.duration ? ' · ' + e(x.duration) : '') + (x.attempts ? ' · ' + e(x.attempts) : '') +
+                            (x.competitionNote ? '<br><span class="pp-sm"><b>How competitive:</b> ' + e(x.competitionNote) + '</span>' : '') + (x.prepTip ? '<br><span class="pp-sm"><b>Prep tip:</b> ' + e(x.prepTip) + '</span>' : '') +
+                            '<br><span class="pp-sm"><b>Official site, syllabus and past papers:</b> ' + planLink(x.site, 'Official website') + '</span></div>';
+                    }).join('');
+                const t0 = new Date(); t0.setHours(0, 0, 0, 0); const evs = [];
+                exams.forEach(function (r) { examEvents(r.x).forEach(function (ev) { const d = Math.round((new Date(ev.date + 'T00:00:00') - t0) / 86400000); if (d >= 0) evs.push({ ev: ev, d: d }); }); });
+                evs.sort(function (p, q) { return p.d - q.d; });
+                if (evs.length) h += '<div class="pp-card"><b>Deadline calendar</b><table class="pp-t"><tr><th width="4%"></th><th>Date</th><th>What</th><th>Days left</th></tr>' + evs.slice(0, 14).map(function (r) { return '<tr><td><span class="pp-box"></span></td><td>' + e(examDateText(r.ev.date)) + '</td><td>' + e(r.ev.label) + '</td><td>' + r.d + '</td></tr>'; }).join('') + '</table><p class="pp-sm pp-mut">Dates can change. Confirm each one on the official site.</p></div>';
+            }
+
+            // ----- courses and learning links
+            h += sec(seg === 'working' ? 'Courses and certifications to take up' : 'Courses and learning resources');
+            h += '<p class="pp-sm">Free and official first. Each skill and certification above carries its own link; these are the best general places to start' + (seg === 'working' ? ' while you keep your job' : '') + '.</p><ul class="pp-links">' + (PLAN_HUBS[seg] || PLAN_HUBS.ug).map(function (p) { return '<li>' + planLink(p[1], p[0]) + '</li>'; }).join('') + '</ul>';
+            const certSeen = {}, certs = [];
+            shortlist.forEach(function (s) { (s.c.certifications || []).forEach(function (x) { if (!certSeen[x] && certs.length < 12) { certSeen[x] = 1; certs.push(x); } }); });
+            if (certs.length) h += '<div class="pp-card"><b>Certifications across your shortlist</b><ul>' + certs.map(function (x) { return '<li>' + planCertHTML(x) + '</li>'; }).join('') + '</ul></div>';
+
+            // ----- plan B
+            const bkKeys = {}; savedExams.concat(recExams).forEach(function (x) { if (BACKUP_COLLEGES[x.id]) bkKeys[x.id] = x; });
+            const bkIds = Object.keys(bkKeys);
+            h += sec('Plan B: if the first choice does not work out');
+            if (student && bkIds.length) {
+                h += bkIds.slice(0, 3).map(function (k) {
+                    const list = BACKUP_COLLEGES[k].filter(function (b) { return !savedCols.some(function (c) { return backupNorm(c.name) === backupNorm(b.name); }); }).slice().sort(function (p, q) { return (p.cutoff || 0) - (q.cutoff || 0); }).slice(0, 6);
+                    return '<div class="pp-card"><b>If your ' + e(bkKeys[k].name) + ' result falls short</b><span class="pp-sm pp-mut"> (listed from easier to harder to get into)</span><table class="pp-t"><tr><th>Option</th><th>City</th><th>Placements</th><th>Avg. pay</th><th>Why keep it</th></tr>' + list.map(function (b) { return '<tr><td><b>' + e(b.name) + '</b></td><td>' + e(b.location) + '</td><td>' + (b.placementRate ? e(b.placementRate) + '%' : '–') + '</td><td>' + (b.avgSalary ? '₹' + e(b.avgSalary) + ' LPA' : '–') + '</td><td>' + e((b.pros || [])[0] || '') + '</td></tr>'; }).join('') + '</table></div>';
+                }).join('');
+            }
+            const spare = careersData.filter(function (c) { return !shortlist.some(function (s) { return s.c.id === c.id; }); }).map(function (c) { return { c: c, s: a ? scoreCareerForWizard(c, a).score : 0 }; }).sort(function (x, y) { return y.s - x.s; }).slice(0, 3);
+            if (a && spare.length) h += '<div class="pp-card"><b>Other careers worth keeping open</b><ul>' + spare.map(function (r) { return '<li><b>' + e(r.c.title) + '</b> — ' + e(r.c.salary) + ', ' + e(r.c.demand.toLowerCase()) + ' demand, start in ~' + e(r.c.entryYears) + ' yr</li>'; }).join('') + '</ul></div>';
+            const planB = { c10: ['Diploma / polytechnic (about 3 years) with lateral entry into B.Tech later', 'ITI or a skill course with apprenticeship, then study further', 'Switch streams in Class 12 if the first choice is wrong (check your board and school rules)'], c1112: ['A second-attempt year only if you can afford it and your mock scores are close', 'State entrance exams and private university tests as a parallel track', 'A related degree you can switch from (e.g. B.Sc or BCA) with an entrance exam for the master\'s degree'], ug: ['A certification or internship route if campus placements do not work out', 'Higher study (GATE, CAT, GRE or a master\'s entrance) as a parallel track', 'Government or PSU exams alongside your final year'], grad: ['Short certification + internship to enter a field different from your degree', 'Government and bank exams while you apply for jobs', 'A one-year diploma or PG course in your target field'], working: ['A part-time or evening course while you keep your income', 'An internal move or a lateral role in the new field before a full switch', 'Freelance or contract projects to build proof of skill'], student: ['Keep two options open for every first choice', 'Check state exams and private universities as a parallel track', 'Short courses and certifications while you decide'] }[seg];
+            h += '<div class="pp-card"><b>General fallback routes</b><ul>' + planB.map(function (x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul></div>';
+
+            // ----- action plan
+            const plans = {
+                c10: [['Now – 1 month', ['Talk to a teacher or counsellor about your strengths', 'Pick the 2 routes you want to explore', 'Look up the entrance exams linked to each route']], ['Before results', ['Check subject combinations for your goal exam', 'Note your state\'s Class 11 admission portal and dates', 'List schools / junior colleges with your subjects']], ['After results', ['Apply to your top 3 choices', 'Keep a diploma / ITI option open', 'Revisit this plan with your family']]],
+                c1112: [['Now – 3 months', ['Make a weekly study plan for boards and entrance exams', 'Register before each exam\'s deadline', 'Take one full mock test every 2 weeks']], ['Before boards', ['Fix your 3 weakest chapters in each subject', 'Collect documents: marksheets, ID, photos, category / income / domicile certificates', 'Shortlist 8–10 colleges across safe, target and reach']], ['Results and counselling', ['Fill counselling choices in order of preference', 'Keep original documents ready for verification', 'Decide Plan A or Plan B by a date you set now']]],
+                ug: [['This semester', ['Pick one skill from your shortlist and finish a course', 'Build 1–2 small projects you can show', 'Update your resume']], ['Next 6 months', ['Apply for internships', 'Earn one certification from section above', 'Decide: job, higher study or government exams']], ['Final year', ['Prepare for placements or the master\'s entrance exam', 'Network with alumni in your target field', 'Keep a Plan B application ready']]],
+                grad: [['Next 30 days', ['Choose one direction: job, higher study or government exams', 'Finish one short course in your target field', 'Update resume and LinkedIn']], ['Next 90 days', ['Apply to 10–15 roles or register for your exam', 'Build one portfolio project', 'Ask 3 people in the field for a 15-minute chat']], ['6 months', ['Review progress against this plan', 'Add a certification', 'Switch to Plan B if there is no movement']]],
+                working: [['Days 1–30', ['Pick one target role from the table above', 'Start the first course in your skill-gap list', 'Talk to 3 people already in that role']], ['Days 31–60', ['Build 2 portfolio projects or take on a related task at work', 'Update resume and LinkedIn for the new role', 'Check your savings runway (many people aim for 3–6 months of expenses)']], ['Days 61–90', ['Apply to 10–15 roles or ask for an internal move', 'Practise interviews for the new field', 'Compare offers on pay, growth and learning']]],
+                student: [['Next 30 days', ['Take the Plan4it quiz and shortlist 3 careers', 'Check the entrance exams for each', 'Talk to a mentor or someone in that field']], ['Next 90 days', ['Pick one course from the links above', 'Shortlist colleges and note fees and deadlines', 'Set a Plan B']], ['Next 12 months', ['Follow the deadline calendar', 'Review this plan every 3 months', 'Update your saved items in Plan4it']]]
+            }[seg];
+            h += sec(seg === 'working' ? '30-60-90 day plan' : 'Action plan') + '<div class="pp-cols3">' + plans.map(function (p) { return '<div class="pp-card"><b>' + e(p[0]) + '</b>' + p[1].map(function (x) { return '<div><span class="pp-box"></span>' + e(x) + '</div>'; }).join('') + '</div>'; }).join('') + '</div>';
+            const cl = getChecklist();
+            h += '<div class="pp-card"><b>' + (checklistIsDefault() ? 'Suggested first steps' : 'Your checklist from Plan4it') + '</b>' + cl.map(function (i) { return '<div><span class="pp-box' + (i.done ? ' on' : '') + '"></span>' + e(i.text) + '</div>'; }).join('') + '</div>';
+            if (seg === 'working') h += '<div class="pp-card"><b>Decision worksheet</b><p>Notice period: ________ &nbsp; Monthly expenses: ________ &nbsp; Runway I need: ________ &nbsp; Target date to switch: ________</p><p>What I gain / what I give up:</p><div class="pp-lines"><span></span><span></span><span></span></div></div>';
+            else h += '<div class="pp-card"><b>Questions to talk through with family or a mentor</b><ul><li>What is the total budget for the whole course, including hostel, books and coaching?</li><li>Are we open to studying in another state or city?</li><li>What is our Plan B, and by what date do we switch to it?</li><li>What can we check this month on the official websites?</li></ul><b>Notes and decisions</b><div class="pp-lines"><span></span><span></span><span></span><span></span></div></div>';
+            h += '<p class="pp-sm pp-mut pp-foot">Prepared by Plan4it on ' + e(today) + '. Fees, dates, eligibility and cutoffs change every year: confirm each on the official website before you apply or pay. Course and certification links go to the provider\'s own site; some courses are paid. This report is guidance based on your answers, not official or professional advice. plan4it.co</p>';
+            return h;
+        }
         function printPlan() {
-            switchView('dashboard');
-            setTimeout(() => { try { window.print(); } catch (e) { showToast('Printing is blocked here. Open the page in its own tab, then try again.'); } }, 150);
+            const sheet = document.getElementById('plan-print-sheet');
+            let html = '';
+            try { html = planBuild(); } catch (er) { console.error(er); showToast('Could not build your plan. Please try again.'); return; }
+            if (!html) { showToast('Save a few careers, colleges or exams, or take the quiz, then download your plan.'); return; }
+            sheet.innerHTML = html;
+            document.body.classList.add('printing-plan');
+            const done = function () { document.body.classList.remove('printing-plan'); };
+            window.addEventListener('afterprint', done, { once: true });
+            setTimeout(function () { try { window.print(); } catch (er) { done(); showToast('Printing is blocked here. Open the page in its own tab, then try again.'); } }, 200);
         }
 
         // ---------- NIRF 2025 display ----------
@@ -14628,5 +14892,6 @@
     <div id="gloss-pop" role="tooltip" class="gloss-pop hidden bg-white border border-slate-200 rounded-xl shadow-lg p-3"></div>
     <div id="search-suggest" role="listbox" aria-label="Search suggestions" class="search-suggest hidden bg-white border border-slate-200 rounded-xl shadow-lg"></div>
     <div id="parent-print-sheet" style="display:none" aria-hidden="true"></div>
+    <div id="plan-print-sheet" style="display:none" aria-hidden="true"></div>
 </body>
 </html>
