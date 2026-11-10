@@ -9260,6 +9260,7 @@
             if (viewId === 'exams') renderExams();
             if (viewId === 'colleges') { applyFitToCollegeFilters(); renderColleges(); }
             if (viewId === 'backupPlan') { document.getElementById('backup-exam').value=''; document.getElementById('backup-exam-search').value=''; document.getElementById('backup-exam-picked').classList.add('hidden'); backupTargetClear(); backupApplyMode(); document.getElementById('backup-score').value=''; document.getElementById('backup-results').classList.add('hidden'); document.getElementById('backup-empty-state').classList.remove('hidden'); renderRecoveryGuidance(); }
+            if (viewId === 'backupPlan') backupPrefillFromFit();
             if (viewId === 'afterDegree') loadBranchTree(currentBranchKey || 'B.Com');
             if (viewId === 'dashboard') renderDashboard();
             if (viewId === 'govAndAbroad') { renderScholarshipMatches(); calculateHiddenCosts(); renderReservationInfo(); }
@@ -13712,6 +13713,14 @@
             ].map(function (t) { return '<li>' + t + '</li>'; }).join('');
         }
 
+        // The backup planner starts from where the student lives, so they do not retype it.
+        function backupPrefillFromFit() {
+            const f = getFit(); if (!f || !f.district) return;
+            const city = document.getElementById('backup-city');
+            if (city && !city.value) city.value = f.district.replace(/\s+(urban|rural|city|district)$/i, '').trim();
+            const loc = document.querySelector('input[name="backup-priority"][value="location"]');
+            if (loc) loc.checked = true;
+        }
         function generateBackupPlan() {
             if (!requireAuth('Sign in to generate and save your backup plan.', generateBackupPlan)) return;
             const examId = document.getElementById('backup-exam').value;
@@ -14282,13 +14291,16 @@
         // have to pick them again. It re-applies only when those answers change; a filter they change by hand stays.
         let COLLEGE_AUTO_KEY = null, COLLEGE_PENDING_DISTRICT = '';
         function applyFitToCollegeFilters() {
-            const f = getFit(), key = f && f.state && f.state !== 'any' ? f.state + '|' + (f.district || '') : '';
+            const f = getFit(), a0 = getStoredWizardAnswers() || {}, lvl = a0.stage === 'School 11-12' ? 'UG' : (a0.stage === 'Undergraduate' || (a0.stage === 'Graduate' && !a0.working)) ? 'PG' : '', key = (f && f.state && f.state !== 'any' ? f.state + '|' + (f.district || '') : '') + '#' + lvl;
             if (COLLEGE_AUTO_KEY === key) return;
             const hadAuto = COLLEGE_AUTO_KEY;
             COLLEGE_AUTO_KEY = key;
             const sel = document.getElementById('college-state-filter'), d = document.getElementById('college-district-filter'), nb = document.getElementById('college-nearby');
             if (!sel) return;
-            if (!key) { if (hadAuto) { sel.value = 'ALL'; if (d) d.value = 'ALL'; if (nb) nb.checked = false; COLLEGE_PENDING_DISTRICT = ''; syncDistrictOptions(); } return; }
+            const lv = document.getElementById('college-level-filter');
+            if (lv && (lvl || (hadAuto && /#.+$/.test(hadAuto)))) lv.value = lvl || 'ALL';
+            const f2 = f && f.state && f.state !== 'any' ? f : null;
+            if (!f2) { if (hadAuto && /^[^#]/.test(hadAuto)) { sel.value = 'ALL'; if (d) d.value = 'ALL'; if (nb) nb.checked = false; COLLEGE_PENDING_DISTRICT = ''; syncDistrictOptions(); } return; }
             if (!Array.prototype.some.call(sel.options, function (o) { return o.value === f.state; })) {
                 const o = document.createElement('option'); o.value = f.state; o.textContent = f.state; sel.appendChild(o);
             }
