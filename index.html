@@ -127,6 +127,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
+        .pw-wrap { position: relative; }
+        .pw-wrap > input { padding-right: 52px; }
+        .pw-eye { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: none; border: 0; color: #64748b; cursor: pointer; border-radius: 10px; }
+        .pw-eye:hover { color: #0f172a; }
+        html.dark .pw-eye { color: #94a3b8; } html.dark .pw-eye:hover { color: #f1f5f9; }
+        .pw-meter { display: flex; gap: 4px; margin-top: 6px; } .pw-meter i { flex: 1; height: 4px; border-radius: 4px; background: #cbd5e1; }
+        html.dark .pw-meter i { background: #334155; }
         /* Phones: enlarge the tap area of small inline text links/buttons without changing layout */
         @media (pointer: coarse) {
             .view-section :is(a, button):is(.text-brand-600, .text-xs):not([class*="bg-"]):not([class*="border"]) { position: relative; }
@@ -460,6 +467,8 @@
                     <div>
                         <label for="auth-password" class="block text-sm font-semibold text-slate-700 mb-1">Password</label>
                         <input id="auth-password" type="password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" aria-describedby="auth-password-err" class="w-full min-h-[48px] px-4 border border-slate-300 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-brand-500">
+                        <div id="auth-pw-meter" class="pw-meter hidden" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+                        <p id="auth-pw-hint" class="hidden text-xs text-slate-500 mt-1" aria-live="polite"></p>
                         <p id="auth-password-err" role="alert" class="hidden text-xs text-rose-600 mt-1"></p>
                     </div>
                     <div>
@@ -471,6 +480,7 @@
                     </div>
                     <p id="auth-signup-err" role="alert" class="hidden text-sm text-rose-700 bg-rose-50 border border-rose-200 rounded-xl px-3 py-2"></p>
                     <p id="auth-signup-ok" role="status" class="hidden text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2"></p>
+                    <button type="button" id="auth-resend-btn" onclick="authResend()" class="hidden w-full min-h-[44px] text-sm font-semibold text-brand-700 hover:underline">Didn't get it? Resend confirmation email</button>
                     <button type="submit" id="auth-signup-submit" class="w-full min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold transition">Create account</button>
                 </form>
 
@@ -485,6 +495,7 @@
                     </div>
                     <p id="auth-login-err" role="alert" class="hidden text-sm text-rose-700 bg-rose-50 border border-rose-200 rounded-xl px-3 py-2"></p>
                     <p id="auth-login-ok" role="status" class="hidden text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2"></p>
+                    <button type="button" id="auth-resend-login-btn" onclick="authResend(true)" class="hidden w-full min-h-[44px] text-sm font-semibold text-brand-700 hover:underline">Resend confirmation email</button>
                     <button type="submit" id="auth-login-submit" class="w-full min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold transition">Log in</button>
                     <button type="button" id="auth-forgot-btn" onclick="authForgotPassword()" class="w-full min-h-[40px] text-sm font-semibold text-brand-700 hover:underline">Forgot password?</button>
                 </form>
@@ -10345,6 +10356,7 @@
 
         function authShow(step) {
             authClearErrs();
+            ['auth-resend-btn', 'auth-resend-login-btn'].forEach(function (id) { const e = document.getElementById(id); if (e) e.classList.add('hidden'); });
             const forms = step === 'signup' || step === 'login';
             document.getElementById('auth-forms').classList.toggle('hidden', !forms);
             document.getElementById('auth-step-reset').classList.toggle('hidden', step !== 'reset');
@@ -10405,6 +10417,49 @@
         // and run that same pending retry.
         function dismissAuth() { authPendingRetry = null; closeAuth(); }
 
+        function authResend(fromLogin) {
+            const email = authState.pendingEmail; if (!sb || !email) return;
+            const btn = document.getElementById(fromLogin ? 'auth-resend-login-btn' : 'auth-resend-btn');
+            btn.disabled = true;
+            sb.auth.resend({ type: 'signup', email: email }).then(function (res) {
+                if (res.error) { btn.disabled = false; showToast(/rate|seconds/i.test(res.error.message || '') ? 'Please wait a minute before asking again.' : 'Could not resend. Try again shortly.'); return; }
+                showToast('Confirmation email sent to ' + email + '.');
+                let n = 60; btn.textContent = 'Resend again in ' + n + 's';
+                const t = setInterval(function () { n--; if (n <= 0) { clearInterval(t); btn.disabled = false; btn.textContent = fromLogin ? 'Resend confirmation email' : "Didn't get it? Resend confirmation email"; } else btn.textContent = 'Resend again in ' + n + 's'; }, 1000);
+            }, function () { btn.disabled = false; showToast("Can't reach the server right now."); });
+        }
+        function authPwStrength(v) {
+            if (!v) return { n: 0, t: '' };
+            let sc = 0; if (v.length >= 8) sc++; if (v.length >= 12) sc++; if (/[a-z]/.test(v) && /[A-Z]/.test(v)) sc++; if (/\d/.test(v) && /[^A-Za-z0-9]/.test(v)) sc++;
+            if (v.length < 8) return { n: 1, t: 'Too short — use at least 8 characters', c: '#e11d48' };
+            if (/^(password|12345678|qwertyui|11111111)/i.test(v)) return { n: 1, t: 'Too common — try something less guessable', c: '#e11d48' };
+            return [null, { n: 2, t: 'Okay — add length or mixed characters', c: '#f59e0b' }, { n: 2, t: 'Okay — add length or mixed characters', c: '#f59e0b' }, { n: 3, t: 'Good', c: '#10b981' }, { n: 4, t: 'Strong', c: '#059669' }][Math.max(1, sc)];
+        }
+        function authInitPwUi() {
+            document.querySelectorAll('#auth-modal input[type="password"]').forEach(function (inp) {
+                if (inp.parentElement.classList.contains('pw-wrap')) return;
+                const w = document.createElement('div'); w.className = 'pw-wrap';
+                inp.parentNode.insertBefore(w, inp); w.appendChild(inp);
+                const b = document.createElement('button'); b.type = 'button'; b.className = 'pw-eye'; b.setAttribute('aria-label', 'Show password'); b.setAttribute('aria-pressed', 'false');
+                b.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+                b.addEventListener('click', function () {
+                    const show = inp.type === 'password'; inp.type = show ? 'text' : 'password';
+                    b.setAttribute('aria-label', show ? 'Hide password' : 'Show password'); b.setAttribute('aria-pressed', show ? 'true' : 'false'); b.style.opacity = show ? '1' : '.8';
+                });
+                w.appendChild(b);
+            });
+            const pw = document.getElementById('auth-password');
+            if (pw) pw.addEventListener('input', function () {
+                const r = authPwStrength(pw.value), m = document.getElementById('auth-pw-meter'), h = document.getElementById('auth-pw-hint');
+                m.classList.toggle('hidden', !pw.value); h.classList.toggle('hidden', !pw.value);
+                if (!pw.value) return;
+                m.querySelectorAll('i').forEach(function (el, i) { el.style.background = i < r.n ? r.c : ''; });
+                h.textContent = r.t;
+            });
+        }
+        document.addEventListener('DOMContentLoaded', authInitPwUi);
+        if (document.readyState !== 'loading') authInitPwUi();
+
         function authSignup(ev) {
             if (ev) ev.preventDefault();
             authClearErrs();
@@ -10422,12 +10477,22 @@
             sb.auth.signUp({ email: email, password: password, options: { data: { full_name: name } } }).then(function (res) {
                 authBusy('auth-form-signup', 'auth-signup-submit', false);
                 if (res.error) { authErr('auth-signup-err', res.error.message || 'Could not create your account. Please try again.'); return; }
+                if (res.data && res.data.user && Array.isArray(res.data.user.identities) && res.data.user.identities.length === 0) {
+                    // Supabase hides "already registered" behind an empty identities list.
+                    authShow('login');
+                    document.getElementById('auth-login-email').value = email;
+                    authErr('auth-login-ok', 'This email already has an account. Log in below, or use "Forgot password?" if you don\'t remember it.');
+                    document.getElementById('auth-login-password').focus();
+                    return;
+                }
                 if (res.data.session) {
                     showToast('Account created. Welcome, ' + name.split(' ')[0] + '!');
                     closeAuth();
                 } else {
                     // Email confirmation is required before a session is issued.
-                    authErr('auth-signup-ok', "Almost there — check " + email + " for a confirmation link, then log in.");
+                    authErr('auth-signup-ok', "Almost there — check " + email + " for a confirmation link (look in spam too), then log in.");
+                    authState.pendingEmail = email;
+                    document.getElementById('auth-resend-btn').classList.remove('hidden');
                 }
             }, function () {
                 authBusy('auth-form-signup', 'auth-signup-submit', false);
@@ -10444,7 +10509,14 @@
             authBusy('auth-form-login', 'auth-login-submit', true);
             sb.auth.signInWithPassword({ email: email, password: password }).then(function (res) {
                 authBusy('auth-form-login', 'auth-login-submit', false);
-                if (res.error) { authErr('auth-login-err', res.error.message || 'Could not log in. Check your email and password.'); return; }
+                if (res.error) {
+                    if (/not confirmed/i.test(res.error.message || '')) {
+                        authState.pendingEmail = email;
+                        authErr('auth-login-err', 'Please confirm your email first — check your inbox (and spam) for the link.');
+                        document.getElementById('auth-resend-login-btn').classList.remove('hidden');
+                    } else authErr('auth-login-err', res.error.message || 'Could not log in. Check your email and password.');
+                    return;
+                }
                 showToast('Welcome back' + (authDisplayName({ user: res.data.user }) ? ', ' + authDisplayName({ user: res.data.user }).split(' ')[0] : '') + '!');
                 closeAuth();
             }, function () {
