@@ -11120,7 +11120,7 @@
             }
             const shortlist = savedCareers.map(function (c) { return { c: c, tag: 'Saved' }; }).concat(recCareers.map(function (r) { return { c: r.c, tag: 'Recommended', fit: r.fit }; }));
             let recCols = [];
-            if (student && f) recCols = pickDiverseColleges(collegesData.filter(function (c) { return savedColIds.indexOf(c.id) < 0 && (!f.state || f.state === 'any' || collegeState(c) === f.state); }).map(function (c) { return { c: c, score: collegeFit(c, f).score }; }).sort(function (x, y) { return y.score - x.score; }), f, savedCols.length >= 4 ? 2 : 4).map(function (r) { return r.c; });
+            if (student && f) recCols = pickDiverseColleges(planStatePool(f).filter(function (c) { return savedColIds.indexOf(c.id) < 0; }).map(function (c) { return { c: c, score: collegeFit(c, f).score }; }).sort(function (x, y) { return y.score - x.score; }), f, savedCols.length >= 4 ? 2 : 4).map(function (r) { return r.c; });
             const examSeen = {}; savedExams.forEach(function (x) { examSeen[x.id] = 1; });
             let recExams = [];
             shortlist.forEach(function (s) { examsForCareer(s.c).forEach(function (x) { if (!examSeen[x.id] && recExams.length < 5) { examSeen[x.id] = 1; recExams.push(x); } }); });
@@ -11207,12 +11207,30 @@
             const bkKeys = {}; savedExams.concat(recExams).forEach(function (x) { if (BACKUP_COLLEGES[x.id]) bkKeys[x.id] = x; });
             const bkIds = Object.keys(bkKeys);
             h += sec('Plan B: if the first choice does not work out');
-            if (student && bkIds.length) {
+            const placeWhere = f && f.state && f.state !== 'any' ? (f.district ? f.district + ', ' + f.state : f.state) : '';
+            if (student && f) {
+                // backups that match where the student lives: their district and nearby first, then the rest of their state
+                const savedSet = {}; savedCols.forEach(function (c) { savedSet[c.id] = 1; });
+                const pool = planStatePool(f).filter(function (c) { return !savedSet[c.id] && !(c.dir ? false : collegeTier(c) === 0 && !fitAimAny(c, f.aim)); });
+                const ranked = pool.map(function (c) { return { c: c, score: collegeFit(c, f).score, lr: collegeLocalRank(c, f) }; }).sort(function (x, y) { return x.lr - y.lr || y.score - x.score; });
+                const picks = pickDiverseColleges(ranked, f, 8).sort(function (x, y) { return x.lr - y.lr || y.score - x.score; });
+                if (picks.length) {
+                    h += '<div class="pp-card"><b>Backup colleges' + (placeWhere ? ' in ' + e(placeWhere) + ' and nearby' : '') + '</b><span class="pp-sm pp-mut"> (matched to your interests' + (f.budget ? ' and fee budget' : '') + ')</span><table class="pp-t"><tr><th>College</th><th>Where</th><th>Type</th><th>Fees / yr</th><th>Courses</th></tr>' + picks.map(function (r) {
+                        const c = r.c, near = r.lr === 0 ? 'Your district' : r.lr === 1 ? 'Near you' : '';
+                        const crs = c.dir ? (c.courses || []).slice(0, 3).join('; ') : (Array.isArray(c.courses) ? c.courses : [c.courses || '']).slice(0, 3).join('; ');
+                        return '<tr><td><b>' + e(c.name.replace(/\s*\(.*?\)\s*/g, ' ').trim()) + '</b></td><td>' + e(c.dir ? (c.district ? c.district + ', ' : '') + c.state : c.location) + (near ? '<br><span class="pp-mut">' + near + '</span>' : '') + '</td><td>' + e(c.dir ? (dirFacts(c) || 'College') : (c.type || '')) + '</td><td>' + e(c.dir ? '–' : (c.fees || '–')) + '</td><td>' + e(crs || '–') + '</td></tr>';
+                    }).join('') + '</table><p class="pp-sm pp-mut">Fees are not listed for every college; check each college\'s own website. Confirm seats, approvals and dates before you apply.</p></div>';
+                } else if (placeWhere) h += '<div class="pp-card">We could not find backup colleges for ' + e(placeWhere) + ' yet. Browse the Colleges page for your area.</div>';
+                // state-level entrance exams are the most useful backup route for state colleges
+                if (f.state && f.state !== 'any') {
+                    const sx = examsData.filter(function (x) { return (x.name + ' ' + (x.body || '') + ' ' + (x.courses || '')).toLowerCase().indexOf(f.state.toLowerCase()) > -1; }).slice(0, 5);
+                    if (sx.length) h += '<div class="pp-card"><b>' + e(f.state) + ' entrance exams to keep as a backup</b><ul>' + sx.map(function (x) { return '<li><b>' + e(x.name) + '</b> — ' + e(x.eligibility || '') + (x.site ? ' · ' + planLink(x.site, 'Official site') : '') + '</li>'; }).join('') + '</ul></div>';
+                }
+            }
+            if (student && bkIds.length && !(f && f.state && f.state !== 'any')) {
                 h += bkIds.slice(0, 3).map(function (k) {
-                    let list = BACKUP_COLLEGES[k].filter(function (b) { return !savedCols.some(function (c) { return backupNorm(c.name) === backupNorm(b.name); }); }).slice().sort(function (p, q) { return (p.cutoff || 0) - (q.cutoff || 0); });
-                    const home = f && f.state && f.state !== 'any' ? list.filter(function (b) { return canonicalState(String(b.location || '').split(',').pop().trim()) === f.state || (f.district && String(b.location || '').toLowerCase().indexOf(f.district.toLowerCase()) > -1); }) : [];
-                    const local = home.length >= 2; if (local) list = home; list = list.slice(0, 6);
-                    return '<div class="pp-card"><b>If your ' + e(bkKeys[k].name) + ' result falls short</b><span class="pp-sm pp-mut"> (listed from easier to harder to get into' + (local ? ', in ' + e(f.district ? f.district + ' and ' + f.state : f.state) : (f && f.state && f.state !== 'any' ? '; we have no listed backups in ' + e(f.state) + ' for this exam, so these are nationwide' : '')) + ')</span><table class="pp-t"><tr><th>Option</th><th>City</th><th>Placements</th><th>Avg. pay</th><th>Why keep it</th></tr>' + list.map(function (b) { return '<tr><td><b>' + e(b.name) + '</b></td><td>' + e(b.location) + '</td><td>' + (b.placementRate ? e(b.placementRate) + '%' : '–') + '</td><td>' + (b.avgSalary ? '₹' + e(b.avgSalary) + ' LPA' : '–') + '</td><td>' + e((b.pros || [])[0] || '') + '</td></tr>'; }).join('') + '</table></div>';
+                    const list = BACKUP_COLLEGES[k].filter(function (b) { return !savedCols.some(function (c) { return backupNorm(c.name) === backupNorm(b.name); }); }).slice().sort(function (p, q) { return (p.cutoff || 0) - (q.cutoff || 0); }).slice(0, 6);
+                    return '<div class="pp-card"><b>If your ' + e(bkKeys[k].name) + ' result falls short</b><span class="pp-sm pp-mut"> (listed from easier to harder to get into; add your state in the quiz to see backups near you)</span><table class="pp-t"><tr><th>Option</th><th>City</th><th>Placements</th><th>Avg. pay</th><th>Why keep it</th></tr>' + list.map(function (b) { return '<tr><td><b>' + e(b.name) + '</b></td><td>' + e(b.location) + '</td><td>' + (b.placementRate ? e(b.placementRate) + '%' : '–') + '</td><td>' + (b.avgSalary ? '₹' + e(b.avgSalary) + ' LPA' : '–') + '</td><td>' + e((b.pros || [])[0] || '') + '</td></tr>'; }).join('') + '</table></div>';
                 }).join('');
             }
             const spare = careersData.filter(function (c) { return !shortlist.some(function (s) { return s.c.id === c.id; }); }).map(function (c) { return { c: c, s: a ? scoreCareerForWizard(c, a).score : 0 }; }).sort(function (x, y) { return y.s - x.s; }).slice(0, 3);
@@ -11237,7 +11255,22 @@
             h += '<p class="pp-sm pp-mut pp-foot">Prepared by Plan4it on ' + e(today) + '. Fees, dates, eligibility and cutoffs change every year: confirm each on the official website before you apply or pay. Course and certification links go to the provider\'s own site; some courses are paid. This report is guidance based on your answers, not official or professional advice. plan4it.co</p>';
             return h;
         }
+        // Every college we can place in the student's state: the curated ones plus that state's directory file.
+        function planStatePool(f) {
+            if (!f || !f.state || f.state === 'any') return collegesData.slice();
+            const code = DIR.codeOf ? DIR.codeOf[f.state] : '';
+            return collegesData.filter(function (c) { return collegeState(c) === f.state; }).concat(code && DIR.shards[code] ? DIR.shards[code] : []);
+        }
         function printPlan() {
+            const f0 = getFit();
+            if (f0 && f0.state && f0.state !== 'any' && !(DIR.index && DIR.shards[DIR.codeOf[f0.state]])) {
+                showToast('Preparing your plan for ' + f0.state + '…');
+                (DIR.index ? Promise.resolve() : dirLoadIndex()).then(function () { const c = DIR.codeOf && DIR.codeOf[f0.state]; return c && !DIR.shards[c] ? dirLoadState(c) : null; }).catch(function () {}).then(printPlanNow);
+                return;
+            }
+            printPlanNow();
+        }
+        function printPlanNow() {
             const sheet = document.getElementById('plan-print-sheet');
             let html = '';
             try { html = planBuild(); } catch (er) { console.error(er); showToast('Could not build your plan. Please try again.'); return; }
