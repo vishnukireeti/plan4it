@@ -721,6 +721,11 @@
                                 <option value="Andhra Pradesh">Andhra Pradesh</option><option value="Arunachal Pradesh">Arunachal Pradesh</option><option value="Assam">Assam</option><option value="Bihar">Bihar</option><option value="Chhattisgarh">Chhattisgarh</option><option value="Goa">Goa</option><option value="Gujarat">Gujarat</option><option value="Haryana">Haryana</option><option value="Himachal Pradesh">Himachal Pradesh</option><option value="Jharkhand">Jharkhand</option><option value="Karnataka">Karnataka</option><option value="Kerala">Kerala</option><option value="Madhya Pradesh">Madhya Pradesh</option><option value="Maharashtra">Maharashtra</option><option value="Manipur">Manipur</option><option value="Meghalaya">Meghalaya</option><option value="Mizoram">Mizoram</option><option value="Nagaland">Nagaland</option><option value="Odisha">Odisha</option><option value="Punjab">Punjab</option><option value="Rajasthan">Rajasthan</option><option value="Sikkim">Sikkim</option><option value="Tamil Nadu">Tamil Nadu</option><option value="Telangana">Telangana</option><option value="Tripura">Tripura</option><option value="Uttar Pradesh">Uttar Pradesh</option><option value="Uttarakhand">Uttarakhand</option><option value="West Bengal">West Bengal</option><option value="Andaman & Nicobar Islands">Andaman & Nicobar Islands</option><option value="Chandigarh">Chandigarh</option><option value="Dadra &amp; Nagar Haveli and Daman &amp; Diu">Dadra &amp; Nagar Haveli and Daman &amp; Diu</option><option value="Delhi">Delhi</option><option value="Jammu & Kashmir">Jammu & Kashmir</option><option value="Ladakh">Ladakh</option><option value="Lakshadweep">Lakshadweep</option><option value="Puducherry">Puducherry</option>
                             </select>
                         </div>
+                        <div id="wiz-district-wrap" class="hidden">
+                            <label for="wiz-district" class="block text-sm font-semibold text-slate-700 mb-2">Which district or city are you in? <span class="font-normal text-slate-500">(optional)</span></label>
+                            <select id="wiz-district" onchange="wizardSit('district', this.value)" class="w-full sm:w-80 px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:outline-none focus:ring-2 focus:ring-brand-500"><option value="">Select your district or city...</option></select>
+                            <p class="text-xs text-slate-500 mt-1.5">We show colleges in your district and the ones nearby first. Pick the district your city is in.</p>
+                        </div>
                         <div>
                             <p class="text-sm font-semibold text-slate-700 mb-2">About how much can your family spend on college fees each year?</p>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -9580,6 +9585,7 @@
         function wizardSitSet(k, v) { wizardAnswers[k] = v; }
         function wizardSituationText() {
             const p = [];
+            if (wizardAnswers.district && wizardAnswers.state && wizardAnswers.state !== 'any') p.push(wizardAnswers.district);
             if (wizardAnswers.state) p.push(wizardAnswers.state === 'any' ? 'Any state' : wizardAnswers.state);
             if (FIT_BUDGET[wizardAnswers.budget]) p.push(FIT_BUDGET[wizardAnswers.budget][0]);
             if (FIT_LEVEL[wizardAnswers.level]) p.push(FIT_LEVEL[wizardAnswers.level][0]);
@@ -9594,6 +9600,20 @@
                 b.classList.toggle('border-brand-600', on); b.classList.toggle('bg-brand-50', on); b.classList.toggle('border-slate-200', !on); b.setAttribute('aria-pressed', on);
             });
             const sel = document.getElementById('wiz-state'); if (sel) sel.value = wizardAnswers.state || '';
+            const dw = document.getElementById('wiz-district-wrap'), ds = document.getElementById('wiz-district');
+            if (dw && ds) {
+                const st = wizardAnswers.state, show = !!st && st !== 'any';
+                dw.classList.toggle('hidden', !show);
+                if (show) {
+                    if (!DIR.index && !DIR.failed) dirLoadIndex().then(function () { markSit(); });
+                    const si = DIR.index && DIR.codeOf ? DIR.stateOf[DIR.codeOf[st]] : null;
+                    if (si && ds.getAttribute('data-for') !== si.code) {
+                        ds.innerHTML = '<option value="">Select your district or city...</option>' + si.districts.map(function (d) { return '<option value="' + escapeAuth(d[0]) + '">' + escapeAuth(d[0]) + '</option>'; }).join('');
+                        ds.setAttribute('data-for', si.code);
+                    } else if (!si) { ds.removeAttribute('data-for'); ds.innerHTML = '<option value="">Loading districts...</option>'; }
+                    ds.value = wizardAnswers.district || '';
+                } else ds.removeAttribute('data-for');
+            }
             const needsState = wizardNeedsState();
             const title = document.getElementById('wiz-practical-title'); if (title) title.textContent = needsState ? 'One more thing: where are you studying?' : 'Optional: a few practical things';
             const sub = document.getElementById('wiz-practical-sub'); if (sub) sub.textContent = needsState ? 'Colleges are only useful if they are realistic for you, so we need your state before showing any. Budget and marks are still optional.' : 'This lets us put colleges, exams and careers that are realistic for you first, not only the most famous ones. It is not a test, and you can skip any part of it.';
@@ -9601,15 +9621,16 @@
             const skipBtn = document.getElementById('wiz-sit-skip'); if (skipBtn) skipBtn.classList.toggle('hidden', needsState);
             const go = document.getElementById('wiz-sit-go'); if (go) go.disabled = needsState ? !wizardAnswers.state : !(wizardAnswers.state || wizardAnswers.budget || wizardAnswers.level);
         }
-        function wizardSit(k, v) { wizardSitSet(k, v); markSit(); }
+        function wizardSit(k, v) { if (k === 'state' && wizardAnswers.state !== v) delete wizardAnswers.district; if (k === 'district' && !v) { delete wizardAnswers.district; markSit(); return; } wizardSitSet(k, v); markSit(); }
         function wizardSitDone() { wizardAnswers.situation = 'done'; showWizardResults(); }
-        function wizardSitSkip() { delete wizardAnswers.state; delete wizardAnswers.budget; delete wizardAnswers.level; wizardAnswers.situation = 'skipped'; showWizardResults(); }
+        function wizardSitSkip() { delete wizardAnswers.state; delete wizardAnswers.district; delete wizardAnswers.budget; delete wizardAnswers.level; wizardAnswers.situation = 'skipped'; showWizardResults(); }
 
         // What we know about the student: quiz answers first, then the saved profile on the dashboard.
         function getFit() {
             const a = getStoredWizardAnswers() || {}, p = getProfile() || {};
             const f = { state: '', budget: '', level: '', interest: a.interest && a.interest !== 'Undecided' ? a.interest : '', interests: a.interests3 && a.interests3.length ? a.interests3.slice() : (a.interest && a.interest !== 'Undecided' ? [a.interest] : []), stage: a.stage || '' };
             if (a.state === 'any' || FIT_STATES.indexOf(a.state) > -1) f.state = a.state;
+            if (a.district && f.state && f.state !== 'any') f.district = a.district;
             if (FIT_BUDGET[a.budget]) f.budget = a.budget;
             if (FIT_LEVEL[a.level]) f.level = a.level;
             if (!f.state && p.location) { const t = String(p.location).toLowerCase(); const hit = FIT_STATES.filter(function (x) { return t.indexOf(x.toLowerCase()) > -1; })[0]; if (hit) f.state = hit; }
@@ -9619,6 +9640,7 @@
         function fitActive() { return !FIT_OFF && !!getFit(); }
         function fitSummaryText(f) {
             const p = [];
+            if (f.district && f.state && f.state !== 'any') p.push(f.district);
             if (f.state) p.push(f.state === 'any' ? 'any state' : f.state);
             if (f.budget) p.push(FIT_BUDGET[f.budget][0]);
             if (f.level) p.push(FIT_LEVEL[f.level][0]);
@@ -9634,6 +9656,7 @@
             else if (/\b(NIT|IIIT|NLU|BITS|NIFT|NID|SRCC|LSR|Hansraj|Hindu College|St\.? Stephen|DTU|NSUT|ISI|TISS|XLRI|FMS|IIEST|MAMC|AFMC|CMC)\b/.test(n)) t = Math.min(t, 1);
             c._tier = t; return t;
         }
+        const FIT_NEAR_CACHE = {};
         function collegeFit(c, f) {
             let s = 40; const tags = [];
             if (c.dir) {
@@ -9655,7 +9678,18 @@
                 else if (c.feesLakh <= cap * 1.3) s += 4;
                 else { s -= 28; tags.push(['Above your fee budget', 'a']); }
             }
-            if (f.state && f.state !== 'any' && collegeState(c).toLowerCase() === f.state.toLowerCase()) { s += 18; tags.push(['In your state', 'g']); }
+            if (f.state && f.state !== 'any' && collegeState(c).toLowerCase() === f.state.toLowerCase()) {
+                s += 18; tags.push(['In your state', 'g']);
+                if (f.district) {
+                    const cd = String(c.district || String(c.location || '').split(',')[0]).trim().toLowerCase();
+                    if (cd && cd === f.district.toLowerCase()) { s += 22; tags.unshift(['In your district', 'g']); }
+                    else if (DIR.index && DIR.distLL) {
+                        const key = f.state + '|' + f.district;
+                        FIT_NEAR_CACHE[key] = FIT_NEAR_CACHE[key] || nearbyDistricts(f.state, f.district, 100);
+                        if (c.district && FIT_NEAR_CACHE[key].has(f.state + '|' + c.district)) { s += 10; tags.push(['Near you', 'g']); }
+                    }
+                }
+            }
             if (f.interest) {
                 const cf = collegeFields(c), prim = FIT_INTEREST_FIELDS[f.interest] || [];
                 const more = [].concat.apply([], (f.interests || []).slice(1).map(function (k) { return FIT_INTEREST_FIELDS[k] || []; }));
@@ -10103,10 +10137,9 @@
             const pool = code && DIR.shards[code] ? collegesData.concat(DIR.shards[code]) : collegesData;
             const ranked = pool.map(function (c) { const r = collegeFit(c, f); return { c: c, score: r.score, tags: r.tags }; });
             ranked.sort(function (a, b) { return b.score - a.score || collegeDetailRank(a.c) - collegeDetailRank(b.c); });
-            // at least three from the student's own state whenever it has any
-            const inState = f.state !== 'any' ? ranked.filter(function (r) { return collegeState(r.c) === f.state; }).slice(0, 3) : [];
-            const picked = new Set(inState.map(function (r) { return r.c.id; }));
-            const top = inState.concat(ranked.filter(function (r) { return !picked.has(r.c.id); }).slice(0, 6 - inState.length)).sort(function (a, b) { return b.score - a.score; });
+            // a student who named a state only sees colleges in that state (nearest first when a district is given)
+            const top = (f.state !== 'any' ? ranked.filter(function (r) { return collegeState(r.c) === f.state; }) : ranked).slice(0, 6);
+            if (!top.length) { box.innerHTML = '<div class="p-5 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800">We could not find colleges listed for ' + e(f.state) + ' yet. Try the Colleges page to browse every state.</div>'; return; }
             const st = code && DIR.stateOf ? DIR.stateOf[code] : null;
             box.innerHTML = top.map(function (r) {
                 const c = r.c;
@@ -10114,7 +10147,7 @@
                 const name = c.name.replace(/\s*\(.*?\)\s*/g, ' ').trim();
                 const stands = c.dir
                     ? [dirFacts(c), c.courseRows.length ? dirSeats(c).toLocaleString('en-IN') + ' approved seats a year' : '', c.uni ? 'Affiliated to ' + c.uni : '']
-                    : [c.fees ? c.fees + (/\//.test(c.fees) ? '' : ' / yr') : '', c.relatedExam ? 'Entry via ' + c.relatedExam : '', c.placementNote ? c.placementNote.split('.')[0] : ''];
+                    : [c.fees ? c.fees + (/\//.test(c.fees) ? '' : ' / yr') : '', c.relatedExam ? 'Entry via ' + c.relatedExam : '', c.placementNote && !/mock|illustrative/i.test(c.placementNote) ? c.placementNote.split('.')[0] : ''];
                 const courses = c.dir ? c.courses : (c.courses || []);
                 return '<div class="p-4 bg-white border border-slate-200 rounded-xl">' +
                     '<div class="flex items-start justify-between gap-3"><div class="min-w-0">' +
@@ -14125,6 +14158,7 @@
                 sel.value = f.state;
                 const d = document.getElementById('college-district-filter'); if (d) d.value = 'ALL';
                 syncDistrictOptions();
+                if (f.district && d && Array.prototype.some.call(d.options, function (o) { return o.value === f.district; })) { d.value = f.district; syncDistrictOptions(); const nb = document.getElementById('college-nearby'); if (nb) nb.checked = true; }
             }
             switchView('colleges');
         }
