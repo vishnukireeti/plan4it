@@ -9256,7 +9256,7 @@
             }
             if (viewId === 'explorer') renderExplorerCareers();
             if (viewId === 'exams') renderExams();
-            if (viewId === 'colleges') renderColleges();
+            if (viewId === 'colleges') { applyFitToCollegeFilters(); renderColleges(); }
             if (viewId === 'backupPlan') { document.getElementById('backup-exam').value=''; document.getElementById('backup-exam-search').value=''; document.getElementById('backup-exam-picked').classList.add('hidden'); backupTargetClear(); backupApplyMode(); document.getElementById('backup-score').value=''; document.getElementById('backup-results').classList.add('hidden'); document.getElementById('backup-empty-state').classList.remove('hidden'); renderRecoveryGuidance(); }
             if (viewId === 'afterDegree') loadBranchTree(currentBranchKey || 'B.Com');
             if (viewId === 'dashboard') renderDashboard();
@@ -12864,6 +12864,10 @@
                 sel.value = Array.prototype.some.call(sel.options, function (o) { return o.value === cur; }) ? cur : 'ALL';
             }
             if (!s) sel.removeAttribute('data-for');
+            if (s && COLLEGE_PENDING_DISTRICT && Array.prototype.some.call(sel.options, function (o) { return o.value === COLLEGE_PENDING_DISTRICT; })) {
+                sel.value = COLLEGE_PENDING_DISTRICT; COLLEGE_PENDING_DISTRICT = '';
+                if (DIR.distLL && DIR.distLL[s.name + '|' + sel.value]) { const nb0 = document.getElementById('college-nearby'); if (nb0) nb0.checked = true; }
+            }
             const canNear = !!s && sel.value !== 'ALL' && !!(DIR.distLL && DIR.distLL[s.name + '|' + sel.value]);
             if (wrap) { wrap.classList.toggle('hidden', !canNear); wrap.classList.toggle('flex', canNear); }
             if (!canNear) { const nb = document.getElementById('college-nearby'); if (nb) nb.checked = false; }
@@ -14238,19 +14242,29 @@
             renderColleges();
             const t = document.getElementById('college-state-filter'); if (t && t.scrollIntoView) t.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
+        // The Colleges page opens already set to the student's state and district (from the quiz), so they do not
+        // have to pick them again. It re-applies only when those answers change; a filter they change by hand stays.
+        let COLLEGE_AUTO_KEY = null, COLLEGE_PENDING_DISTRICT = '';
+        function applyFitToCollegeFilters() {
+            const f = getFit(), key = f && f.state && f.state !== 'any' ? f.state + '|' + (f.district || '') : '';
+            if (COLLEGE_AUTO_KEY === key) return;
+            const hadAuto = COLLEGE_AUTO_KEY;
+            COLLEGE_AUTO_KEY = key;
+            const sel = document.getElementById('college-state-filter'), d = document.getElementById('college-district-filter'), nb = document.getElementById('college-nearby');
+            if (!sel) return;
+            if (!key) { if (hadAuto) { sel.value = 'ALL'; if (d) d.value = 'ALL'; if (nb) nb.checked = false; COLLEGE_PENDING_DISTRICT = ''; syncDistrictOptions(); } return; }
+            if (!Array.prototype.some.call(sel.options, function (o) { return o.value === f.state; })) {
+                const o = document.createElement('option'); o.value = f.state; o.textContent = f.state; sel.appendChild(o);
+            }
+            sel.value = f.state;
+            if (d) d.value = 'ALL';
+            if (nb) nb.checked = false;
+            COLLEGE_PENDING_DISTRICT = f.district || '';
+            syncDistrictOptions();
+        }
         function goColleges() {
             setFitOff(false);
-            // the quiz knows the student's state: open the Colleges page on that state, with every college in it
-            const f = getFit(), sel = document.getElementById('college-state-filter');
-            if (f && f.state && f.state !== 'any' && sel) {
-                if (!Array.prototype.some.call(sel.options, function (o) { return o.value === f.state; })) {
-                    const o = document.createElement('option'); o.value = f.state; o.textContent = f.state; sel.appendChild(o);
-                }
-                sel.value = f.state;
-                const d = document.getElementById('college-district-filter'); if (d) d.value = 'ALL';
-                syncDistrictOptions();
-                if (f.district && d && Array.prototype.some.call(d.options, function (o) { return o.value === f.district; })) { d.value = f.district; syncDistrictOptions(); const nb = document.getElementById('college-nearby'); if (nb) nb.checked = true; }
-            }
+            COLLEGE_AUTO_KEY = null; // coming from a "see all colleges for me" button: always re-apply
             switchView('colleges');
         }
         function goLowFee() {
