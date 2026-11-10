@@ -127,6 +127,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Phones: enlarge the tap area of small inline text links/buttons without changing layout */
+        @media (pointer: coarse) {
+            .view-section :is(a, button):is(.text-brand-600, .text-xs):not([class*="bg-"]):not([class*="border"]) { position: relative; }
+            .view-section :is(a, button):is(.text-brand-600, .text-xs):not([class*="bg-"]):not([class*="border"])::after {
+                content: ''; position: absolute; inset: -12px -8px;
+            }
+        }
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3, .font-display { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.01em; }
         /* Always render form controls light, even if the browser/host is in dark mode: otherwise inputs
