@@ -581,6 +581,7 @@
                 <button data-nav="exams" onclick="switchView('exams')" class="nav-link hover:text-brand-600 transition">Exams</button>
                 <button data-nav="colleges" onclick="switchView('colleges')" class="nav-link hover:text-brand-600 transition">Colleges</button>
                 <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad')" class="nav-link hover:text-brand-600 transition">Govt & Money</button>
+                <button data-nav="internships" onclick="switchView('internships')" class="nav-link hover:text-brand-600 transition">Internships</button>
             </nav>
 
             <div class="flex items-center gap-1 sm:gap-3 shrink-0">
@@ -607,6 +608,7 @@
             <button data-nav="exams" onclick="switchView('exams');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Exams</button>
             <button data-nav="colleges" onclick="switchView('colleges');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Colleges</button>
             <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Govt & Money</button>
+            <button data-nav="internships" onclick="switchView('internships');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Internships</button>
             <div class="my-1 border-t border-slate-200"></div>
             <button data-nav="dashboard" onclick="switchView('dashboard');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">My Dashboard</button>
         </div>
@@ -1658,6 +1660,79 @@
                 <p class="text-[11px] text-slate-600">This is a general explainer, not a certificate-eligibility check — always confirm your exact percentage and rules on the exam's official counselling website, since they're revised periodically.</p>
             </div>
         </section>
+
+        <!-- ================= VIEW: INTERNSHIPS ================= -->
+        <section id="view-internships" class="view-section hidden space-y-10">
+            <div data-nav="Overview">
+                <h2 class="text-3xl font-extrabold text-slate-900">Internships</h2>
+                <p class="text-slate-600 text-sm mt-1">Real experience while you are still in college, even if you have none today.</p>
+            </div>
+
+            <!-- Plan4it Internship Program -->
+            <div data-nav="Plan4it Internship Program" id="p4-intern-block" class="scroll-mt-32 bg-brand-50 border border-brand-200 p-6 md:p-8 rounded-3xl space-y-5 shadow-sm">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="bg-brand-600 text-white text-xs font-bold px-3 py-1 rounded-full">Plan4it Internship Program</span>
+                    <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full">Opening soon: join the waitlist</span>
+                </div>
+                <h3 class="text-2xl md:text-3xl font-extrabold text-slate-900">Intern while you are still studying, with no experience needed</h3>
+                <p class="text-slate-700 text-sm md:text-base max-w-3xl">Most companies want interns in their final year, and ask for experience you cannot get without an internship. Plan4it closes that gap. In your first, second or third year you work on industry-style projects, get your work reviewed, and finish with a Plan4it certificate and a portfolio you can show recruiters.</p>
+                <div class="grid sm:grid-cols-3 gap-3 text-sm">
+                    <div class="bg-white border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900">🛠️ Industry-style projects</p><p class="text-slate-600 mt-1">Briefs modelled on the work junior people do at real companies, using current tools.</p></div>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900">🧑‍🏫 Reviewed by mentors</p><p class="text-slate-600 mt-1">You get feedback on your work, so you know what to fix before a recruiter sees it.</p></div>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900">📜 Plan4it certificate</p><p class="text-slate-600 mt-1">A certificate of completion plus a project portfolio you can link on your resume.</p></div>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-slate-900 mb-2">Choose a track</p>
+                    <div id="p4-tracks" class="grid md:grid-cols-2 gap-3"></div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 md:p-5 space-y-3">
+                    <p class="text-sm font-bold text-slate-900">Join the waitlist</p>
+                    <p class="text-xs text-slate-600">Pricing and the first batch dates will be announced before launch. Joining is free and does not commit you to anything.</p>
+                    <form id="p4-wait-form" onsubmit="return internshipJoin(event)" class="grid sm:grid-cols-2 gap-3 text-sm" novalidate>
+                        <label class="block"><span class="font-semibold text-slate-700">Track</span>
+                            <select id="p4-wait-track" class="mt-1 w-full border border-slate-300 rounded-xl px-3 min-h-[44px] bg-white"></select></label>
+                        <label class="block"><span class="font-semibold text-slate-700">Where are you now?</span>
+                            <select id="p4-wait-stage" class="mt-1 w-full border border-slate-300 rounded-xl px-3 min-h-[44px] bg-white">
+                                <option value="">Select</option><option>1st year (UG)</option><option>2nd year (UG)</option><option>3rd year (UG)</option><option>Final year (UG)</option><option>Postgraduate</option><option>Class 11-12</option><option>Working professional</option></select></label>
+                        <label class="block sm:col-span-2"><span class="font-semibold text-slate-700">College or company (optional)</span>
+                            <input id="p4-wait-college" maxlength="120" class="mt-1 w-full border border-slate-300 rounded-xl px-3 min-h-[44px]" placeholder="e.g. your college name"></label>
+                        <label class="block sm:col-span-2"><span class="font-semibold text-slate-700">Anything you want us to know (optional)</span>
+                            <textarea id="p4-wait-note" maxlength="400" rows="2" class="mt-1 w-full border border-slate-300 rounded-xl px-3 py-2" placeholder="Skills you have, what you want to learn, or what is blocking you"></textarea></label>
+                        <div class="sm:col-span-2 flex flex-wrap items-center gap-3">
+                            <button id="p4-wait-btn" type="submit" class="bg-brand-600 text-white font-bold px-5 min-h-[44px] rounded-xl hover:bg-brand-700">Join the waitlist</button>
+                            <p id="p4-wait-msg" class="text-sm" role="status" aria-live="polite"></p>
+                        </div>
+                    </form>
+                </div>
+                <p class="text-xs text-slate-500">The Plan4it certificate shows what you completed with us. It is not a degree or a government-recognised qualification, and it does not guarantee a job. This is a paid programme; you will see the price before you pay anything.</p>
+            </div>
+
+            <!-- Year-by-year ladder -->
+            <div data-nav="How to get your first internship" id="intern-ladder-block" class="scroll-mt-32 bg-white border border-slate-200 p-6 md:p-8 rounded-3xl space-y-4 shadow-sm">
+                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">No experience? Start here</span>
+                <h3 class="text-2xl font-extrabold text-slate-900">How to get your first internship, year by year</h3>
+                <p class="text-slate-600 text-sm">Companies hire final-year students because they are easy to place. You can still start early. This is the order that works.</p>
+                <div id="intern-ladder" class="grid md:grid-cols-2 gap-3"></div>
+                <div class="grid md:grid-cols-2 gap-3 text-sm">
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900">What to put on a first resume</p>
+                        <ul class="list-disc pl-5 text-slate-700 mt-1 space-y-1"><li>2 or 3 projects with a link (GitHub, Drive, Behance or a short write-up)</li><li>Certificates you finished, not ones you started</li><li>Clubs, events, volunteering, and any leadership</li><li>One page, no photo, no long objective paragraph</li></ul></div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900">How to reach out</p>
+                        <ul class="list-disc pl-5 text-slate-700 mt-1 space-y-1"><li>Write 3 lines: who you are, one thing you built, what you are asking for</li><li>Send it to the person who would manage you, not general HR</li><li>Apply to small companies and startups first; they say yes more often</li><li>Follow up once after a week, then move on</li></ul></div>
+                </div>
+                <div class="verify-note flex items-start gap-2 text-xs bg-red-50 border border-red-200 text-red-900 rounded-xl px-3 py-2"><span aria-hidden="true">⚠️</span><p><b>Never pay a company to give you an internship</b> or a "registration fee" for a job offer. Real employers do not charge interns. If someone asks, report it on the portal and walk away.</p></div>
+            </div>
+
+            <!-- Portals -->
+            <div data-nav="Internship portals" id="intern-portals-block" class="scroll-mt-32 space-y-4">
+                <div>
+                    <h3 class="text-2xl font-extrabold text-slate-900">Where to find internships</h3>
+                    <p class="text-slate-600 text-sm mt-1">Official and well-known portals, grouped by what they are good for. Each link opens the portal in a new tab.</p>
+                </div>
+                <div id="intern-portals" class="space-y-6"></div>
+                <div class="verify-note flex items-start gap-2 text-xs bg-amber-50 border border-amber-200 text-amber-900 rounded-xl px-3 py-2"><span aria-hidden="true">⚠️</span><p>Portals change their rules and web addresses from time to time, and government schemes open and close by season. Check the current eligibility on each portal before you apply.</p></div>
+            </div>
+        </section>
+
 
         <section id="view-dashboard" class="view-section hidden space-y-8">
             <div class="bg-gradient-to-r from-brand-900 to-brand-800 text-white p-8 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
@@ -9178,6 +9253,123 @@
         /* ============================================================
            TOAST
            ============================================================ */
+
+        /* ============================================================
+           INTERNSHIPS: Plan4it Internship Program + portal directory
+           ============================================================ */
+        const P4_TRACKS = [
+            { id: 'software', icon: '💻', name: 'Software Development', projects: ['Build and deploy a small web app with a database', 'Fix issues in a real open-source style codebase using Git and pull requests', 'Write tests and set up a simple CI check'], tags: 'technology engineering science computer' },
+            { id: 'data', icon: '📊', name: 'Data Analytics', projects: ['Clean a messy business dataset and find three insights', 'Build a dashboard a manager could use', 'Write a short report with a recommendation'], tags: 'technology science data math statistics' },
+            { id: 'marketing', icon: '📣', name: 'Digital Marketing', projects: ['Plan a 4-week content calendar for a small brand', 'Run a small search or social campaign and read the numbers', 'Write a one-page growth report'], tags: 'creative media business marketing communication' },
+            { id: 'product', icon: '🧭', name: 'Product and Business Analysis', projects: ['Write requirements for a new feature from user feedback', 'Map a process and find where it breaks', 'Present a prioritised roadmap'], tags: 'business management technology' },
+            { id: 'design', icon: '🎨', name: 'UI/UX Design', projects: ['Redesign one flow of a real app and explain why', 'Run 5 short user interviews and summarise them', 'Build a clickable prototype and a case study'], tags: 'creative design arts' },
+            { id: 'finance', icon: '🧮', name: 'Finance and Accounting', projects: ['Build a 3-statement model for a listed company from public filings', 'Reconcile accounts and prepare GST-style working in a sheet', 'Write a short investment-style note'], tags: 'finance commerce business accounting law' }
+        ];
+        const P4_LADDER = [
+            { yr: '1st year', stage: 1, title: 'Build the base', body: ['Pick one direction and learn its basics with a free or low-cost course', 'Make 1 small project and put it online', 'Join a college club or a student community'] },
+            { yr: '2nd year', stage: 2, title: 'Get real work, even if small', body: ['Do a virtual experience or a short micro-internship', 'Contribute to open source or help a local business or NGO', 'Join the Plan4it Internship Program for industry-style projects'] },
+            { yr: '3rd year', stage: 3, title: 'Apply for a formal internship', body: ['Apply for summer internships on the portals below, 8 to 10 applications a week', 'Use your projects and certificates as proof instead of experience', 'Ask seniors and alumni for referrals'] },
+            { yr: 'Final year', stage: 4, title: 'Convert it into a job', body: ['Aim for a 6-month internship that can lead to a pre-placement offer', 'Keep a portfolio page up to date', 'Prepare for campus placements and off-campus drives together'] }
+        ];
+        const P4_PORTALS = [
+            { group: 'General internship portals', note: 'Good places to start for any field.', items: [
+                ['Internshala', 'https://internshala.com', 'The biggest India-focused portal for internships and fresher jobs, with many work-from-home roles.'],
+                ['LinkedIn Jobs', 'https://www.linkedin.com/jobs/', 'Filter by "Internship". Also useful for finding people to message at a company.'],
+                ['Unstop', 'https://unstop.com', 'Internships, competitions and hackathons that recruiters use to find students.'],
+                ['Naukri Campus', 'https://www.naukri.com/campus', 'Internships and entry-level roles aimed at students and freshers.'],
+                ['Indeed India', 'https://in.indeed.com', 'Search "intern" with your city, including small and local companies.'],
+                ['Glassdoor', 'https://www.glassdoor.co.in', 'Check company reviews and interview questions before you apply.']
+            ] },
+            { group: 'Government schemes and portals', note: 'Official routes. Eligibility and seasons change, so read the current notice.', items: [
+                ['PM Internship Scheme', 'https://pminternship.mca.gov.in', 'Government scheme for internships at large companies, with a monthly stipend. Check who is eligible.'],
+                ['AICTE Internship Portal', 'https://internship.aicte-india.org', 'AICTE portal where students of approved institutions can find and apply for internships.'],
+                ['NATS (National Apprenticeship Training Scheme)', 'https://nats.education.gov.in', 'Apprenticeships for graduates and diploma holders, run by the Ministry of Education.'],
+                ['NAPS (Apprenticeship India)', 'https://www.apprenticeshipindia.gov.in', 'Apprenticeships for ITI, diploma and skill-course students, with a stipend support scheme.']
+            ] },
+            { group: 'Virtual experience (no application needed)', note: 'Free, self-paced job simulations. Good for first and second years.', items: [
+                ['Forage', 'https://www.theforage.com', 'Free job simulations built with real companies, with a certificate of completion.'],
+                ['Coursera Projects', 'https://www.coursera.org/projects', 'Short guided projects you finish in a few hours.'],
+                ['Kaggle', 'https://www.kaggle.com', 'Datasets, notebooks and competitions to build a data portfolio.']
+            ] },
+            { group: 'Tech, open source and fellowships', note: 'Strong for software and data students. Several have fixed application windows.', items: [
+                ['Google Summer of Code', 'https://summerofcode.withgoogle.com', 'Paid open-source mentoring for students and newcomers, once a year.'],
+                ['MLH Fellowship', 'https://fellowship.mlh.io', 'Project-based fellowships for aspiring software developers.'],
+                ['GitHub: good first issues', 'https://github.com/topics/good-first-issue', 'Find beginner-friendly open-source issues to fix and add to your resume.']
+            ] },
+            { group: 'Startups', note: 'Startups take first and second years more often than large companies do.', items: [
+                ['Wellfound (AngelList Talent)', 'https://wellfound.com', 'Startup internships and jobs, with direct contact to founders.'],
+                ['Y Combinator: Work at a Startup', 'https://www.workatastartup.com', 'Roles at YC-backed startups.']
+            ] }
+        ];
+        function internshipStageIdx() {
+            const a = getStoredWizardAnswers(); if (!a) return 0;
+            if (a.working) return 0;
+            return a.stage === 'Undergraduate' ? 2 : a.stage === 'Graduate' ? 4 : a.stage === 'School 11-12' ? 1 : 0;
+        }
+        function internshipSuggestTrack() {
+            const a = getStoredWizardAnswers(); if (!a) return '';
+            const words = ((a.interests3 || []).join(' ') + ' ' + (a.interest || '')).toLowerCase();
+            let best = '', score = 0;
+            P4_TRACKS.forEach(function (t) { const sc = t.tags.split(' ').filter(function (w) { return words.indexOf(w) > -1; }).length; if (sc > score) { score = sc; best = t.id; } });
+            return best;
+        }
+        function renderInternships() {
+            const e = escapeAuth, sug = internshipSuggestTrack(), a = getStoredWizardAnswers();
+            const tr = document.getElementById('p4-tracks'); if (!tr) return;
+            tr.innerHTML = P4_TRACKS.map(function (t) {
+                return '<div class="bg-white border ' + (t.id === sug ? 'border-brand-400 ring-1 ring-brand-300' : 'border-slate-200') + ' rounded-2xl p-4 text-sm">' +
+                    '<div class="flex items-start justify-between gap-2"><p class="font-bold text-slate-900">' + t.icon + ' ' + e(t.name) + '</p>' + (t.id === sug ? '<span class="text-[11px] font-bold bg-brand-100 text-brand-800 px-2 py-0.5 rounded-full shrink-0">Matches your quiz</span>' : '') + '</div>' +
+                    '<p class="text-xs text-slate-500 mt-2 font-semibold">Example projects</p><ul class="list-disc pl-5 text-slate-700 mt-1 space-y-0.5">' + t.projects.map(function (x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul>' +
+                    '<button type="button" onclick="internshipPick(\'' + t.id + '\')" class="mt-3 text-brand-700 font-bold min-h-[44px] hover:underline">Join this track\'s waitlist →</button></div>';
+            }).join('');
+            const sel = document.getElementById('p4-wait-track');
+            if (sel && !sel.options.length) sel.innerHTML = '<option value="">Select a track</option>' + P4_TRACKS.map(function (t) { return '<option value="' + t.id + '">' + e(t.name) + '</option>'; }).join('') + '<option value="not_sure">Not sure yet</option>';
+            if (sel && !sel.value && sug) sel.value = sug;
+            const st = document.getElementById('p4-wait-stage');
+            if (st && !st.value) st.value = a && a.working ? 'Working professional' : a && a.stage === 'School 11-12' ? 'Class 11-12' : '';
+            const cur = internshipStageIdx();
+            const lad = document.getElementById('intern-ladder');
+            if (lad) lad.innerHTML = P4_LADDER.map(function (l) {
+                const me = cur && l.stage === cur;
+                return '<div class="border ' + (me ? 'border-emerald-400 bg-emerald-50' : 'border-slate-200 bg-white') + ' rounded-2xl p-4 text-sm"><div class="flex items-center gap-2"><span class="text-xs font-bold bg-slate-900 text-white px-2 py-0.5 rounded-full">' + e(l.yr) + '</span>' + (me ? '<span class="text-[11px] font-bold text-emerald-800">Likely you</span>' : '') + '</div><p class="font-bold text-slate-900 mt-2">' + e(l.title) + '</p><ul class="list-disc pl-5 text-slate-700 mt-1 space-y-1">' + l.body.map(function (x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul></div>';
+            }).join('');
+            const pt = document.getElementById('intern-portals');
+            if (pt) pt.innerHTML = P4_PORTALS.map(function (g) {
+                return '<div><h4 class="font-extrabold text-slate-900">' + e(g.group) + '</h4><p class="text-xs text-slate-500 mb-2">' + e(g.note) + '</p><div class="grid md:grid-cols-2 gap-3">' + g.items.map(function (it) {
+                    return '<a href="' + e(it[1]) + '" target="_blank" rel="noopener noreferrer" class="block bg-white border border-slate-200 rounded-2xl p-4 hover:border-brand-400 hover:shadow-sm transition"><p class="font-bold text-brand-700">' + e(it[0]) + ' <span aria-hidden="true">↗</span></p><p class="text-sm text-slate-600 mt-1">' + e(it[2]) + '</p><p class="text-xs text-slate-400 mt-1 break-all">' + e(it[1].replace(/^https:\/\/(www\.)?/, '')) + '</p></a>';
+                }).join('') + '</div></div>';
+            }).join('');
+        }
+        function internshipPick(id) {
+            const sel = document.getElementById('p4-wait-track'); if (sel) sel.value = id;
+            const f = document.getElementById('p4-wait-form'); if (f) f.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        function internshipJoin(ev) {
+            if (ev) ev.preventDefault();
+            const msg = document.getElementById('p4-wait-msg'), btn = document.getElementById('p4-wait-btn');
+            const say = function (t, ok) { msg.textContent = t; msg.className = 'text-sm ' + (ok ? 'text-emerald-700' : 'text-red-700'); };
+            const track = document.getElementById('p4-wait-track').value, stage = document.getElementById('p4-wait-stage').value;
+            if (!track) { say('Please choose a track.', false); return false; }
+            if (!stage) { say('Please tell us where you are now.', false); return false; }
+            if (!requireAuth('Sign in to join the Plan4it internship waitlist.', function () { internshipJoin(); })) return false;
+            const s = authGetSession(); if (!s || !s.user) return false;
+            btn.disabled = true; say('Saving…', true);
+            sb.from('internship_waitlist').insert({
+                user_id: s.user.id, email: s.user.email || null, track: track, stage: stage,
+                college: (document.getElementById('p4-wait-college').value || '').trim().slice(0, 120) || null,
+                note: (document.getElementById('p4-wait-note').value || '').trim().slice(0, 400) || null
+            }).then(function (res) {
+                btn.disabled = false;
+                if (res.error) {
+                    if (res.error.code === '23505') { say('You are already on the waitlist for this track. We will email you before launch.', true); return; }
+                    say('Could not save right now. Please try again in a moment.', false); return;
+                }
+                trackEvent('internship_waitlist', { track: track });
+                say('You are on the list. We will email you when this track opens.', true);
+            }, function () { btn.disabled = false; say('Could not save right now. Please try again in a moment.', false); });
+            return false;
+        }
+
         function showToast(msg) {
             const container = document.getElementById('toast-container');
             if ([...container.children].some(c => c.dataset.msg === msg)) return;
@@ -9264,6 +9456,7 @@
             if (viewId === 'afterDegree') loadBranchTree(currentBranchKey || 'B.Com');
             if (viewId === 'dashboard') renderDashboard();
             if (viewId === 'govAndAbroad') { renderScholarshipMatches(); calculateHiddenCosts(); renderReservationInfo(); }
+            if (viewId === 'internships') renderInternships();
             if (viewId !== prevView) trackEvent('view_' + viewId);
             refreshPageNav();
             if (typeof glossAnnotate === 'function') glossAnnotate(shown);
@@ -11238,6 +11431,18 @@
             if (a && spare.length) h += '<div class="pp-card"><b>Other careers worth keeping open</b><ul>' + spare.map(function (r) { return '<li><b>' + e(r.c.title) + '</b> — ' + e(r.c.salary) + ', ' + e(r.c.demand.toLowerCase()) + ' demand, start in ~' + e(r.c.entryYears) + ' yr</li>'; }).join('') + '</ul></div>';
             const planB = { c10: ['Diploma / polytechnic (about 3 years) with lateral entry into B.Tech later', 'ITI or a skill course with apprenticeship, then study further', 'Switch streams in Class 12 if the first choice is wrong (check your board and school rules)'], c1112: ['A second-attempt year only if you can afford it and your mock scores are close', 'State entrance exams and private university tests as a parallel track', 'A related degree you can switch from (e.g. B.Sc or BCA) with an entrance exam for the master\'s degree'], ug: ['A certification or internship route if campus placements do not work out', 'Higher study (GATE, CAT, GRE or a master\'s entrance) as a parallel track', 'Government or PSU exams alongside your final year'], grad: ['Short certification + internship to enter a field different from your degree', 'Government and bank exams while you apply for jobs', 'A one-year diploma or PG course in your target field'], working: ['A part-time or evening course while you keep your income', 'An internal move or a lateral role in the new field before a full switch', 'Freelance or contract projects to build proof of skill'], student: ['Keep two options open for every first choice', 'Check state exams and private universities as a parallel track', 'Short courses and certifications while you decide'] }[seg];
             h += '<div class="pp-card"><b>General fallback routes</b><ul>' + planB.map(function (x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul></div>';
+
+            // ----- internships and experience
+            if (seg !== 'working' && seg !== 'c10') {
+                h += sec('Internships and experience');
+                const ladStage = seg === 'ug' ? 2 : seg === 'grad' ? 4 : 1;
+                const lad = P4_LADDER.filter(function (l) { return seg === 'ug' || seg === 'grad' ? true : l.stage <= 2; });
+                h += '<div class="pp-card"><b>' + (seg === 'grad' ? 'Getting your first role or internship' : 'Getting experience before the final year') + '</b><span class="pp-sm pp-mut"> (companies prefer final-year students, so start early with projects)</span><ul>' + lad.map(function (l) { return '<li><b>' + e(l.yr) + ' — ' + e(l.title) + ':</b> ' + e(l.body[0]) + '; ' + e(l.body[1].charAt(0).toLowerCase() + l.body[1].slice(1)) + '.</li>'; }).join('') + '</ul></div>';
+                const pp = ['Internshala', 'LinkedIn Jobs', 'Unstop', 'PM Internship Scheme', 'AICTE Internship Portal', 'Forage', 'Google Summer of Code', 'Wellfound (AngelList Talent)'];
+                const items = []; P4_PORTALS.forEach(function (g) { g.items.forEach(function (it) { if (pp.indexOf(it[0]) > -1) items.push(it); }); });
+                h += '<div class="pp-card"><b>Where to look</b><ul>' + items.map(function (it) { return '<li>' + planLink(it[1], it[0]) + ' — ' + e(it[2]) + '</li>'; }).join('') + '</ul><p class="pp-sm pp-mut">Never pay anyone for an internship offer. Check each portal for the current eligibility.</p></div>';
+                h += '<div class="pp-card"><b>Plan4it Internship Program</b><p>Industry-style projects, mentor review and a Plan4it certificate of completion for students who cannot get an internship yet. Join the waitlist in the Internships section of the app.</p></div>';
+            }
 
             // ----- action plan
             const plans = {
@@ -14756,6 +14961,7 @@
             { id: 'decide', title: 'Figure out what to study', blurb: 'Start here if you are unsure.' },
             { id: 'recover', title: "When things don't go to plan", blurb: 'Missed a cutoff, failed a subject, or in the wrong course.' },
             { id: 'money', title: 'Sort out the money', blurb: 'Scholarships, loans, real costs, and quotas.' },
+            { id: 'intern', title: 'Get experience', blurb: 'Internships and projects while you study.' },
             { id: 'switch', title: 'Already working?', blurb: 'Change fields without starting from zero.' },
             { id: 'track', title: 'Keep track of it all', blurb: 'Your saved items, checklist, and profile.' }
         ];
@@ -14772,6 +14978,9 @@
             { group: 'recover', view: 'backupPlan', block: 'wrong-course-block', label: '🔁 Wrong course?', title: 'Wrong course or forced choice?', desc: 'Step-by-step ways to change stream, branch or field, and how to talk to family if the choice was not yours.', kw: 'wrong course stream forced pressure parents switch change branch regret unhappy drop unhappy' },
             { group: 'recover', view: 'backupPlan', block: 'setback-guidance-block', label: '🔄 Setback?', title: 'Facing a setback?', desc: 'Backlog, dropped year, missed exam, wrong course, or no campus placement: get practical next steps.', kw: 'backlog fail failed dropped drop year missed placement wrong course placed campus' },
             { group: 'recover', view: 'backupPlan', block: 'pathways-block', label: '🛤️ Alternate pathways', title: 'Alternate pathways', desc: 'Lateral entry, open universities, Academic Bank of Credits, bridge courses, and apprenticeships.', kw: 'lateral entry open university distance bridge course apprenticeship credits naps' },
+            { group: 'intern', view: 'internships', block: 'p4-intern-block', label: '🚀 Plan4it internships', title: 'Plan4it Internship Program', desc: 'Industry-style projects, mentor review and a certificate, for students who cannot get an internship yet. Join the waitlist.', kw: 'internship intern project certificate experience first year second year virtual waitlist' },
+            { group: 'intern', view: 'internships', block: 'intern-ladder-block', label: '🪜 First internship', title: 'How to get your first internship', desc: 'A year-by-year route from no experience to a formal internship, with resume and outreach tips.', kw: 'internship no experience first year resume outreach fresher' },
+            { group: 'intern', view: 'internships', block: 'intern-portals-block', label: '🔗 Internship portals', title: 'Internship portals', desc: 'Internshala, LinkedIn, Unstop, AICTE, PM Internship, Forage and more, with links.', kw: 'internship portal internshala linkedin unstop aicte pm internship naps nats forage gsoc' },
             { group: 'money', view: 'govAndAbroad', block: 'scholarship-matcher-block', label: '🎓 Scholarships', title: 'Scholarship matcher', desc: 'Match scholarships to your category, family income, and stream.', kw: 'scholarship funding income category fees waiver' },
             { group: 'money', view: 'govAndAbroad', block: 'loan-navigator-block', label: '🏦 Loans', title: 'Education loan navigator', desc: 'How education loans work, what to compare, and the terms worth understanding.', kw: 'loan emi bank borrow interest' },
             { group: 'money', view: 'govAndAbroad', block: 'hidden-cost-block', label: '🧮 Real cost', title: 'Hidden cost calculator', desc: 'Add living costs and travel to the tuition fee to see what a course really costs per year.', kw: 'cost fees hostel living budget expense tuition' },
