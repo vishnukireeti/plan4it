@@ -147,19 +147,19 @@ create trigger trg_user_data_updated_at
 -- enabled) belongs in this file alongside usage_events, not as a separate file.
 -- ============================================================================
 
--- Internship waitlist (Plan4it Internship Program). Signed-in users add and read only their own rows.
-create table if not exists public.internship_waitlist (
+-- Learnership waitlist (Plan4it Learnership Program, paid). Signed-in users add and read only their own rows.
+create table if not exists public.learnership_waitlist (
   id bigint generated always as identity primary key,
   user_id uuid not null references auth.users(id) on delete cascade,
   email text,
   track text not null check (char_length(track) <= 40),
   stage text not null check (char_length(stage) <= 40),
-  duration text not null check (duration in ('4w','8w','12w','24w')),
+  duration text not null check (duration in ('1m','2m','3m','4m','5m','6m')),
   college text check (char_length(college) <= 120),
   note text check (char_length(note) <= 400),
   created_at timestamptz not null default now(),
   unique (user_id, track)
 );
-alter table public.internship_waitlist enable row level security;
-create policy "insert own waitlist row" on public.internship_waitlist for insert to authenticated with check ((select auth.uid()) = user_id);
-create policy "read own waitlist rows" on public.internship_waitlist for select to authenticated using ((select auth.uid()) = user_id);
+alter table public.learnership_waitlist enable row level security;
+create policy "insert own waitlist row" on public.learnership_waitlist for insert to authenticated with check ((select auth.uid()) = user_id);
+create policy "read own waitlist rows" on public.learnership_waitlist for select to authenticated using ((select auth.uid()) = user_id);
