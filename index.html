@@ -728,19 +728,19 @@
                             <p class="text-xs text-slate-500 mt-1.5">We show colleges in your district and the ones nearby first. Pick the district your city is in.</p>
                         </div>
 </div>
-                        <div>
+                        <div id="wiz-sit-budget">
                             <p class="text-sm font-semibold text-slate-700 mb-2">About how much can your family spend on college fees each year?</p>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <button type="button" data-sit="budget:u1" onclick="wizardSit('budget','u1')" class="p-4 rounded-xl border border-slate-200 hover:border-brand-600 hover:bg-brand-50/50 text-left transition min-h-[56px]"><span class="font-semibold text-slate-800 block">Up to ₹1 lakh</span><span class="text-xs text-slate-500">Government colleges and low-fee options</span></button><button type="button" data-sit="budget:1-3" onclick="wizardSit('budget','1-3')" class="p-4 rounded-xl border border-slate-200 hover:border-brand-600 hover:bg-brand-50/50 text-left transition min-h-[56px]"><span class="font-semibold text-slate-800 block">₹1 to 3 lakh</span><span class="text-xs text-slate-500">Most state and many private colleges</span></button><button type="button" data-sit="budget:3-8" onclick="wizardSit('budget','3-8')" class="p-4 rounded-xl border border-slate-200 hover:border-brand-600 hover:bg-brand-50/50 text-left transition min-h-[56px]"><span class="font-semibold text-slate-800 block">₹3 to 8 lakh</span><span class="text-xs text-slate-500">Good private colleges</span></button><button type="button" data-sit="budget:8+" onclick="wizardSit('budget','8+')" class="p-4 rounded-xl border border-slate-200 hover:border-brand-600 hover:bg-brand-50/50 text-left transition min-h-[56px]"><span class="font-semibold text-slate-800 block">More than ₹8 lakh, or no limit</span><span class="text-xs text-slate-500">Top private and deemed universities</span></button>
                             </div>
                         </div>
-                        <div>
+                        <div id="wiz-sit-level">
                             <p class="text-sm font-semibold text-slate-700 mb-2">How do your marks or mock test scores usually stand?</p>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <button type="button" data-sit="level:top" onclick="wizardSit('level','top')" class="p-4 rounded-xl border border-slate-200 hover:border-brand-600 hover:bg-brand-50/50 text-left transition min-h-[56px]"><span class="font-semibold text-slate-800 block">At the very top</span><span class="text-xs text-slate-500">Among the best in my class or in test rankings</span></button><button type="button" data-sit="level:strong" onclick="wizardSit('level','strong')" class="p-4 rounded-xl border border-slate-200 hover:border-brand-600 hover:bg-brand-50/50 text-left transition min-h-[56px]"><span class="font-semibold text-slate-800 block">Strong</span><span class="text-xs text-slate-500">Around the top 10%</span></button><button type="button" data-sit="level:mid" onclick="wizardSit('level','mid')" class="p-4 rounded-xl border border-slate-200 hover:border-brand-600 hover:bg-brand-50/50 text-left transition min-h-[56px]"><span class="font-semibold text-slate-800 block">Around the middle</span><span class="text-xs text-slate-500">Neither at the top nor struggling</span></button><button type="button" data-sit="level:low" onclick="wizardSit('level','low')" class="p-4 rounded-xl border border-slate-200 hover:border-brand-600 hover:bg-brand-50/50 text-left transition min-h-[56px]"><span class="font-semibold text-slate-800 block">Below average right now</span><span class="text-xs text-slate-500">I am working on improving</span></button><button type="button" data-sit="level:none" onclick="wizardSit('level','none')" class="p-4 rounded-xl border border-slate-200 hover:border-brand-600 hover:bg-brand-50/50 text-left transition min-h-[56px]"><span class="font-semibold text-slate-800 block">Not sure yet</span><span class="text-xs text-slate-500">I have not taken any test</span></button>
                             </div>
                         </div>
-                        <div>
+                        <div id="wiz-sit-aim">
                             <p class="text-sm font-semibold text-slate-700 mb-1">Are you aiming for a particular kind of institute? <span class="font-normal text-slate-500">(optional, pick any)</span></p>
                             <p class="text-xs text-slate-500 mb-2">If you pick some, we show those first. If you skip this, you get a mix that fits your fees and marks, not only the famous names.</p>
                             <div id="wiz-aim" class="flex flex-wrap gap-2" role="group" aria-label="Kinds of institute you are aiming for"></div>
@@ -9849,7 +9849,8 @@
             if (next) { showWizardStep(next); return; }
             // School-stage results are colleges, and a college list means nothing without a state —
             // so that step is mandatory for them no matter what they picked for "help", not just the usual trigger list.
-            if ((wizardNeedsState() || QZ_NEEDS_PRACTICAL.indexOf(wizardAnswers.help) > -1) && !wizardAnswers.situation) { showWizardStep(WIZARD_PRACTICAL); return; }
+            // everyone is asked where they are (only school students must answer): colleges, state exams and backups follow it
+            if (!wizardAnswers.situation) { showWizardStep(WIZARD_PRACTICAL); return; }
             showWizardResults();
         }
         function showWizardResults() {
@@ -10094,10 +10095,14 @@
                     '<button type="button" aria-pressed="' + (!on.length) + '" onclick="wizardAim(\'none\')" class="min-h-[44px] px-4 rounded-full border text-sm font-semibold transition ' + (!on.length ? 'border-brand-600 bg-brand-50 text-brand-800' : 'border-slate-300 bg-white text-slate-700 hover:border-brand-600') + '">No preference</button>';
             }
             const needsState = wizardNeedsState();
-            const title = document.getElementById('wiz-practical-title'); if (title) title.textContent = needsState ? 'One more thing: where are you studying?' : 'Optional: a few practical things';
+            // fees, marks and institute type only matter to people still choosing a college
+            const a0 = wizardAnswers, choosing = needsState || a0.cls === 'pg' || a0.after === 'msIndia';
+            ['wiz-sit-budget', 'wiz-sit-level', 'wiz-sit-aim'].forEach(function (id) { const el = document.getElementById(id); if (el) el.classList.toggle('hidden', !choosing || (id === 'wiz-sit-level' && !needsState)); });
+            const title = document.getElementById('wiz-practical-title'); if (title) title.textContent = needsState ? 'One more thing: where are you studying?' : choosing ? 'Optional: a few practical things' : 'Optional: where are you based?';
             const sub = document.getElementById('wiz-practical-sub'); if (sub) sub.textContent = needsState ? 'Colleges are only useful if they are realistic for you, so we need your state before showing any. Budget and marks are still optional.' : 'This lets us put colleges, exams and careers that are realistic for you first, not only the most famous ones. It is not a test, and you can skip any part of it.';
             const stateLabel = document.getElementById('wiz-state-label'); if (stateLabel) stateLabel.textContent = needsState ? 'Which state do you live in? *' : 'Which state do you live in?';
             const skipBtn = document.getElementById('wiz-sit-skip'); if (skipBtn) skipBtn.classList.toggle('hidden', needsState);
+            if (sub && !needsState && !choosing) sub.textContent = 'Your state lets us include its exams (state CETs, PSC and recruitment exams) and anything near you. You can skip this.';
             const go = document.getElementById('wiz-sit-go'); if (go) go.disabled = needsState ? !wizardAnswers.state : !(wizardAnswers.state || wizardAnswers.budget || wizardAnswers.level);
         }
         function wizardSit(k, v) { if (k === 'state' && wizardAnswers.state !== v) delete wizardAnswers.district; if (k === 'district' && !v) { delete wizardAnswers.district; markSit(); return; } wizardSitSet(k, v); markSit(); }
@@ -10226,12 +10231,29 @@
             if (!has && o) { if (sort.value === 'fit') sort.value = 'nirf'; o.remove(); }
             if (has && !FIT_OFF && !sort.dataset.touched && sort.value !== 'fit') sort.value = 'fit';
         }
+        // Which state an exam belongs to ('' = national or open to everyone). Mostly read from the exam's own name or
+        // the board that runs it; a few need a hand mapping, and some exams held in one state are open nationally.
+        const EXAM_STATE_OVERRIDE = {
+            'AILET': '', 'AIIMS NORCET': '', 'INI-CET': '', 'DU JAT': '', 'DU LLB Entrance': '', 'CUCET (Chandigarh University)': '',
+            'AP EAPCET': 'Andhra Pradesh', 'AP ECET (Lateral entry)': 'Andhra Pradesh', 'AP ICET': 'Andhra Pradesh', 'TS EAPCET': 'Telangana',
+            'TANCET': 'Tamil Nadu', 'IPU CET': 'Delhi', 'UPTAC (UP B.Tech counselling)': 'Uttar Pradesh', 'CUSAT CAT': 'Kerala', 'Panjab University CET': 'Chandigarh'
+        };
+        function examHomeState(x) {
+            if (x._homeState !== undefined) return x._homeState;
+            let r = '';
+            if (Object.prototype.hasOwnProperty.call(EXAM_STATE_OVERRIDE, x.name)) r = EXAM_STATE_OVERRIDE[x.name];
+            else { const t = (x.name + ' | ' + (x.body || '')).toLowerCase(); const hits = FIT_STATES.filter(function (st) { return t.indexOf(st.toLowerCase()) > -1; }); r = hits.length === 1 ? hits[0] : ''; }
+            x._homeState = r; return r;
+        }
+        // A state-level exam is only suggested to people from that state; national exams are for everyone.
+        function examForPlace(x, f) { const hs = examHomeState(x); return !hs || !!(f && f.state && f.state !== 'any' && hs === f.state); }
         function examFit(e, f) {
             let s = 0;
             const want = f.interest ? (FIT_INTEREST_EXAM_STREAMS[f.interest] || []) : [];
             const more = f.interest ? [].concat.apply([], (f.interests || []).slice(1).map(function (k) { return FIT_INTEREST_EXAM_STREAMS[k] || []; })) : [];
             if (want.indexOf(e.stream) > -1) s += 40; else if (more.indexOf(e.stream) > -1) s += 20;
-            if (f.state && f.state !== 'any' && (e.name + ' ' + e.body + ' ' + e.courses).toLowerCase().indexOf(f.state.toLowerCase()) > -1) s += 20;
+            const hs = examHomeState(e);
+            if (hs) s += (f.state && f.state !== 'any' && hs === f.state) ? 24 : -100; // another state's exam never comes before a real option
             if (f.stage === 'School 8-10' && (e.stream === 'Diploma & ITI' || e.stream === 'Universal' || /Sainik|Navodaya/i.test(e.name))) s += 14;
             if ((f.stage === 'Undergraduate' || f.stage === 'Graduate') && ['Government Jobs', 'Banking', 'Teaching', 'Management', 'Defence'].indexOf(e.stream) > -1) s += 8;
             if ((f.stage === 'School 8-10' || f.stage === 'School 11-12') && /lateral|\bJRF\b|\bPhD\b|\bNET\b|\bPG\b|NEET SS|NEET MDS|INI-CET|DrNB|\bGATE\b|M\.Sc|M\.Tech|\bMBA\b|\bMCA\b|postgraduate|master/i.test(e.name + ' ' + e.courses + ' ' + e.eligibility)) s -= 30;
@@ -10744,8 +10766,10 @@
             const school = A.stage === 'School 8-10' || A.stage === 'School 11-12';
             const afterSchool = function (x) { const el = String(x.eligibility || ''); return /class\s*(8|9|1[02])\b|10\+2|12th|10th|higher secondary|matric/i.test(el) && !/graduat|bachelor|degree|b\.?\s?tech|b\.?\s?e\b|b\.?\s?pharm|mbbs|llb/i.test(el); };
             const noMaths = A.maths === 'drop' || ['pcb', 'com', 'arts', 'voc'].indexOf(A.stream) > -1, noBio = A.bio === 'no' || ['pcm', 'comm', 'com', 'arts', 'voc'].indexOf(A.stream) > -1;
+            const place = getFit();
             return function (x) {
                 const el = String(x.eligibility || '');
+                if (!examForPlace(x, place)) return false;
                 if (school) {
                     if (!afterSchool(x)) return false;
                     if (noMaths && /\bPCM\b|\bmaths?\b|mathematics/i.test(el) && !/any stream|all streams/i.test(el)) return false;
@@ -10766,12 +10790,17 @@
             // everyone else gets graduate-level exams (no JEE or CUET for someone already in a degree)
             const examFits = premiumExamFilter(A);
             const exams = []; pool.slice(0, 10).forEach(function (c) { examsForCareer(c).forEach(function (x) { if (exams.indexOf(x) < 0 && examFits(x) && exams.length < 8) exams.push(x); }); });
+            // the student's own state exams for their field (state CETs, polytechnic and PSC exams), which careers rarely list
+            const fState = getFit();
+            if (fState && fState.state && fState.state !== 'any') examsData.filter(function (x) { return examHomeState(x) === fState.state && examFits(x) && exams.indexOf(x) < 0; })
+                .map(function (x) { return { x: x, s: examFit(x, fState) }; }).filter(function (r) { return r.s >= 44; /* own state (+24) and in their field (+20 or more) */ }).sort(function (a, b) { return b.s - a.s; }).slice(0, 3).forEach(function (r) { exams.push(r.x); });
             const dl = function (x) { const d = daysUntil(x.regCloses); return isNaN(d) || d < 0 ? 1e6 : d; };
             exams.sort(function (a, b) { return dl(a) - dl(b); });
             const planB = top3.length ? premiumPlanB(top3[0], pool, top3.map(function (c) { return c.id; })) : [];
             const head = '<div class="flex flex-wrap items-center justify-between gap-3 mb-4"><div><p class="text-[11px] font-bold uppercase tracking-wider text-amber-700">Plan4it Premium</p><h3 class="text-xl md:text-2xl font-extrabold text-slate-900">Your full career report</h3></div>' +
                 (unlocked ? (launch ? '<span class="text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200 px-3 py-1.5 rounded-full">Premium · free during launch (₹' + PREMIUM_CFG.price + ' later)</span>' : '<span class="text-xs font-bold bg-emerald-100 text-emerald-800 px-3 py-1.5 rounded-full">Unlocked</span>') : '<span class="text-xs font-bold bg-slate-900 text-white px-3 py-1.5 rounded-full">₹' + PREMIUM_CFG.price + ' one-time</span>') + '</div>';
-            const fx = getFit(), hasColleges = A.cls !== 'working' && !!(fx && fx.state);
+            // someone already in a degree only needs colleges if they plan a master's in India
+            const fx = getFit(), hasColleges = A.cls !== 'working' && !!(fx && fx.state) && (['ug', 'grad'].indexOf(A.cls) < 0 || A.after === 'msIndia');
             if (!unlocked) {
                 const items = [
                     ['🏆', 'Your top 10 matches, ranked', 'Fit for each one and exactly why it suits you'],
@@ -10813,12 +10842,12 @@
                     '<div class="grid sm:grid-cols-2 gap-2 mt-3 text-xs"><div><b class="text-emerald-700">Good</b><ul class="list-disc pl-4 text-slate-700">' + (c.pros || []).map(function (x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul></div><div><b class="text-rose-700">Hard</b><ul class="list-disc pl-4 text-slate-700">' + (c.cons || []).map(function (x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul></div></div></div>';
             }).join('') + '</div>');
             // 3. exams
-            if (exams.length) h += premiumSec('📅', 'Exams to plan for', 'From your top matches, nearest registration deadline first. Always confirm on the official site.', '<ul class="divide-y divide-slate-100">' + exams.slice(0, 8).map(function (x) {
+            if (exams.length) h += premiumSec('📅', 'Exams to plan for', 'National exams for your top matches' + (fState && fState.state && fState.state !== 'any' ? ' and ' + fState.state + ' state exams' : '') + ', nearest registration deadline first. Always confirm on the official site.', '<ul class="divide-y divide-slate-100">' + exams.slice(0, 8).map(function (x) {
                 return '<li class="py-2.5 flex flex-wrap items-start justify-between gap-2"><div class="min-w-0"><p class="font-semibold text-slate-900 text-sm">' + e(x.name) + '</p><p class="text-xs text-slate-600">' + e(examRegLine(x)) + '</p><p class="text-xs text-slate-500">' + e(examDateLine(x)) + '</p></div><button type="button" onclick="openExamDetail(\'' + x.id + '\')" class="text-sm font-semibold text-brand-700 hover:underline min-h-[36px]">Details →</button></li>';
             }).join('') + '</ul>');
             // 4. colleges (students) or certifications (working)
             const f = getFit();
-            if (A.cls !== 'working' && f && f.state) {
+            if (hasColleges && f && f.state) {
                 const ranked = collegesData.concat(f.state !== 'any' && DIR.codeOf && DIR.shards[DIR.codeOf[f.state]] ? DIR.shards[DIR.codeOf[f.state]] : [])
                     .filter(function (c) { return f.state === 'any' || collegeState(c) === f.state; })
                     .map(function (c) { const r = collegeFit(c, f); return { c: c, score: r.score, tags: r.tags }; }).sort(collegeRankCmp(f));
@@ -10907,7 +10936,7 @@
                     }
                     const own = c.reasons.filter(function (r) { return shared.indexOf(r) < 0 && !top.some(function (t) { return t !== c && t.reasons.indexOf(r) > -1; }); });
                     const what = String(c.overview || '').split(/(?<=[.!?])\s/)[0];
-                    const exams = examsForCareer(c).slice(0, 2), lc = localColleges(collegesForCareer(c), 2), cols = lc.none ? [] : lc.list;
+                    const exams = examsForCareer(c).filter(premiumExamFilter(A)).slice(0, 2), lc = localColleges(collegesForCareer(c), 2), cols = lc.none ? [] : lc.list;
                     const chip = 'text-xs font-semibold bg-slate-50 border border-slate-200 text-slate-800 hover:border-brand-400 rounded-full px-3 min-h-[36px]';
                     return '<div class="p-4 bg-white border border-slate-200 rounded-xl">' +
                         '<div class="flex items-start justify-between gap-3"><div class="min-w-0">' +
@@ -12027,7 +12056,8 @@
                 } else if (placeWhere) h += '<div class="pp-card">We could not find backup colleges for ' + e(placeWhere) + ' yet. Browse the Colleges page for your area.</div>';
                 // state-level entrance exams are the most useful backup route for state colleges
                 if (f.state && f.state !== 'any') {
-                    const sx = examsData.filter(function (x) { return (x.name + ' ' + (x.body || '') + ' ' + (x.courses || '')).toLowerCase().indexOf(f.state.toLowerCase()) > -1; }).slice(0, 5);
+                    const okx = a ? premiumExamFilter(a) : function () { return true; };
+                    const sx = examsData.filter(function (x) { return examHomeState(x) === f.state && okx(x); }).map(function (x) { return { x: x, s: examFit(x, f) }; }).filter(function (r) { return r.s >= 44; }).sort(function (p, q) { return q.s - p.s; }).slice(0, 5).map(function (r) { return r.x; });
                     if (sx.length) h += '<div class="pp-card"><b>' + e(f.state) + ' entrance exams to keep as a backup</b><ul>' + sx.map(function (x) { return '<li><b>' + e(x.name) + '</b> — ' + e(x.eligibility || '') + (x.site ? ' · ' + planLink(x.site, 'Official site') : '') + '</li>'; }).join('') + '</ul></div>';
                 }
             }
