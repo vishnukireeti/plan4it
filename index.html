@@ -705,15 +705,8 @@
             </div>
 
             <div id="wizard-container">
-                <!-- Steps 1-8 are drawn by renderQuizStep() from the QUIZ list in the script -->
-                <div id="wizard-q1" class="wizard-step"></div>
-                <div id="wizard-q2" class="wizard-step hidden"></div>
-                <div id="wizard-q3" class="wizard-step hidden"></div>
-                <div id="wizard-q4" class="wizard-step hidden"></div>
-                <div id="wizard-q5" class="wizard-step hidden"></div>
-                <div id="wizard-q6" class="wizard-step hidden"></div>
-                <div id="wizard-q7" class="wizard-step hidden"></div>
-                <div id="wizard-q8" class="wizard-step hidden"></div>
+                <!-- Every question is drawn here by renderQuizStep() from QZ_BANK; which questions appear depends on the stage -->
+                <div id="wizard-qs" class="wizard-step"></div>
 
                 <!-- Step 5: A few practical things (state, budget, marks). Used to put realistic colleges, exams and careers first. -->
                 <div id="wizard-q9" class="wizard-step hidden">
@@ -768,6 +761,8 @@
                         <p class="text-xs text-brand-800 bg-white/60 border border-brand-100 rounded-lg px-3 py-2 mt-3">This is guidance based on your answers and interests.</p>
                     </div>
 
+                    <div id="wizard-insights" class="hidden mb-6"></div>
+
                     <div id="wizard-nextstep" class="mb-6"></div>
 
                     <div id="wizard-routes" class="hidden mb-6"></div>
@@ -777,7 +772,7 @@
                     </div>
 
                     <!-- Family Expectation vs. Your Interest Reflection -->
-                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-4 mb-6">
+                    <div id="wizard-family" class="scroll-mt-32 bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-4 mb-6">
                         <h4 class="font-bold text-slate-900 text-sm">🗣️ One More Thing: Family Expectations vs. Your Interest</h4>
                         <p class="text-xs text-slate-600">Career fit in India is rarely just about you — it's also about what family expects. This won't resolve it, but it can help you see the gap (or lack of one) clearly enough to actually talk about it.</p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -8998,27 +8993,31 @@
            PAGE MENU: "On this page" on the left (chip bar on phones). In the quiz it shows "Your answers" instead.
            Sections come from data-nav tags in the page; detail pages use their headings.
            ============================================================ */
-        const WIZARD_KEYS = ['cls', 'interests', 'activity', 'challenge', 'clarity', 'values', 'learning', 'help'];
-        const WIZARD_QLABEL = ['Your stage', 'What you enjoy', 'A free afternoon', 'A satisfying challenge', 'Your career idea', 'What would matter', 'How you learn', 'What you need help with'];
-        const WIZARD_STEPS = 8, WIZARD_PRACTICAL = 9;
+        // Steps are numbered 1..quizLen(); the practical step and the results have fixed numbers above that.
+        const WIZARD_PRACTICAL = 50, WIZARD_DONE = 99;
+        let wizCur = 1;
         const WIZARD_STAGE_NAMES = { 'School 8-10': 'Class 9–10', 'School 11-12': 'Class 11–12 or just finished', 'Undergraduate': 'Undergraduate', 'Graduate': 'Graduate' };
         const PN_ON = ['border-brand-600', 'bg-brand-50', 'text-brand-800', 'font-semibold'];
         const PN_OFF = ['border-transparent', 'text-slate-600'];
         const PAGE_NAV_OFF = ['home']; // pages that should not show the left menu
         let pageNavItems = [], pageNavTick = false;
         function wizardCurrentStep() {
-            if (!document.getElementById('wizard-results').classList.contains('hidden')) return 99;
-            for (let n = 1; n <= WIZARD_PRACTICAL; n++) { const el = document.getElementById('wizard-q' + n); if (el && !el.classList.contains('hidden')) return n; }
-            return 1;
+            if (!document.getElementById('wizard-results').classList.contains('hidden')) return WIZARD_DONE;
+            return wizCur;
         }
         function wizardAnswerLabel(i) {
-            const k = WIZARD_KEYS[i], q = QUIZ[i], v = wizardAnswers[k];
-            if (!q || v == null || (Array.isArray(v) && !v.length)) return '';
-            const lab = function (x) { const o = quizOpts(q).find(function (p) { return p[0] === x; }); return o ? (o[2] || o[1]) : x; };
+            const q = quizQ(i + 1); if (!q) return '';
+            const v = wizardAnswers[q.key];
+            if (v == null || (Array.isArray(v) && !v.length)) return '';
+            const opts = quizOpts(q);
+            const lab = function (x) { const o = opts.find(function (p) { return p[0] === x; }); return o ? (o[2] || o[1]) : x; };
             const cut = function (s) { return s.length > 34 ? s.slice(0, 32).replace(/\s+\S*$/, '') + '…' : s; };
-            return Array.isArray(v) ? cut(lab(v[0])) + (v.length > 1 ? ' +' + (v.length - 1) : '') : cut(lab(v));
+            let t = Array.isArray(v) ? cut(lab(v[0])) + (v.length > 1 ? ' +' + (v.length - 1) : '') : cut(lab(v));
+            const pr = quizPair(q);
+            if (pr && wizardAnswers[pr.key]) { const o = pr.opts.find(function (x) { return x[0] === wizardAnswers[pr.key]; }); if (o) t += ' · ' + o[1]; }
+            return t;
         }
-        function markWizardSelection() { const n = wizardCurrentStep(); if (n >= 1 && n <= WIZARD_STEPS) renderQuizStep(n); }
+        function markWizardSelection() { const n = wizardCurrentStep(); if (n >= 1 && n <= quizLen()) renderQuizStep(n); }
         function wizardGoTo(n) { showWizardStep(n); }
         function pageNavGo(id) { if (typeof jumpToBlock === 'function') jumpToBlock(id); else { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }
         function refreshPageNav() {
@@ -9032,20 +9031,20 @@
             if (noMenu) {
                 // no menu on this page
             } else if (vid === 'confusedMode') {
-                const cur = wizardCurrentStep(), done = WIZARD_KEYS.every(function (k) { return wizardAnswers[k]; });
-                sideHTML = '<p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Your answers</p><ol class="space-y-2">' + WIZARD_KEYS.map(function (k, i) {
+                const flow = quizFlow(), cur = wizardCurrentStep(), done = !!wizardAnswers.cls && flow.every(quizAnswered);
+                sideHTML = '<p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Your answers</p><ol class="space-y-2">' + flow.map(function (qq, i) {
                     const lab = wizardAnswerLabel(i), isCur = cur === i + 1;
                     return '<li><button type="button" onclick="wizardGoTo(' + (i + 1) + ')" aria-current="' + isCur + '" class="w-full text-left p-3 rounded-xl border transition ' + (isCur ? 'border-brand-600 bg-brand-50' : lab ? 'border-slate-200 bg-white hover:border-brand-400' : 'border-dashed border-slate-300 bg-white hover:border-brand-400') + '">' +
-                        '<span class="block text-[11px] font-semibold ' + (isCur ? 'text-slate-700' : 'text-slate-500') + '">' + (i + 1) + '. ' + WIZARD_QLABEL[i] + '</span>' +
+                        '<span class="block text-[11px] font-semibold ' + (isCur ? 'text-slate-700' : 'text-slate-500') + '">' + (i + 1) + '. ' + e(qq.label || qq.title) + '</span>' +
                         '<span class="block text-sm font-bold ' + (lab ? 'text-slate-900' : isCur ? 'text-slate-700' : 'text-slate-500') + '">' + (lab ? e(lab) : 'Not chosen yet') + '</span>' +
                         (lab ? '<span class="block text-[11px] font-semibold text-brand-600 mt-0.5">Tap to change</span>' : '') + '</button></li>';
-                }).join('') + '</ol><p class="text-[11px] text-slate-500 mt-3">Tap any answer to go back and change it. Your other answers are kept.</p>' +
+                }).join('') + '</ol>' + (wizardAnswers.cls ? '' : '<p class="text-[11px] text-slate-500 mt-3">The next questions depend on your stage.</p>') + '<p class="text-[11px] text-slate-500 mt-3">Tap any answer to go back and change it. Your other answers are kept.</p>' +
                     (done ? '<button type="button" onclick="retakeQuiz()" class="mt-3 text-xs font-semibold text-brand-600 hover:underline min-h-[44px]">Start over</button>' : '');
                 // Every other page's mobile dropdown self-labels via a visible placeholder
                 // option ("On this page ▾" below) -- the quiz one used to skip that and just
                 // showed "1. Not chosen yet" above the "Find my path" heading with nothing
                 // saying what the control was. Add the same kind of visible label here.
-                chips = '<p class="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Your answers</p><select id="page-nav-select" onchange="if(this.value)wizardGoTo(Number(this.value))" aria-label="Jump to a question" class="min-h-[44px] w-full px-3 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-700">' + WIZARD_KEYS.map(function (k, i) {
+                chips = '<p class="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Your answers</p><select id="page-nav-select" onchange="if(this.value)wizardGoTo(Number(this.value))" aria-label="Jump to a question" class="min-h-[44px] w-full px-3 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-700">' + flow.map(function (qq, i) {
                     const lab = wizardAnswerLabel(i), isCur = cur === i + 1;
                     return '<option value="' + (i + 1) + '" ' + (isCur ? 'selected' : '') + '>' + (i + 1) + '. ' + (lab ? e(lab.length > 30 ? lab.slice(0, 29) + '…' : lab) : 'Not chosen yet') + '</option>';
                 }).join('') + '</select>';
@@ -9535,40 +9534,157 @@
            THE QUIZ (8 questions, about 2 minutes). Answers are stored as given, then turned into the fields the rest of the app already
            understands (interest, workStyle, constraint, stage), so careers, exams, colleges and routes all keep working from the same answers.
            ============================================================ */
-        const QUIZ = [
-            { key: 'cls', multi: 0, title: 'Which best describes you right now?', sub: 'This decides which exams, routes and tools actually apply to you — the rest of the quiz works the same either way.',
-              opts: [['10', 'Class 10'], ['11', 'Class 11'], ['12', 'Class 12'], ['ug', 'In an undergraduate degree', 'Undergraduate'], ['grad', 'Graduated, not working yet', 'Recently graduated'], ['working', 'Already working — exploring or switching careers', 'Already working']] },
-            { key: 'interests', multi: 3, exclusive: 'none', title: 'Which subjects or topics do you genuinely enjoy learning about?', sub: 'Pick up to 3. Choose what you enjoy, not what sounds impressive.',
-              opts: [['maths', 'Maths and logical problems'], ['science', 'Science and how things work'], ['tech', 'Technology and computers'], ['business', 'Business, money and entrepreneurship'], ['people', 'People, society and human behaviour'], ['words', 'Writing, languages and communication'], ['art', 'Art, design and creative work'], ['bio', 'Biology, health and living things'], ['civics', 'History, politics and current affairs'], ['none', 'I haven\'t found my favourite yet']] },
-            { key: 'activity', multi: 0, title: 'If you had a free afternoon to explore something, what would you choose?', sub: 'Go with your first instinct.',
-              opts: [['build', 'Build something, solve a puzzle or experiment'], ['people', 'Understand people, help someone or debate an issue'], ['biz', 'Start a small business, sell an idea or manage money'], ['create', 'Create a design, story, video or other original work'], ['research', 'Research a topic and discover how it works'], ['hands', 'Try a hands-on activity and learn by doing'], ['unsure', 'I\'m not sure yet']] },
-            { key: 'challenge', multi: 0, title: 'Which kind of challenge sounds most satisfying to you?', sub: 'Pick the one that feels most like you.',
-              opts: [['patterns', 'Finding patterns and solving complex problems'], ['people', 'Understanding people and helping them through problems'], ['ideas', 'Coming up with original ideas or better designs'], ['plan', 'Planning, organising and making things happen'], ['build', 'Building, repairing or working with practical systems'], ['mixed', 'I enjoy different kinds of challenges']] },
-            { key: 'clarity', multi: 0, title: 'Have you imagined what you might want to become?', sub: 'There is no wrong answer. Many students are still working this out.',
-              opts: [['specific', 'Yes, I have a specific career in mind'], ['few', 'I have a few careers I\'m considering'], ['kind', 'I know the kind of work I want, but not the career'], ['none', 'I have no clear idea yet and want to explore'], ['unsure', 'I have ideas, but I\'m unsure what suits me']] },
-            { key: 'values', multi: 2, title: 'What would make a future career feel worthwhile to you?', sub: 'Pick up to 2.',
-              opts: [['enjoy', 'Doing work I genuinely enjoy'], ['earn', 'Earning well and achieving financial independence'], ['help', 'Helping people or making a difference'], ['creative', 'Being creative and expressing ideas'], ['own', 'Building something of my own'], ['stable', 'Having stability and a predictable future'], ['freedom', 'Having freedom and flexibility'], ['skilled', 'Becoming highly skilled or recognised in my field']] },
-            { key: 'learning', multi: 0, title: 'Which kind of learning experience suits you best?', sub: 'Think about how you learn best, not what you are told to do.',
-              opts: [['concepts', 'Understanding concepts and theories in depth'], ['apply', 'Applying ideas to real-world problems'], ['practical', 'Practical work, projects and experiments'], ['discuss', 'Discussion, collaboration and presentations'], ['mix', 'A mix of these'], ['unsure', 'I\'m still figuring that out']] },
-            { key: 'help', multi: 0, title: 'What help do you need to figure out right now?', sub: 'We will start there.',
-              optsFor: function (a) {
-                  if (a.cls === 'working') return [
-                      ['switch', 'Whether and how to switch into a new field'],
-                      ['careers', 'Which careers match my skills and interests'],
-                      ['colleges', 'Courses or certifications to upskill'],
-                      ['start', 'I need help figuring out where to start']
-                  ];
-                  if (a.cls === 'grad') return [
-                      ['switch', 'Switching into a field different from what I studied'],
-                      ['careers', 'Which careers match my interests'],
-                      ['exams', 'Entrance exams for further study (MBA, M.Tech, etc.)'],
-                      ['colleges', 'Which colleges and courses to target'],
-                      ['backup', 'Backup options if my first choice doesn\'t work out'],
-                      ['start', 'I need help figuring out where to start']
-                  ];
-                  return [['stream', 'Which stream or subjects to choose'], ['careers', 'Which careers match my interests'], ['exams', 'Which entrance exams I should prepare for'], ['colleges', 'Which colleges and courses to target'], ['scholarships', 'Scholarships and affordable study options'], ['backup', 'Backup options if my first choice doesn\'t work out'], ['start', 'I need help figuring out where to start']];
-              } }
-        ];
+        // ===== Find My Path question bank =====
+        // The stage answer picks a block of questions written for that stage, then everyone answers the same
+        // shared core (challenge, values), a routing question (explore / a career in mind / switch) and a
+        // closing question whose options fit the stage. Answer codes for older questions are kept so saved
+        // answers, the scorer and the rest of the app keep working.
+        const QZ_INTEREST_OPTS = [['maths', 'Maths and logical problems'], ['science', 'Science and how things work'], ['tech', 'Technology and computers'], ['business', 'Business, money and entrepreneurship'], ['people', 'People, society and human behaviour'], ['words', 'Writing, languages and communication'], ['art', 'Art, design and creative work'], ['bio', 'Biology, health and living things'], ['civics', 'History, politics and current affairs']];
+        const QZ_BANK = {
+            cls: { label: 'Your stage', title: 'Which best describes you right now?', sub: 'Your answer decides which questions come next, so they fit where you are.',
+                opts: [['10', 'Class 10 (or Class 9)', 'Class 10'], ['11', 'Class 11', 'Class 11'], ['12', 'Class 12 or just finished', 'Class 12'], ['ug', 'In an undergraduate degree', 'Undergraduate'], ['grad', 'Graduated, not working yet', 'Recently graduated'], ['pg', 'Doing or considering a postgraduate degree', 'Postgraduate'], ['working', 'Working, and want to grow or switch', 'Working']] },
+            // ---- Class 10: choosing a stream
+            interests: { label: 'What you look forward to', multi: 3, exclusive: 'none', title: 'Which subjects do you actually look forward to?', sub: 'Pick up to 3. Think about what you enjoy, not what you score in.',
+                opts: QZ_INTEREST_OPTS.concat([['none', 'I haven\'t found my favourite yet']]) },
+            strong: { label: 'What you score well in', multi: 3, exclusive: 'none', title: 'And which subjects do you score well in?', sub: 'Pick up to 3. These can be different from the ones you enjoy, and that is useful to know.',
+                opts: QZ_INTEREST_OPTS.concat([['none', 'None stands out yet']]) },
+            activity: { label: 'Your science-fair job', title: 'Your class runs a science-fair stall. Which job do you grab?', sub: 'Go with your first instinct.',
+                opts: [['build', 'Build the working model'], ['research', 'Research the topic and explain it'], ['create', 'Design the poster and display'], ['biz', 'Manage the team and the money'], ['people', 'Talk to visitors and judges']] },
+            maths: { label: 'Maths after Class 10', title: 'How do you feel about Maths after Class 10?', sub: 'This decides whether PCM, Commerce with Maths and Economics stay open.',
+                opts: [['more', 'I want more Maths'], ['fine', 'Fine if a course needs it'], ['drop', 'I want to drop it']] },
+            bio: { label: 'Biology and lab work', title: 'And Biology or lab work?', sub: 'This decides whether PCB and health careers stay open.',
+                opts: [['enjoy', 'I enjoy it'], ['neutral', 'Neutral'], ['no', 'Not for me']] },
+            decider: { label: 'Who decides', title: 'Who is deciding your stream?', sub: 'There is no right answer. It helps us show the right tools.',
+                opts: [['me', 'Me'], ['together', 'Me and my parents together'], ['parents', 'Mostly my parents'], ['decided', 'It has already been decided for me']] },
+            routes: { label: 'Routes you are open to', multi: 4, exclusive: 'unsure', title: 'Which routes after Class 10 are you open to?', sub: 'Pick any. We only show other routes if you want them.',
+                opts: [['school', 'School, Class 11 and 12'], ['coaching', 'School with integrated coaching'], ['diploma', 'Diploma or polytechnic'], ['iti', 'ITI or a skilled trade'], ['unsure', 'Not sure']] },
+            worry: { label: 'Biggest worry', title: 'What worries you most right now?', sub: 'We start your results with this.',
+                opts: [['wrong', 'Picking the wrong stream'], ['marks', 'My marks may not be enough'], ['parents', 'My parents and I disagree'], ['cost', 'The cost'], ['friends', 'My friends are going elsewhere']] },
+            // ---- Class 11-12: course, exam, college, backup
+            stream: { label: 'Your stream', title: 'Which stream and subjects are you in?', sub: 'This decides which courses and exams you are eligible for.',
+                opts: [['pcm', 'Science with Maths (PCM)', 'PCM'], ['pcb', 'Science with Biology (PCB)', 'PCB'], ['pcmb', 'Science with Maths and Biology (PCMB)', 'PCMB'], ['comm', 'Commerce with Maths'], ['com', 'Commerce without Maths'], ['arts', 'Arts or Humanities'], ['voc', 'Vocational subjects']] },
+            streamAgain: { label: 'Same stream again?', title: 'Would you pick the same stream again?', sub: 'Be honest. Many courses accept students from other streams.',
+                opts: [['yes', 'Yes'], ['unsure', 'Not sure'], ['no', 'No, I want out of it']] },
+            examStatus: { label: 'Entrance exams', title: 'Where are you with entrance exams?', sub: 'We build your exam list and timeline from this.',
+                opts: [['serious', 'Preparing seriously'], ['registered', 'Registered, but barely preparing'], ['none', 'Not taking any'], ['dontknow', 'I don\'t know which ones apply to me']] },
+            pref: { label: 'Course or college', title: 'Which would you take?', sub: 'There is no wrong answer.',
+                opts: [['course', 'My first-choice course at an average college'], ['brand', 'My second-choice course at a top college']] },
+            planB: { label: 'If plan A fails', title: 'If your first choice does not work out, what would you do?', sub: 'We use this to set up your Safety Net.',
+                opts: [['drop', 'Take a drop year and try again'], ['nextbest', 'Take the next-best college'], ['different', 'Switch to a different course'], ['none', 'I haven\'t thought about it']] },
+            move: { label: 'How far you will move', title: 'How far are you willing to move for college?', sub: 'We show colleges in this range first.',
+                opts: [['city', 'Only my home city'], ['state', 'Anywhere in my state'], ['india', 'Anywhere in India'], ['abroad', 'Abroad too']] },
+            pay: { label: 'Paying for the degree', title: 'How will the degree be paid for?', sub: 'We show scholarships and loans if they apply.',
+                opts: [['savings', 'Family savings'], ['loan', 'An education loan is fine'], ['scholarship', 'I need a scholarship'], ['earn', 'I must earn while I study']] },
+            // ---- Undergraduate / recent graduate
+            degree: { label: 'Your degree', title: 'Which degree are you doing or did you finish?', sub: 'Pick the closest one.',
+                opts: [['btech', 'B.Tech / B.E.'], ['bsc', 'B.Sc'], ['bcom', 'B.Com'], ['ba', 'BA'], ['bba', 'BBA / BMS'], ['bca', 'BCA'], ['med', 'MBBS, BDS, nursing or pharmacy'], ['design', 'B.Des or fine arts'], ['law', 'Law (LLB)'], ['diploma', 'Diploma'], ['other', 'Something else']],
+                pairFor: function (a) {
+                    if (a.cls === 'ug') return { key: 'ugYear', title: 'Which year are you in?', opts: [['1', '1st year'], ['2', '2nd year'], ['3', '3rd year'], ['final', 'Final year']] };
+                    if (a.cls === 'grad') return { key: 'since', title: 'How long since you graduated?', opts: [['u6', 'Under 6 months'], ['6-12', '6 to 12 months'], ['1-2', '1 to 2 years'], ['2+', 'More than 2 years']] };
+                    if (a.cls === 'pg') return { key: 'exp', title: 'How much work experience do you have?', opts: [['none', 'None'], ['u2', 'Under 2 years'], ['2+', '2 years or more']] };
+                    return null;
+                } },
+            ugHow: { label: 'How the degree is going', title: 'How is your degree going?', sub: 'Honest answers get honest help.',
+                opts: [['love', 'I love it'], ['okay', 'It\'s okay'], ['wrong', 'Wrong course, but I\'ll finish it'], ['out', 'I want out']] },
+            selfDrive: { label: 'What you do unprompted', title: 'What do you do without anyone pushing you?', sub: 'This is the strongest sign of real interest.',
+                opts: [['core', 'Go deeper into my core subjects'], ['projects', 'Build projects'], ['clubs', 'Run clubs and events'], ['freelance', 'Freelance work or a side business'], ['nothing', 'Nothing yet']] },
+            after: { label: 'After graduating', title: 'What do you want to do straight after graduating?', sub: 'This picks the path we plan for.',
+                opts: [['job', 'Get a job'], ['msIndia', 'A master\'s degree in India'], ['msAbroad', 'A master\'s degree abroad'], ['govt', 'Prepare for government exams'], ['biz', 'Family business or my own startup'], ['dontknow', 'I don\'t know yet']] },
+            proof: { label: 'Proof so far', multi: 4, exclusive: 'none', title: 'What can you show an employer so far?', sub: 'Pick all that apply.',
+                opts: [['internship', 'An internship'], ['projects', 'Projects'], ['certs', 'Certifications'], ['competitions', 'Competitions or hackathons'], ['none', 'Nothing yet']] },
+            placements: { label: 'Campus placements', title: 'How are campus placements at your college?', sub: 'If they are weak, we plan an off-campus route.',
+                when: function (a) { return a.after === 'job' || a.after === 'dontknow'; },
+                opts: [['strong', 'Strong'], ['few', 'A few companies come'], ['none', 'Almost none']] },
+            cgpa: { label: 'CGPA and backlogs', title: 'What is your CGPA, roughly?', sub: 'Many companies and programmes set a minimum. We use this to flag cut-offs.',
+                opts: [['8+', '8 or above'], ['7-8', '7 to 8'], ['6-7', '6 to 7'], ['u6', 'Below 6']],
+                pairFor: function () { return { key: 'backlogs', title: 'Any active backlogs?', opts: [['no', 'No'], ['yes', 'Yes']] }; } },
+            earnWhen: { label: 'When you must earn', title: 'When do you need to start earning?', sub: 'This filters out routes that take too long.',
+                opts: [['atgrad', 'Right when I graduate'], ['wait', 'I can wait 1 to 2 years']] },
+            // ---- Postgraduate
+            pgWhy: { label: 'Why a PG degree', title: 'Why a postgraduate degree?', sub: 'Be honest; it changes the advice.',
+                opts: [['deeper', 'To go deeper into my field'], ['change', 'To change my field'], ['pay', 'For better pay'], ['required', 'My goal requires it'], ['time', 'To buy time while I decide']] },
+            pgLead: { label: 'Where it should lead', title: 'Where should the degree lead?', sub: 'This decides which exams and programmes fit.',
+                opts: [['industry', 'An industry role'], ['research', 'Research or a PhD'], ['teaching', 'Teaching'], ['govt', 'Government'], ['abroad', 'Work abroad']] },
+            pgSpec: { label: 'Specialisation', title: 'Have you picked a specialisation?', sub: 'If not, we help you compare.',
+                opts: [['decided', 'Yes, decided'], ['two', 'Between two or three'], ['none', 'No idea yet']] },
+            pgCost: { label: 'Fees you can manage', title: 'About how much can you spend on fees each year?', sub: 'We weigh cost against what the degree pays back.',
+                opts: [['u1', 'Up to ₹1 lakh'], ['1-3', '₹1 to 3 lakh'], ['3-8', '₹3 to 8 lakh'], ['8+', 'More than ₹8 lakh']],
+                pairFor: function () { return { key: 'loan', title: 'Would you take an education loan?', opts: [['yes', 'Yes'], ['no', 'No']] }; } },
+            pgMissing: { label: 'What is missing', title: 'What is missing for you today?', sub: 'We turn this into actions for the next 90 days.',
+                opts: [['exposure', 'Industry exposure'], ['research', 'Research output'], ['network', 'A professional network'], ['skills', 'Specific skills']] },
+            // ---- Working professionals
+            industry: { label: 'Your current work', title: 'What kind of work do you do now?', sub: 'Pick the closest one.',
+                opts: [['data-analyst', 'Data or analytics'], ['software-developer', 'Software or IT'], ['finance-accounts', 'Finance or accounts'], ['marketing-sales', 'Marketing or sales'], ['operations', 'Operations or project coordination'], ['teacher-trainer', 'Teaching or training'], ['design-creative', 'Design or creative'], ['customer-support', 'Customer support or client success'], ['other', 'Something else']],
+                pairFor: function () { return { key: 'years', title: 'Years of experience', opts: [['0-2', '0 to 2'], ['3-5', '3 to 5'], ['6-10', '6 to 10'], ['10+', '10 or more']] }; } },
+            whyMove: { label: 'Why move now', title: 'Why are you thinking about a change now?', sub: 'This decides whether to grow where you are or switch.',
+                opts: [['pay', 'Pay'], ['stalled', 'My growth has stalled'], ['dislike', 'I dislike the work'], ['risk', 'My industry feels risky'], ['return', 'I\'m returning after a break']] },
+            keep: { label: 'Tasks you would keep', multi: 3, title: 'Which parts of your work would you keep?', sub: 'Pick up to 3. These are your transferable strengths.',
+                opts: [['data', 'Analysing data and numbers'], ['manage', 'Managing people'], ['customers', 'Talking to customers'], ['build', 'Building or fixing things'], ['write', 'Writing and communicating'], ['plan', 'Planning and organising'], ['design', 'Designing or creating'], ['teach', 'Teaching or training others']] },
+            hours: { label: 'Time and savings', title: 'How many hours a week can you study?', sub: 'We build a timeline you can actually keep.',
+                opts: [['4', '3 to 5 hours'], ['8', '6 to 10 hours'], ['13', '11 to 15 hours'], ['18', '16 hours or more']],
+                pairFor: function () { return { key: 'runway', title: 'How many months could you live on savings?', opts: [['0-3', '0 to 3'], ['3-6', '3 to 6'], ['6+', '6 or more']] }; } },
+            paycut: { label: 'Pay cut you can take', title: 'What pay cut could you absorb during a move?', sub: 'This decides between a bridge role and a direct jump.',
+                opts: [['none', 'None'], ['20', 'Up to 20%'], ['more', 'More, for a short time']] },
+            wroute: { label: 'Preferred route', title: 'How would you prefer to make the move?', sub: 'This shapes your plan.',
+                opts: [['upskill', 'Upskill while in my job'], ['internal', 'Move internally at my company'], ['parttime', 'A part-time course'], ['fulltime', 'A full-time break to study']] },
+            // ---- Shared core
+            challenge: { label: 'A satisfying challenge', title: 'Which kind of challenge sounds most satisfying to you?', sub: 'Pick the one that feels most like you.',
+                opts: [['patterns', 'Finding patterns and solving complex problems'], ['people', 'Understanding people and helping them through problems'], ['ideas', 'Coming up with original ideas or better designs'], ['plan', 'Planning, organising and making things happen'], ['build', 'Building, repairing or working with practical systems'], ['mixed', 'I enjoy different kinds of challenges']] },
+            values: { label: 'What would matter', multi: 2, title: 'What would make a career feel worthwhile to you?', sub: 'Pick up to 2.',
+                opts: [['enjoy', 'Doing work I genuinely enjoy'], ['earn', 'Earning well and achieving financial independence'], ['help', 'Helping people or making a difference'], ['creative', 'Being creative and expressing ideas'], ['own', 'Building something of my own'], ['stable', 'Having stability and a predictable future'], ['freedom', 'Having freedom and flexibility'], ['skilled', 'Becoming highly skilled or recognised in my field']] },
+            // ---- Routing
+            clarity: { label: 'Your direction', title: 'Do you know where you want to end up?', sub: 'This decides the kind of plan we make: explore, plan backwards from a goal, or switch.',
+                optsFor: function (a) {
+                    const o = [['none', 'No clear idea yet. Help me explore', 'Exploring'], ['specific', 'I have a specific career in mind', 'A career in mind'], ['few', 'I have a few careers I\'m considering', 'A few in mind']];
+                    if (a.cls === 'working' || a.cls === 'pg' || a.cls === 'grad') o.push(['switch', 'I want to move out of my current field', 'Switching field']);
+                    if (a.cls === 'working') o.push(['grow', 'I want to grow in my current field', 'Growing in my field']);
+                    return o;
+                } },
+            // ---- Closing
+            help: { label: 'What you need help with', title: 'What do you need help with first?', sub: 'We start your results there.',
+                optsFor: function (a) {
+                    if (a.cls === '10') return [['stream', 'Choosing my stream'], ['careers', 'Which careers fit me'], ['scholarships', 'Scholarships and low-cost options'], ['start', 'Where to start']];
+                    if (a.cls === '11' || a.cls === '12') return [['exams', 'Which entrance exams to take'], ['colleges', 'Which colleges and courses to target'], ['backup', 'A backup plan if my first choice fails'], ['scholarships', 'Scholarships and affordable study'], ['careers', 'Which careers fit me']];
+                    if (a.cls === 'ug' || a.cls === 'grad') return [['intern', 'Getting internships and real experience'], ['job', 'Landing my first job'], ['exams', 'Exams for higher study (GATE, CAT, GRE and others)'], ['careers', 'Which careers fit me']].concat(a.cls === 'grad' ? [['switch', 'Moving into a field different from my degree']] : []);
+                    if (a.cls === 'pg') return [['colleges', 'Choosing a programme and college'], ['exams', 'Which entrance exams to take'], ['careers', 'Which careers it leads to'], ['job', 'Getting a job after it']];
+                    return [['switch', 'Planning a switch into a new field'], ['careers', 'Which careers match my skills'], ['colleges', 'Courses or certifications to upskill'], ['start', 'Where to start']];
+                } }
+        };
+        const QZ_FLOW_STAGE = {
+            '10': ['interests', 'strong', 'activity', 'maths', 'bio', 'decider', 'routes', 'worry'],
+            '11': ['stream', 'streamAgain', 'examStatus', 'pref', 'planB', 'move', 'pay'],
+            '12': ['stream', 'streamAgain', 'examStatus', 'pref', 'planB', 'move', 'pay'],
+            ug: ['degree', 'ugHow', 'selfDrive', 'after', 'proof', 'placements', 'cgpa', 'earnWhen'],
+            grad: ['degree', 'after', 'proof', 'placements', 'cgpa', 'earnWhen'],
+            pg: ['pgWhy', 'degree', 'pgLead', 'pgSpec', 'pgCost', 'pgMissing'],
+            working: ['industry', 'whyMove', 'keep', 'hours', 'paycut', 'wroute']
+        };
+        const QZ_CORE = ['challenge', 'values', 'clarity', 'help'];
+        // The questions this person will see, in order. Changes only when the stage answer changes.
+        function quizFlow(a) {
+            a = a || wizardAnswers;
+            const keys = ['cls'].concat(a.cls ? (QZ_FLOW_STAGE[a.cls] || []).concat(QZ_CORE) : []);
+            return keys.map(function (k) { return Object.assign({ key: k }, QZ_BANK[k]); }).filter(function (q) { return !q.when || q.when(a); });
+        }
+        // Before the stage is known we don't know how long the quiz is; assume the typical length.
+        function quizLen() { return wizardAnswers.cls ? quizFlow().length : 12; }
+        function quizQ(n) { return quizFlow()[n - 1]; }
+        function quizPair(q) { return q && typeof q.pairFor === 'function' ? q.pairFor(wizardAnswers) : null; }
+        function quizAnswered(q) {
+            if (!q) return false;
+            const v = wizardAnswers[q.key], has = Array.isArray(v) ? v.length > 0 : !!v;
+            const p = quizPair(q);
+            return has && (!p || !!wizardAnswers[p.key]);
+        }
+        // Label for any answer, by key, for chips, the sidebar and the PDF.
+        function quizLabel(key, a, short) {
+            a = a || wizardAnswers;
+            const q = QZ_BANK[key]; const v = a[key];
+            if (!q || v == null || (Array.isArray(v) && !v.length)) return '';
+            const opts = typeof q.optsFor === 'function' ? q.optsFor(a) : q.opts;
+            const lab = function (x) { const o = (opts || []).find(function (p) { return p[0] === x; }); return o ? ((short && o[2]) || o[1]) : x; };
+            return [].concat(v).map(lab).join('; ');
+        }
         // Some questions' options depend on earlier answers (e.g. "help" for a working professional vs a student).
         // Everywhere that needs a question's option list should call this instead of reading q.opts directly.
         function quizOpts(q) { return typeof q.optsFor === 'function' ? q.optsFor(wizardAnswers) : q.opts; }
@@ -9597,6 +9713,37 @@
         };
         const QZ_CAT_TO_INT = { Finance: 'Business', 'Arts & Entertainment': 'Creative' };
         const QZ_NEEDS_PRACTICAL = ['exams', 'colleges', 'scholarships', 'backup'];
+        Object.assign(QZ_INTEREST, {
+            strong: QZ_INTEREST.interests,
+            maths: { more: [['Technology', 1], ['Engineering', 1], ['Science', 0.5]], drop: [['Engineering', -1.5], ['Technology', -0.5]] },
+            bio: { enjoy: [['Healthcare', 1.5], ['Science', 0.5]], no: [['Healthcare', -1.5]] },
+            stream: { pcm: [['Engineering', 3], ['Technology', 2], ['Science', 1.5]], pcb: [['Healthcare', 3], ['Science', 2]], pcmb: [['Healthcare', 2], ['Engineering', 2], ['Science', 2], ['Technology', 1]],
+                comm: [['Business', 3], ['Technology', 0.5]], com: [['Business', 2.5], ['Law & Public Service', 1]], arts: [['Law & Public Service', 2], ['Media', 1.5], ['Education', 1.5], ['Creative', 1]], voc: [['Skilled Trades', 2], ['Aviation & Hospitality', 1], ['Technology', 0.5]] },
+            degree: { btech: [['Engineering', 2.5], ['Technology', 2]], bsc: [['Science', 2.5], ['Technology', 0.5]], bcom: [['Business', 2.5]], ba: [['Law & Public Service', 1.5], ['Media', 1.5], ['Education', 1.5]], bba: [['Business', 2.5]],
+                bca: [['Technology', 3]], med: [['Healthcare', 3]], design: [['Creative', 3], ['Media', 1]], law: [['Law & Public Service', 3]], diploma: [['Engineering', 1.5], ['Skilled Trades', 1.5]] },
+            selfDrive: { projects: [['Technology', 0.7], ['Engineering', 0.5]], clubs: [['Business', 0.5], ['Media', 0.5]], freelance: [['Business', 1], ['Creative', 0.5]] },
+            keep: { data: [['Technology', 1], ['Business', 0.5]], manage: [['Business', 1]], customers: [['Business', 0.5], ['Personal Services & Wellness', 0.5]], build: [['Engineering', 1], ['Technology', 1]],
+                write: [['Media', 1], ['Education', 0.5]], plan: [['Business', 1]], design: [['Creative', 1.5]], teach: [['Education', 1.5]] },
+            industry: { 'data-analyst': [['Technology', 1.5]], 'software-developer': [['Technology', 1.5]], 'finance-accounts': [['Business', 1.5]], 'marketing-sales': [['Business', 1], ['Media', 0.5]],
+                operations: [['Business', 1], ['Engineering', 0.5]], 'teacher-trainer': [['Education', 1.5]], 'design-creative': [['Creative', 1.5]], 'customer-support': [['Business', 0.5]] },
+            pgLead: { research: [['Science', 1]], teaching: [['Education', 1.5]], govt: [['Law & Public Service', 1.5]] }
+        });
+        Object.assign(QZ_STYLE, {
+            selfDrive: { core: { Research: 0.8 }, projects: { 'Hands-on': 0.6, Logic: 0.4 }, clubs: { People: 0.5, Leadership: 0.5 }, freelance: { Leadership: 0.6, Creative: 0.3 } },
+            keep: { data: { Logic: 0.6 }, manage: { Leadership: 0.6 }, customers: { People: 0.6 }, build: { 'Hands-on': 0.6 }, write: { Creative: 0.4, People: 0.2 }, plan: { Leadership: 0.5 }, design: { Creative: 0.6 }, teach: { People: 0.6 } },
+            pgLead: { research: { Research: 0.8 } }
+        });
+        // How much each answer counts. What you score in counts less than what you enjoy; a degree or job you
+        // want to leave counts much less, so a B.Tech student who wants out is not pushed back into engineering.
+        function qzWeight(a, k) {
+            if (k === 'strong') return 0.35;
+            if (k === 'stream') return a.streamAgain === 'no' ? 0.25 : a.streamAgain === 'unsure' ? 0.6 : 1;
+            if (k === 'degree') return (a.ugHow === 'wrong' || a.ugHow === 'out' || a.clarity === 'switch' || a.pgWhy === 'change') ? 0.25 : 1;
+            if (k === 'industry') return (a.clarity === 'switch' || a.whyMove === 'dislike') ? 0.2 : 0.8;
+            return 1;
+        }
+        // Keys that only older versions of the quiz asked. Still read for people whose saved answers predate the stage blocks.
+        const QZ_LEGACY_KEYS = ['interests', 'activity', 'learning'];
 
         // Turn the raw answers into the fields the rest of the app reads. Safe to call after every answer.
         function deriveWizard() {
@@ -9607,33 +9754,50 @@
             if (a.cls === '9') a.cls = '10';
             if (a.cls) a.stage = (a.cls === '10') ? 'School 8-10'
                 : (a.cls === '11' || a.cls === '12') ? 'School 11-12'
-                : a.cls === 'ug' ? 'Undergraduate' : 'Graduate'; // 'grad' or 'working'
+                : a.cls === 'ug' ? 'Undergraduate' : 'Graduate'; // 'grad', 'pg' or 'working'
             a.working = a.cls === 'working';
-            const tot = {}, add = function (list) { (list || []).forEach(function (p) { tot[p[0]] = (tot[p[0]] || 0) + p[1]; }); };
-            (a.interests || []).forEach(function (t) { add(QZ_INTEREST.interests[t]); });
-            if (a.activity) add(QZ_INTEREST.activity[a.activity]);
-            if (a.challenge) add(QZ_INTEREST.challenge[a.challenge]);
+            // only answers to questions this person was actually asked count (answers from a stage they
+            // switched away from are kept but ignored); older saved answers still count if the stage block is empty
+            const flowKeys = quizFlow(a).map(function (q) { return q.key; });
+            const blockKeys = a.cls ? (QZ_FLOW_STAGE[a.cls] || []) : [];
+            const legacy = !blockKeys.some(function (k) { const v = a[k]; return Array.isArray(v) ? v.length : !!v; });
+            const counts = function (k) { return flowKeys.indexOf(k) > -1 || (legacy && QZ_LEGACY_KEYS.indexOf(k) > -1); };
+            a.mode = a.clarity === 'switch' ? 'switch' : a.clarity === 'grow' ? 'grow' : (a.clarity === 'specific' || a.clarity === 'few' || a.clarity === 'kind') ? 'reverse' : 'discover';
+            const tot = {}, add = function (list, w) { (list || []).forEach(function (p) { tot[p[0]] = (tot[p[0]] || 0) + p[1] * (w == null ? 1 : w); }); };
+            ['interests', 'strong', 'activity', 'challenge', 'maths', 'bio', 'stream', 'degree', 'selfDrive', 'keep', 'industry', 'pgLead'].forEach(function (k) {
+                if (!counts(k) || !QZ_INTEREST[k]) return;
+                const w = qzWeight(a, k);
+                [].concat(a[k] || []).forEach(function (v) { add(QZ_INTEREST[k][v], w); });
+            });
             // careers or fields the student named: their categories count as interests too
             a.mentioned = wizardMentionedCareers(a.careerNote);
             const cats = {};
-            a.mentioned.forEach(function (id) { const c = careersData.find(function (x) { return x.id === id; }); if (c) { const k = QZ_CAT_TO_INT[c.category] || c.category; cats[k] = (cats[k] || 0) + 1; } });
-            Object.keys(cats).sort(function (x, y) { return cats[y] - cats[x]; }).slice(0, 2).forEach(function (k) { tot[k] = (tot[k] || 0) + 2; });
+            // the best match for what they typed counts most; looser matches ("Sports Data Analyst" for "data analyst") count a little
+            a.mentioned.forEach(function (id, i) { const c = careersData.find(function (x) { return x.id === id; }); if (c) { const k = QZ_CAT_TO_INT[c.category] || c.category; cats[k] = (cats[k] || 0) + (i === 0 ? 1 : 0.25); } });
+            Object.keys(cats).sort(function (x, y) { return cats[y] - cats[x]; }).slice(0, 2).forEach(function (k) { tot[k] = (tot[k] || 0) + 2 * Math.min(1, cats[k]); });
             const ranked = Object.keys(tot).sort(function (x, y) { return tot[y] - tot[x]; });
             const top = ranked.length ? tot[ranked[0]] : 0;
             a.interests3 = top >= 1 ? ranked.filter(function (k) { return tot[k] >= Math.max(1, top * 0.45); }).slice(0, 3) : [];
             a.interest = a.interests3.length ? a.interests3[0] : 'Undecided';
             // how they like to work
             const st = {}, order = [];
-            ['challenge', 'activity', 'learning'].forEach(function (k) {
-                const m = a[k] && QZ_STYLE[k][a[k]]; if (!m) return;
-                Object.keys(m).forEach(function (s) { st[s] = (st[s] || 0) + m[s]; if (order.indexOf(s) < 0) order.push(s); });
+            ['challenge', 'activity', 'learning', 'selfDrive', 'keep', 'pgLead'].forEach(function (k) {
+                if (!counts(k) || !QZ_STYLE[k]) return;
+                [].concat(a[k] || []).forEach(function (v) {
+                    const m = QZ_STYLE[k][v]; if (!m) return;
+                    Object.keys(m).forEach(function (s) { st[s] = (st[s] || 0) + m[s]; if (order.indexOf(s) < 0) order.push(s); });
+                });
             });
             const sr = order.sort(function (x, y) { return st[y] - st[x] || order.indexOf(x) - order.indexOf(y); });
             a.workStyle = sr.length ? sr[0] : 'Mixed';
             a.workStyles = sr.slice(0, 2);
             // what matters most
             const v = a.values || [];
-            a.constraint = a.help === 'scholarships' ? 'Budget' : v.indexOf('skilled') > -1 ? 'Deep' : (v.indexOf('earn') > -1 && v.indexOf('stable') > -1) ? 'Fast' : 'Open';
+            const has = function (k, val) { return counts(k) && a[k] === val; };
+            a.constraint = (a.help === 'scholarships' || has('pay', 'scholarship') || has('pgCost', 'u1')) ? 'Budget'
+                : (has('earnWhen', 'atgrad') || has('pay', 'earn') || has('paycut', 'none')) ? 'Fast'
+                : (v.indexOf('skilled') > -1 || has('pgWhy', 'deeper') || has('pgLead', 'research')) ? 'Deep'
+                : (v.indexOf('earn') > -1 && v.indexOf('stable') > -1) ? 'Fast' : 'Open';
             return a;
         }
         // careers the student named in their own words, found with the same smart search used elsewhere
@@ -9659,13 +9823,15 @@
         function showWizardStep(n) {
             document.querySelectorAll('.wizard-step').forEach(function (el) { el.classList.add('hidden'); });
             document.getElementById('wizard-results').classList.add('hidden');
-            if (n === WIZARD_PRACTICAL) markSit(); else renderQuizStep(n);
-            document.getElementById('wizard-q' + n).classList.remove('hidden');
+            if (n !== WIZARD_PRACTICAL) n = Math.max(1, Math.min(n, quizLen()));
+            wizCur = n;
+            if (n === WIZARD_PRACTICAL) { markSit(); document.getElementById('wizard-q9').classList.remove('hidden'); }
+            else { renderQuizStep(n); document.getElementById('wizard-qs').classList.remove('hidden'); }
             updateWizardProgress(n); refreshPageNav();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         function wizardAdvance(from) {
-            const open = WIZARD_KEYS.map(function (k, i) { return wizardHas(k) ? 0 : i + 1; }).filter(Boolean);
+            const open = quizFlow().map(function (q, i) { return quizAnswered(q) ? 0 : i + 1; }).filter(Boolean);
             const next = open.find(function (n) { return n > from; }) || open[0];
             if (next) { showWizardStep(next); return; }
             // School-stage results are colleges, and a college list means nothing without a state —
@@ -9676,33 +9842,49 @@
         function showWizardResults() {
             document.querySelectorAll('.wizard-step').forEach(function (el) { el.classList.add('hidden'); });
             document.getElementById('wizard-results').classList.remove('hidden');
-            updateWizardProgress(WIZARD_STEPS + 2);
+            wizCur = WIZARD_DONE; updateWizardProgress(WIZARD_DONE);
             renderWizardResults(); refreshPageNav();
             window.scrollTo({ top: 0, behavior: 'smooth' });
             trackEvent('quiz_completed');
         }
 
         function renderQuizStep(n) {
-            const q = QUIZ[n - 1], box = document.getElementById('wizard-q' + n);
+            const q = quizQ(n), box = document.getElementById('wizard-qs');
             if (!q || !box) return;
             const e = escapeAuth, cur = wizardAnswers[q.key], sel = Array.isArray(cur) ? cur : (cur ? [cur] : []);
             const base = 'w-full text-left p-4 rounded-xl border transition min-h-[56px] ';
+            const pr = quizPair(q);
             let h = '<p class="text-lg font-medium text-slate-700 mb-1">' + n + '. ' + e(q.title) + '</p><p class="text-xs text-slate-600 mb-5">' + e(q.sub) + (q.multi ? ' <span class="font-semibold">Selected: <span id="wiz-count-' + n + '">' + sel.length + '</span> of up to ' + q.multi + '.</span>' : '') + '</p>';
             h += '<div class="space-y-2.5" role="' + (q.multi ? 'group' : 'radiogroup') + '" aria-label="' + e(q.title) + '">' + quizOpts(q).map(function (o) {
                 const on = sel.indexOf(o[0]) > -1;
                 return '<button type="button" data-qv="' + o[0] + '" aria-pressed="' + on + '" onclick="quizPick(' + n + ', \'' + o[0] + '\')" class="' + base + (on ? 'border-brand-600 bg-brand-50' : 'border-slate-200 hover:border-brand-600 hover:bg-brand-50/50') + '"><span class="flex items-start gap-3"><span aria-hidden="true" class="mt-0.5 w-5 h-5 shrink-0 border-2 ' + (q.multi ? 'rounded-md' : 'rounded-full') + ' flex items-center justify-center text-[11px] font-bold ' + (on ? 'border-brand-600 bg-brand-600 text-white' : 'border-slate-300 text-transparent') + '">✓</span><span class="font-semibold text-slate-800">' + e(o[1]) + '</span></span></button>';
             }).join('') + '</div>';
-            if (q.key === 'clarity' && ['specific', 'few', 'kind'].indexOf(cur) > -1) {
-                h += '<div class="mt-4 p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2"><label for="wiz-note" class="block text-sm font-semibold text-slate-700">Which careers or fields interest you? <span class="font-normal text-slate-500">(optional)</span></label>' +
-                    '<input id="wiz-note" type="text" maxlength="120" value="' + e(wizardAnswers.careerNote || '') + '" placeholder="For example: doctor, game designer, civil services" class="w-full min-h-[48px] px-4 border border-slate-300 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-brand-500" onkeydown="if(event.key===\'Enter\')wizardClarityDone()">' +
+            if (pr) {
+                const pv = wizardAnswers[pr.key];
+                h += '<div class="mt-5" id="wiz-pair"><p class="text-sm font-semibold text-slate-700 mb-2">' + e(pr.title) + '</p><div class="grid grid-cols-2 sm:grid-cols-4 gap-2" role="radiogroup" aria-label="' + e(pr.title) + '">' + pr.opts.map(function (o) {
+                    const on = pv === o[0];
+                    return '<button type="button" data-pv="' + o[0] + '" aria-pressed="' + on + '" onclick="quizPairPick(' + n + ', \'' + o[0] + '\')" class="min-h-[48px] px-3 rounded-xl border text-sm font-semibold transition ' + (on ? 'border-brand-600 bg-brand-50 text-brand-800' : 'border-slate-200 text-slate-700 hover:border-brand-600') + '">' + e(o[1]) + '</button>';
+                }).join('') + '</div></div>';
+            }
+            if (q.key === 'clarity' && ['specific', 'few', 'kind', 'switch'].indexOf(cur) > -1) {
+                const sw = cur === 'switch';
+                h += '<div class="mt-4 p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2"><label for="wiz-note" class="block text-sm font-semibold text-slate-700">' + (sw ? 'Which field or role do you want to move into?' : 'Which careers or fields interest you?') + ' <span class="font-normal text-slate-500">(optional)</span></label>' +
+                    '<input id="wiz-note" type="text" maxlength="120" value="' + e(wizardAnswers.careerNote || '') + '" placeholder="' + (sw ? 'For example: data analyst, product manager, teaching' : 'For example: doctor, game designer, civil services') + '" class="w-full min-h-[48px] px-4 border border-slate-300 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-brand-500" onkeydown="if(event.key===\'Enter\')wizardClarityDone()">' +
                     '<button type="button" onclick="wizardClarityDone()" class="w-full min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition">Continue</button></div>';
             }
             if (q.multi) h += '<button type="button" id="wiz-multi-go-' + n + '" onclick="wizardMultiDone(' + n + ')" ' + (sel.length ? '' : 'disabled ') + 'class="mt-4 w-full min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition disabled:opacity-50 disabled:cursor-not-allowed">Continue</button>';
             if (n > 1) h += '<button type="button" onclick="showWizardStep(' + (n - 1) + ')" class="mt-3 min-h-[44px] text-sm font-semibold text-slate-600 hover:text-slate-900">← Back</button>';
             box.innerHTML = h;
         }
+        // After the stage changes, drop answers that no longer fit (e.g. "switch field" for a Class 12 student).
+        function quizPruneForStage() {
+            ['clarity', 'help'].forEach(function (k) {
+                const v = wizardAnswers[k]; if (!v) return;
+                if (!QZ_BANK[k].optsFor(wizardAnswers).some(function (o) { return o[0] === v; })) { delete wizardAnswers[k]; if (k === 'clarity') delete wizardAnswers.careerNote; }
+            });
+        }
         function quizPick(n, v) {
-            const q = QUIZ[n - 1]; if (!q) return;
+            const q = quizQ(n); if (!q) return;
             if (q.multi) {
                 let sel = (wizardAnswers[q.key] || []).slice();
                 if (v === q.exclusive) sel = sel.indexOf(v) > -1 ? [] : [v];
@@ -9713,21 +9895,36 @@
                     else { if (sel.length >= q.multi) { showToast('You can pick up to ' + q.multi + '. Tap one to unselect it first.'); return; } sel.push(v); }
                 }
                 wizardAnswers[q.key] = sel; deriveWizard(); renderQuizStep(n);
-                const b = document.querySelector('#wizard-q' + n + ' [data-qv="' + v + '"]'); if (b) b.focus();
+                const b = document.querySelector('#wizard-qs [data-qv="' + v + '"]'); if (b) b.focus();
                 refreshPageNav();
                 return;
             }
-            wizardAnswers[q.key] = v; deriveWizard();
-            if (q.key === 'clarity' && ['specific', 'few', 'kind'].indexOf(v) > -1) { renderQuizStep(n); refreshPageNav(); setTimeout(function () { const i = document.getElementById('wiz-note'); if (i) i.focus(); }, 40); return; }
+            const was = wizardAnswers[q.key];
+            wizardAnswers[q.key] = v;
+            if (q.key === 'cls' && was !== v) quizPruneForStage();
+            // fee band asked in the postgraduate block is the same budget the practical step asks about
+            if (q.key === 'pgCost') wizardAnswers.budget = v;
+            // "anywhere in India" means any state is fine
+            if (q.key === 'move' && v === 'india' && !wizardAnswers.state) wizardAnswers.state = 'any';
+            deriveWizard();
+            if (q.key === 'clarity' && ['specific', 'few', 'kind', 'switch'].indexOf(v) > -1) { renderQuizStep(n); refreshPageNav(); setTimeout(function () { const i = document.getElementById('wiz-note'); if (i) i.focus(); }, 40); return; }
             if (q.key === 'clarity') delete wizardAnswers.careerNote;
+            const pr = quizPair(q);
+            if (pr && !wizardAnswers[pr.key]) { renderQuizStep(n); refreshPageNav(); setTimeout(function () { const b = document.querySelector('#wiz-pair button'); if (b) { b.focus(); b.scrollIntoView({ block: 'center', behavior: 'smooth' }); } }, 40); return; }
             deriveWizard(); wizardAdvance(n);
+        }
+        function quizPairPick(n, v) {
+            const q = quizQ(n), pr = quizPair(q); if (!pr) return;
+            wizardAnswers[pr.key] = v; deriveWizard();
+            if (wizardAnswers[q.key]) { wizardAdvance(n); return; }
+            renderQuizStep(n); refreshPageNav();
         }
         function wizardMultiDone(n) { wizardAdvance(n); }
         function wizardClarityDone() {
             const i = document.getElementById('wiz-note');
             const t = i ? i.value.trim().replace(/\s+/g, ' ').slice(0, 120) : '';
             if (t) wizardAnswers.careerNote = t; else delete wizardAnswers.careerNote;
-            deriveWizard(); wizardAdvance(5);
+            deriveWizard(); wizardAdvance(wizCur);
         }
 
         const WIZARD_PRIORITY_LABELS = {
@@ -9747,14 +9944,15 @@
         function updateWizardProgress(step) {
             const lab = document.getElementById('wizard-progress-label'), pct = document.getElementById('wizard-progress-pct'), fill = document.getElementById('wizard-progress-fill');
             let p, t;
-            if (step <= WIZARD_STEPS) { p = Math.round(((step - 1) / WIZARD_STEPS) * 100); t = 'Question ' + step + ' of ' + WIZARD_STEPS; }
-            else if (step === WIZARD_PRACTICAL) { p = 90; t = 'Optional: a few practical details'; }
+            const L = quizLen();
+            if (step === WIZARD_PRACTICAL) { p = 92; t = 'Almost done: a few practical details'; }
+            else if (step <= L) { p = Math.round(((step - 1) / L) * 100); t = wizardAnswers.cls ? 'Question ' + step + ' of ' + L : 'Question 1'; }
             else { p = 100; t = 'Complete'; }
             lab.textContent = t; pct.textContent = p + '%'; fill.style.width = p + '%';
         }
 
         // Legacy entry point kept for any saved links: the quiz now uses quizPick.
-        function selectWizardStep(stepNum, key, val) { if (stepNum >= 1 && stepNum <= WIZARD_STEPS) quizPick(stepNum, val); }
+        function selectWizardStep(stepNum, key, val) { if (stepNum >= 1 && stepNum <= quizLen()) quizPick(stepNum, val); }
 
         // Small deterministic hash so tie-breaking is stable for a given answer set
         // (same answers always produce the same order) without always favoring
@@ -10156,17 +10354,32 @@
         const WIZARD_PRIORITY_PHRASE = { Fast: 'wanting to start working sooner', Deep: 'being ready for harder years towards a bigger goal', Budget: 'wanting to keep costs low', Open: 'wanting to keep your options open' };
         function computeWizardRoutes(a) {
             const scored = WIZARD_ROUTES.map(function (r, i) {
+                const adj = qzRouteAdj(r.id, a);
                 const wi = (r.w.interest[a.interest] || 0) + ((a.interests3 || []).slice(1).reduce(function (t, k) { return t + (r.w.interest[k] || 0) * 0.5; }, 0)), ws = r.w.style[a.workStyle] || 0, wp = r.w.priority[a.constraint] || 0;
                 const parts = [];
                 if (wi >= 2 && a.interest !== 'Undecided') parts.push('your interest in ' + a.interest.toLowerCase());
                 if (ws) parts.push(WIZARD_STYLE_PHRASE[a.workStyle]);
                 if (wp) parts.push(WIZARD_PRIORITY_PHRASE[a.constraint]);
-                return { r: r, i: i, score: wi + ws + wp, why: parts.length ? 'Fits ' + parts.join(', ').replace(/, ([^,]*)$/, parts.length > 1 ? ' and $1' : ', $1') + '.' : 'A broad route that keeps doors open.' };
+                return { r: r, i: i, score: wi + ws + wp + adj, why: parts.length ? 'Fits ' + parts.join(', ').replace(/, ([^,]*)$/, parts.length > 1 ? ' and $1' : ', $1') + '.' : 'A broad route that keeps doors open.' };
             });
             scored.sort(function (x, y) { return y.score - x.score || x.i - y.i; });
             // Keep clear matches; if that leaves fewer than two, fall back to any positive match.
             const strong = scored.filter(function (s) { return s.score >= 2; });
             return (strong.length >= 2 ? strong : scored.filter(function (s) { return s.score > 0; })).slice(0, 3);
+        }
+        // Class 10 answers that open or close a route outright (Maths, Biology, routes they are open to).
+        function qzRouteAdj(id, a) {
+            let s = 0;
+            if (id === 'pcm') s += a.maths === 'drop' ? -6 : a.maths === 'more' ? 2 : 0;
+            if (id === 'pcb') s += a.bio === 'no' ? -6 : a.bio === 'enjoy' ? 2 : 0;
+            if (id === 'com' && a.maths === 'more') s += 0.5;
+            const r = a.routes || [];
+            if (r.length && r.indexOf('unsure') < 0) {
+                const want = { dip: 'diploma', iti: 'iti' };
+                if (want[id]) s += r.indexOf(want[id]) > -1 ? 3 : -6;
+                else if (r.indexOf('school') < 0 && r.indexOf('coaching') < 0) s -= 3;
+            }
+            return s;
         }
         function renderWizardRoutes() {
             const box = document.getElementById('wizard-routes');
@@ -10249,6 +10462,82 @@
             return collegesData.filter(function (col) { return careersForCollege(col).some(function (x) { return x.id === c.id; }); })
                 .sort(function (x, y) { return (x.nirf || Infinity) - (y.nirf || Infinity) || x.name.localeCompare(y.name); });
         }
+        // Cards built from the stage-specific answers: the worry a Class 10 student named comes first,
+        // then whatever their answers flagged (a stream they want out of, weak placements, a pay cut they can't take...).
+        function renderWizardInsights() {
+            const box = document.getElementById('wizard-insights'); if (!box) return;
+            const a = wizardAnswers, e = escapeAuth, cards = [];
+            const flowKeys = quizFlow(a).map(function (q) { return q.key; });
+            const has = function (k) { return flowKeys.indexOf(k) > -1 && a[k] != null && !(Array.isArray(a[k]) && !a[k].length); };
+            const is = function (k, v) { return has(k) && ([].concat(v).indexOf(a[k]) > -1); };
+            const btn = function (label, js, primary) { return '<button type="button" onclick="' + js + '" class="min-h-[44px] px-4 py-2 rounded-xl text-sm font-semibold transition ' + (primary ? 'bg-brand-600 text-white hover:bg-brand-700' : 'bg-white border border-slate-300 text-slate-700 hover:border-brand-400') + '">' + label + '</button>'; };
+            const add = function (icon, title, text, actions) { cards.push({ icon: icon, title: title, text: text, actions: actions || '' }); };
+            const named = (a.mentioned || []).map(function (id) { return careersData.find(function (c) { return c.id === id; }); }).filter(Boolean);
+            // a career in mind: plan backwards from it
+            if (a.mode === 'reverse' && named.length) add('🎯', 'Plan backwards from ' + named[0].title, 'Start from where you want to end up: the roadmap shows the stream, exams, degree and skills this career needs, step by step.', btn('Open the ' + e(named[0].title) + ' roadmap', "openCareerDetail('" + named[0].id + "')", true));
+            // ----- Class 10
+            if (a.cls === '10') {
+                const w = a.worry;
+                if (w === 'wrong') add('🧭', 'Worried about picking the wrong stream', 'It is less final than it feels. Many degree courses accept students from more than one stream, and the routes below show what each stream keeps open.', btn('See every route after Class 10', "goToPathwayBranch('Class 10')", true));
+                if (w === 'marks') add('📈', 'Your Class 10 marks don\'t decide everything', 'Most degree admissions depend on Class 12 subjects and entrance exams, not Class 10 marks. Diploma, ITI and many state colleges also don\'t need top scores.', btn('See every route after Class 10', "goToPathwayBranch('Class 10')", true));
+                if (w === 'parents' || (is('decider', ['parents', 'decided']) && w !== 'parents')) add('🗣️', w === 'parents' ? 'You and your parents disagree' : 'Your parents are deciding', 'Use the family section below to see where your interest and their expectation overlap, then print a one-page summary to talk it through together.', btn('Compare with family expectations', "document.getElementById('wizard-family').scrollIntoView({behavior:'smooth'})", true) + btn('Print a summary for parents', 'printParentSummary()', false));
+                if (w === 'cost') add('💰', 'Keeping the cost down', 'Government schools, colleges and many scholarships keep costs low. The scholarship matcher shows which ones you may qualify for.', btn('Open the scholarship matcher', "goToBlock('scholarship-matcher-block')", true));
+                if (w === 'friends') add('👥', 'Your friends\' stream is not a reason to pick yours', 'You will make new friends in Class 11; you will live with your subjects for years. Pick for what you enjoy and what it opens up.');
+                const ints = (a.interests || []).filter(function (x) { return x !== 'none'; }), str = (a.strong || []).filter(function (x) { return x !== 'none'; });
+                if (ints.length && str.length && !ints.some(function (x) { return str.indexOf(x) > -1; })) {
+                    const L = function (k, list) { return list.map(function (x) { const o = QZ_BANK[k].opts.find(function (p) { return p[0] === x; }); return o ? o[1].split(',')[0].toLowerCase() : x; }).join(', '); };
+                    add('⚖️', 'What you enjoy and what you score in are different', 'You enjoy ' + e(L('interests', ints)) + ' but score well in ' + e(L('strong', str)) + '. Both matter: interest keeps you going for years, marks open doors now. Routes that use both are ranked higher below.');
+                }
+                if (a.maths === 'drop') add('➗', 'Dropping Maths closes some doors', 'Without Maths, PCM, most engineering and some Commerce and Economics courses are closed. Commerce without Maths, Humanities and PCB stay open.');
+                if ((a.routes || []).some(function (r) { return r === 'diploma' || r === 'iti'; })) add('🛠️', 'You are open to diploma or ITI', 'These routes get you working sooner, and a diploma can lead into the second year of engineering through lateral entry.', btn('See diploma and ITI routes', "goToPathwayBranch('Class 10')", false));
+            }
+            // ----- Class 11-12
+            if (a.cls === '11' || a.cls === '12') {
+                if (is('streamAgain', ['no', 'unsure'])) add('🔀', a.streamAgain === 'no' ? 'You want out of your stream' : 'Not sure about your stream', 'Many degrees take students from any stream: BA, BBA, law through CLAT, design through NID and UCEED, journalism and hotel management. Check each course\'s eligibility.', btn('See routes after Class 12', "goToPathwayBranch('Class 12')", true));
+                if (is('examStatus', ['none', 'dontknow'])) add('📝', 'Find the exams that apply to you', 'The exams page lists every major entrance exam with dates, fees and eligibility, with the ones that fit your stream first.', btn('Exams for me', 'goExams()', true));
+                else if (is('examStatus', ['serious', 'registered'])) add('📅', a.examStatus === 'serious' ? 'Keep every exam date in one place' : 'Registered but not preparing yet', a.examStatus === 'serious' ? 'Save the exams you are taking so their dates and deadlines show on your dashboard.' : 'Even 1 to 2 focused hours a day from now adds up. Save your exams so you see how many weeks are left.', btn('My exams', 'goExams()', true));
+                if (has('planB')) add('🛟', a.planB === 'none' ? 'Have a Plan B ready' : a.planB === 'drop' ? 'Planning a drop year' : 'Your Safety Net', a.planB === 'drop' ? 'Set a deadline and a fallback college list now, so a drop year is a choice and not a default.' : a.planB === 'none' ? 'Cut-offs move every year. A backup list made now saves panic in results week.' : 'The Safety Net tool lists realistic alternatives for the exam or college you are aiming for.', btn('Open my Safety Net', "switchView('backupPlan')", true));
+                if (is('pay', 'scholarship')) add('🎓', 'Scholarships first', 'We put low-cost routes first. The scholarship matcher checks which national and state scholarships you may qualify for.', btn('Open the scholarship matcher', "goToBlock('scholarship-matcher-block')", true));
+                if (is('pay', 'loan')) add('🏦', 'Planning an education loan', 'The loan navigator explains collateral rules, interest subsidies and what to ask the bank.', btn('Open the loan navigator', "goToBlock('loan-navigator-block')", true));
+                if (is('pay', 'earn')) add('💼', 'Study while you earn', 'Open and distance universities such as IGNOU, evening colleges and apprenticeship-linked degrees let you earn alongside your studies.');
+                if (is('move', 'abroad')) add('✈️', 'Studying abroad too', 'The Govt & Money page covers the costs and funding to plan for if you study outside India.', btn('Open Govt & Money', "switchView('govAndAbroad')", false));
+            }
+            // ----- Undergraduate and recent graduates
+            if (a.cls === 'ug' || a.cls === 'grad') {
+                if (is('ugHow', ['wrong', 'out'])) add('🔁', a.ugHow === 'out' ? 'You want out of your course' : 'Wrong course, but you will finish', 'You have more options than it feels: finish and switch through a master\'s or a skills route, or change course. The guide below walks through each.', btn('Open the wrong-course guide', "goToBlock('wrong-course-block')", true));
+                const pf = a.proof || [];
+                if (has('proof') && (pf.indexOf('none') > -1 || (pf.length === 1 && pf[0] === 'certs'))) add('🧰', 'Build proof before you apply', 'Recruiters want to see work, not only certificates. One project or a short internship changes your resume more than anything else.', btn('Ways to get experience', "switchView('internships')", true));
+                if (is('placements', ['few', 'none'])) add('🔎', 'Plan an off-campus search', 'With few companies on campus, apply directly through job and internship portals and alumni referrals, starting a semester earlier than your batch.', btn('Job and internship portals', "goToBlock('intern-portals-block')", true));
+                if (is('cgpa', 'u6') || a.backlogs === 'yes') add('⚠️', 'Watch the cut-offs', 'Many companies and programmes set a minimum CGPA, often around 6 to 7, and ask for no active backlogs. ' + (a.backlogs === 'yes' ? 'Clearing backlogs first opens the most doors.' : 'Check each listing and lean on projects and skills tests where marks are not the filter.'));
+                if (is('after', 'msAbroad')) add('✈️', 'A master\'s abroad', 'Plan exams (GRE, IELTS or TOEFL), funding and timelines a year ahead.', btn('Open Govt & Money', "switchView('govAndAbroad')", false));
+                if (is('after', 'govt')) add('🏛️', 'Government exams', 'See which government careers fit your degree and the exams that lead to them.', btn('Government careers', "goToBlock('govt-careers-block')", true));
+                if (is('since', ['1-2', '2+'])) add('🗓️', 'Have an answer for the gap', 'Recruiters ask about time since graduation. A recent project, course or internship gives you a good answer.');
+                const DB = { btech: 'B.Tech', bsc: 'B.Sc', bcom: 'B.Com', ba: 'BA', bba: 'BBA', bca: 'BCA', med: 'MBBS Graduate', design: 'B.Des', law: 'LLB Graduate', diploma: 'Diploma / Polytechnic' };
+                if (DB[a.degree] && cards.length < 4) add('🗺️', 'Where your degree can lead', 'See every route from your degree: jobs, higher study, exams and switches.', btn('Open the ' + e(DB[a.degree].replace(' Graduate', '')) + ' pathway', "goToPathwayBranch('" + DB[a.degree] + "')", false));
+            }
+            // ----- Postgraduate
+            if (a.cls === 'pg') {
+                if (is('pgWhy', 'time')) add('🧮', 'An honest cost check', 'A postgraduate degree costs fees plus one to two years of income. If it is mainly to buy time, a year of work or a focused certification may cost less and teach you more about what you want.');
+                if (is('pgWhy', 'change')) add('🔀', 'Changing field through a PG degree', 'Check that the programme accepts your undergraduate degree, and compare it with a direct switch route.', btn('See careers that fit', "sortExplorerByQuizMatch(); switchView('explorer')", true));
+                if (is('pgSpec', ['two', 'none'])) add('⚖️', 'Compare specialisations side by side', 'Rank careers by your answers, then compare two or three on pay, demand, entry time and cost.', btn('Compare careers', "sortExplorerByQuizMatch(); switchView('explorer')", true));
+                const M = { exposure: ['Get industry exposure', 'Do one internship or live project this term, even a short one.', btn('Find internships', "switchView('internships')", false)], research: ['Build research output', 'Ask a professor about a small project you can turn into a poster or paper within 90 days.', ''], network: ['Grow your network', 'Message two alumni a week and attend one industry event a month.', ''], skills: ['Close the skill gap', 'Pick one skill your target roles list and finish one project or certification in it.', btn('See careers and skills', "sortExplorerByQuizMatch(); switchView('explorer')", false)] };
+                if (M[a.pgMissing]) add('🗓️', 'Next 90 days: ' + M[a.pgMissing][0].toLowerCase(), M[a.pgMissing][1], M[a.pgMissing][2]);
+                if (a.loan === 'yes') add('🏦', 'Planning an education loan', 'The loan navigator explains collateral rules, interest subsidies and what to ask the bank.', btn('Open the loan navigator', "goToBlock('loan-navigator-block')", false));
+            }
+            // ----- Working professionals
+            if (a.cls === 'working') {
+                if (a.mode === 'switch' || a.help === 'switch') add('🧭', 'Your switch plan', 'We have filled the switch planner with your current work, experience, study hours and savings. It shows what you already bring, what is missing and a realistic timeline.', btn('Build my switch plan', 'wizardOpenSwitchPlanner()', true));
+                if (a.mode === 'grow' || is('whyMove', ['pay', 'stalled'])) add('📈', 'Grow where you are first', 'Ask your manager what the next level needs, pick one skill that gets you there, and look at internal moves before switching companies or fields.');
+                if (is('paycut', 'none')) add('🌉', 'Use a bridge role', 'Move into a role next to your current one first, in the same company or industry, then make the jump. You keep your pay while you build proof.');
+                if (is('wroute', 'fulltime') && a.runway === '0-3') add('⚠️', 'Careful with a full-time break', 'With under three months of savings, upskilling alongside your job is safer. Aim for about six months of expenses before taking a full-time break.');
+                if (is('whyMove', 'return')) add('🔁', 'Returning after a break', 'Many companies run returnship programmes. A short refresher course and one recent project make the gap easy to explain.');
+            }
+            if (!cards.length) { box.classList.add('hidden'); box.innerHTML = ''; return; }
+            box.innerHTML = '<p class="text-[11px] font-bold uppercase tracking-wider text-brand-700 mb-2">Based on your answers</p><div class="grid gap-3 md:grid-cols-2">' + cards.slice(0, 4).map(function (c) {
+                return '<div class="bg-white border border-slate-200 rounded-2xl p-4 flex flex-col"><p class="font-bold text-slate-900"><span aria-hidden="true">' + c.icon + '</span> ' + e(c.title) + '</p><p class="text-sm text-slate-700 mt-1">' + c.text + '</p>' + (c.actions ? '<div class="flex flex-wrap gap-2 mt-auto pt-3">' + c.actions + '</div>' : '') + '</div>';
+            }).join('') + '</div>';
+            box.classList.remove('hidden');
+        }
         // The last question ("what would you most like help with") decides what the results page leads with.
         function renderWizardNextStep() {
             const box = document.getElementById('wizard-nextstep');
@@ -10305,6 +10594,16 @@
                     text = 'We put low-cost routes first in your results. The scholarship matcher checks which ones you may qualify for, and the college list can be sorted by lowest fees.';
                     actions = btn('Open the scholarship matcher', "goToBlock('scholarship-matcher-block')", true) + btn('Colleges by lowest fees', 'goLowFee()', false);
                     break;
+                case 'intern':
+                    title = 'You wanted help getting internships and real experience';
+                    text = (a.proof && a.proof.length && a.proof.indexOf('none') < 0 ? 'You already have something to show. ' : 'You don\'t need experience to start. ') + 'The Internships page has a year-by-year route, portals that take students early, and the Plan4it Learnership for a reviewed industry project.';
+                    actions = btn('Open internships', "switchView('internships')", true) + btn('How to get the first one', "goToBlock('intern-ladder-block')", false);
+                    break;
+                case 'job':
+                    title = 'You wanted help landing your first job';
+                    text = (a.placements === 'none' || a.placements === 'few' ? 'Campus placements are thin, so plan an off-campus search alongside them. ' : '') + 'Start from the careers below, check the skills each one asks for, and apply through the job portals with a one-page resume built around projects.';
+                    actions = btn('Job and internship portals', "goToBlock('intern-portals-block')", true) + btn('See all my career matches', "sortExplorerByQuizMatch(); switchView('explorer')", false);
+                    break;
                 case 'backup':
                     title = 'You wanted backup options';
                     text = 'The backup plan tool takes the exam or college you are aiming for and shows realistic alternatives, so you are never left with one option.';
@@ -10345,10 +10644,10 @@
                 shared = top[0].reasons.filter(function (r) { return top.every(function (t) { return t.reasons.indexOf(r) > -1; }); });
             }
             const styleWords = { Logic: 'solving problems', People: 'working with people', 'Hands-on': 'hands-on work', Creative: 'creative work', Leadership: 'leading and organising', Research: 'researching', Mixed: 'a mix of styles' };
-            const valueLabels = (A.values || []).map(function (v) { const o = QUIZ[5].opts.find(function (p) { return p[0] === v; }); return o ? o[1] : v; });
-            const chips = [wizardAnswerLabel(0), A.interests3 && A.interests3.length ? 'Interests: ' + A.interests3.join(', ') : 'Interests: still exploring', 'Work style: ' + (styleWords[A.workStyle] || A.workStyle)];
+            const valueLabels = (A.values || []).map(function (v) { const o = QZ_BANK.values.opts.find(function (p) { return p[0] === v; }); return o ? o[1] : v; });
+            const chips = [quizLabel('cls', A, true), A.interests3 && A.interests3.length ? 'Interests: ' + A.interests3.join(', ') : 'Interests: still exploring', 'Work style: ' + (styleWords[A.workStyle] || A.workStyle)];
             if (valueLabels.length) chips.push('Matters: ' + valueLabels.join('; '));
-            const helpLab = wizardAnswerLabel(7); if (helpLab) chips.push('Help with: ' + helpLab.toLowerCase());
+            const helpLab = quizLabel('help', A); if (helpLab) chips.push('Help with: ' + helpLab.toLowerCase());
             if (wizardSituationText()) chips.push(wizardSituationText());
             document.getElementById('wizard-results-summary').innerHTML =
                 '<span class="block font-semibold text-slate-800 mb-2">You told us</span>' +
@@ -10398,6 +10697,7 @@
             document.getElementById('family-expectation').value = '';
             document.getElementById('family-reflection-result').classList.add('hidden');
             document.getElementById('family-your-interest').textContent = wizardAnswers.interest && wizardAnswers.interest !== 'Undecided' ? wizardAnswers.interest : 'Not clear yet \u2014 that\'s okay';
+            renderWizardInsights();
             renderWizardRoutes();
             renderWizardNextStep();
             saveWizardAnswers(wizardAnswers);
@@ -11366,8 +11666,8 @@
             // ----- 1. profile
             const styleWords = { Logic: 'solving problems', People: 'working with people', 'Hands-on': 'hands-on work', Creative: 'creative work', Leadership: 'leading and organising', Research: 'researching', Mixed: 'a mix of styles' };
             if (a) {
-                const lab = function (qi) { const q = QUIZ[qi], v = a[q.key]; if (v == null || (Array.isArray(v) && !v.length)) return ''; const opts = q.optsFor ? q.optsFor(a) : q.opts; return [].concat(v).map(function (x) { const o = opts.find(function (p) { return p[0] === x; }); return o ? (o[2] || o[1]) : x; }).join('; '); };
-                const rows = [['Stage', lab(0)], ['Interests', a.interests3 && a.interests3.length ? a.interests3.join(', ') : 'Still exploring'], ['Work style', styleWords[a.workStyle] || a.workStyle], ['Matters most', (WIZARD_PRIORITY_LABELS[a.constraint] || [''])[0]], ['Help needed with', lab(7)], ['Aiming for', (a.aim || []).map(function (k) { return FIT_AIMS[k] ? FIT_AIMS[k][0] : ''; }).filter(Boolean).join(', ')], ['Your situation', [a.district && a.state && a.state !== 'any' ? a.district : '', a.state ? (a.state === 'any' ? 'Any state' : a.state) : '', FIT_BUDGET[a.budget] ? FIT_BUDGET[a.budget][0] : '', FIT_LEVEL[a.level] ? FIT_LEVEL[a.level][0] : ''].filter(Boolean).join(' · ')], ['Careers you mentioned', a.careerNote || '']].filter(function (r) { return r[1]; });
+                const lab = function (k) { return quizLabel(k, a, k === 'cls'); };
+                const rows = [['Stage', lab('cls')], ['Interests', a.interests3 && a.interests3.length ? a.interests3.join(', ') : 'Still exploring'], ['Work style', styleWords[a.workStyle] || a.workStyle], ['Matters most', (WIZARD_PRIORITY_LABELS[a.constraint] || [''])[0]], ['Help needed with', lab('help')], ['Aiming for', (a.aim || []).map(function (k) { return FIT_AIMS[k] ? FIT_AIMS[k][0] : ''; }).filter(Boolean).join(', ')], ['Your situation', [a.district && a.state && a.state !== 'any' ? a.district : '', a.state ? (a.state === 'any' ? 'Any state' : a.state) : '', FIT_BUDGET[a.budget] ? FIT_BUDGET[a.budget][0] : '', FIT_LEVEL[a.level] ? FIT_LEVEL[a.level][0] : ''].filter(Boolean).join(' · ')], ['Careers you mentioned', a.careerNote || '']].filter(function (r) { return r[1]; });
                 h += sec('Your profile at a glance') + '<table class="pp-t pp-kv">' + rows.map(function (r) { return '<tr><th>' + e(r[0]) + '</th><td>' + e(r[1]) + '</td></tr>'; }).join('') + '</table>';
                 const top = shortlist.slice(0, 3).map(function (s) { return s.c.title; });
                 h += '<div class="pp-card pp-note"><b>Key takeaways</b><ul>' +
@@ -14775,7 +15075,17 @@
             const pool = careersData.map(function (c) { return { id: c.id, score: scoreCareerForWizard(c, wizardAnswers).score }; });
             pool.sort(function (x, y) { return y.score - x.score; });
             const sel = document.getElementById('switch-target');
-            if (sel && pool.length && pool[0].score > 0) sel.value = pool[0].id;
+            if (sel) {
+                const ok = function (id) { return Array.prototype.some.call(sel.options, function (o) { return o.value === id; }); };
+                const named = (wizardAnswers.mentioned || []).find(ok);
+                const best = pool.find(function (x) { return x.score > 0 && ok(x.id); });
+                if (named || best) sel.value = named || best.id;
+            }
+            const a = wizardAnswers, setSel = function (id, v) { const el = document.getElementById(id); if (el && v && Array.prototype.some.call(el.options, function (o) { return o.value === v; })) el.value = v; };
+            if (a.cls === 'working') {
+                setSel('switch-role', a.industry); setSel('switch-exp', a.years); setSel('switch-hours', a.hours);
+                setSel('switch-cushion', a.paycut === 'none' ? 'none' : a.runway === '6+' ? 'runway' : (a.paycut || a.runway) ? 'some' : '');
+            }
             goToBlock('career-switch-block');
         }
 
