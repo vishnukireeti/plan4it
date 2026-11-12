@@ -136,6 +136,9 @@
         html.dark .pw-meter i { background: #334155; }
         /* Phones: enlarge the tap area of small inline text links/buttons without changing layout */
         @media (pointer: coarse) {
+            .view-section select { min-height: 44px; }
+            .view-section button.w-8.h-8 { position: relative; }
+            .view-section button.w-8.h-8::after { content: ''; position: absolute; inset: -6px; }
             .view-section :is(a, button):is(.text-brand-600, .text-xs):not([class*="bg-"]):not([class*="border"]) { position: relative; }
             .view-section :is(a, button):is(.text-brand-600, .text-xs):not([class*="bg-"]):not([class*="border"])::after {
                 content: ''; position: absolute; inset: -12px -8px;
@@ -222,8 +225,9 @@
         }
         /* Colleges filter panel: always open on desktop, collapsible on phones */
         .cf-chips { display: flex; gap: .5rem; overflow-x: auto; padding-bottom: .25rem; }
-        .cf-panel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
-        @media (min-width: 1024px) { .cf-panel { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+        .cf-panel { display: grid; grid-template-columns: minmax(0, 1fr); gap: .75rem; }
+        @media (min-width: 480px) { .cf-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (min-width: 1024px) { .cf-panel { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
         .cf-toggle { display: inline-flex; }
         @media (min-width: 1024px) { .cf-toggle { display: none; } .cf-panel.cf-closed { display: grid !important; } }
         @media (max-width: 1023.98px) { .cf-panel.cf-closed { display: none; } }
@@ -243,6 +247,7 @@
         .home-step .step-head { position: relative; z-index: 1; }
         .home-step .step-rail { position: absolute; left: 2.2rem; top: 3.6rem; bottom: -.9rem; width: 2px; }
         .home-step:last-child .step-rail { display: none; }
+        @media (max-width: 639.98px) { .home-step.is-open .step-rail, .home-searching .home-step.has-match .step-rail { display: none; } }
         .home-collapsed [data-extra] { display: none; }
         .home-searching .home-collapsed [data-extra] { display: block; }
         /* ===== DARK MODE (generated). Always on — the app is dark-only, see applyTheme(). Kept
@@ -860,7 +865,7 @@
                     <p class="text-white font-semibold text-sm"><span id="explorer-cta-count">150</span> careers is a lot to scroll through blind.</p>
                     <p class="text-white/90 text-xs mt-0.5">Take the 2-minute quiz and this page will show you how well each one actually fits.</p>
                 </div>
-                <button onclick="switchView('confusedMode')" class="shrink-0 bg-white text-slate-900 font-semibold px-4 py-2 rounded-lg text-xs hover:bg-slate-100 transition whitespace-nowrap">Take the Quiz →</button>
+                <button onclick="switchView('confusedMode')" class="shrink-0 bg-white text-slate-900 font-semibold px-4 py-2 min-h-[44px] rounded-lg text-xs hover:bg-slate-100 transition whitespace-nowrap">Take the Quiz →</button>
             </div>
 
             <!-- Industry Filter Pills + Saved toggle -->
@@ -873,15 +878,15 @@
             </div>
 
             <!-- Deeper filters: the data already tracks these, so expose them directly instead of forcing a card-by-card check -->
-            <div class="flex flex-wrap gap-3">
-                <select id="career-difficulty-filter" aria-label="Filter by difficulty" onchange="renderExplorerCareers()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white focus:ring-2 focus:ring-brand-500">
+            <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-3">
+                <select id="career-difficulty-filter" aria-label="Filter by difficulty" onchange="renderExplorerCareers()" class="w-full sm:w-auto min-h-[44px] sm:min-h-0 px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white focus:ring-2 focus:ring-brand-500">
                     <option value="ALL">Any Difficulty</option>
                     <option value="Low">Low</option>
                     <option value="Moderate">Moderate</option>
                     <option value="High">High</option>
                     <option value="Very High">Very High</option>
                 </select>
-                <select id="career-workstyle-filter" aria-label="Filter by work style" onchange="renderExplorerCareers()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white focus:ring-2 focus:ring-brand-500">
+                <select id="career-workstyle-filter" aria-label="Filter by work style" onchange="renderExplorerCareers()" class="w-full sm:w-auto min-h-[44px] sm:min-h-0 px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white focus:ring-2 focus:ring-brand-500">
                     <option value="ALL">Any Work Style</option>
                     <option value="Logic">Solo technical work</option>
                     <option value="People">Working with people</option>
@@ -890,19 +895,19 @@
                     <option value="Leadership">Leading / owning outcomes</option>
                     <option value="Research">Researching / investigating</option>
                 </select>
-                <select id="career-cost-filter" aria-label="Filter by cost tier" onchange="renderExplorerCareers()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white focus:ring-2 focus:ring-brand-500">
+                <select id="career-cost-filter" aria-label="Filter by cost tier" onchange="renderExplorerCareers()" class="w-full sm:w-auto min-h-[44px] sm:min-h-0 px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white focus:ring-2 focus:ring-brand-500">
                     <option value="ALL">Any Cost Tier</option>
                     <option value="Low">Low cost to enter</option>
                     <option value="Medium">Moderate cost to enter</option>
                     <option value="High">High cost to enter</option>
                     <option value="Very High">Very high cost to enter</option>
                 </select>
-                <select id="career-timeline-filter" aria-label="Filter by entry timeline" onchange="renderExplorerCareers()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white focus:ring-2 focus:ring-brand-500">
+                <select id="career-timeline-filter" aria-label="Filter by entry timeline" onchange="renderExplorerCareers()" class="w-full sm:w-auto min-h-[44px] sm:min-h-0 px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white focus:ring-2 focus:ring-brand-500">
                     <option value="ALL">Any Timeline</option>
                     <option value="fast">Fast entry (≤4 yrs)</option>
                     <option value="long">Long-term (5+ yrs)</option>
                 </select>
-                <button onclick="resetExplorerFilters()" class="text-xs font-semibold text-slate-500 hover:text-brand-600 px-2 min-h-[44px]">Reset filters</button>
+                <button onclick="resetExplorerFilters()" class="col-span-2 sm:col-auto text-xs font-semibold text-slate-500 hover:text-brand-600 px-2 min-h-[44px]">Reset filters</button>
             </div>
 
             <p id="explorer-result-count" aria-live="polite" class="text-xs text-slate-500 font-medium"></p>
@@ -1057,9 +1062,9 @@
             </div>
 
             <!-- Filters -->
-            <div data-nav="Search and filters" class="flex flex-wrap gap-3">
-                <input type="text" id="exam-search" placeholder="Search exam name..." class="px-4 py-2.5 rounded-xl border border-slate-300 text-sm flex-grow min-w-[200px] focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-500" oninput="examSearchInput()">
-                <select id="exam-filter" onchange="renderExams()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-brand-600 bg-white focus:ring-2 focus:ring-brand-500">
+            <div data-nav="Search and filters" class="grid grid-cols-2 sm:flex sm:flex-wrap gap-3">
+                <input type="text" id="exam-search" placeholder="Search exam name..." class="col-span-2 px-4 py-2.5 rounded-xl border border-slate-300 text-sm flex-grow min-w-[200px] focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-500" oninput="examSearchInput()">
+                <select id="exam-filter" onchange="renderExams()" class="w-full sm:w-auto min-h-[44px] px-3 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-brand-600 bg-white focus:ring-2 focus:ring-brand-500">
                     <option value="ALL">All Streams</option>
                     <option value="Engineering">Engineering</option>
                     <option value="Medical">Medical</option>
@@ -1069,14 +1074,14 @@
                     <option value="General">General / Multi-discipline</option>
                     <option value="Govt">Government Services</option>
                 </select>
-                <select id="exam-difficulty-filter" onchange="renderExams()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:ring-2 focus:ring-brand-500">
+                <select id="exam-difficulty-filter" onchange="renderExams()" class="w-full sm:w-auto min-h-[44px] px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:ring-2 focus:ring-brand-500">
                     <option value="ALL">All Difficulty Levels</option>
                     <option value="Moderate">Moderate</option>
                     <option value="High">High</option>
                     <option value="Very High">Very High</option>
                     <option value="Extremely High">Extremely High</option>
                 </select>
-                <label class="checkbox-wrapper flex items-center gap-2 text-xs font-semibold text-slate-600 px-3 py-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer select-none">
+                <label class="checkbox-wrapper flex items-center gap-2 text-xs font-semibold text-slate-600 px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white cursor-pointer select-none">
                     <input type="checkbox" id="exam-saved-toggle" onchange="renderExams()" class="rounded border-slate-300 text-brand-600 focus:ring-2 focus:ring-brand-500">
                     Saved only
                 </label>
@@ -1371,7 +1376,7 @@
                     <select id="college-district-filter" aria-label="Filter by district" onchange="collegeDistrictChanged()" disabled class="sm:w-64 px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500 disabled:bg-slate-50 disabled:text-slate-400"><option value="ALL">All districts</option></select>
                     <label id="college-nearby-wrap" class="checkbox-wrapper hidden items-center gap-2 text-sm font-semibold text-slate-700 px-3 min-h-[44px] rounded-xl border border-slate-300 bg-white cursor-pointer select-none">
                         <input type="checkbox" id="college-nearby" onchange="renderColleges()" class="rounded border-slate-300 text-brand-600 focus:ring-2 focus:ring-brand-500">
-                        Also show nearby districts <span class="font-normal text-slate-500">(within about 100 km)</span>
+                        <span class="py-1.5">Also show nearby districts <span class="font-normal text-slate-500 whitespace-nowrap">(within about 100 km)</span></span>
                     </label>
                 </div>
                 <div id="college-field-chips" role="group" aria-label="Field" class="cf-chips hide-scrollbar"></div>
@@ -1695,7 +1700,7 @@
                             <select id="p4-wait-stage" class="mt-1 w-full border border-slate-300 rounded-xl px-3 min-h-[44px] bg-white">
                                 <option value="">Select</option><option>1st year (UG)</option><option>2nd year (UG)</option><option>3rd year (UG)</option><option>Final year (UG)</option><option>Postgraduate</option><option>Class 11-12</option><option>Working professional</option></select></label>
                         <div class="sm:col-span-2"><span class="font-semibold text-slate-700">How long do you want your learnership to be?</span>
-                            <div id="p4-wait-dur" role="group" aria-label="Learnership duration" class="mt-1 grid grid-cols-3 md:grid-cols-6 gap-2"></div>
+                            <div id="p4-wait-dur" role="group" aria-label="Learnership duration" class="mt-1 grid grid-cols-2 min-[480px]:grid-cols-3 md:grid-cols-6 gap-2"></div>
                             <div id="p4-dur-plan" class="mt-2 text-xs text-slate-700 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2" aria-live="polite">Pick a duration to see what your project will look like.</div></div>
                         <label class="block sm:col-span-2"><span class="font-semibold text-slate-700">College or company (optional)</span>
                             <input id="p4-wait-college" maxlength="120" class="mt-1 w-full border border-slate-300 rounded-xl px-3 min-h-[44px]" placeholder="e.g. your college name"></label>
@@ -9344,10 +9349,10 @@
             const e = escapeAuth, sug = internshipSuggestTrack(), a = getStoredWizardAnswers();
             const tr = document.getElementById('p4-tracks'); if (!tr) return;
             tr.innerHTML = P4_TRACKS.map(function (t) {
-                return '<div class="bg-white border ' + (t.id === sug ? 'border-brand-400 ring-1 ring-brand-300' : 'border-slate-200') + ' rounded-2xl p-4 text-sm">' +
+                return '<div class="bg-white border ' + (t.id === sug ? 'border-brand-400 ring-1 ring-brand-300' : 'border-slate-200') + ' rounded-2xl p-4 text-sm flex flex-col">' +
                     '<div class="flex items-start justify-between gap-2"><p class="font-bold text-slate-900">' + t.icon + ' ' + e(t.name) + '</p>' + (t.id === sug ? '<span class="text-[11px] font-bold bg-brand-100 text-brand-800 px-2 py-0.5 rounded-full shrink-0">Matches your quiz</span>' : '') + '</div>' +
                     '<p class="text-xs text-slate-500 mt-2 font-semibold">Example projects</p><ul class="list-disc pl-5 text-slate-700 mt-1 space-y-0.5">' + t.projects.map(function (x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul>' +
-                    '<button type="button" onclick="internshipPick(\'' + t.id + '\')" class="mt-3 text-brand-700 font-bold min-h-[44px] hover:underline">Choose this track →</button></div>';
+                    '<button type="button" onclick="internshipPick(\'' + t.id + '\')" class="mt-auto self-start pt-3 text-brand-700 font-bold min-h-[44px] hover:underline">Choose this track →</button></div>';
             }).join('');
             const sel = document.getElementById('p4-wait-track');
             if (sel && !sel.options.length) sel.innerHTML = '<option value="">Select a track</option>' + P4_TRACKS.map(function (t) { return '<option value="' + t.id + '">' + e(t.name) + '</option>'; }).join('') + '<option value="not_sure">Not sure yet</option>';
@@ -9355,7 +9360,7 @@
             const st = document.getElementById('p4-wait-stage');
             if (st && !st.value) st.value = a && a.working ? 'Working professional' : a && a.stage === 'School 11-12' ? 'Class 11-12' : '';
             const dw = document.getElementById('p4-wait-dur');
-            if (dw && !dw.children.length) { dw.innerHTML = P4_DURATIONS.map(function (d) { return '<button type="button" aria-pressed="false" data-dur="' + d.id + '" onclick="internshipDur(\'' + d.id + '\')"><span class="block font-bold text-slate-900">' + e(d.label) + '</span><span class="block text-[11px] text-slate-500">' + e(d.sub) + '</span></button>'; }).join(''); internshipDur(p4Dur); if (sel) sel.addEventListener('change', internshipDurPlan); }
+            if (dw && !dw.children.length) { dw.innerHTML = P4_DURATIONS.map(function (d) { return '<button type="button" aria-pressed="false" data-dur="' + d.id + '" onclick="internshipDur(\'' + d.id + '\')"><span class="block font-bold text-slate-900">' + e(d.label) + '</span><span class="block text-[11px] text-slate-500 whitespace-nowrap">' + e(d.sub) + '</span></button>'; }).join(''); internshipDur(p4Dur); if (sel) sel.addEventListener('change', internshipDurPlan); }
             const cur = internshipStageIdx();
             const lad = document.getElementById('intern-ladder');
             if (lad) lad.innerHTML = P4_LADDER.map(function (l) {
@@ -10554,9 +10559,9 @@
                     </div>
                     <div>
                         ${c._quizPct !== undefined ? `<div class="mb-2"><span class="text-[11px] font-bold px-2 py-1 rounded-full ${fitInfo(c._quizPct).cls}">${fitInfo(c._quizPct).text} for your quiz answers</span></div>` : ''}
-                        <div class="flex items-center gap-2 mb-3 pr-24">
+                        <div class="flex flex-wrap items-center gap-x-2 gap-y-1.5 mb-3 pr-20">
                             <span class="text-xs font-semibold bg-brand-50 text-brand-700 px-2.5 py-1 rounded-full">${c.category}</span>
-                            <span class="text-xs font-bold text-emerald-600">${c.salary}</span> ${approxTag(c, 'salary')}
+                            <span class="text-xs font-bold text-emerald-600 whitespace-nowrap">${c.salary}</span> ${approxTag(c, 'salary')}
                         </div>
                         <h3 class="text-lg font-bold text-slate-900 mb-2">${c.title}</h3>
                         <p class="text-slate-600 text-sm mb-4 leading-relaxed">${c.overview}</p>
@@ -12519,7 +12524,7 @@
             const regLabel = examDateText(e.regCloses);
             const yearRound = isNaN(regDaysLeft);
             return `
-                <div class="card-interactive bg-white border border-slate-200 p-6 rounded-2xl shadow-sm space-y-3 relative">
+                <div class="card-interactive bg-white border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col gap-3 relative">
                     <button onclick="toggleSaveExam('${e.id}')" aria-label="${saved ? 'Remove from saved' : 'Save exam'}" class="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center ${saved ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-400 hover:text-brand-600'} transition">
                         <svg class="w-4 h-4" viewBox="0 0 20 20" fill="${saved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5"><path d="M5 3.5a1 1 0 011-1h8a1 1 0 011 1v13.2a.5.5 0 01-.79.41L10 13.5l-4.21 3.6a.5.5 0 01-.79-.4V3.5z"/></svg>
                     </button>
@@ -12536,7 +12541,7 @@
                         <p>📅 ${examDateLine(e, false)}</p>
                         <p class="pt-0.5">${examStatusChip(e)}${verifyLinkHTML(e, 'date', 'Verify dates')}</p>
                     </div>
-                    <div class="pt-2 border-t border-slate-100 flex flex-wrap justify-between items-center gap-x-3 gap-y-1 text-xs">
+                    <div class="pt-2 mt-auto border-t border-slate-100 flex flex-wrap justify-between items-center gap-x-3 gap-y-1 text-xs">
                         <span class="text-slate-500 min-w-0">Fee: ${e.feeUnknown ? 'check official site' : examFeeText(e).split('(')[0].trim() + ' ' + approxTag(e, 'fee')}</span>
                         <button onclick="openExamDetail('${e.id}')" class="text-brand-600 font-semibold hover:underline whitespace-nowrap">View details →</button>
                     </div>
@@ -12921,7 +12926,7 @@
             if (c.dir) return dirCardHTML(c);
             const saved = getSavedColleges().includes(c.id);
             return `
-                <div class="card-interactive bg-white border border-slate-200 p-6 rounded-2xl shadow-sm space-y-3 relative">
+                <div class="card-interactive bg-white border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col gap-3 relative">
                     <button onclick="toggleSaveCollege('${c.id}')" aria-label="${saved ? 'Remove from saved' : 'Save college'}" class="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center ${saved ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-400 hover:text-brand-600'} transition">
                         <svg class="w-4 h-4" viewBox="0 0 20 20" fill="${saved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5"><path d="M5 3.5a1 1 0 011-1h8a1 1 0 011 1v13.2a.5.5 0 01-.79.41L10 13.5l-4.21 3.6a.5.5 0 01-.79-.4V3.5z"/></svg>
                     </button>
@@ -12937,7 +12942,7 @@
                         ${c.relatedExam ? `<span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-semibold">Via ${c.relatedExam}</span>` : ''}
                     </div>
                     <p class="text-xs bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-slate-700"><strong>Tradeoff:</strong> ${c.tradeoff}</p>
-                    <button onclick="openCollegeDetail('${c.id}')" class="text-brand-600 hover:text-brand-800 text-xs font-semibold">View details →</button>
+                    <button onclick="openCollegeDetail('${c.id}')" class="mt-auto self-start text-brand-600 hover:text-brand-800 text-xs font-semibold">View details →</button>
                 </div>`;
         }
 
