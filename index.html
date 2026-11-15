@@ -613,9 +613,11 @@
                 <button data-nav="colleges" onclick="switchView('colleges')" class="nav-link hover:text-brand-600 transition">Colleges</button>
                 <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad')" class="nav-link hover:text-brand-600 transition">Govt & Money</button>
                 <button data-nav="internships" onclick="switchView('internships')" class="nav-link hover:text-brand-600 transition">Internships</button>
+                <button type="button" onclick="reportHubOpen()" class="inline-flex items-center gap-1.5 min-h-[36px] px-3 rounded-full bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 font-bold transition"><span aria-hidden="true">📄</span> Career Report</button>
             </nav>
 
             <div class="flex items-center gap-1 sm:gap-3 shrink-0">
+                <button type="button" onclick="reportHubOpen()" aria-label="Full career report" title="Full career report" class="xl:hidden min-h-[40px] px-2.5 sm:px-3 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 text-xs font-bold whitespace-nowrap"><span aria-hidden="true">📄</span><span class="hidden min-[420px]:inline"> Report</span></button>
                 <button id="gs-btn" type="button" onclick="openGlobalSearch()" aria-label="Search careers, exams and colleges" title="Search (press /)" class="min-h-[40px] min-w-[40px] border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl px-2.5 sm:px-3 flex items-center justify-center gap-2 text-sm font-semibold transition"><svg class="w-5 h-5" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="M13.5 13.5L17 17" stroke-linecap="round"/></svg><span class="hidden sm:inline xl:hidden 2xl:inline">Search</span></button>
                 <button id="admin-header-btn" type="button" onclick="openAdmin()" class="hidden min-h-[40px] border border-amber-200 text-amber-800 bg-amber-50 hover:bg-amber-100 px-3 rounded-xl text-xs font-semibold transition">Admin</button>
                     <button id="auth-header-btn" type="button" onclick="openAuth()" aria-label="Sign up or log in" title="Create an account or log in" class="min-h-[40px] whitespace-nowrap border border-brand-200 text-brand-700 hover:bg-brand-50 px-2.5 sm:px-4 py-2 rounded-xl text-sm font-semibold transition">Sign up</button>
@@ -640,6 +642,7 @@
             <button data-nav="colleges" onclick="switchView('colleges');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Colleges</button>
             <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Govt & Money</button>
             <button data-nav="internships" onclick="switchView('internships');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Internships</button>
+            <button type="button" onclick="closeMobileMenu();reportHubOpen()" class="text-left min-h-[48px] px-5 flex items-center gap-2 font-bold text-amber-900 bg-amber-50 hover:bg-amber-100"><span aria-hidden="true">📄</span> Full Career Report (18 pages)</button>
             <div class="my-1 border-t border-slate-200"></div>
             <button data-nav="dashboard" onclick="switchView('dashboard');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">My Dashboard</button>
         </div>
@@ -671,6 +674,7 @@
                         <button type="button" onclick="goToTool('afterDegree', 'career-switch-block')" class="min-h-[44px] px-4 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:border-brand-400 transition">I'm already working</button>
                     </div>
                 </div>
+                <div id="report-promo-home" class="mt-8 text-left"></div>
                 <p class="text-xs text-slate-600 mt-5">Covers <span id="stat-careers">0</span> careers, <span id="stat-exams">0</span> exams, <span id="stat-colleges">0</span> colleges and <span id="stat-scholarships">0</span> scholarships. Your saved items stay on your device, or sync to your account if you sign in.</p>
             </div>
 
@@ -786,6 +790,8 @@
                         <p class="text-slate-600 text-sm" id="wizard-results-summary">Based on your inputs, here are your matching tracks:</p>
                         <p class="text-xs text-brand-800 bg-white/60 border border-brand-100 rounded-lg px-3 py-2 mt-3">This is guidance based on your answers and interests.</p>
                     </div>
+
+                    <div id="report-promo-results" class="mb-6"></div>
 
                     <div id="wizard-insights" class="hidden mb-6"></div>
 
@@ -1790,6 +1796,7 @@
             </div>
 
 
+            <div id="report-promo-dash" class="print:hidden"></div>
             <div id="dash-home" class="space-y-6 min-w-0 max-w-full print:hidden"></div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -9564,6 +9571,7 @@
             if (viewId === 'backupPlan') { document.getElementById('backup-exam').value=''; document.getElementById('backup-exam-search').value=''; document.getElementById('backup-exam-picked').classList.add('hidden'); backupTargetClear(); backupApplyMode(); document.getElementById('backup-score').value=''; document.getElementById('backup-results').classList.add('hidden'); document.getElementById('backup-empty-state').classList.remove('hidden'); renderRecoveryGuidance(); }
             if (viewId === 'backupPlan') backupPrefillFromFit();
             if (viewId === 'afterDegree') loadBranchTree(currentBranchKey || 'B.Com');
+            try { renderReportPromos(); } catch (er) {}
             if (viewId === 'dashboard') renderDashboard();
             if (viewId === 'govAndAbroad') { renderScholarshipMatches(); calculateHiddenCosts(); renderReservationInfo(); }
             if (viewId === 'internships') renderInternships();
@@ -9915,6 +9923,7 @@
             showWizardResults();
         }
         function showWizardResults() {
+            try { renderReportPromos(); } catch (er) {}
             document.querySelectorAll('.wizard-step').forEach(function (el) { el.classList.add('hidden'); });
             document.getElementById('wizard-results').classList.remove('hidden');
             wizCur = WIZARD_DONE; updateWizardProgress(WIZARD_DONE);
@@ -12686,6 +12695,52 @@
             if (!html) { showToast('Take the quiz first, then you can get your snapshot.'); return; }
             printSheetHTML(html);
         }
+
+
+        /* ============================================================
+           CAREER INTELLIGENCE REPORT: promotion, steps and contents
+           Shown on the home page, dashboard, quiz results and in a pop-up from the header,
+           so students always know it exists, what they must do to get it, and what each version holds.
+           ============================================================ */
+        function reportMainAction() {
+            if (!getStoredWizardAnswers()) { reportHubClose(); switchView('confusedMode'); return; }
+            reportHubClose(); premiumPrintPlan();
+        }
+        function reportPromoHTML(full) {
+            const e = escapeAuth, A = !!getStoredWizardAnswers(), launch = PREMIUM_CFG.mode === 'launch' && !premiumHasPurchase(), unlocked = premiumUnlocked();
+            const steps = [
+                { n: 1, done: A, t: 'Take the 2-minute quiz', d: 'Make a free account so your answers are saved, then answer a few questions. Add your state to get college and exam picks.' },
+                { n: 2, done: false, t: 'Get your free snapshot', d: 'One page: your top 3 matches with fit scores. No payment.', ok: A },
+                { n: 3, done: false, t: 'Get the full 18-page report', d: launch ? 'Free during our launch, then ₹' + PREMIUM_CFG.price + ' one-time. Download it as a PDF.' : '₹' + PREMIUM_CFG.price + ' one-time. Download it as a PDF.', ok: A }
+            ];
+            const primary = !A ? '<button type="button" onclick="reportMainAction()" class="min-h-[48px] px-6 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-base shadow">Start the 2-minute quiz →</button>'
+                : '<button type="button" onclick="reportMainAction()" class="min-h-[48px] px-6 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-base shadow">📄 Download my full 18-page report' + (unlocked ? (launch ? ' · free now' : '') : ' · ₹' + PREMIUM_CFG.price) + '</button>' +
+                  '<button type="button" onclick="reportHubClose();intelSnapshotRun()" class="min-h-[48px] px-5 rounded-xl border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-bold text-sm">Free 1-page snapshot</button>';
+            const free = ['Your best match and top 3 careers with fit %', 'Pay band and demand for each', 'A summary of what you told us', 'A list of everything in the full report'];
+            const contents = '<div class="mt-4 grid sm:grid-cols-2 gap-4"><div class="rounded-xl border border-slate-200 bg-white p-4"><p class="text-xs font-bold uppercase tracking-wider text-slate-500">Free snapshot · 1 page</p><ul class="mt-2 text-sm text-slate-700 space-y-1">' + free.map(function (x) { return '<li class="flex gap-2"><span class="text-emerald-600">✓</span><span>' + e(x) + '</span></li>'; }).join('') + '</ul></div>' +
+                '<div class="rounded-xl border-2 border-amber-400 bg-white p-4"><p class="text-xs font-bold uppercase tracking-wider text-brand-700">Full report · 18 pages · ' + (launch ? 'free now, ₹' + PREMIUM_CFG.price + ' later' : '₹' + PREMIUM_CFG.price) + '</p>' + rptInsideHTML(RPT_FULL18, 'mt-2 sm:columns-2 gap-x-4 [&>li]:break-inside-avoid') + '</div></div>';
+            return '<div class="rounded-2xl border-2 border-amber-400 bg-white p-5 md:p-6 text-left">' +
+                '<div class="flex flex-wrap items-center gap-2"><span class="text-[11px] font-bold uppercase tracking-wider bg-brand-600 text-white px-2.5 py-1 rounded-full">Plan4it flagship</span><span class="text-[11px] font-semibold text-slate-600">18 pages · one topic per page · PDF</span></div>' +
+                '<h2 class="mt-2 text-xl md:text-2xl font-extrabold text-slate-900">Your Career Intelligence Report</h2>' +
+                '<p class="text-sm text-slate-700 mt-1">Not just a list of careers. It shows why a career fits you, what it takes to get there, what could go wrong, and exactly what to do in your first 90 days.</p>' +
+                '<ol class="mt-4 grid sm:grid-cols-3 gap-3">' + steps.map(function (s) { return '<li class="rounded-xl bg-white border border-slate-200 p-3"><div class="flex items-center gap-2"><span class="inline-flex w-6 h-6 items-center justify-center rounded-full text-xs font-bold ' + (s.done ? 'bg-emerald-100 text-emerald-700' : 'bg-brand-100 text-brand-800') + '">' + (s.done ? '✓' : s.n) + '</span><b class="text-sm text-slate-900">' + e(s.t) + '</b></div><p class="text-xs text-slate-600 mt-1.5">' + e(s.d) + '</p></li>'; }).join('') + '</ol>' +
+                '<div class="mt-4 flex flex-wrap items-center gap-3">' + primary + '</div>' +
+                (full ? contents : '<details class="mt-3"><summary class="text-sm font-semibold text-brand-700 cursor-pointer min-h-[40px] flex items-center">What is free, and what is in the full report</summary>' + contents + '</details>') + '</div>';
+        }
+        function renderReportPromos() {
+            [['report-promo-home', false], ['report-promo-dash', false], ['report-promo-results', false]].forEach(function (p) { const el = document.getElementById(p[0]); if (el) el.innerHTML = reportPromoHTML(p[1]); });
+        }
+        function reportHubOpen() {
+            trackEvent('report_hub_open');
+            let m = document.getElementById('report-hub'); if (!m) { m = document.createElement('div'); m.id = 'report-hub'; document.body.appendChild(m); }
+            m.className = 'fixed inset-0 z-[70] flex items-start sm:items-center justify-center bg-slate-900/60 p-3 sm:p-4 overflow-y-auto';
+            m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-label', 'Your Career Intelligence Report');
+            m.onclick = function (ev) { if (ev.target === m) reportHubClose(); };
+            m.innerHTML = '<div class="bg-white rounded-3xl max-w-3xl w-full p-3 sm:p-4 shadow-xl relative"><button type="button" onclick="reportHubClose()" aria-label="Close" class="absolute top-2 right-2 z-10 min-h-[44px] min-w-[44px] text-slate-500 hover:text-slate-900 text-xl">✕</button>' + reportPromoHTML(true) + '</div>';
+            const b = m.querySelector('button[onclick="reportMainAction()"]'); if (b) b.focus();
+        }
+        function reportHubClose() { const m = document.getElementById('report-hub'); if (m) { m.className = 'hidden'; m.innerHTML = ''; } }
+        document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') reportHubClose(); });
 
         function printPlan() {
             const f0 = getFit();
