@@ -4974,6 +4974,36 @@
                 roadmap: ["Class 12 (any stream)", "Certificate / BA / B.Sc in Yoga", "YCB or RYT-200 Teacher Training", "Teach at Studios, Gyms, or Online", "Yoga Instructor / Wellness Coach Role"]
             }
         ];
+        /* Generative AI and everyday AI tools are now expected in almost every job, so every career lists them as a core skill.
+           Kept out of c.skills on purpose: that list drives search and the Plan B match, where a skill every career shares would count for nothing. */
+        const AI_SKILL_NAME = 'Generative AI and AI tools';
+        const AI_SKILL_WHY = {
+            'Technology': 'Employers expect you to build with AI APIs, use coding assistants and check what they produce.',
+            'Engineering': 'Used for design, simulation, documentation and faster problem solving, with you checking every result.',
+            'Healthcare': 'AI helps with notes, imaging and research summaries; you stay responsible for every clinical decision.',
+            'Law & Public Service': 'AI speeds up research, drafting and case review; you must verify every source and citation.',
+            'Business': 'Used for analysis, reports, marketing copy and customer work. People who use AI well get more done.',
+            'Finance': 'Used for analysis, reporting and risk checks; accuracy and judgement stay with you.',
+            'Science': 'Used to read papers faster, analyse data and write code; you design the work and check the results.',
+            'Creative': 'Used for ideas, drafts and production. Taste, originality and a clear brief are what set you apart.',
+            'Media': 'Used for research, editing and production; fact-checking and a voice of your own remain human work.',
+            'Arts & Entertainment': 'Used for ideas, editing and promotion. Your own style and craft are what audiences pay for.',
+            'Education': 'Used for lesson plans, practice material and feedback; you decide what is right for your students.',
+            'Skilled Trades': 'Used for quotes, manuals, troubleshooting and learning new tools faster on the job.',
+            'Aviation & Hospitality': 'Used for planning, customer replies, scheduling and translation; the human touch is the product.',
+            'Sports & Fitness': 'Used for training plans, performance data and nutrition tracking, guided by your judgement.',
+            'Agriculture & Environment': 'Used for crop and weather advice, satellite data and reporting, checked against local conditions.',
+            'Personal Services & Wellness': 'Used for bookings, content and client follow-ups, so more of your time goes to people.'
+        };
+        function aiSkillEnsure(c) {
+            if (!c || c._ai) return; c._ai = true;
+            const sd = c.skillDetails || (c.skillDetails = []);
+            if (sd.some(function (s) { return /generative|\bLLMs?\b|prompt|AI tools/i.test(s.name || ''); })) return;
+            const tech = c.category === 'Technology' || /data|machine|software|developer|engineer/i.test(c.title || '');
+            const entry = { name: AI_SKILL_NAME, level: tech ? 'Intermediate' : 'Beginner', type: 'Technical', why: AI_SKILL_WHY[c.category] || 'Employers now expect you to use AI tools well and to check what they produce.', resource: 'Elements of AI / Microsoft Learn / SWAYAM' };
+            sd.splice(Math.min(2, sd.length), 0, entry);
+        }
+        careersData.forEach(aiSkillEnsure);
 
 
         const examsData = [
@@ -11850,7 +11880,7 @@
            Every link goes to a provider's real home page or a search on it; nothing is invented.
            ============================================================ */
         const PLAN_PROVIDERS = [
-            [/NPTEL/i, 'NPTEL (free, IIT/IISc courses)', 'https://nptel.ac.in'], [/SWAYAM/i, 'SWAYAM (free, Govt. of India)', 'https://swayam.gov.in'],
+            [/Elements of AI/i, 'Elements of AI (free)', 'https://www.elementsofai.com'], [/NPTEL/i, 'NPTEL (free, IIT/IISc courses)', 'https://nptel.ac.in'], [/SWAYAM/i, 'SWAYAM (free, Govt. of India)', 'https://swayam.gov.in'],
             [/Skill India/i, 'Skill India Digital', 'https://www.skillindiadigital.gov.in'], [/Microsoft Learn|Microsoft C#/i, 'Microsoft Learn', 'https://learn.microsoft.com'],
             [/Kaggle/i, 'Kaggle Learn', 'https://www.kaggle.com/learn'], [/Mode SQL/i, 'Mode SQL Tutorial', 'https://mode.com/sql-tutorial'],
             [/Khan Academy/i, 'Khan Academy', 'https://www.khanacademy.org'], [/freeCodeCamp/i, 'freeCodeCamp', 'https://www.freecodecamp.org'],
@@ -13531,10 +13561,10 @@
                         <div class="bg-brand-600 h-1.5 rounded-full transition-all" style="width:${readinessPct}%"></div>
                     </div>
 
-                    ${['Technical', 'Tool', 'Soft'].map(type => {
+                    ${['Core', 'Technical', 'Domain', 'Tool', 'Soft'].map(type => {
                         const items = c.skillDetails.filter(s => s.type === type);
                         if (!items.length) return '';
-                        const typeLabel = type === 'Technical' ? 'Technical Skills' : type === 'Tool' ? 'Tools & Software' : 'Soft Skills';
+                        const typeLabel = ({ Core: 'Core Skills', Technical: 'Technical Skills', Domain: 'Subject Knowledge', Tool: 'Tools & Software', Soft: 'Soft Skills' })[type];
                         return `
                         <div class="mb-4">
                             <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">${typeLabel}</p>
@@ -16620,7 +16650,7 @@
             Promise.all([
                 get('data/careers_more.json').then(function (list) {
                     const have = new Set(careersData.map(function (c) { return c.id; }));
-                    list.forEach(function (c) { if (!have.has(c.id)) careersData.push(c); });
+                    list.forEach(function (c) { if (!have.has(c.id)) { aiSkillEnsure(c); careersData.push(c); } });
                     return true;
                 }).catch(function (e) { console.warn('More careers not loaded:', e); return false; }),
                 get('data/colleges_more.json').then(function (pack) {
