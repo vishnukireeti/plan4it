@@ -12164,7 +12164,7 @@
             if (vals.indexOf('stable') > -1 && (c.demandScore || 0) >= 4) out.push('You value stability: demand for this work is rated ' + c.demand.toLowerCase() + '.');
             if (vals.indexOf('creative') > -1 && (c.workStyle === 'Creative' || ['Creative', 'Media', 'Arts & Entertainment'].indexOf(c.category) > -1)) out.push('You want room to be creative, and this work is built around it.');
             if (vals.indexOf('help') > -1 && ['Healthcare', 'Education', 'Personal Services & Wellness', 'Law & Public Service'].indexOf(c.category) > -1) out.push('You want to help people, and this field does that directly.');
-            if (out.length < 4) out.push('In practice: about ' + c.entryYears + ' years to start, ' + String(c.salary).replace(/\s*\(approx\.\)/, '') + ' a year (estimate)' + ((c.skillDetails || [])[0] ? ', and the first skill to build is ' + c.skillDetails[0].name : '') + '.');
+            if (out.length < 4) out.push('In practice: about ' + c.entryYears + ' years to start, pay of ' + String(c.salary).replace(/\s*\(approx\.\)/, '').replace(/\s*\/\s*yr/, '') + ' a year (estimate)' + ((c.skillDetails || [])[0] ? ', and the first skill to build is ' + c.skillDetails[0].name : '') + '.');
             if (!out.length) out.push('It matches the broad pattern of your answers, though no single answer points to it strongly.');
             return out.slice(0, 4);
         }
