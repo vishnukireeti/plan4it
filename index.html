@@ -1789,7 +1789,7 @@
             </div>
 
 
-            <div id="dash-home" class="space-y-6 print:hidden"></div>
+            <div id="dash-home" class="space-y-6 min-w-0 max-w-full print:hidden"></div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div class="lg:col-span-2 space-y-6">
@@ -14899,7 +14899,7 @@
             if (saved.length >= 2) {
                 const rows = [['Pay (yearly)', function (c) { return e(c.salary); }], ['Time to start', function (c) { return '~' + e(c.entryYears) + ' yr'; }], ['Demand', function (c) { return e(c.demand); }], ['Difficulty', function (c) { return e(c.difficulty); }], ['Cost to enter', function (c) { return e(c.costTier); }]];
                 if (A) rows.unshift(['Your fit', function (c) { const r = scoreCareerForWizard(c, A); return premiumFitPct(r.score) + '%'; }]);
-                h += '<div class="bg-white border border-slate-200 rounded-2xl p-5"><h3 class="text-lg font-bold text-slate-900">Compare your saved careers</h3><p class="text-xs text-slate-500 mt-0.5">Side by side, so you can decide.</p><div class="overflow-x-auto mt-3"><table class="w-full text-sm min-w-[520px]"><thead><tr><th class="text-left p-2"></th>' + saved.slice(0, 5).map(function (c) { return '<th class="text-left p-2 font-bold text-slate-900">' + e(c.title) + (c.id === goalId ? ' 🎯' : '') + '</th>'; }).join('') + '</tr></thead><tbody>' + rows.map(function (r) { return '<tr class="border-t border-slate-100"><td class="p-2 text-xs font-semibold text-slate-500">' + r[0] + '</td>' + saved.slice(0, 5).map(function (c) { return '<td class="p-2 text-slate-700">' + r[1](c) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div></div>';
+                h += '<div class="bg-white border border-slate-200 rounded-2xl p-5 min-w-0 max-w-full"><h3 class="text-lg font-bold text-slate-900">Compare your saved careers</h3><p class="text-xs text-slate-500 mt-0.5">Side by side, so you can decide.</p><div class="overflow-x-auto mt-3"><table class="w-full text-sm min-w-[520px]"><thead><tr><th class="text-left p-2"></th>' + saved.slice(0, 5).map(function (c) { return '<th class="text-left p-2 font-bold text-slate-900">' + e(c.title) + (c.id === goalId ? ' 🎯' : '') + '</th>'; }).join('') + '</tr></thead><tbody>' + rows.map(function (r) { return '<tr class="border-t border-slate-100"><td class="p-2 text-xs font-semibold text-slate-500">' + r[0] + '</td>' + saved.slice(0, 5).map(function (c) { return '<td class="p-2 text-slate-700">' + r[1](c) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div></div>';
             } else {
                 h += '<div class="bg-white border border-brand-200 rounded-2xl p-5"><p class="text-sm font-bold text-slate-900">What saving unlocks</p><ul class="mt-2 text-sm text-slate-700 space-y-1"><li>• <b>Save 2 careers</b> to compare pay, time and difficulty side by side</li><li>• <b>Pick a goal</b> to get skill progress, the exams you need and a career report</li><li>• <b>Save exams</b> to see registration and exam deadlines, soonest first</li><li>• <b>Save colleges</b> to build your shortlist in one place</li></ul></div>';
             }
@@ -14923,7 +14923,7 @@
                     const checked = getCheckedSkills(c.id);
                     const readinessPct = (c.skillDetails && c.skillDetails.length && checked.length) ? Math.round((checked.length / c.skillDetails.length) * 100) : null;
                     return `
-                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 gap-3">
+                    <div class="flex items-center justify-between flex-wrap p-4 bg-slate-50 rounded-xl border border-slate-200 gap-3">
                         <div>
                             <div class="flex items-center gap-2 flex-wrap">
                                 <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">${c.category}</span>
@@ -14932,7 +14932,7 @@
                             <h4 class="font-bold text-slate-900 text-lg mt-1">${c.title}</h4>
                             <p class="text-slate-600 text-xs mt-0.5">${c.salary}${approxText(c, 'salary')} · ${c.demand} demand</p>
                         </div>
-                        <div class="flex items-center gap-2 shrink-0">
+                        <div class="flex items-center gap-2 flex-wrap">
                             <button onclick="openCareerDetail('${c.id}')" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-xl text-xs font-semibold transition">View Roadmap</button>
                             <button onclick="dashSetGoal('${c.id}')" class="${dashGoalId() === c.id ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-white text-brand-700 border-brand-200 hover:bg-brand-50'} border px-3 py-2 rounded-xl text-xs font-semibold transition">${dashGoalId() === c.id ? '🎯 My goal' : 'Make my goal'}</button>
                             <button onclick="toggleSaveCareer('${c.id}')" class="text-slate-400 hover:text-rose-500 text-xs font-semibold px-2 min-h-[44px]">Remove</button>
