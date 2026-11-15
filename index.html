@@ -5267,6 +5267,8 @@
                 competitionNote: "~2 lakh applicants; ~5% qualify — illustrative. Dates tentative unless marked confirmed — verify on the official site.",
                 prepTip: "Choose the subject where you can solve numerical problems fast; use the previous year's cutoffs." }
         ];
+        // Any exam that has a date but no stated status is shown as tentative until it is confirmed on the official site
+        examsData.forEach(function (e) { if (e.examDate && /^\d{4}-\d{2}-\d{2}$/.test(e.examDate) && !e.dateStatus) e.dateStatus = 'Tentative'; });
 
 
 
