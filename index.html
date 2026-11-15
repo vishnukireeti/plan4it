@@ -10703,12 +10703,12 @@
         let PREMIUM_MODAL_KIND = null;
         function premiumModalSet(kind, id) {
             const m = document.getElementById('premium-modal'); if (!m) return;
-            const career = kind === 'career'; PREMIUM_MODAL_KIND = career ? id : null;
+            const career = kind === 'career' || kind === 'career-me', me = kind === 'career-me'; PREMIUM_MODAL_KIND = career ? id : null;
             const c = career ? careersData.find(function (x) { return x.id === id; }) : null;
-            const t = document.getElementById('premium-modal-title'); if (t) t.textContent = career && c ? 'Career report: ' + c.title : 'Unlock your full report';
-            const d = document.getElementById('premium-modal-desc'); if (d) d.innerHTML = career ? 'One-time payment of <b class="text-slate-900">₹' + PREMIUM_CFG.careerPrice + '</b> for this career, as a PDF you keep.' : 'One-time payment of <b class="text-slate-900">₹<span class="premium-price">' + PREMIUM_CFG.price + '</span></b>. Built from your answers and updated whenever you retake the quiz.';
-            const l = document.getElementById('premium-modal-list'); if (l) l.innerHTML = career ? '<li>2-page PDF made for you</li><li>Pay at each stage, skills with free learning links</li><li>Your first 90 days, how to get hired, Plan B</li><li>Exams and colleges for your state</li>' : '<li>Top 10 matches with the reasons</li><li>Roadmaps, pay at each stage, skills and certifications</li><li>Exam deadlines, colleges for you, and a Plan B</li><li>A 12-month plan and a PDF to share</li>';
-            const b = document.getElementById('premium-pay-btn'); if (b) b.innerHTML = 'Pay ₹' + (career ? PREMIUM_CFG.careerPrice : PREMIUM_CFG.price);
+            const t = document.getElementById('premium-modal-title'); if (t) t.textContent = career && c ? (me ? 'Your personal report: ' : 'Career guide: ') + c.title : 'Unlock your full report';
+            const d = document.getElementById('premium-modal-desc'); if (d) d.innerHTML = career ? 'One-time payment of <b class="text-slate-900">₹' + (me ? PREMIUM_CFG.price : PREMIUM_CFG.careerPrice) + '</b> for this career, as a PDF you keep.' : 'One-time payment of <b class="text-slate-900">₹<span class="premium-price">' + PREMIUM_CFG.price + '</span></b>. Built from your answers and updated whenever you retake the quiz.';
+            const l = document.getElementById('premium-modal-list'); if (l) l.innerHTML = me ? '<li>About 6 pages written around your quiz answers</li><li>Your fit and why, and what could go wrong for you</li><li>Colleges and exams for your state</li><li>90-day plan and a parent guide</li>' : career ? '<li>2-page career guide PDF</li><li>Pay at each stage, skills with free learning links</li><li>Your first 90 days, how to get hired, Plan B</li><li>Exams and colleges for your state</li>' : '<li>Top 10 matches with the reasons</li><li>Roadmaps, pay at each stage, skills and certifications</li><li>Exam deadlines, colleges for you, and a Plan B</li><li>A 12-month plan and a PDF to share</li>';
+            const b = document.getElementById('premium-pay-btn'); if (b) b.innerHTML = 'Pay ₹' + (career && !me ? PREMIUM_CFG.careerPrice : PREMIUM_CFG.price);
         }
         function premiumOpenUnlock(kind, id) {
             trackEvent('premium_unlock_click');
@@ -12389,8 +12389,9 @@
             const R = [['Years 0 to 2', lo, at(0.2)], ['Years 3 to 7', at(0.25), at(0.6)], ['Year 8+', at(0.55), hi]];
             return R.map(function (r, i) { return [['First 0 to 2 years', 'Mid-career, about 3 to 7 years', 'Senior, 8+ years'][i], f(r[1]) + ' to ' + f(r[2]) + (i === 2 && hi > r[1] ? '+' : ''), r[0], r[1], r[2]]; });
         }
-        function careerReportBuild(c) {
-            const e = escapeAuth, A = getStoredWizardAnswers(), seg = planSegment(), f = getFit();
+        function careerReportBuild(c, mode) {
+            const gen = mode === 'general';
+            const e = escapeAuth, A = gen ? null : getStoredWizardAnswers(), seg = gen ? 'general' : planSegment(), f = getFit();
             const sess = authGetSession(), name = (sess && authDisplayName(sess)) || '';
             const today = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
             const done = getCheckedSkills(c.id), sd = c.skillDetails || [];
@@ -12409,8 +12410,10 @@
             const pay = careerReportPay(c);
             const first = sd.slice(0, 2).map(function (s) { return s.name; }), cert = (c.certifications || [])[0];
             const road = c.roadmap || [];
-            const routeIntro = seg === 'working' ? 'Moving from your current work' : seg === 'c10' ? 'From Class 10' : seg === 'c1112' ? 'From Class 11 or 12' : 'From your degree';
-            const days = seg === 'working'
+            const routeIntro = gen ? 'How people get into this career' : seg === 'working' ? 'Moving from your current work' : seg === 'c10' ? 'From Class 10' : seg === 'c1112' ? 'From Class 11 or 12' : 'From your degree';
+            const days = gen
+                ? [['Days 1 to 30', ['Read about the work and talk to 2 or 3 people who do it', first.length ? 'Try one free beginner lesson in ' + first[0] : 'Try a free beginner lesson in a core skill', 'Watch a day-in-the-life video from someone in India']], ['Days 31 to 60', ['Do one small task that feels like the real job and see if you enjoy it', 'Check which entry route above fits your stage and budget']], ['Days 61 to 90', ['Decide: yes, maybe or not for me', exams.length ? 'If yes, note the dates for ' + exams.slice(0, 2).map(function (x) { return x.name; }).join(' and ') : 'If yes, shortlist 3 courses or first steps', 'Pick one Plan B from page 2 so you are never stuck']]]
+                : seg === 'working'
                 ? [['Days 1 to 30', ['Talk to 3 people who do this job and ask what a normal week looks like', first.length ? 'Start learning ' + first.join(' and ') : 'Pick the first skill from the table', 'List which parts of your current work already transfer']], ['Days 31 to 60', ['Build one small project that looks like real work in this role', 'Update your resume and LinkedIn around the target role']], ['Days 61 to 90', [cert ? 'Enrol in ' + cert : 'Choose a recognised certification', 'Start applying, and ask for referrals instead of cold applications']]]
                 : seg === 'c10' || seg === 'c1112'
                     ? [['Days 1 to 30', ['Read what this career needs after school and check your subject combination fits', 'Talk to someone working in it, or a teacher who knows it']], ['Days 31 to 60', [exams.length ? 'Note the dates and eligibility for ' + exams.slice(0, 2).map(function (x) { return x.name; }).join(' and ') : 'List the entrance exams or admission routes', 'Try one free beginner course or a small hands-on activity']], ['Days 61 to 90', ['Shortlist 5 colleges or courses for your state, with a safe option in each list', 'Write your Plan B from the careers on page 2']]]
@@ -12422,7 +12425,7 @@
             const wlTxt = String(c.workLife || '').replace(/\s*\(.*$/, '') || 'n/a';
             const costP = (PP_LEVEL[c.costTier] || 2) * 33, demP = (PP_LEVEL[c.demand] || 2) * 25, difP = (PP_LEVEL[c.difficulty] || 2) * 25;
             const chips = [].concat(c.interestTags || [], c.workStyle ? ['Work style: ' + c.workStyle] : []).map(function (x) { return '<span class="cr-chip">' + e(x) + '</span>'; }).join('');
-            let h = '<div class="cr-page">' + ppMasthead('Career Report · plan4it.co', (name ? 'Prepared for <b>' + e(name) + '</b><br>' : '') + e(today)) +
+            let h = '<div class="cr-page">' + ppMasthead((gen ? 'Career Guide' : 'Career Report') + ' · plan4it.co', (name ? 'Prepared for <b>' + e(name) + '</b><br>' : '') + e(today)) +
                 '<div class="cr-banner" style="background:linear-gradient(120deg,' + vis[1] + ',' + vis[2] + ')"><div class="cr-ico" aria-hidden="true">' + vis[0] + '</div><div><div class="cr-cat">' + e(c.category) + '</div><div class="cr-name">' + e(c.title) + '</div><div class="cr-sub">' + e(c.overview || '') + '</div></div>' + (fit ? '<div class="cr-fit"><b>' + e(fit.replace('% match to your answers', '%')) + '</b><span>your match</span></div>' : '') + '</div>' +
                 '<div class="cr-grid4">' + ppMeter('Demand', demP, c.demand, '#16a34a') + ppMeter('Difficulty to enter', difP, c.difficulty, '#d97706') + ppMeter('Cost to enter', costP, c.costTier, '#dc2626') + ppMeter('Time to start', Math.min(100, (c.entryYears || 0) / 6 * 100), '~' + c.entryYears + ' years', '#0284c7') + '</div>' +
                 '<div class="pp-cols3 cr-mt">' + ppMeter('Work-life balance', wl * 25, wlTxt, '#0d9488') + ppMeter('Mobility abroad', /excellent/i.test(c.mobility || '') ? 100 : /good/i.test(c.mobility || '') ? 75 : /moderate/i.test(c.mobility || '') ? 50 : 25, String(c.mobility || '').split(/\s[—-]\s/)[0], '#7c3aed') + ppMeter('Pay band', 100, c.salary + approxText(c, 'salary'), '#0c4a6e') + '</div>' +
@@ -12433,7 +12436,7 @@
                 sec('Your route: ' + routeIntro.toLowerCase()) + (road.length ? '<div class="cr-steps">' + road.map(function (x, i) { return '<div class="cr-step"><b>' + (i + 1) + '</b><span>' + e(x) + '</span></div>'; }).join('') + '</div>' : '') +
                 sec('Your first 90 days') + '<div class="pp-cols3">' + days.map(function (d) { return '<div class="pp-card pp-slim"><b>' + e(d[0]) + '</b>' + li(d[1]) + '</div>'; }).join('') + '</div>' +
                 '</div>' +
-                '<div class="cr-page cr-break">' + ppMasthead(c.title + ' · Career Report', e(today)) +
+                '<div class="cr-page cr-break">' + ppMasthead(c.title + (gen ? ' · Career Guide' : ' · Career Report'), e(today)) +
                 sec('Skills to build, and where to learn them') + (sd.length ? '<table class="pp-t"><tr><th>Skill</th><th>Level</th><th>Learn it</th></tr>' + sd.slice(0, 6).map(function (s) {
                     return '<tr><td><span class="pp-box' + (done.indexOf(s.name) > -1 ? ' on' : '') + '"></span><b>' + e(s.name) + '</b></td><td>' + ppDots(s.level) + '</td><td>' + planResourceHTML(s.resource, s.name) + '</td></tr>';
                 }).join('') + '</table>' : '<p>Skill list not available.</p>') +
@@ -12451,12 +12454,31 @@
                 '<p class="pp-sm pp-mut pp-foot">Plan4it is free career guidance for students and working professionals in India. Pay, demand and cost figures are approximate estimates and not a guarantee of any job or salary. Verify exam dates, fees and eligibility on official websites before you act. Report generated ' + e(today) + ' at plan4it.co.</p></div>';
             return h;
         }
-        function careerReportOpen(id) {
+        function careerReportChoose(id) {
             const c = careersData.find(function (x) { return x.id === id; }); if (!c) return;
-            if (!premiumUnlocked()) { premiumOpenUnlock('career', id); return; }
-            trackEvent('career_report_open');
+            const has = !!getStoredWizardAnswers(), e = escapeAuth;
+            let m = document.getElementById('cr-choice'); if (!m) { m = document.createElement('div'); m.id = 'cr-choice'; document.body.appendChild(m); }
+            m.className = 'fixed inset-0 z-[70] flex items-center justify-center bg-slate-900/60 p-4';
+            m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-label', 'Choose your report');
+            m.onclick = function (ev) { if (ev.target === m) careerReportChoiceClose(); };
+            m.innerHTML = '<div class="bg-white rounded-2xl max-w-xl w-full p-5 sm:p-6 shadow-xl max-h-[90vh] overflow-y-auto">' +
+                '<div class="flex items-start justify-between gap-3"><div><p class="text-[11px] font-bold uppercase tracking-wider text-brand-700">Report for ' + e(c.title) + '</p><h2 class="text-xl font-bold text-slate-900 mt-1">How would you like your report?</h2></div><button type="button" onclick="careerReportChoiceClose()" aria-label="Close" class="min-h-[44px] min-w-[44px] text-slate-500 hover:text-slate-900 text-xl">✕</button></div>' +
+                '<div class="grid sm:grid-cols-2 gap-3 mt-4">' +
+                '<div class="border border-slate-200 rounded-xl p-4 flex flex-col"><p class="font-bold text-slate-900">🔎 Explore this career</p><p class="text-xs text-slate-600 mt-1 flex-grow">Just curious? No quiz needed. What the job is, pay, skills, how to get in, who it suits, and a first 90 days. 2 pages.</p><button type="button" onclick="careerReportRun(\'' + e(id) + '\',\'general\')" class="mt-3 min-h-[44px] bg-white border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-bold rounded-xl text-sm">Get the career guide' + (PREMIUM_CFG.mode === 'launch' ? ' · free now' : ' · ₹' + PREMIUM_CFG.careerPrice) + '</button></div>' +
+                '<div class="border-2 border-brand-600 rounded-xl p-4 flex flex-col bg-brand-50"><p class="font-bold text-slate-900">🎯 Made for me</p><p class="text-xs text-slate-600 mt-1 flex-grow">' + (has ? 'Uses your quiz answers: your fit and why, what could go wrong for you, colleges and exams for your state, a 90-day plan and a parent guide. About 6 pages.' : 'Takes 2 minutes. Answer a few questions and we write the report around you: fit, risks, colleges and exams for your state, and a parent guide.') + '</p>' +
+                (has ? '<button type="button" onclick="careerReportRun(\'' + e(id) + '\',\'me\')" class="mt-3 min-h-[44px] bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm">Get my report' + (PREMIUM_CFG.mode === 'launch' ? ' · free now' : ' · ₹' + PREMIUM_CFG.price) + '</button>' : '<button type="button" onclick="careerReportChoiceClose();switchView(\'confusedMode\')" class="mt-3 min-h-[44px] bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm">Take the quiz first</button>') + '</div></div>' +
+                '<p class="text-[11px] text-slate-500 mt-3">Both are PDFs you can keep. Pay and cost figures are estimates; confirm exam dates and fees on official sites.</p></div>';
+            const b = m.querySelector('button[onclick^="careerReportRun"]'); if (b) b.focus();
+        }
+        function careerReportChoiceClose() { const m = document.getElementById('cr-choice'); if (m) { m.className = 'hidden'; m.innerHTML = ''; } }
+        function careerReportOpen(id) { careerReportChoose(id); }
+        function careerReportRun(id, mode) {
+            const c = careersData.find(function (x) { return x.id === id; }); if (!c) return;
+            careerReportChoiceClose();
+            if (!premiumUnlocked()) { premiumOpenUnlock(mode === 'me' ? 'career-me' : 'career', id); return; }
+            trackEvent('career_report_' + mode);
             const run = function () {
-                let html = ''; try { html = careerReportBuild(c); } catch (er) { console.error(er); showToast('Could not build the report. Please try again.'); return; }
+                let html = ''; try { html = mode === 'me' ? (intelBuild(id) || careerReportBuild(c, 'general')) : careerReportBuild(c, 'general'); } catch (er) { console.error(er); showToast('Could not build the report. Please try again.'); return; }
                 printSheetHTML(html);
             };
             const f0 = getFit();
