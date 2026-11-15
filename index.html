@@ -193,7 +193,16 @@
             .pp-t { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 9.5px; } .pp-t th { background: #f1f5f9; text-align: left; } .pp-t td, .pp-t th { border: 1px solid #cbd5e1; padding: 3px 6px; vertical-align: top; }
             .pp-t tr { page-break-inside: avoid; } .pp-kv th { width: 22%; }
             .pp-box { display: inline-block; width: 10px; height: 10px; border: 1.5px solid #334155; border-radius: 2px; margin-right: 6px; vertical-align: -1px; } .pp-box.on { background: #334155; }
-            .cr-page { page-break-inside: avoid; } .cr-break { page-break-before: always; } .cr-h2 { margin: 11px 0 6px; font-size: 12.5px; }
+            .pp-mast { display: flex; justify-content: space-between; align-items: center; padding-bottom: 6px; margin-bottom: 8px; border-bottom: 2px solid #0284c7; } .pp-wm { font-size: 19px; font-weight: 800; letter-spacing: -.3px; color: #0c4a6e; line-height: 1; }
+            .cr-banner { display: flex; align-items: center; gap: 14px; color: #fff; border-radius: 10px; padding: 10px 14px; } .cr-banner * { color: #fff !important; } .cr-ico { font-size: 44px; line-height: 1; background: rgba(255,255,255,.18); border-radius: 14px; padding: 10px; } .cr-cat { font-size: 9.5px; text-transform: uppercase; letter-spacing: 1.2px; opacity: .9; } .cr-name { font-size: 21px; font-weight: 800; line-height: 1.15; margin: 2px 0 4px; } .cr-sub { font-size: 10px; opacity: .95; } .cr-fit { margin-left: auto; text-align: center; background: rgba(255,255,255,.2); border-radius: 10px; padding: 8px 12px; } .cr-fit b { display: block; font-size: 22px; } .cr-fit span { font-size: 9px; }
+            .cr-grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px; } .cr-mt { margin-top: 8px; } .cr-m { flex: 1; min-width: 0; } .cr-ml { display: flex; justify-content: space-between; gap: 6px; font-size: 9.5px; color: #334155; } .cr-ml b { color: #0f172a; text-align: right; } .cr-track { height: 8px; background: #e2e8f0; border-radius: 99px; margin-top: 3px; overflow: hidden; } .cr-track i { display: block; height: 100%; border-radius: 99px; }
+            .cr-chart { display: flex; align-items: flex-end; gap: 12px; padding: 4px 6px; border-bottom: 1px solid #94a3b8; } .cr-col { flex: 1; text-align: center; } .cr-colb { background: linear-gradient(#38bdf8, #0369a1); border-radius: 5px 5px 0 0; } .cr-colv { font-size: 9.5px; font-weight: 700; margin-bottom: 2px; } .cr-coll { font-size: 8.5px; color: #475569; position: absolute; } .cr-chart { padding-bottom: 2px; margin-bottom: 14px; position: relative; } .cr-col { position: relative; } .cr-coll { left: 0; right: 0; bottom: -14px; }
+            .cr-good > div, .cr-bad > div { display: flex; gap: 7px; align-items: flex-start; padding: 4px 8px; margin: 3px 0; border-radius: 6px; font-size: 10px; } .cr-good > div { background: #ecfdf5; border-left: 3px solid #16a34a; } .cr-bad > div { background: #fff1f2; border-left: 3px solid #e11d48; } .cr-good span, .cr-bad span { font-weight: 800; } .cr-good span { color: #16a34a; } .cr-bad span { color: #e11d48; }
+            .cr-chip { display: inline-block; background: #e0f2fe; color: #075985; font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 99px; margin: 4px 4px 0 0; }
+            .cr-steps { display: flex; flex-wrap: wrap; gap: 6px; } .cr-step { display: flex; align-items: center; gap: 6px; flex: 1 1 30%; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 5px 8px; font-size: 9.5px; } .cr-step b { background: #0284c7; color: #fff; border-radius: 99px; min-width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; }
+            .cr-hb { display: flex; align-items: center; gap: 8px; margin: 3px 0; font-size: 9.5px; } .cr-hbl { width: 28%; font-weight: 700; } .cr-hbt { flex: 1; height: 9px; background: #e2e8f0; border-radius: 99px; overflow: hidden; } .cr-hbt i { display: block; height: 100%; background: linear-gradient(90deg,#38bdf8,#0369a1); border-radius: 99px; } .cr-hbv { width: 16%; text-align: right; color: #475569; }
+            .cr-dots i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #cbd5e1; margin-right: 2px; } .cr-dots i.on { background: #0284c7; }
+            .cr-page { } .cr-break { page-break-before: always; } .cr-h2 { margin: 8px 0 5px; padding: 4px 10px; font-size: 12px; }
             .pp-links { columns: 2; } .pp-links li { margin-bottom: 3px; }
             .pp-lines span { display: block; border-bottom: 1px solid #94a3b8; height: 20px; } .pp-foot { margin-top: 14px; border-top: 1px solid #cbd5e1; padding-top: 6px; }
             body.printing-parents #parent-print-sheet { display: block !important; color: #0f172a; font-family: Inter, Arial, sans-serif; font-size: 12px; line-height: 1.5; padding: 0; }
@@ -11947,7 +11956,7 @@
             if (nothing) return null;
 
             let n = 0; const sec = function (t) { n++; return '<h2 class="pp-h2">' + n + '. ' + e(t) + '</h2>'; };
-            let h = '<div class="pp-cover"><div class="pp-brand"><img src="/assets/logo-mark-96.png" width="40" height="40" alt=""><div><div class="pp-title">' + (seg === 'working' ? 'Career Transition Plan' : 'Career Plan Report') + '</div><div class="pp-mut">Prepared for <b>' + e(name) + '</b> · ' + e(today) + ' · ' + e(PLAN_SEG_LABEL[seg]) + ' edition</div></div></div><div class="pp-sm pp-mut pp-right">plan4it.co<br>Free career guidance for India</div></div>';
+            let h = ppMasthead((seg === 'working' ? 'Career Transition Plan' : 'Career Plan Report') + ' · ' + PLAN_SEG_LABEL[seg] + ' edition', 'Prepared for <b>' + e(name) + '</b><br>' + e(today)) + '<div class="pp-title" style="margin:2px 0 6px">' + (seg === 'working' ? 'Your Career Transition Plan' : 'Your Career Plan Report') + '</div>';
 
             // ----- 1. profile
             const styleWords = { Logic: 'solving problems', People: 'working with people', 'Hands-on': 'hands-on work', Creative: 'creative work', Leadership: 'leading and organising', Research: 'researching', Mixed: 'a mix of styles' };
@@ -11978,11 +11987,16 @@
             if (a) {
                 const t10 = pdfPool.slice(0, 10);
                 const common = t10.length ? t10[0].reasons.filter(function (r) { return t10.every(function (t) { return t.reasons.indexOf(r) > -1; }); }) : [];
+                h += '<div class="cr-grid4">' + ppMeter('Best match', premiumFitPct(pdfPool[0].score), pdfPool[0].title, '#16a34a') + ppMeter('Careers compared', 100, careersData.length + ' careers', '#0284c7') + ppMeter('Saved careers', Math.min(100, savedCareers.length * 20), savedCareers.length + ' saved', '#7c3aed') + ppMeter('Exams to plan', Math.min(100, exams.length * 20), exams.length + ' listed', '#d97706') + '</div>';
                 h += sec('Your top 10 matches') + (common.length ? '<p class="pp-sm">What they all share: ' + e(common.join('; ')) + '.</p>' : '') +
                     '<table class="pp-t"><tr><th>#</th><th>Career</th><th>Fit</th><th>Pay range</th><th>Time to enter</th><th>Demand</th><th>Cost</th><th>What sets it apart</th></tr>' + t10.map(function (c, i) {
                         const own = c.reasons.filter(function (r) { return common.indexOf(r) < 0; }).slice(0, 2).join('; ');
-                        return '<tr><td>' + (i + 1) + '</td><td><b>' + e(c.title) + '</b></td><td>' + e(fitInfo(premiumFitPct(c.score)).text) + '</td><td>' + e(c.salary) + '</td><td>~' + c.entryYears + ' yr</td><td>' + e(c.demand) + '</td><td>' + e(c.costTier) + '</td><td class="pp-sm">' + e(own ? own.charAt(0).toUpperCase() + own.slice(1) : '–') + '</td></tr>';
-                    }).join('') + '</table>';
+                        return '<tr><td>' + (i + 1) + '</td><td><b>' + e(c.title) + '</b></td><td>' + ppMeter('', premiumFitPct(c.score), premiumFitPct(c.score) + '%', '#16a34a') + '</td><td>' + e(c.salary) + '</td><td>~' + c.entryYears + ' yr</td><td>' + e(c.demand) + '</td><td>' + e(c.costTier) + '</td><td class="pp-sm">' + e(own ? own.charAt(0).toUpperCase() + own.slice(1) : '–') + '</td></tr>';
+                    }).join('') + '</table>' +
+                    '<div class="pp-card"><b>Pay at a glance (approximate yearly pay band, in ₹ lakh)</b>' + t10.slice(0, 6).map(function (c) {
+                        const mx = Math.max.apply(null, t10.slice(0, 6).map(function (x) { return Number(x.salaryMax) || 0; })) || 1;
+                        return '<div class="cr-hb"><span class="cr-hbl">' + e(c.title) + '</span><span class="cr-hbt"><i style="margin-left:' + (Number(c.salaryMin) / mx * 100) + '%;width:' + Math.max(3, (Number(c.salaryMax) - Number(c.salaryMin)) / mx * 100) + '%"></i></span><span class="cr-hbv">' + e(c.salaryMin + ' to ' + c.salaryMax) + '</span></div>';
+                    }).join('') + '<p class="pp-sm pp-mut">Pay bands are estimates. Real pay depends on city, employer and skill.</p></div>';
                 const cards = wizardInsightCards(a);
                 if (cards.length) h += sec('What your answers tell us') + cards.map(function (c) { return '<div class="pp-card pp-slim"><b>' + e(c.title) + '.</b> ' + c.text + '</div>'; }).join('');
             }
@@ -12165,12 +12179,35 @@
             'Personal Services & Wellness': ['Certificates, before-and-after or client work with permission, and reviews from clients', 'Salons, wellness chains, clinics, gyms and studios, or your own practice', 'Expect a practical demo. Build a small base of repeat clients early; reputation is your pipeline.'],
             'Sports & Fitness': ['Match or training records, coaching certificates and a short video of your work', 'Academies, gyms and fitness chains, sports bodies, schools and sports-tech or media firms', 'Expect a trial or demo session. Keep your records and certifications current.']
         };
+        /* ---- visual helpers for the PDF reports (print-safe: plain divs and inline SVG, no scripts) ---- */
+        function ppMasthead(kind, right) {
+            return '<div class="pp-mast"><div class="pp-brand"><img src="/assets/logo-mark-96.png" width="44" height="44" alt="Plan4it"><div><div class="pp-wm">Plan4it</div><div class="pp-mut pp-sm">' + escapeAuth(kind) + '</div></div></div><div class="pp-right pp-sm pp-mut">' + right + '</div></div>';
+        }
+        function ppMeter(label, pct, text, color) {
+            pct = Math.max(4, Math.min(100, Math.round(pct)));
+            return '<div class="cr-m"><div class="cr-ml"><span>' + escapeAuth(label) + '</span><b>' + escapeAuth(text) + '</b></div><div class="cr-track"><i style="width:' + pct + '%;background:' + color + '"></i></div></div>';
+        }
+        const PP_LEVEL = { Low: 1, Moderate: 2, Medium: 2, High: 3, 'Very High': 4 };
+        function ppDots(level) {
+            const n = /adv/i.test(level) ? 3 : /inter/i.test(level) ? 2 : 1;
+            return '<span class="cr-dots">' + [1, 2, 3].map(function (i) { return '<i class="' + (i <= n ? 'on' : '') + '"></i>'; }).join('') + '</span> ' + escapeAuth(level || '');
+        }
+        const CAT_VIS = { 'Technology': ['💻', '#0369a1', '#0ea5e9'], 'Engineering': ['⚙️', '#334155', '#64748b'], 'Healthcare': ['🩺', '#0f766e', '#14b8a6'], 'Finance': ['📈', '#166534', '#22c55e'], 'Business': ['💼', '#7c2d12', '#f97316'], 'Law & Public Service': ['⚖️', '#4c1d95', '#8b5cf6'], 'Science': ['🔬', '#1e3a8a', '#3b82f6'], 'Creative': ['🎨', '#9d174d', '#ec4899'], 'Arts & Entertainment': ['🎭', '#86198f', '#d946ef'], 'Media': ['🎙️', '#9a3412', '#fb923c'], 'Education': ['🎓', '#854d0e', '#eab308'], 'Agriculture & Environment': ['🌱', '#14532d', '#4ade80'], 'Skilled Trades': ['🛠️', '#44403c', '#a8a29e'], 'Aviation & Hospitality': ['✈️', '#075985', '#38bdf8'], 'Personal Services & Wellness': ['💆', '#9f1239', '#fb7185'], 'Sports & Fitness': ['🏅', '#b45309', '#f59e0b'] };
+        function ppPayChart(rows, hi) {
+            // rows: [label, lo, hi, text]; columns are drawn to the middle of each range, scaled to the top of the band
+            const H = 52;
+            return '<div class="cr-chart">' + rows.map(function (r) {
+                const mid = (r[1] + r[2]) / 2, h = Math.max(10, Math.round(mid / hi * H));
+                return '<div class="cr-col"><div class="cr-colv">' + escapeAuth(r[3]) + '</div><div class="cr-colb" style="height:' + h + 'px"></div><div class="cr-coll">' + escapeAuth(r[0]) + '</div></div>';
+            }).join('') + '</div>';
+        }
         function careerReportPay(c) {
             const lo = Number(c.salaryMin), hi = Number(c.salaryMax);
             if (!(lo > 0) || !(hi >= lo)) return null;
             const at = function (p) { return lo + (hi - lo) * p; };
             const f = function (x) { return '₹' + (x < 10 ? Math.round(x * 10) / 10 : Math.round(x)) + 'L'; };
-            return [['First 0 to 2 years', f(lo) + ' to ' + f(at(0.2))], ['Mid-career, about 3 to 7 years', f(at(0.25)) + ' to ' + f(at(0.6))], ['Senior, 8+ years', f(at(0.55)) + ' to ' + f(hi) + (hi > at(0.55) ? '+' : '')]];
+            const R = [['Years 0 to 2', lo, at(0.2)], ['Years 3 to 7', at(0.25), at(0.6)], ['Year 8+', at(0.55), hi]];
+            return R.map(function (r, i) { return [['First 0 to 2 years', 'Mid-career, about 3 to 7 years', 'Senior, 8+ years'][i], f(r[1]) + ' to ' + f(r[2]) + (i === 2 && hi > r[1] ? '+' : ''), r[0], r[1], r[2]]; });
         }
         function careerReportBuild(c) {
             const e = escapeAuth, A = getStoredWizardAnswers(), seg = planSegment(), f = getFit();
@@ -12200,31 +12237,37 @@
                     : [['Days 1 to 30', [first.length ? 'Start learning ' + first.join(' and ') : 'Pick the first skill from the table', 'Ask 2 people in the role what they wish they had learned first']], ['Days 31 to 60', ['Build one project that you can show, and put it online', 'Apply to 2 or 3 internships or entry roles each week']], ['Days 61 to 90', [cert ? 'Start ' + cert : 'Choose one certification the role asks for', 'Get the project reviewed by someone in the field and improve it']]];
             const li = function (arr) { return '<ul>' + arr.map(function (x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul>'; };
             const sec = function (t) { return '<h2 class="pp-h2 cr-h2">' + e(t) + '</h2>'; };
-            let h = '<div class="cr-page">' +
-                '<div class="pp-cover"><div class="pp-brand"><img src="/assets/logo-mark-96.png" width="36" height="36" alt=""><div><div class="pp-title">' + e(c.title) + '</div><div class="pp-mut">Plan4it Career Report · ' + e(c.category) + '</div></div></div><div class="pp-right pp-mut">' + (name ? 'Prepared for <b>' + e(name) + '</b><br>' : '') + e(today) + '</div></div>' +
-                (fit ? '<p><span class="pp-tag g">' + e(fit) + '</span> <span class="pp-sm">Why: ' + e(why || 'matches your interests and work style') + '</span></p>' : '') +
-                '<div class="pp-facts"><span>Pay: ' + e(c.salary) + approxText(c, 'salary') + '</span><span>Demand: ' + e(c.demand) + '</span><span>Difficulty: ' + e(c.difficulty) + '</span><span>Start in about ' + e(c.entryYears) + ' yr</span><span>Cost to enter: ' + e(c.costTier) + '</span>' + (c.workLife ? '<span>Work-life: ' + e(c.workLife) + '</span>' : '') + (c.mobility ? '<span>Mobility abroad: ' + e(c.mobility) + '</span>' : '') + '</div>' +
-                '<p>' + e(c.overview || '') + '</p>' + (c.suitability ? '<p><b>Who it suits:</b> ' + e(c.suitability) + '</p>' : '') +
-                sec('1. Your route: ' + routeIntro.toLowerCase()) + (road.length ? '<p class="pp-road">' + road.map(function (x, i) { return '<b>' + (i + 1) + '.</b> ' + e(x); }).join('  →  ') + '</p>' : '') +
-                (pay ? sec('2. What it pays, and how it grows') + '<table class="pp-t"><tr><th>Stage</th><th>Indicative pay per year</th></tr>' + pay.map(function (r) { return '<tr><td>' + e(r[0]) + '</td><td>' + e(r[1]) + '</td></tr>'; }).join('') + '</table><p class="pp-sm pp-mut">These stages are worked out from the pay band we hold for this career (' + e(c.salary) + '). The band is an estimate, not a survey. Pay varies a lot by city, employer and skill; check current openings on the National Career Service portal (ncs.gov.in) before you decide.</p>' : '') +
-                sec('3. Skills to build, and where to learn them') + (sd.length ? '<table class="pp-t"><tr><th>Skill</th><th>Level</th><th>Learn it</th></tr>' + sd.slice(0, 7).map(function (s) {
-                    return '<tr><td><span class="pp-box' + (done.indexOf(s.name) > -1 ? ' on' : '') + '"></span><b>' + e(s.name) + '</b></td><td>' + e(s.level || '') + '</td><td>' + planResourceHTML(s.resource, s.name) + '</td></tr>';
-                }).join('') + '</table>' : '<p>Skill list not available.</p>') +
-                (c.certifications && c.certifications.length ? '<p><b>Certifications worth considering:</b></p><ul>' + c.certifications.slice(0, 4).map(function (x) { return '<li>' + planCertHTML(x) + '</li>'; }).join('') + '</ul>' : '') +
-                sec('4. Your first 90 days') + '<div class="pp-cols3">' + days.map(function (d) { return '<div class="pp-card pp-slim"><b>' + e(d[0]) + '</b>' + li(d[1]) + '</div>'; }).join('') + '</div>' +
+            const vis = CAT_VIS[c.category] || ['⭐', '#0c4a6e', '#0284c7'];
+            const wl = /good/i.test(c.workLife || '') ? 4 : /moderate/i.test(c.workLife || '') ? 3 : /irregular/i.test(c.workLife || '') ? 2 : 1;
+            const wlTxt = String(c.workLife || '').replace(/\s*\(.*$/, '') || 'n/a';
+            const costP = (PP_LEVEL[c.costTier] || 2) * 33, demP = (PP_LEVEL[c.demand] || 2) * 25, difP = (PP_LEVEL[c.difficulty] || 2) * 25;
+            const chips = [].concat(c.interestTags || [], c.workStyle ? ['Work style: ' + c.workStyle] : []).map(function (x) { return '<span class="cr-chip">' + e(x) + '</span>'; }).join('');
+            let h = '<div class="cr-page">' + ppMasthead('Career Report · plan4it.co', (name ? 'Prepared for <b>' + e(name) + '</b><br>' : '') + e(today)) +
+                '<div class="cr-banner" style="background:linear-gradient(120deg,' + vis[1] + ',' + vis[2] + ')"><div class="cr-ico" aria-hidden="true">' + vis[0] + '</div><div><div class="cr-cat">' + e(c.category) + '</div><div class="cr-name">' + e(c.title) + '</div><div class="cr-sub">' + e(c.overview || '') + '</div></div>' + (fit ? '<div class="cr-fit"><b>' + e(fit.replace('% match to your answers', '%')) + '</b><span>your match</span></div>' : '') + '</div>' +
+                '<div class="cr-grid4">' + ppMeter('Demand', demP, c.demand, '#16a34a') + ppMeter('Difficulty to enter', difP, c.difficulty, '#d97706') + ppMeter('Cost to enter', costP, c.costTier, '#dc2626') + ppMeter('Time to start', Math.min(100, (c.entryYears || 0) / 6 * 100), '~' + c.entryYears + ' years', '#0284c7') + '</div>' +
+                '<div class="pp-cols3 cr-mt">' + ppMeter('Work-life balance', wl * 25, wlTxt, '#0d9488') + ppMeter('Mobility abroad', /excellent/i.test(c.mobility || '') ? 100 : /good/i.test(c.mobility || '') ? 75 : /moderate/i.test(c.mobility || '') ? 50 : 25, String(c.mobility || '').split(/\s[—-]\s/)[0], '#7c3aed') + ppMeter('Pay band', 100, c.salary + approxText(c, 'salary'), '#0c4a6e') + '</div>' +
+                (pay ? sec('Pay: how it grows') + '<div class="pp-cols"><div style="flex:1.1">' + ppPayChart(pay.map(function (r) { return [r[2], r[3], r[4], r[1]]; }), Number(c.salaryMax)) + '</div><div class="pp-sm pp-mut" style="flex:1">Stages are worked out from our pay band for this career. The band is an estimate, not a survey. Pay varies by city, employer and skill; check current openings on the National Career Service portal (ncs.gov.in) before you decide.</div></div>' : '') +
+                sec('Why it is a great job') + '<div class="cr-good">' + (c.pros || []).map(function (x) { return '<div><span>✓</span>' + e(x) + '</div>'; }).join('') + (demP >= 75 ? '<div><span>✓</span>Demand is rated ' + e(c.demand) + ' in India</div>' : '') + '</div>' +
+                sec('The downsides, honestly') + '<div class="cr-bad">' + (c.cons || []).map(function (x) { return '<div><span>!</span>' + e(x) + '</div>'; }).join('') + (difP >= 75 ? '<div><span>!</span>Getting in is rated ' + e(c.difficulty) + '</div>' : '') + (wl <= 2 ? '<div><span>!</span>Hours are ' + e(wlTxt.toLowerCase()) + '</div>' : '') + '</div>' +
+                sec('Who it suits') + '<div class="pp-card pp-note"><p>' + e(c.suitability || 'People who enjoy this kind of work.') + '</p><div>' + chips + '</div></div>' +
+                sec('Your route: ' + routeIntro.toLowerCase()) + (road.length ? '<div class="cr-steps">' + road.map(function (x, i) { return '<div class="cr-step"><b>' + (i + 1) + '</b><span>' + e(x) + '</span></div>'; }).join('') + '</div>' : '') +
+                sec('Your first 90 days') + '<div class="pp-cols3">' + days.map(function (d) { return '<div class="pp-card pp-slim"><b>' + e(d[0]) + '</b>' + li(d[1]) + '</div>'; }).join('') + '</div>' +
                 '</div>' +
-                '<div class="cr-page cr-break">' +
-                sec('5. Getting hired: proof, employers and interviews') +
+                '<div class="cr-page cr-break">' + ppMasthead(c.title + ' · Career Report', e(today)) +
+                sec('Skills to build, and where to learn them') + (sd.length ? '<table class="pp-t"><tr><th>Skill</th><th>Level</th><th>Learn it</th></tr>' + sd.slice(0, 6).map(function (s) {
+                    return '<tr><td><span class="pp-box' + (done.indexOf(s.name) > -1 ? ' on' : '') + '"></span><b>' + e(s.name) + '</b></td><td>' + ppDots(s.level) + '</td><td>' + planResourceHTML(s.resource, s.name) + '</td></tr>';
+                }).join('') + '</table>' : '<p>Skill list not available.</p>') +
+                (c.certifications && c.certifications.length ? '<p><b>Certifications worth considering:</b></p><ul>' + c.certifications.slice(0, 3).map(function (x) { return '<li>' + planCertHTML(x) + '</li>'; }).join('') + '</ul>' : '') +
+                sec('Getting hired: proof, employers and interviews') +
                 '<table class="pp-t pp-kv"><tr><th>Proof to build</th><td>' + e(tips[0]) + '</td></tr><tr><th>Who hires</th><td>' + e(tips[1]) + '</td></tr><tr><th>The interview</th><td>' + e(tips[2]) + '</td></tr></table>' +
-                '<div class="pp-cols"><div class="pp-card"><b>Good about it</b>' + li(c.pros || []) + '</div><div class="pp-card"><b>Watch out for</b>' + li(c.cons || []) + '</div></div>' +
-                ((exams.length || cols.length) ? sec('6. Exams and colleges' + (f && f.state && f.state !== 'any' ? ' for ' + f.state : '')) +
+                ((exams.length || cols.length) ? sec('Exams and colleges' + (f && f.state && f.state !== 'any' ? ' for ' + f.state : '')) +
                     (exams.length ? '<p><b>Exams that lead here:</b></p><ul>' + exams.map(function (x) { return '<li><b>' + e(x.name) + '</b>' + (x.eligibility ? ': ' + e(String(x.eligibility).slice(0, 140)) : '') + (x.site ? ' (' + e(planUrl(x.site).replace(/^https:\/\/(www\.)?/, '').replace(/\/$/, '')) + ')' : '') + '</li>'; }).join('') + '</ul>' : '') +
                     (cols.length ? '<p><b>Colleges to look at:</b> ' + cols.map(function (x) { return e(x.name.replace(/\s*\(.*?\)\s*/g, ' ').trim()); }).join(' · ') + '. <span class="pp-mut">Check fees, cut-offs and placements on each college\'s own site.</span></p>' : '') : '') +
-                sec((exams.length || cols.length ? '7' : '6') + '. Plan B: close alternatives') + (planB.length ? '<table class="pp-t"><tr><th>Career</th><th>Pay</th><th>Start in</th><th>Why it is close</th></tr>' + planB.map(function (r) { return '<tr><td><b>' + e(r.c.title) + '</b></td><td>' + e(r.c.salary) + '</td><td>~' + e(r.c.entryYears) + ' yr</td><td>' + (r.shared.length ? 'Shares: ' + e(r.shared.slice(0, 3).join(', ')) : 'Same field, similar work') + '</td></tr>'; }).join('') + '</table>' : '<p>No close alternatives found.</p>') +
-                sec((exams.length || cols.length ? '8' : '7') + '. Reality check: mistakes to avoid and questions to ask') +
+                sec('Plan B: close alternatives') + (planB.length ? '<table class="pp-t"><tr><th>Career</th><th>Pay</th><th>Start in</th><th>Why it is close</th></tr>' + planB.map(function (r) { return '<tr><td><b>' + e(r.c.title) + '</b></td><td>' + e(r.c.salary) + '</td><td>~' + e(r.c.entryYears) + ' yr</td><td>' + (r.shared.length ? 'Shares: ' + e(r.shared.slice(0, 3).join(', ')) : 'Same field, similar work') + '</td></tr>'; }).join('') + '</table>' : '<p>No close alternatives found.</p>') +
+                sec('Reality check: mistakes to avoid and questions to ask') +
                 '<div class="pp-cols"><div class="pp-card"><b>Common mistakes</b>' + li(['Choosing only for the pay figure, without checking the day-to-day work', 'Collecting certificates instead of building one thing you can show', 'Applying late: exam, admission and hiring windows close months ahead', c.entryYears >= 4 ? 'Not planning the cost of a long route: check fees and loans before you commit' : 'Skipping the basics and jumping straight to advanced tools']) + '</div>' +
                 '<div class="pp-card"><b>Ask someone already doing this job</b>' + li(['What does a normal week look like, and what is the hardest part?', 'What did you wish you had learned before starting?', 'What did your first year actually pay, and how did it grow?', 'Which employers or colleges would you pick today, and why?', 'What would make you leave this field?']) + '</div></div>' +
-                sec((exams.length || cols.length ? '9' : '8') + '. Your next step') + '<div class="pp-card pp-note"><b>This week:</b> ' + e(days[0][1][0]) + '. <b>Then:</b> ' + e(days[0][1][1] || days[1][1][0]) + '.</div>' +
+                sec('Your next step') + '<div class="pp-card pp-note"><b>This week:</b> ' + e(days[0][1][0]) + '. <b>Then:</b> ' + e(days[0][1][1] || days[1][1][0]) + '.</div>' +
                 '<p class="pp-sm pp-mut pp-foot">Plan4it is free career guidance for students and working professionals in India. Pay, demand and cost figures are approximate estimates and not a guarantee of any job or salary. Verify exam dates, fees and eligibility on official websites before you act. Report generated ' + e(today) + ' at plan4it.co.</p></div>';
             return h;
         }
