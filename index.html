@@ -177,7 +177,7 @@
             body.printing-plan #view-dashboard, body.printing-plan .page-nav, body.printing-plan .page-nav-m { display: none !important; }
             body.printing-plan #plan-print-sheet { display: block !important; color: #0f172a; font-family: Inter, Arial, sans-serif; font-size: 10.5px; line-height: 1.45; }
             #plan-print-sheet * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            #plan-print-sheet p { margin: 3px 0; } #plan-print-sheet ul { margin: 3px 0 3px 16px; padding: 0; } #plan-print-sheet b { color: #0f172a; }
+            #plan-print-sheet p { margin: 3px 0; } #plan-print-sheet ul { margin: 3px 0 3px 16px; padding: 0; list-style: disc; } #plan-print-sheet b { color: #0f172a; }
             #plan-print-sheet a { color: #0369a1 !important; text-decoration: underline; }
             .pp-cover { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #0284c7; padding-bottom: 10px; margin-bottom: 12px; }
             .pp-brand { display: flex; gap: 10px; align-items: center; } .pp-title { font-size: 22px; font-weight: 800; } .pp-right { text-align: right; }
@@ -193,6 +193,7 @@
             .pp-t { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 9.5px; } .pp-t th { background: #f1f5f9; text-align: left; } .pp-t td, .pp-t th { border: 1px solid #cbd5e1; padding: 3px 6px; vertical-align: top; }
             .pp-t tr { page-break-inside: avoid; } .pp-kv th { width: 22%; }
             .pp-box { display: inline-block; width: 10px; height: 10px; border: 1.5px solid #334155; border-radius: 2px; margin-right: 6px; vertical-align: -1px; } .pp-box.on { background: #334155; }
+            .cr-page { page-break-inside: avoid; } .cr-break { page-break-before: always; } .cr-h2 { margin: 11px 0 6px; font-size: 12.5px; }
             .pp-links { columns: 2; } .pp-links li { margin-bottom: 3px; }
             .pp-lines span { display: block; border-bottom: 1px solid #94a3b8; height: 20px; } .pp-foot { margin-top: 14px; border-top: 1px solid #cbd5e1; padding-top: 6px; }
             body.printing-parents #parent-print-sheet { display: block !important; color: #0f172a; font-family: Inter, Arial, sans-serif; font-size: 12px; line-height: 1.5; padding: 0; }
@@ -1668,8 +1669,8 @@
         <div id="premium-modal" class="hidden fixed inset-0 z-[70] items-center justify-center bg-slate-900/60 p-4" role="dialog" aria-modal="true" aria-labelledby="premium-modal-title" onclick="if(event.target===this)premiumCloseUnlock()">
             <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-xl">
                 <div class="flex items-start justify-between gap-3"><h3 id="premium-modal-title" class="text-xl font-extrabold text-slate-900">Unlock your full report</h3><button type="button" onclick="premiumCloseUnlock()" aria-label="Close" class="w-10 h-10 -mr-2 -mt-2 rounded-full text-slate-500 hover:bg-slate-100 text-xl">×</button></div>
-                <p class="text-sm text-slate-600 mt-1">One-time payment of <b class="text-slate-900">₹<span class="premium-price">99</span></b>. Built from your answers and updated whenever you retake the quiz.</p>
-                <ul class="text-sm text-slate-700 list-disc pl-5 mt-3 space-y-1"><li>Top 10 matches with the reasons</li><li>Roadmaps, pay at each stage, skills and certifications</li><li>Exam deadlines, colleges for you, and a Plan B</li><li>A 12-month plan and a PDF to share</li></ul>
+                <p id="premium-modal-desc" class="text-sm text-slate-600 mt-1">One-time payment of <b class="text-slate-900">₹<span class="premium-price">99</span></b>. Built from your answers and updated whenever you retake the quiz.</p>
+                <ul id="premium-modal-list" class="text-sm text-slate-700 list-disc pl-5 mt-3 space-y-1"><li>Top 10 matches with the reasons</li><li>Roadmaps, pay at each stage, skills and certifications</li><li>Exam deadlines, colleges for you, and a Plan B</li><li>A 12-month plan and a PDF to share</li></ul>
                 <button id="premium-pay-btn" type="button" onclick="premiumPay()" class="mt-5 w-full min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl">Pay ₹<span class="premium-price">99</span></button>
                 <p id="premium-pay-msg" class="text-xs text-slate-600 mt-2" role="status" aria-live="polite"></p>
             </div>
@@ -10678,14 +10679,25 @@
            unlock. While PREMIUM_CFG.mode is 'launch' everyone gets it free, labelled as premium. Switch mode to
            'paid' once payments are connected (see premiumHasPurchase).
            ============================================================ */
-        const PREMIUM_CFG = { price: 99, mode: 'launch' };
+        const PREMIUM_CFG = { price: 99, careerPrice: 49, mode: 'launch' };
         // Set from a server-verified purchase once payments exist. Never from anything the browser can write.
         let PREMIUM_PURCHASED = false;
         function premiumHasPurchase() { return PREMIUM_PURCHASED; }
         function premiumUnlocked() { return PREMIUM_CFG.mode === 'launch' || premiumHasPurchase() || (typeof adminOwnerOk !== 'undefined' && adminOwnerOk); }
         let PREMIUM_EXTRA_INSIGHTS = [];
-        function premiumOpenUnlock() {
+        let PREMIUM_MODAL_KIND = null;
+        function premiumModalSet(kind, id) {
+            const m = document.getElementById('premium-modal'); if (!m) return;
+            const career = kind === 'career'; PREMIUM_MODAL_KIND = career ? id : null;
+            const c = career ? careersData.find(function (x) { return x.id === id; }) : null;
+            const t = document.getElementById('premium-modal-title'); if (t) t.textContent = career && c ? 'Career report: ' + c.title : 'Unlock your full report';
+            const d = document.getElementById('premium-modal-desc'); if (d) d.innerHTML = career ? 'One-time payment of <b class="text-slate-900">₹' + PREMIUM_CFG.careerPrice + '</b> for this career, as a PDF you keep.' : 'One-time payment of <b class="text-slate-900">₹<span class="premium-price">' + PREMIUM_CFG.price + '</span></b>. Built from your answers and updated whenever you retake the quiz.';
+            const l = document.getElementById('premium-modal-list'); if (l) l.innerHTML = career ? '<li>2-page PDF made for you</li><li>Pay at each stage, skills with free learning links</li><li>Your first 90 days, how to get hired, Plan B</li><li>Exams and colleges for your state</li>' : '<li>Top 10 matches with the reasons</li><li>Roadmaps, pay at each stage, skills and certifications</li><li>Exam deadlines, colleges for you, and a Plan B</li><li>A 12-month plan and a PDF to share</li>';
+            const b = document.getElementById('premium-pay-btn'); if (b) b.innerHTML = 'Pay ₹' + (career ? PREMIUM_CFG.careerPrice : PREMIUM_CFG.price);
+        }
+        function premiumOpenUnlock(kind, id) {
             trackEvent('premium_unlock_click');
+            premiumModalSet(kind, id);
             const m = document.getElementById('premium-modal'); if (!m) return;
             m.classList.remove('hidden'); m.classList.add('flex');
             const b = document.getElementById('premium-pay-btn'); if (b) b.focus();
@@ -11120,20 +11132,16 @@
             const saved = getSavedCareers().includes(c.id);
             const readinessChecked = getCheckedSkills(c.id);
             const readinessPct = (c.skillDetails && c.skillDetails.length && readinessChecked.length) ? Math.round((readinessChecked.length / c.skillDetails.length) * 100) : null;
-            const comparing = getCompareIds().includes(c.id);
             return `
-                <div class="card-interactive bg-white border ${comparing ? 'border-brand-400 ring-1 ring-brand-200' : 'border-slate-200'} p-6 rounded-2xl flex flex-col justify-between shadow-sm relative">
-                    <div class="absolute top-4 right-4 flex items-center gap-1.5">
-                        <button onclick="toggleCompareCareer('${c.id}')" aria-label="${comparing ? 'Remove from compare' : 'Add to compare'}" aria-pressed="${comparing}" title="Compare this career" class="w-8 h-8 rounded-full flex items-center justify-center ${comparing ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-400 hover:text-brand-600'} transition">
-                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 10h12M10 4v12" stroke-linecap="round"/></svg>
-                        </button>
-                        <button onclick="toggleSaveCareer('${c.id}')" aria-label="${saved ? 'Remove from saved' : 'Save career'}" class="w-8 h-8 rounded-full flex items-center justify-center ${saved ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-400 hover:text-brand-600'} transition">
-                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="${saved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5"><path d="M5 3.5a1 1 0 011-1h8a1 1 0 011 1v13.2a.5.5 0 01-.79.41L10 13.5l-4.21 3.6a.5.5 0 01-.79-.4V3.5z"/></svg>
+                <div role="link" tabindex="0" aria-label="Open ${c.title}" onclick="openCareerDetail('${c.id}')" onkeydown="if((event.key==='Enter'||event.key===' ')&&event.target===this){event.preventDefault();openCareerDetail('${c.id}')}" class="card-interactive cursor-pointer bg-white border border-slate-200 p-6 rounded-2xl flex flex-col justify-between shadow-sm relative">
+                    <div class="absolute top-4 right-4">
+                        <button onclick="event.stopPropagation();toggleSaveCareer('${c.id}')" aria-label="${saved ? 'Remove from saved' : 'Save career to dashboard'}" aria-pressed="${saved}" class="min-h-[36px] px-3 rounded-full inline-flex items-center gap-1.5 text-xs font-bold ${saved ? 'bg-brand-700 text-white' : 'bg-brand-600 hover:bg-brand-700 text-white'} shadow-sm transition">
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="${saved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5"><path d="M5 3.5a1 1 0 011-1h8a1 1 0 011 1v13.2a.5.5 0 01-.79.41L10 13.5l-4.21 3.6a.5.5 0 01-.79-.4V3.5z"/></svg>${saved ? 'Saved' : 'Save'}
                         </button>
                     </div>
                     <div>
                         ${c._quizPct !== undefined ? `<div class="mb-2"><span class="text-[11px] font-bold px-2 py-1 rounded-full ${fitInfo(c._quizPct).cls}">${fitInfo(c._quizPct).text} for your quiz answers</span></div>` : ''}
-                        <div class="flex flex-wrap items-center gap-x-2 gap-y-1.5 mb-3 pr-20">
+                        <div class="flex flex-wrap items-center gap-x-2 gap-y-1.5 mb-3 pr-24">
                             <span class="text-xs font-semibold bg-brand-50 text-brand-700 px-2.5 py-1 rounded-full">${c.category}</span>
                             <span class="text-xs font-bold text-emerald-600 whitespace-nowrap">${c.salary}</span> ${approxTag(c, 'salary')}
                         </div>
@@ -11149,7 +11157,7 @@
                         </div>
                         <div class="flex items-center justify-between text-xs font-semibold text-slate-700">
                             <span>Demand: <span class="text-brand-600">${c.demand}</span></span>
-                            <button onclick="openCareerDetail('${c.id}')" class="text-brand-600 hover:text-brand-800 py-2.5 -my-2.5">View Full Roadmap →</button>
+                            <span class="text-brand-600 py-2.5 -my-2.5">View Full Roadmap →</span>
                         </div>
                     </div>
                 </div>`;
@@ -12133,6 +12141,115 @@
             setTimeout(function () { try { window.print(); } catch (er) { done(); showToast('Printing is blocked here. Open the page in its own tab, then try again.'); } }, 200);
         }
 
+        /* ============================================================
+           CAREER REPORT: a 2-page personalised PDF for one career.
+           Free during launch, then a one-time ₹49 per career (PREMIUM_CFG.careerPrice).
+           Pay figures are derived from the career's stored pay band, which is
+           approximate (estimated: true), and the report says so.
+           ============================================================ */
+        const CAREER_TIPS = {
+            'Technology': ['A GitHub profile with 2 to 3 finished projects, each with a README that explains the problem, your approach and the result', 'Product companies, IT services firms, startups and GCCs (global capability centres)', 'Expect a coding or problem-solving round, a project walk-through and a system or fundamentals round. Practise out loud.'],
+            'Engineering': ['A project file or portfolio with drawings, models or build photos, plus any internship or workshop certificate', 'Core manufacturing, construction, energy and infrastructure firms, PSUs, and design or consulting houses', 'Expect fundamentals questions from your branch, a project discussion and an aptitude test. Revise core subjects, not just coding.'],
+            'Healthcare': ['Clinical or internship logbook, registration or licence details, and any case presentations or research posters', 'Hospitals, clinics, diagnostic chains, public health programmes, pharma and health-tech firms', 'Expect case-based questions and ethics scenarios. Keep your registration and council details in order.'],
+            'Finance': ['A small model or analysis (Excel, a stock or company note, a budget case) and your certification progress', 'Banks, NBFCs, CA and audit firms, brokerages, fintechs, insurers and corporate finance teams', 'Expect accounting and finance fundamentals, a case or Excel test, and questions on current markets. Read a business paper daily.'],
+            'Business': ['A short case study or campaign you ran (college event, internship, side project) with numbers on the result', 'FMCG, consulting, startups, retail, e-commerce, family businesses and your own venture', 'Expect case questions, a "tell me about a time" round and a group discussion. Prepare 3 stories with a clear result.'],
+            'Law & Public Service': ['Moot court or debate records, internships under advocates or in offices, and a writing sample', 'Courts and chambers, law firms, government departments, PSUs, NGOs and policy bodies', 'Expect a written exam or drafting task, then an interview on current affairs and your subject. Read judgments or policy summaries weekly.'],
+            'Science': ['A research report, lab notebook or poster, plus any internship at a lab or institute', 'Research institutes, universities, labs, pharma and biotech, government science bodies and data roles', 'Expect questions on your project, subject fundamentals and a written test. Know your own project in depth.'],
+            'Creative': ['A portfolio of 6 to 10 pieces, each with a line on the brief and your role, hosted as a simple link', 'Agencies, studios, in-house design teams, startups and freelance clients', 'Expect a portfolio review and a short design task. Show your process, not only the final image.'],
+            'Arts & Entertainment': ['A showreel, audition clips or work samples, plus names of people you have worked with', 'Production houses, studios, theatre groups, OTT and music platforms, and freelance work', 'Expect auditions or sample work. Build a track record with small paid or collaborative projects first.'],
+            'Media': ['A published clip or portfolio (articles, edits, reels, audio) and an active professional social profile', 'Newsrooms, digital publishers, production houses, agencies and brand content teams', 'Expect a writing or editing test and questions on current events. Publish regularly; it is your proof.'],
+            'Education': ['A sample lesson plan or demo class, plus teaching or tutoring experience, however small', 'Schools, colleges, coaching institutes, ed-tech firms and NGOs', 'Expect a demo lesson and questions on handling a class. Record a 10-minute demo you can share.'],
+            'Agriculture & Environment': ['Field or farm project reports, lab or survey work, and any certification in the area', 'Agri-businesses, seed and input firms, government agriculture and forest bodies, NGOs and climate or sustainability teams', 'Expect questions on field experience and practical scenarios. Photos and data from your field work help a lot.'],
+            'Skilled Trades': ['Photos or a short log of jobs you completed, and any ITI, NSDC or apprenticeship certificate', 'Manufacturers, service and maintenance firms, contractors, and your own workshop or business', 'Expect a practical test on the job. Safety knowledge and tool handling decide the offer.'],
+            'Aviation & Hospitality': ['Certificates, a clean grooming and communication record, and any internship or hotel/airline training', 'Airlines and airports, hotels and resorts, cruise lines, travel and event firms', 'Expect a group exercise, a personality and communication round and scenario questions. Practise spoken English and customer situations.'],
+            'Personal Services & Wellness': ['Certificates, before-and-after or client work with permission, and reviews from clients', 'Salons, wellness chains, clinics, gyms and studios, or your own practice', 'Expect a practical demo. Build a small base of repeat clients early; reputation is your pipeline.'],
+            'Sports & Fitness': ['Match or training records, coaching certificates and a short video of your work', 'Academies, gyms and fitness chains, sports bodies, schools and sports-tech or media firms', 'Expect a trial or demo session. Keep your records and certifications current.']
+        };
+        function careerReportPay(c) {
+            const lo = Number(c.salaryMin), hi = Number(c.salaryMax);
+            if (!(lo > 0) || !(hi >= lo)) return null;
+            const at = function (p) { return lo + (hi - lo) * p; };
+            const f = function (x) { return '₹' + (x < 10 ? Math.round(x * 10) / 10 : Math.round(x)) + 'L'; };
+            return [['First 0 to 2 years', f(lo) + ' to ' + f(at(0.2))], ['Mid-career, about 3 to 7 years', f(at(0.25)) + ' to ' + f(at(0.6))], ['Senior, 8+ years', f(at(0.55)) + ' to ' + f(hi) + (hi > at(0.55) ? '+' : '')]];
+        }
+        function careerReportBuild(c) {
+            const e = escapeAuth, A = getStoredWizardAnswers(), seg = planSegment(), f = getFit();
+            const sess = authGetSession(), name = (sess && authDisplayName(sess)) || '';
+            const today = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+            const done = getCheckedSkills(c.id), sd = c.skillDetails || [];
+            const tips = CAREER_TIPS[c.category] || CAREER_TIPS['Business'];
+            let fit = '', why = '';
+            if (A) { const r = scoreCareerForWizard(c, A); fit = premiumFitPct(r.score) + '% match to your answers'; why = (r.reasons || []).slice(0, 3).join('; '); }
+            const okEx = A ? premiumExamFilter(A) : function () { return true; };
+            const exams = examsForCareer(c).filter(okEx).slice(0, 4);
+            const lcr = localColleges(collegesForCareer(c), 3), cols = (seg === 'working' || lcr.none) ? [] : lcr.list;
+            const pool = careersData.map(function (x) { const r = A ? scoreCareerForWizard(x, A) : { score: 0 }; return Object.assign({}, x, { score: r.score }); }).sort(function (a, b) { return b.score - a.score; });
+            const planB = (function () {
+                const base = Object.assign({}, c, { score: 0 }), a = premiumPlanB(base, pool, [c.id]);
+                const same = pool.filter(function (x) { return x.id !== c.id && x.category === c.category && !a.some(function (r) { return r.c.id === x.id; }); }).slice(0, 3).map(function (x) { return { c: x, s: 0, shared: [] }; });
+                return a.filter(function (r) { return r.c.category === c.category; }).concat(same, a.filter(function (r) { return r.c.category !== c.category; })).slice(0, 3);
+            })();
+            const pay = careerReportPay(c);
+            const first = sd.slice(0, 2).map(function (s) { return s.name; }), cert = (c.certifications || [])[0];
+            const road = c.roadmap || [];
+            const routeIntro = seg === 'working' ? 'Moving from your current work' : seg === 'c10' ? 'From Class 10' : seg === 'c1112' ? 'From Class 11 or 12' : 'From your degree';
+            const days = seg === 'working'
+                ? [['Days 1 to 30', ['Talk to 3 people who do this job and ask what a normal week looks like', first.length ? 'Start learning ' + first.join(' and ') : 'Pick the first skill from the table', 'List which parts of your current work already transfer']], ['Days 31 to 60', ['Build one small project that looks like real work in this role', 'Update your resume and LinkedIn around the target role']], ['Days 61 to 90', [cert ? 'Enrol in ' + cert : 'Choose a recognised certification', 'Start applying, and ask for referrals instead of cold applications']]]
+                : seg === 'c10' || seg === 'c1112'
+                    ? [['Days 1 to 30', ['Read what this career needs after school and check your subject combination fits', 'Talk to someone working in it, or a teacher who knows it']], ['Days 31 to 60', [exams.length ? 'Note the dates and eligibility for ' + exams.slice(0, 2).map(function (x) { return x.name; }).join(' and ') : 'List the entrance exams or admission routes', 'Try one free beginner course or a small hands-on activity']], ['Days 61 to 90', ['Shortlist 5 colleges or courses for your state, with a safe option in each list', 'Write your Plan B from the careers on page 2']]]
+                    : [['Days 1 to 30', [first.length ? 'Start learning ' + first.join(' and ') : 'Pick the first skill from the table', 'Ask 2 people in the role what they wish they had learned first']], ['Days 31 to 60', ['Build one project that you can show, and put it online', 'Apply to 2 or 3 internships or entry roles each week']], ['Days 61 to 90', [cert ? 'Start ' + cert : 'Choose one certification the role asks for', 'Get the project reviewed by someone in the field and improve it']]];
+            const li = function (arr) { return '<ul>' + arr.map(function (x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul>'; };
+            const sec = function (t) { return '<h2 class="pp-h2 cr-h2">' + e(t) + '</h2>'; };
+            let h = '<div class="cr-page">' +
+                '<div class="pp-cover"><div class="pp-brand"><img src="/assets/logo-mark-96.png" width="36" height="36" alt=""><div><div class="pp-title">' + e(c.title) + '</div><div class="pp-mut">Plan4it Career Report · ' + e(c.category) + '</div></div></div><div class="pp-right pp-mut">' + (name ? 'Prepared for <b>' + e(name) + '</b><br>' : '') + e(today) + '</div></div>' +
+                (fit ? '<p><span class="pp-tag g">' + e(fit) + '</span> <span class="pp-sm">Why: ' + e(why || 'matches your interests and work style') + '</span></p>' : '') +
+                '<div class="pp-facts"><span>Pay: ' + e(c.salary) + approxText(c, 'salary') + '</span><span>Demand: ' + e(c.demand) + '</span><span>Difficulty: ' + e(c.difficulty) + '</span><span>Start in about ' + e(c.entryYears) + ' yr</span><span>Cost to enter: ' + e(c.costTier) + '</span>' + (c.workLife ? '<span>Work-life: ' + e(c.workLife) + '</span>' : '') + (c.mobility ? '<span>Mobility abroad: ' + e(c.mobility) + '</span>' : '') + '</div>' +
+                '<p>' + e(c.overview || '') + '</p>' + (c.suitability ? '<p><b>Who it suits:</b> ' + e(c.suitability) + '</p>' : '') +
+                sec('1. Your route: ' + routeIntro.toLowerCase()) + (road.length ? '<p class="pp-road">' + road.map(function (x, i) { return '<b>' + (i + 1) + '.</b> ' + e(x); }).join('  →  ') + '</p>' : '') +
+                (pay ? sec('2. What it pays, and how it grows') + '<table class="pp-t"><tr><th>Stage</th><th>Indicative pay per year</th></tr>' + pay.map(function (r) { return '<tr><td>' + e(r[0]) + '</td><td>' + e(r[1]) + '</td></tr>'; }).join('') + '</table><p class="pp-sm pp-mut">These stages are worked out from the pay band we hold for this career (' + e(c.salary) + '). The band is an estimate, not a survey. Pay varies a lot by city, employer and skill; check current openings on the National Career Service portal (ncs.gov.in) before you decide.</p>' : '') +
+                sec('3. Skills to build, and where to learn them') + (sd.length ? '<table class="pp-t"><tr><th>Skill</th><th>Level</th><th>Learn it</th></tr>' + sd.slice(0, 7).map(function (s) {
+                    return '<tr><td><span class="pp-box' + (done.indexOf(s.name) > -1 ? ' on' : '') + '"></span><b>' + e(s.name) + '</b></td><td>' + e(s.level || '') + '</td><td>' + planResourceHTML(s.resource, s.name) + '</td></tr>';
+                }).join('') + '</table>' : '<p>Skill list not available.</p>') +
+                (c.certifications && c.certifications.length ? '<p><b>Certifications worth considering:</b></p><ul>' + c.certifications.slice(0, 4).map(function (x) { return '<li>' + planCertHTML(x) + '</li>'; }).join('') + '</ul>' : '') +
+                sec('4. Your first 90 days') + '<div class="pp-cols3">' + days.map(function (d) { return '<div class="pp-card pp-slim"><b>' + e(d[0]) + '</b>' + li(d[1]) + '</div>'; }).join('') + '</div>' +
+                '</div>' +
+                '<div class="cr-page cr-break">' +
+                sec('5. Getting hired: proof, employers and interviews') +
+                '<table class="pp-t pp-kv"><tr><th>Proof to build</th><td>' + e(tips[0]) + '</td></tr><tr><th>Who hires</th><td>' + e(tips[1]) + '</td></tr><tr><th>The interview</th><td>' + e(tips[2]) + '</td></tr></table>' +
+                '<div class="pp-cols"><div class="pp-card"><b>Good about it</b>' + li(c.pros || []) + '</div><div class="pp-card"><b>Watch out for</b>' + li(c.cons || []) + '</div></div>' +
+                ((exams.length || cols.length) ? sec('6. Exams and colleges' + (f && f.state && f.state !== 'any' ? ' for ' + f.state : '')) +
+                    (exams.length ? '<p><b>Exams that lead here:</b></p><ul>' + exams.map(function (x) { return '<li><b>' + e(x.name) + '</b>' + (x.eligibility ? ': ' + e(String(x.eligibility).slice(0, 140)) : '') + (x.site ? ' (' + e(planUrl(x.site).replace(/^https:\/\/(www\.)?/, '').replace(/\/$/, '')) + ')' : '') + '</li>'; }).join('') + '</ul>' : '') +
+                    (cols.length ? '<p><b>Colleges to look at:</b> ' + cols.map(function (x) { return e(x.name.replace(/\s*\(.*?\)\s*/g, ' ').trim()); }).join(' · ') + '. <span class="pp-mut">Check fees, cut-offs and placements on each college\'s own site.</span></p>' : '') : '') +
+                sec((exams.length || cols.length ? '7' : '6') + '. Plan B: close alternatives') + (planB.length ? '<table class="pp-t"><tr><th>Career</th><th>Pay</th><th>Start in</th><th>Why it is close</th></tr>' + planB.map(function (r) { return '<tr><td><b>' + e(r.c.title) + '</b></td><td>' + e(r.c.salary) + '</td><td>~' + e(r.c.entryYears) + ' yr</td><td>' + (r.shared.length ? 'Shares: ' + e(r.shared.slice(0, 3).join(', ')) : 'Same field, similar work') + '</td></tr>'; }).join('') + '</table>' : '<p>No close alternatives found.</p>') +
+                sec((exams.length || cols.length ? '8' : '7') + '. Reality check: mistakes to avoid and questions to ask') +
+                '<div class="pp-cols"><div class="pp-card"><b>Common mistakes</b>' + li(['Choosing only for the pay figure, without checking the day-to-day work', 'Collecting certificates instead of building one thing you can show', 'Applying late: exam, admission and hiring windows close months ahead', c.entryYears >= 4 ? 'Not planning the cost of a long route: check fees and loans before you commit' : 'Skipping the basics and jumping straight to advanced tools']) + '</div>' +
+                '<div class="pp-card"><b>Ask someone already doing this job</b>' + li(['What does a normal week look like, and what is the hardest part?', 'What did you wish you had learned before starting?', 'What did your first year actually pay, and how did it grow?', 'Which employers or colleges would you pick today, and why?', 'What would make you leave this field?']) + '</div></div>' +
+                sec((exams.length || cols.length ? '9' : '8') + '. Your next step') + '<div class="pp-card pp-note"><b>This week:</b> ' + e(days[0][1][0]) + '. <b>Then:</b> ' + e(days[0][1][1] || days[1][1][0]) + '.</div>' +
+                '<p class="pp-sm pp-mut pp-foot">Plan4it is free career guidance for students and working professionals in India. Pay, demand and cost figures are approximate estimates and not a guarantee of any job or salary. Verify exam dates, fees and eligibility on official websites before you act. Report generated ' + e(today) + ' at plan4it.co.</p></div>';
+            return h;
+        }
+        function careerReportOpen(id) {
+            const c = careersData.find(function (x) { return x.id === id; }); if (!c) return;
+            if (!premiumUnlocked()) { premiumOpenUnlock('career', id); return; }
+            trackEvent('career_report_open');
+            const run = function () {
+                let html = ''; try { html = careerReportBuild(c); } catch (er) { console.error(er); showToast('Could not build the report. Please try again.'); return; }
+                printSheetHTML(html);
+            };
+            const f0 = getFit();
+            if (f0 && f0.state && f0.state !== 'any' && !(DIR.index && DIR.shards[DIR.codeOf[f0.state]])) {
+                showToast('Preparing your report for ' + f0.state + '…');
+                (DIR.index ? Promise.resolve() : dirLoadIndex()).then(function () { const k = DIR.codeOf && DIR.codeOf[f0.state]; return k && !DIR.shards[k] ? dirLoadState(k) : null; }).catch(function () {}).then(run);
+            } else run();
+        }
+        function printSheetHTML(html) {
+            const sheet = document.getElementById('plan-print-sheet'); sheet.innerHTML = html;
+            document.body.classList.add('printing-plan');
+            const done = function () { document.body.classList.remove('printing-plan'); };
+            window.addEventListener('afterprint', done, { once: true });
+            setTimeout(function () { try { window.print(); } catch (er) { done(); showToast('Printing is blocked here. Open the page in its own tab, then try again.'); } }, 200);
+        }
+
         // ---------- NIRF 2025 display ----------
         function nirfLabel(c, long) {
             const band = c.nirfRank && !/^\d+$/.test(c.nirfRank) ? String(c.nirfRank).replace('-', '–') : '';
@@ -12765,9 +12882,10 @@
                 ${shareBarHTML('career', c.id)}
                 <div class="flex items-center justify-between flex-wrap gap-2">
                     <span class="text-xs font-semibold bg-brand-50 text-brand-700 px-3 py-1 rounded-full">${c.category}</span>
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-3 flex-wrap">
                         <span class="text-sm font-bold text-emerald-600">${c.salary}</span> ${approxTag(c, 'salary')}
-                        <button onclick="toggleSaveCareer('${c.id}')" class="text-xs font-semibold px-3 py-1.5 rounded-lg border ${saved ? 'bg-brand-600 text-white border-brand-600' : 'border-slate-300 text-slate-700 hover:bg-slate-50'} transition">${saved ? '✓ Saved' : '+ Save to Dashboard'}</button>
+                        <button onclick="toggleSaveCareer('${c.id}')" aria-pressed="${saved}" class="inline-flex items-center gap-2 min-h-[44px] px-5 rounded-xl text-sm font-bold text-white shadow-sm transition ${saved ? 'bg-brand-700' : 'bg-brand-600 hover:bg-brand-700'}"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="${saved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.6"><path d="M5 3.5a1 1 0 011-1h8a1 1 0 011 1v13.2a.5.5 0 01-.79.41L10 13.5l-4.21 3.6a.5.5 0 01-.79-.4V3.5z"/></svg>${saved ? 'Saved to your dashboard' : 'Save to my dashboard'}</button>
+                        <button onclick="careerReportOpen('${c.id}')" class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-xl text-sm font-bold border-2 border-brand-600 text-brand-700 hover:bg-brand-50 transition">📄 Career report (PDF)${PREMIUM_CFG.mode === 'launch' ? ' <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">Free now</span>' : ''}</button>
                     </div>
                 </div>
                 <h2 class="text-3xl font-extrabold text-slate-900">${c.title}</h2>
