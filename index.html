@@ -453,6 +453,12 @@
             background: radial-gradient(ellipse at center, rgba(var(--brand-600-rgb), .12), rgba(245,158,11,.07) 45%, transparent 72%);
             filter: blur(30px); z-index: -1; pointer-events: none;
         }
+
+        /* Bigger tap targets for small inline links/terms without changing layout */
+        @media (pointer: coarse), (max-width: 1024px) {
+            main a[href]:not(.block):not([class*="px-"]):not([class*="py-"]), main .gloss { position: relative; }
+            main a[href]:not(.block):not([class*="px-"]):not([class*="py-"])::after, main .gloss::after { content: ""; position: absolute; left: -6px; right: -6px; top: 50%; height: max(100%, 44px); transform: translateY(-50%); }
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
@@ -604,7 +610,7 @@
                 </div>
             </div>
 
-            <nav class="hidden xl:flex flex-1 min-w-0 justify-center items-center gap-x-4 2xl:gap-x-7 text-sm font-medium text-slate-600 whitespace-nowrap">
+            <nav class="hidden xl:flex xl:pl-5 flex-1 min-w-0 justify-center items-center gap-x-4 2xl:gap-x-7 text-sm font-medium text-slate-600 whitespace-nowrap">
                 <button data-nav="confusedMode" onclick="switchView('confusedMode')" class="nav-link text-brand-600 font-semibold hover:text-brand-700 transition">Find my path</button>
                 <button data-nav="backupPlan" onclick="switchView('backupPlan')" class="nav-link hover:text-brand-600 transition">Safety Net</button>
                 <button data-nav="explorer" onclick="switchView('explorer')" class="nav-link hover:text-brand-600 transition">Careers</button>
