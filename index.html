@@ -175,6 +175,7 @@
             #view-dashboard { display: block !important; }
             body.printing-parents #view-dashboard { display: none !important; }
             body.printing-plan #view-dashboard, body.printing-plan .page-nav, body.printing-plan .page-nav-m { display: none !important; }
+            body.printing-plan main { display: none !important; }
             body.printing-plan #plan-print-sheet { display: block !important; color: #0f172a; font-family: Inter, Arial, sans-serif; font-size: 10.5px; line-height: 1.45; }
             #plan-print-sheet * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             #plan-print-sheet p { margin: 3px 0; } #plan-print-sheet ul { margin: 3px 0 3px 16px; padding: 0; list-style: disc; } #plan-print-sheet b { color: #0f172a; }
@@ -202,6 +203,15 @@
             .cr-steps { display: flex; flex-wrap: wrap; gap: 6px; } .cr-step { display: flex; align-items: center; gap: 6px; flex: 1 1 30%; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 5px 8px; font-size: 9.5px; } .cr-step b { background: #0284c7; color: #fff; border-radius: 99px; min-width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; }
             .cr-hb { display: flex; align-items: center; gap: 8px; margin: 3px 0; font-size: 9.5px; } .cr-hbl { width: 28%; font-weight: 700; } .cr-hbt { flex: 1; height: 9px; background: #e2e8f0; border-radius: 99px; overflow: hidden; } .cr-hbt i { display: block; height: 100%; background: linear-gradient(90deg,#38bdf8,#0369a1); border-radius: 99px; } .cr-hbv { width: 16%; text-align: right; color: #475569; }
             .cr-dots i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #cbd5e1; margin-right: 2px; } .cr-dots i.on { background: #0284c7; }
+            @page { size: A4; margin: 10mm; }
+            .ip { height: 274mm; position: relative; overflow: hidden; page-break-after: always; break-after: page; } .ip:last-child { page-break-after: auto; break-after: auto; }
+            .ipc { padding-bottom: 8mm; transform-origin: top left; } .ipf { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; gap: 8px; font-size: 8px; color: #64748b; border-top: 1px solid #cbd5e1; padding-top: 3px; }
+            .ip-ttl { display: flex; align-items: center; gap: 10px; margin: 8px 0 8px; } .ip-n { font-size: 26px; font-weight: 800; color: #0284c7; line-height: 1; } .ip-t { font-size: 16px; font-weight: 800; color: #0f172a; line-height: 1.2; }
+            .ip-h3 { font-size: 11.5px; font-weight: 800; color: #0c4a6e; margin: 9px 0 4px; border-bottom: 2px solid #e0f2fe; padding-bottom: 2px; }
+            .ip-wk { display: flex; align-items: flex-end; gap: 8px; height: 112px; } .ip-wkc { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; text-align: center; font-size: 9px; gap: 2px; } .ip-wkb { width: 70%; border-radius: 4px 4px 0 0; }
+            .ip-cal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; } .ip-cc { border: 1px solid #bae6fd; background: #f0f9ff; border-radius: 8px; padding: 6px 8px; font-size: 9px; } .ip-cc b { display: block; color: #0c4a6e; }
+            .ip-gantt { border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px; } .ip-gr { display: flex; align-items: center; gap: 8px; margin: 4px 0; } .ip-gl { width: 30%; font-size: 9.5px; font-weight: 700; } .ip-gt { flex: 1; height: 12px; background: #f1f5f9; border-radius: 99px; } .ip-gt i { display: block; height: 100%; border-radius: 99px; } .ip-gx { display: flex; justify-content: space-between; margin-left: 30%; font-size: 8.5px; color: #64748b; }
+            .ip-score { display: flex; align-items: center; gap: 14px; } .ip-ring { width: 118px; height: 118px; border-radius: 50%; border: 10px solid #16a34a; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; flex: none; } .ip-ring b { font-size: 26px; color: #0c4a6e; } .ip-ring span { font-size: 9px; color: #475569; }
             .ci-sub { margin: -2px 0 5px; } .ci-pb { page-break-after: always; break-after: page; height: 0; }
             .ci-top5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; } .ci-t5 { border: 1px solid #e2e8f0; border-radius: 8px; padding: 7px; text-align: center; } .ci-t5i { font-size: 22px; } .ci-t5n { font-size: 10px; font-weight: 800; min-height: 26px; } .ci-t5f { font-size: 21px; font-weight: 800; }
             .ci-why { display: flex; gap: 8px; border-bottom: 1px solid #e2e8f0; padding: 4px 0; font-size: 10px; } .ci-why b { width: 26%; flex: none; } .ci-why span { color: #334155; }
@@ -10707,7 +10717,7 @@
             const c = career ? careersData.find(function (x) { return x.id === id; }) : null;
             const t = document.getElementById('premium-modal-title'); if (t) t.textContent = career && c ? (me ? 'Your personal report: ' : 'Career guide: ') + c.title : 'Unlock your full report';
             const d = document.getElementById('premium-modal-desc'); if (d) d.innerHTML = career ? 'One-time payment of <b class="text-slate-900">₹' + (me ? PREMIUM_CFG.price : PREMIUM_CFG.careerPrice) + '</b> for this career, as a PDF you keep.' : 'One-time payment of <b class="text-slate-900">₹<span class="premium-price">' + PREMIUM_CFG.price + '</span></b>. Built from your answers and updated whenever you retake the quiz.';
-            const l = document.getElementById('premium-modal-list'); if (l) l.innerHTML = me ? '<li>About 6 pages written around your quiz answers</li><li>Your fit and why, and what could go wrong for you</li><li>Colleges and exams for your state</li><li>90-day plan and a parent guide</li>' : career ? '<li>2-page career guide PDF</li><li>Pay at each stage, skills with free learning links</li><li>Your first 90 days, how to get hired, Plan B</li><li>Exams and colleges for your state</li>' : '<li>Top 10 matches with the reasons</li><li>Roadmaps, pay at each stage, skills and certifications</li><li>Exam deadlines, colleges for you, and a Plan B</li><li>A 12-month plan and a PDF to share</li>';
+            const l = document.getElementById('premium-modal-list'); if (l) l.innerHTML = me ? '<li>5-page report written around your quiz answers</li><li>Your fit and why, and what could go wrong for you</li><li>Colleges and exams for your state</li><li>90-day plan and a parent guide</li>' : career ? '<li>5-page career guide PDF</li><li>Pay at each stage, skills with free learning links</li><li>Your first 90 days, how to get hired, Plan B</li><li>Exams and colleges for your state</li>' : '<li>Top 10 matches with the reasons</li><li>Roadmaps, pay at each stage, skills and certifications</li><li>Exam deadlines, colleges for you, and a Plan B</li><li>A 12-month plan and a PDF to share</li>';
             const b = document.getElementById('premium-pay-btn'); if (b) b.innerHTML = 'Pay ₹' + (career && !me ? PREMIUM_CFG.careerPrice : PREMIUM_CFG.price);
         }
         function premiumOpenUnlock(kind, id) {
@@ -12314,6 +12324,278 @@
             return h;
         }
 
+        /* ============================================================
+           PAGED REPORTS: one topic per A4 page.
+           intelBuild18(): the personalised Career Intelligence Report (18 pages).
+           careerGuide5(c, mode): the career report (5 pages), general or made for the user.
+           Each page is scaled to fill its sheet (ppFitPages) so no page is left half empty.
+           All pay, demand and cost figures are estimates and the pages say so.
+           ============================================================ */
+        const IP_STYLE_TXT = { Logic: 'solving problems with logic and evidence', People: 'working closely with people', 'Hands-on': 'hands-on, practical work', Creative: 'creative, visual and idea-led work', Leadership: 'leading, organising and deciding', Research: 'researching and digging into detail', Mixed: 'a mix of styles' };
+        const IP_DAY = {
+            Logic: [['Problem solving', 14], ['Reviews and meetings', 7], ['Learning', 5], ['Documentation', 5], ['Testing and checking', 7]],
+            People: [['Time with people', 16], ['Planning and prep', 7], ['Records and reports', 6], ['Team meetings', 5], ['Learning', 4]],
+            'Hands-on': [['Practical work', 18], ['Planning and set-up', 6], ['Safety and checks', 5], ['Reports', 4], ['Learning', 4]],
+            Creative: [['Making and designing', 16], ['Feedback and revisions', 8], ['Research and ideas', 6], ['Client meetings', 5], ['Learning', 4]],
+            Leadership: [['Meetings and decisions', 14], ['Planning', 9], ['People and coaching', 7], ['Reports and numbers', 5], ['Learning', 3]],
+            Research: [['Reading and analysis', 14], ['Experiments or fieldwork', 10], ['Writing', 7], ['Meetings', 4], ['Learning', 4]]
+        };
+        function ipRows(head, rows, cls) { return '<table class="pp-t ' + (cls || '') + '"><tr>' + head.map(function (h) { return '<th>' + h + '</th>'; }).join('') + '</tr>' + rows.map(function (r) { return '<tr>' + r.map(function (x) { return '<td>' + x + '</td>'; }).join('') + '</tr>'; }).join('') + '</table>'; }
+        function ipCard(t, body, cls) { return '<div class="pp-card ' + (cls || '') + '"><b>' + t + '</b>' + body + '</div>'; }
+        function ipUl(arr) { const e = escapeAuth; return '<ul>' + arr.filter(Boolean).map(function (x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul>'; }
+        function ipH(t) { return '<h3 class="ip-h3">' + escapeAuth(t) + '</h3>'; }
+        function ipPage(n, N, title, sub, body, kind, right) {
+            return '<div class="ip"><div class="ipc">' + ppMasthead(kind, right) + '<div class="ip-ttl"><span class="ip-n">' + (n < 10 ? '0' : '') + n + '</span><div><div class="ip-t">' + escapeAuth(title) + '</div>' + (sub ? '<div class="pp-sm pp-mut">' + escapeAuth(sub) + '</div>' : '') + '</div></div>' + body + '</div>' +
+                '<div class="ipf"><span>plan4it.co · Free career guidance for India</span><span>Pay and cost figures are estimates; confirm dates and fees on official sites · Page ' + n + ' of ' + N + '</span></div></div>';
+        }
+        // scale each page so it fills the sheet; measured with the print rules applied off-screen
+        function ppFitPages(sheet) {
+            try {
+                let css = '';
+                Array.prototype.forEach.call(document.styleSheets, function (ss) { try { Array.prototype.forEach.call(ss.cssRules, function (r) { if (r.type === 4 && /print/.test(r.conditionText || r.media.mediaText)) Array.prototype.forEach.call(r.cssRules, function (x) { if (x.selectorText && /plan-print-sheet|\.pp-|\.cr-|\.ci-|\.ip/.test(x.selectorText)) css += x.cssText + '\n'; }); }); } catch (er) {} });
+                const st = document.createElement('style'); st.id = 'pp-measure'; st.textContent = css; document.head.appendChild(st);
+                const old = sheet.style.cssText; sheet.style.cssText = 'display:block;position:fixed;left:-10000px;top:0;width:190mm;visibility:hidden;font-family:Inter,Arial,sans-serif;font-size:10.5px;line-height:1.45';
+                document.body.classList.add('printing-plan');
+                Array.prototype.forEach.call(sheet.querySelectorAll('.ip'), function (pg) {
+                    const c = pg.querySelector('.ipc'), lim = pg.clientHeight - 30; if (!c || !lim) return;
+                    const fits = function (z) { c.style.zoom = z; return c.scrollHeight * 1 <= lim + 1 && c.getBoundingClientRect().height <= lim; };
+                    let lo = 0.5, hi = 1.5; for (let k = 0; k < 12; k++) { const m = (lo + hi) / 2; if (fits(m)) lo = m; else hi = m; }
+                    c.style.zoom = lo.toFixed(3);
+                });
+                sheet.style.cssText = old; st.remove();
+            } catch (er) { console.error(er); }
+        }
+        function ipCtx(A, focusId, gen) {
+            const e = escapeAuth, seg = gen ? 'general' : planSegment(), f = getFit();
+            const sess = authGetSession(), name = (sess && authDisplayName(sess)) || 'You';
+            const today = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+            const pool = careersData.map(function (c) { const r = A ? scoreCareerForWizard(c, A) : { score: 0, reasons: [] }; return Object.assign({}, c, { score: r.score, reasons: r.reasons || [] }); }).sort(function (x, y) { return y.score - x.score; });
+            const focus = focusId && pool.find(function (x) { return x.id === focusId; });
+            const top = focus ? [focus].concat(pool.filter(function (x) { return x.id !== focus.id; }).slice(0, 4)) : pool.slice(0, 5), rec = top[0];
+            const student = seg !== 'working';
+            const okEx = A ? premiumExamFilter(A) : function () { return true; };
+            const exams = examsForCareer(rec).filter(okEx).slice(0, gen ? 3 : 4);
+            const lc = localColleges(collegesForCareer(rec), 4); let cols = lc.none ? [] : lc.list, colsNote = '';
+            const wantsCols = gen || (student && ['ug', 'grad'].indexOf(A && A.cls) < 0) || (A && A.after === 'msIndia');
+            if (!cols.length && wantsCols && f && f.state && f.state !== 'any') { try { cols = pickDiverseColleges(planStatePool(f).map(function (c) { return { c: c, score: collegeFit(c, f).score }; }).sort(function (x, y) { return y.score - x.score; }), f, 4).map(function (r) { return r.c; }); colsNote = 'We have no college list specific to this career, so these are strong options for your state and budget. Confirm each offers the course you want.'; } catch (er) { cols = []; } }
+            const planB = (function () {
+                const a = premiumPlanB(rec, pool, [rec.id]);
+                const same = pool.filter(function (x) { return x.id !== rec.id && x.category === rec.category && !a.some(function (r) { return r.c.id === x.id; }); }).slice(0, 3).map(function (x) { return { c: x, shared: [] }; });
+                return a.filter(function (r) { return r.c.category === rec.category; }).concat(same, a.filter(function (r) { return r.c.category !== rec.category; })).slice(0, 3);
+            })();
+            const yp = A ? premiumYearPlanData(A, top, exams) : null;
+            return { e: e, A: A, seg: seg, f: f, name: name, today: today, pool: pool, top: top, rec: rec, student: student, exams: exams, cols: cols, colsNote: colsNote, lc: lc, planB: planB, yp: yp, gen: !!gen, pct: function (c) { return premiumFitPct(c.score); } };
+        }
+        /* ---- page bodies shared by the 18-page report and the 5-page career report ---- */
+        function ipMeters(c) {
+            const wl = String(c.workLife || ''), dem = (PP_LEVEL[c.demand] || 2) * 25, dif = (PP_LEVEL[c.difficulty] || 2) * 25, cost = (PP_LEVEL[c.costTier] || 2) * 33;
+            const wlp = /good/i.test(wl) ? 100 : /moderate/i.test(wl) ? 70 : /irregular/i.test(wl) ? 50 : 40;
+            const mob = /excellent/i.test(c.mobility || '') ? 100 : /good/i.test(c.mobility || '') ? 75 : /moderate/i.test(c.mobility || '') ? 50 : 25;
+            return '<div class="pp-cols"><div>' + ppMeter('Demand', dem, c.demand, '#16a34a') + ppMeter('Difficulty to enter', dif, c.difficulty, '#d97706') + ppMeter('Cost to enter', cost, c.costTier, '#dc2626') + ppMeter('Time to start', Math.min(100, (c.entryYears || 0) / 6 * 100), '~' + c.entryYears + ' years', '#0284c7') + '</div><div>' + ppMeter('Work-life balance', wlp, wl.replace(/\s*\(.*$/, '') || 'n/a', '#0d9488') + ppMeter('Mobility abroad', mob, String(c.mobility || 'n/a').split(/\s[—-]\s/)[0], '#7c3aed') + ppMeter('Pay band (estimate)', 100, c.salary, '#0c4a6e') + '</div></div>';
+        }
+        function ipHero(c, vis, extra) {
+            const e = escapeAuth;
+            return '<div class="cr-banner" style="background:linear-gradient(120deg,' + vis[1] + ',' + vis[2] + ')"><div class="cr-ico" aria-hidden="true">' + vis[0] + '</div><div><div class="cr-cat">' + e(c.category) + '</div><div class="cr-name">' + e(c.title) + '</div><div class="cr-sub">' + e(c.overview || '') + '</div></div>' + (extra || '') + '</div>';
+        }
+        function ipJob(X) {
+            const e = X.e, c = X.rec, ws = c.workStyle || 'Mixed', day = IP_DAY[ws] || IP_DAY.Logic, sd = c.skillDetails || [];
+            const mx = Math.max.apply(null, day.map(function (d) { return d[1]; }));
+            return ipH('What the job involves') + '<p>' + e(c.overview || '') + '</p><p>Most of the day is <b>' + e(IP_STYLE_TXT[ws] || ws.toLowerCase()) + '</b>.' + (c.suitability ? ' ' + e(c.suitability) : '') + '</p>' +
+                (sd.length ? ipCard('The skills that do the work', '<ul>' + sd.slice(0, 4).map(function (s) { return '<li><b>' + e(s.name) + '</b>' + (s.why ? ': ' + e(s.why) : '') + '</li>'; }).join('') + '</ul>') : '') +
+                ipH('A typical week (hours, illustrative for this work style)') + '<div class="ip-wk">' + day.map(function (d, i) { return '<div class="ip-wkc"><div class="ip-wkb" style="height:' + Math.round(d[1] / mx * 80) + 'px;background:' + ['#ec4899', '#7c3aed', '#0284c7', '#16a34a', '#d97706'][i % 5] + '"></div><b>' + d[1] + 'h</b><span>' + e(d[0]) + '</span></div>'; }).join('') + '</div><p class="pp-sm pp-mut">The split is a typical pattern for this style of work, not a measured figure for this job. It varies by employer.</p>';
+        }
+        function ipWhyNot(X) {
+            const e = X.e, c = X.rec, A = X.A, li = function (arr, cls, ic) { return '<div class="' + cls + '">' + arr.map(function (x) { return '<div><span>' + ic + '</span>' + e(x) + '</div>'; }).join('') + '</div>'; };
+            const good = (A ? intelWhy(c, A) : []).concat(c.pros || []);
+            if (!good.length) good.push('Demand is rated ' + c.demand.toLowerCase() + ' in India');
+            const bad = (A ? intelGap(c, A) : []).concat(c.cons || []);
+            if (bad.length < 5) bad.push('Getting in is rated ' + c.difficulty.toLowerCase() + '. ' + (/high/i.test(c.difficulty) ? 'Plan your preparation early.' : 'Still build proof of skill early.'));
+            if (c.entryYears >= 3 && bad.length < 5) bad.push('The route takes about ' + c.entryYears + ' years before you start working.');
+            if (bad.length < 5) bad.push('Cost to enter is rated ' + c.costTier.toLowerCase() + '. ' + (c.costTier === 'High' ? 'Look at scholarships and government colleges first.' : 'Still compare total costs before you commit.'));
+            if (bad.length < 5) bad.push('Pay figures are estimates (' + c.salary + ') and vary widely by city and employer.');
+            const q = [['Do I enjoy ' + (IP_STYLE_TXT[c.workStyle] || 'this kind of work') + '?', 'This is most of the day, so it must appeal', 'Look at careers with a different work style'], ['Can I stay with a ' + c.entryYears + '-year route before I start earning?', 'Plan the money and the milestones', 'Look for a shorter route or a Plan B'], ['Am I comfortable that entry is rated ' + c.difficulty.toLowerCase() + '?', 'Good: start preparing early', 'Build skills first, then decide'], ['Is a pay band of ' + c.salary + ' enough for my goals?', 'Good fit', 'Check higher-paying neighbours on the comparison page'], ['Have I talked to someone who does this job?', 'Great: keep going', 'Do this in the next 30 days']];
+            return '<div class="pp-cols"><div><div class="pp-sm"><b>Why it can suit you</b></div><div class="cr-good">' + good.slice(0, 6).map(function (x) { return '<div><span>✓</span>' + e(x) + '</div>'; }).join('') + '</div></div><div><div class="pp-sm"><b>Why it might not</b></div><div class="cr-bad">' + bad.slice(0, 6).map(function (x) { return '<div><span>!</span>' + e(x) + '</div>'; }).join('') + '</div></div></div>' +
+                (c.suitability ? ipCard('Who it suits', '<p>' + e(c.suitability) + '</p><div>' + [].concat(c.interestTags || [], c.workStyle ? ['Work style: ' + c.workStyle] : []).map(function (x) { return '<span class="cr-chip">' + e(x) + '</span>'; }).join('') + '</div>', 'pp-note') : '') +
+                ipH('Self-check: five honest questions') + ipRows(['Question', 'If yes', 'If no'], q.map(function (r) { return [e(r[0]), e(r[1]), e(r[2])]; }));
+        }
+        function ipRoute(X) {
+            const e = X.e, c = X.rec, A = X.A, road = c.roadmap || [], cls = A ? A.cls : '';
+            let routes;
+            if (X.seg === 'working' || cls === 'working') routes = [['Learn on your own and build proof', '6 to 18 months', 'A portfolio or projects, then interviews', 'Low (₹0 to ₹60,000 for courses)', 'You can study alongside your job'], ['Certification or short programme', '3 to 12 months', 'Provider enrolment', 'Low to medium', 'You need a recognised credential'], ['Move within your company', '3 to 12 months', 'Manager and HR conversation', 'Free', 'Your employer has a related team'], ['Part-time or weekend degree/diploma', '1 to 3 years', 'Admission test or direct entry', 'Medium', 'The role asks for a formal qualification']];
+            else if (cls === 'ug' || cls === 'grad' || cls === 'pg') routes = [['Add skills and a project to your degree', '6 to 18 months', 'Portfolio, internships', 'Low', 'Your degree is related or flexible'], ['Certification or diploma after the degree', '3 to 12 months', 'Provider enrolment', 'Low to medium', 'You need a credential employers recognise'], ['Master\'s or postgraduate programme', '1 to 2 years', 'Entrance exam or merit', 'Medium to high', 'The field needs a higher qualification'], ['Direct entry-level job or internship', '0 to 6 months', 'Applications and interviews', 'Free', 'You already have the skills']];
+            else routes = [['Degree route (the usual way)', '3 to 5 years', 'Entrance exam or merit', c.costTier + ' cost', 'You want the standard, widely accepted qualification'], ['Diploma, ITI or short course', '1 to 3 years', 'Merit or simple test', 'Low to medium', 'You want to start earning sooner'], ['Skills-first route with a portfolio', '1 to 2 years of effort', 'Proof of work and interview', 'Low', 'The field values skills over degrees'], ['Government or institute seats', '3 to 5 years', 'National or state entrance exams', 'Low', 'You can handle exam preparation and want low fees']];
+            const steps = '<div class="cr-steps">' + road.map(function (x, i) { return '<div class="cr-step"><b>' + (i + 1) + '</b><span>' + e(x) + '</span></div>'; }).join('') + '</div>';
+            return steps + ipH('Ways in, side by side') + ipRows(['Route', 'Time', 'How you get in', 'Cost', 'Best if'], routes.map(function (r) { return r.map(function (x, i) { return i === 0 ? '<b>' + e(x) + '</b>' : e(x); }); })) +
+                (X.gen || X.seg === 'general' ? '' : ipCard('Before you choose a route: ask these', ipUl(['Which route can my family afford for the full length, including living costs?', 'Which route do I have the marks or skills for today, not in theory?', 'Does a shorter route still lead to the roles I want?', 'Who can I speak to who took this route?']), '')) +
+                ipCard('How long, in total', '<p class="pp-sm">Most people start work in about <b>' + e(c.entryYears) + ' years</b> from the beginning of the route. Cost to enter is rated <b>' + e(c.costTier.toLowerCase()) + '</b>. Pay at the start is usually at the lower end of ' + e(c.salary) + ', rising with skill and experience.</p>', 'pp-note');
+        }
+        function ipColleges(X, lite) {
+            const e = X.e, f = X.f, c = X.rec, cols = X.cols.slice(0, lite ? 3 : 4);
+            if (!cols.length) {
+                const certs = (c.certifications || []).slice(0, 4);
+                return (X.student ? '<p>We do not have a college list for this career in your area, so use the official course finder for your state and check what each college offers.</p>' : '') + ipH('Courses and certifications to consider') + (certs.length ? '<ul>' + certs.map(function (x) { return '<li>' + planCertHTML(x) + '</li>'; }).join('') + '</ul>' : '<p>Check official course pages for the role you want.</p>') +
+                    ipCard('How to choose a course', ipUl(['Check that the course is recognised by an official body or valued by employers in this field.', 'Look for live projects, mentoring and a certificate you can show.', 'Compare total cost, not just the headline fee.', 'Ask past students what they did after finishing.']), 'pp-note');
+            }
+            return ipRows(['College', 'Where', 'Fee (a year)', 'How to get in', 'Why look'], cols.map(function (col) { return ['<b>' + e(String(col.name).replace(/\s*\(.*?\)\s*/g, ' ').trim()) + '</b>', e(col.location || ''), e(col.fees || (col.feesLakh ? '₹' + col.feesLakh + 'L' : 'Check the college site')), e(String(col.admissionProcess || col.admission || 'See the college website').slice(0, 70)), e(X.colsNote ? (col.nirf ? 'NIRF rank ' + col.nirf : 'Confirm the course') : ((col.pros || [])[0] || (col.nirf ? 'NIRF rank ' + col.nirf : 'Offers a course for this career')))]; })) +
+                '<p class="pp-sm pp-mut">Fees and admission routes come from Plan4it\'s college data and change every year. Placement figures in our data are illustrative, so we do not quote them. ' + e(X.colsNote || '') + '</p>' +
+                '<div class="pp-cols3"><div class="pp-card pp-slim"><b>Reach (1)</b><p class="pp-sm">The best-known option you could get with a strong exam result.</p></div><div class="pp-card pp-slim"><b>Realistic (2)</b><p class="pp-sm">Colleges whose usual cut-offs are close to your expected result.</p></div><div class="pp-card pp-slim"><b>Safe (1)</b><p class="pp-sm">An option you are almost sure to get and can afford.</p></div></div>' +
+                (!lite ? ipCard('Budget tip', '<p class="pp-sm">' + (X.A && FIT_BUDGET[X.A.budget] ? 'You told us your budget is ' + e(FIT_BUDGET[X.A.budget][0]) + '. ' : '') + 'Compare four years of tuition plus hostel, food, travel and a laptop. Look for scholarships and state schemes before you accept a seat.</p>', 'pp-note') : '');
+        }
+        function ipExams(X, lite) {
+            const e = X.e, ex = X.exams.slice(0, lite ? 3 : 4);
+            if (!ex.length) return '<p>No national entrance exam is needed for most routes into this career. Entry is usually through a degree or diploma, a portfolio or skills test, and an interview.</p>' + ipCard('What to do instead', ipUl(['Check each college\'s own admission page for its test or merit rules.', 'Build proof of skill early: projects, internships or a portfolio.', 'Keep a record of marks and certificates ready for applications.']), 'pp-note');
+            const mo = function (d) { return d ? e(new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })) : 'See official site'; };
+            let h = ipRows(['Exam', 'Date', 'Registration', 'Fee (approx)', 'Format'], ex.map(function (x) { return ['<b>' + e(x.name) + '</b><br><span class="pp-sm pp-mut">' + e(x.body || '') + '</span>', mo(x.examDate), x.regOpens ? mo(x.regOpens) + ' to ' + mo(x.regCloses) : 'See official site', e(x.examFee || 'See official site'), e((x.mode || '') + (x.duration ? ', ' + x.duration : ''))]; }));
+            h += '<p class="pp-sm pp-mut">Dates and fees come from Plan4it\'s exam data and are marked tentative unless confirmed. Verify on the official site: ' + ex.map(function (x) { return x.site ? e(x.site) : ''; }).filter(Boolean).join(', ') + '.</p>';
+            if (!lite) {
+                h += ipCard('How applications usually work', ipUl(['Register on the official site and keep your ID, marks and photo ready.', 'Pay the fee online and download the admit card before the exam.', 'Results lead to counselling or direct admission; keep documents scanned and certified.', 'Registration windows are short; note the closing date today.']), 'pp-note');
+                h += ipH('Your exam calendar') + '<div class="ip-cal">' + ex.filter(function (x) { return x.regCloses || x.examDate; }).slice(0, 6).map(function (x) { return '<div class="ip-cc"><b>' + e(x.name) + '</b>' + (x.regCloses ? 'Registration closes ' + mo(x.regCloses) + '<br>' : '') + (x.examDate ? 'Exam ' + mo(x.examDate) : '') + '</div>'; }).join('') + '</div>';
+                h += '<div class="pp-cols">' + ex.slice(0, 2).map(function (x) { return '<div>' + ipCard(e(x.name) + ': how to prepare', ipUl([x.prepTip, x.eligibility ? 'Who can apply: ' + x.eligibility : '', x.attempts ? 'Attempts: ' + x.attempts : '', x.difficulty ? 'Difficulty rated: ' + x.difficulty : ''])) + '</div>'; }).join('') + '</div>';
+            }
+            return h;
+        }
+        function ipSkills(X, lite) {
+            const e = X.e, c = X.rec, sd = c.skillDetails || [], have = getCheckedSkills(c.id).filter(function (k) { return sd.some(function (s) { return s.name === k; }); });
+            const gap = sd.filter(function (s) { return have.indexOf(s.name) < 0; }), list = (gap.length ? gap : sd).slice(0, lite ? 4 : 6);
+            const sk = sd.map(function (s) { return s.name; }), cert = (c.certifications || [])[0];
+            const plan = [['1', 'Learn the basics of ' + (sk[0] || 'the first core skill'), 'Finish a free beginner course and notes you can reuse'], ['2', 'Learn ' + (sk[1] || 'the second core skill'), 'Short exercises that use it'], ['3', 'Build a small project using ' + (sk[0] || 'your first skill') + (sk[1] ? ' and ' + sk[1] : ''), 'One finished piece you can show'], ['4', 'Learn ' + (sk[2] || 'a third skill that jobs ask for'), 'A second project or a harder version of the first'], ['5', cert ? 'Start ' + cert : 'Choose one recognised certification', 'Enrolment done and the first module complete'], ['6', 'Polish your portfolio or resume and start applying', 'Applications sent; one person has reviewed your work']];
+            return (sd.length ? ppMeter('Skills you have today (ticked in Plan4it)', sd.length ? (sd.length - gap.length) / sd.length * 100 : 0, (sd.length - gap.length) + ' of ' + sd.length, '#16a34a') : '') +
+                (list.length ? ipRows(['Skill', 'Level needed', 'Why it matters', 'Where to learn'], list.map(function (s) { return ['<span class="pp-box"></span><b>' + e(s.name) + '</b>', ppDots(s.level), e(s.why || ''), planResourceHTML(s.resource, s.name)]; })) : '<p>Skill list not available.</p>') +
+                (c.certifications && c.certifications.length ? '<p><b>Certifications worth considering</b></p><ul>' + c.certifications.slice(0, lite ? 3 : 4).map(function (x) { return '<li>' + planCertHTML(x) + '</li>'; }).join('') + '</ul>' : '') +
+                ipH('A 6-month plan') + ipRows(['Month', 'Focus', 'Output you can show'], plan.slice(0, lite ? 4 : 6).map(function (r) { return r.map(e); }));
+        }
+        function ipPay(X, lite) {
+            const e = X.e, c = X.rec, pay = careerReportPay(c), tips = CAREER_TIPS[c.category] || CAREER_TIPS['Business'];
+            return (pay ? '<div class="pp-cols"><div style="flex:1.1">' + ppPayChart(pay.map(function (r) { return [r[2], r[3], r[4], r[1]]; }), Number(c.salaryMax)) + '</div><div style="flex:1">' + ppMeter('Demand', (PP_LEVEL[c.demand] || 2) * 25, c.demand, '#16a34a') + ppMeter('Mobility abroad', /excellent/i.test(c.mobility || '') ? 100 : /good/i.test(c.mobility || '') ? 75 : 50, String(c.mobility || 'n/a').split(/\s[—-]\s/)[0], '#7c3aed') + ppMeter('Work-life balance', /good/i.test(c.workLife || '') ? 100 : /moderate/i.test(c.workLife || '') ? 70 : 45, String(c.workLife || 'n/a').replace(/\s*\(.*$/, ''), '#0d9488') + '</div></div><p class="pp-sm pp-mut">Stages are worked out from our pay band for this career (' + e(c.salary) + '). The band is an estimate, not a survey. Pay varies by city, employer and skill; check live openings on ncs.gov.in.</p>' : '') +
+                '<div class="pp-cols"><div>' + ipCard('Who hires', '<p class="pp-sm">' + e(tips[1]) + '</p>') + '</div><div>' + ipCard('What moves pay up', ipUl(['Deeper skill in the core tools of the job', 'Recognised certifications or a higher qualification', 'Working in a larger city or for a larger employer', 'Proof of results, not just years of experience', 'Switching employers after 2 to 3 years when the market allows'])) + '</div></div>' +
+                (!lite ? ipH('The usual ladder') + '<div class="cr-steps">' + ['Entry level', 'Mid level', 'Senior', 'Lead or specialist', 'Manager or independent'].map(function (x, i) { return '<div class="cr-step"><b>' + (i + 1) + '</b><span>' + e(x) + '</span></div>'; }).join('') + '</div>' : '');
+        }
+        function ipReality(X, lite) {
+            const e = X.e, c = X.rec, tips = CAREER_TIPS[c.category] || CAREER_TIPS['Business'];
+            return '<div class="pp-cols"><div>' + ipCard('The honest picture', ipUl([(c.cons || [])[0], (c.cons || [])[1], 'Entry is rated ' + c.difficulty.toLowerCase() + ' and the route takes about ' + c.entryYears + ' years', 'Cost to enter is rated ' + c.costTier.toLowerCase(), 'Pay figures are estimates and vary widely by city and employer'])) + '</div><div>' + ipCard('How people actually get hired', ipUl([tips[0], tips[2]]), 'pp-note') + '</div></div>' +
+                ipH('Myths and facts') + ipRows(['Myth', 'Fact'], [['"A degree from a famous college guarantees a job."', 'Employers hire for skill and proof of work. A good college helps with contacts and learning, but does not replace either.'], ['"The highest pay figure is what most people earn."', 'Pay bands are wide. Most people start near the lower end and rise with skill; the top of the band is reached by a smaller share.'], ['"If I choose wrong, I am stuck."', 'Skills carry over. A Plan B that shares most skills makes a change affordable (see the Plan B page).'], ['"AI will make this career disappear."', 'AI changes routine tasks in most fields. Judgement, communication and responsibility remain human work, but the entry bar keeps rising, so keep learning.']].map(function (r) { return r.map(e); })) +
+                (!lite ? '<div class="pp-cols"><div>' + ipCard('Common mistakes', ipUl(['Choosing only for the pay figure without checking the day-to-day work', 'Collecting certificates instead of building one thing you can show', 'Applying late: entrance and admission windows close months ahead', c.entryYears >= 4 ? 'Not planning the cost of a long route: check fees and loans first' : 'Skipping the basics and jumping to advanced tools'])) + '</div><div>' + ipCard('Ask someone who does this job', ipUl(['What does a normal week look like, and what is the hardest part?', 'What did you wish you had learned first?', 'What did your first year pay, and how did it grow?', 'What would make you leave this field?'])) + '</div></div>' : '');
+        }
+        function ipPlanB(X, lite) {
+            const e = X.e, c = X.rec, P = X.planB, A = X.A;
+            const mine = (c.skills || []).slice(0, 5), has = function (x, s) { return (x.skills || []).some(function (k) { return String(k).toLowerCase().indexOf(String(s).toLowerCase().split(' ')[0]) > -1; }); };
+            return ipRows(['Career', A ? 'Fit' : 'Field', 'Pay (estimate)', 'Starts in', 'Why it is close'], P.map(function (r) { const p = X.pool.find(function (x) { return x.id === r.c.id; }); return ['<b>' + e(r.c.title) + '</b>', A && p ? X.pct(p) + '%' : e(r.c.category), e(r.c.salary), '~' + e(r.c.entryYears) + ' yr', r.shared && r.shared.length ? 'Shares: ' + e(r.shared.slice(0, 3).join(', ')) : 'Same field, similar work']; })) +
+                '<div class="pp-cols3"><div class="pp-card pp-slim"><b>If you miss a cut-off</b>' + ipUl(['Apply to the best option you can afford and keep building proof of skill.', 'Retake the exam if more attempts are allowed.', 'Keep your Plan B warm with one related skill.']) + '</div><div class="pp-card pp-slim"><b>If you find you dislike it</b>' + ipUl(['Move to the Plan B above; many skills carry over.', 'Talk to two people already in that field.']) + '</div><div class="pp-card pp-slim"><b>If money gets tight</b>' + ipUl(['Look for scholarships and state schemes.', 'Take a related entry-level job while you upskill.']) + '</div></div>' +
+                (!lite && mine.length ? ipH('How much your skills carry over') + ipRows(['Skill you build for ' + e(c.title)].concat(P.map(function (r) { return e(r.c.title); })), mine.map(function (s) { return [e(s)].concat(P.map(function (r) { return has(r.c, s) ? '●' : '○'; })); })) + '<p class="pp-sm pp-mut">● the career lists a similar skill · ○ not listed. Based on the skill lists in our data.</p>' : '');
+        }
+        function ipDays(X) {
+            const e = X.e, c = X.rec, sd = c.skillDetails || [], f1 = sd[0] ? sd[0].name : 'the first core skill', ex = X.exams[0], yp = X.yp, q = yp && yp[0] ? yp[0][1] : [];
+            const rows = [['1 to 2', q[0] || (ex ? 'Check the dates for ' + ex.name + ' and register' : 'Pick the first skill and set a weekly study time'), 'It is done and written in your calendar'], ['1 to 4', 'Study or practise for 45 minutes a day: ' + f1, 'You have 20 or more days logged'], ['3 to 6', q[1] || 'Finish one beginner course in ' + f1, 'You have notes and one small exercise'], ['5 to 8', 'Talk to 3 people who do this job and ask what a normal week looks like', 'You have written notes from 3 conversations'], ['7 to 10', q[2] || 'Build one small project that looks like real work in this field', 'You can show it to someone'], ['9 to 12', ex ? 'Take a timed practice test for ' + ex.name + ' and review mistakes' : 'Apply for one internship, trial or small paid task', 'You know your weak areas'], ['11 to 13', 'Shortlist your next steps (courses, colleges or roles) and write your Plan B', 'A one-page sheet you can discuss with family']];
+            return ipRows(['Weeks', 'Do this', 'Done when'], rows.map(function (r) { return r.map(e); })) +
+                '<div class="pp-cols3">' + ['Days 1 to 30', 'Days 31 to 60', 'Days 61 to 90'].map(function (t, i) { const items = yp && yp[0] && i === 0 ? yp[0][1].slice(0, 3) : i === 0 ? ['Set up your study time', 'Learn the first skill', 'Talk to someone in the field'] : i === 1 ? ['Finish a beginner course', 'Build a small project', 'Do a mock test or trial task'] : ['Show your work to a professional', 'Shortlist courses or roles', 'Write your Plan B']; return '<div class="pp-card pp-slim"><b>' + t + '</b>' + ipUl(items) + '</div>'; }).join('') + '</div>' +
+                ppMeter('Your habit target', 100, '28 days in a row', '#16a34a') + '<p class="pp-sm pp-mut">Tick each day on a wall calendar. Short, daily practice beats long weekend sessions.</p>';
+        }
+        function ipYears(X) {
+            const e = X.e, c = X.rec, yp = X.yp, st = X.student, cert = (c.certifications || [])[0], f1 = (c.skillDetails || [])[0] ? c.skillDetails[0].name : 'your core skill';
+            const bars = st ? [['Prepare and apply', 0, 20, '#ec4899'], ['Entrance and admission', 12, 16, '#7c3aed'], ['Year 1: foundations', 28, 22, '#16a34a'], ['Year 2: skills and first project', 46, 24, '#d97706'], ['Year 3: internship and portfolio', 68, 32, '#0d9488']] : [['Learn the core skills', 0, 26, '#ec4899'], ['Build 2 portfolio projects', 18, 28, '#7c3aed'], ['Certification', 40, 20, '#16a34a'], ['Apply and interview', 55, 24, '#d97706'], ['First months in the new role', 76, 24, '#0d9488']];
+            const Y = st ? [['Year 1', (yp && yp[1] ? yp[1][1].slice(0, 2) : []).concat(['Learn ' + f1 + ' and finish one small project', 'Speak to 3 people already in the field'])], ['Year 2', ['Do an internship or live project', cert ? 'Earn ' + cert : 'Earn one recognised certification', 'Build proof you can show: portfolio, notes or records']], ['Year 3', ['Apply for roles, higher study or the next entrance exam', 'Keep your Plan B warm with one related skill', 'Review pay and demand with fresh data']]] : [['Year 1', ['Build skills and 2 portfolio projects', 'Move to your first role or project in ' + c.title, 'Keep your income steady while you switch']], ['Year 2', ['Grow in the new role and earn a certification', 'Ask for harder work and visible results']], ['Year 3', ['Aim for the mid-career pay band', 'Decide whether to specialise or lead']]];
+            return '<div class="ip-gantt">' + bars.map(function (b) { return '<div class="ip-gr"><div class="ip-gl">' + e(b[0]) + '</div><div class="ip-gt"><i style="margin-left:' + b[1] + '%;width:' + b[2] + '%;background:' + b[3] + '"></i></div></div>'; }).join('') + '<div class="ip-gx"><span>Now</span><span>Year 1</span><span>Year 2</span><span>Year 3</span></div></div>' +
+                '<div class="pp-cols3">' + Y.map(function (p) { return '<div class="pp-card pp-slim"><b>' + p[0] + '</b>' + ipUl(p[1]) + '</div>'; }).join('') + '</div>' +
+                ipH('Milestones you can check') + ipRows(['By', 'Milestone', 'How you know'], [['Month 3', 'First skill learned and one small piece of work done', 'You can show it'], ['Month 12', 'Two finished projects or one internship', 'Links, certificates or a letter'], ['Month 24', 'A recognised certification or a full year of progress', 'Certificate or marks'], ['Month 36', 'Ready to apply for roles in ' + c.title, 'Interviews or an offer']].map(function (r) { return r.map(e); })) +
+                ipCard('Plan for the first salary', '<p class="pp-sm">Early pay is usually at the lower end of ' + e(c.salary) + ' (an estimate). It rises fastest with a strong project record, one or two recognised certifications and a willingness to keep learning.</p>', 'pp-note');
+        }
+        function ipParents(X) {
+            const e = X.e, c = X.rec, P = X.planB.map(function (r) { return r.c.title; }), yp = X.yp, cols = X.cols.filter(function (x) { return x.fees; }).slice(0, 3);
+            const qa = [['Why this career?', X.A ? 'The answers match it at ' + X.pct(c) + '%. ' + intelWhy(c, X.A).slice(0, 2).join(' ') : c.overview], ['What will it cost?', 'The route is rated ' + c.costTier.toLowerCase() + ' cost and takes about ' + c.entryYears + ' years. Check fees, hostel and scholarships on the official sites before committing.'], ['Will there be jobs?', 'Demand is rated ' + c.demand.toLowerCase() + ' in India. Typical pay is ' + c.salary + ' (an estimate, not a guarantee). Mobility abroad is ' + String(c.mobility || 'not rated').split(/\s[—-]\s/)[0].toLowerCase() + '.'], ['Is it stable?', /government|civil|teacher|bank|railway|police|judge/i.test(c.title + ' ' + (c.overview || '')) ? 'Many roles are in government or public bodies, which are stable, but entry is competitive.' : 'Stability depends on skill and employer. People who keep learning and show results do best. It is less fixed than a government job.'], ['What if it does not work out?', 'Plan B: ' + (P.join(', ') || 'a closely related career') + '. They share many skills, so the effort is not wasted.'], ['How do we track progress?', 'Review three things every quarter: skills learned, one finished piece of work, and exam or course results.'], ['What do we decide this week?', (yp && yp[0] && yp[0][1][0]) || (X.exams[0] ? 'Check the dates for ' + X.exams[0].name + ' and agree who will help with the forms.' : 'Agree on the first step and a date to review.')]];
+            const years = c.entryYears || 3;
+            return '<div class="ci-parent">' + qa.map(function (q) { return '<div class="ci-q"><b>' + e(q[0]) + '</b><span>' + e(q[1]) + '</span></div>'; }).join('') + '</div>' +
+                (cols.length ? ipH('Cost summary you can discuss') + ipRows(['College', 'Fee a year', 'Over ' + years + ' years (tuition only)'], cols.map(function (x) { const m = String(x.fees).match(/([\d.]+)\s*L/); return ['<b>' + e(x.name.replace(/\s*\(.*?\)\s*/g, ' ').trim()) + '</b>', e(x.fees), m ? '₹' + (Math.round(parseFloat(m[1]) * years * 10) / 10) + 'L' : 'Check the college site']; })) + '<p class="pp-sm pp-mut">Totals are simple multiples of the annual fee in Plan4it\'s data and exclude hostel and living costs.</p>' : '') +
+                ipCard('Sources and how to read the numbers', '<p class="pp-sm">Career pay, demand, difficulty and cost come from Plan4it\'s career data and are <b>estimates</b>, not survey results. Exam dates, fees and modes are from Plan4it\'s exam data (tentative unless confirmed; verify on official sites). College fees are from Plan4it\'s college data. Live openings: National Career Service (ncs.gov.in). Fit scores show how well a career matches the answers, not whether someone will succeed. Report generated ' + e(X.today) + ' at plan4it.co.</p>', 'pp-note');
+        }
+        /* ---- the 18-page report ---- */
+        function intelBuild18() {
+            const A = getStoredWizardAnswers(); if (!A) return null;
+            const X = ipCtx(A, null, false), e = X.e, rec = X.rec, top = X.top, pct = X.pct, pool = X.pool;
+            if (!rec) return null;
+            const vis = CAT_VIS[rec.category] || ['⭐', '#0c4a6e', '#0284c7'];
+            const kind = 'Career Intelligence Report · ' + PLAN_SEG_LABEL[X.seg] + ' edition', right = 'Prepared for <b>' + e(X.name) + '</b><br>' + e(X.today);
+            const lab = function (k) { return quizLabel(k, A, k === 'cls'); };
+            const rows = [['Stage', lab('cls')], ['Interests', A.interests3 && A.interests3.length ? A.interests3.join(', ') : 'Still exploring'], ['Work style', IP_STYLE_TXT[A.workStyle] || A.workStyle], ['Matters most', (WIZARD_PRIORITY_LABELS[A.constraint] || [''])[0]], ['Help needed with', lab('help')], ['Where', [A.district && A.state && A.state !== 'any' ? A.district : '', A.state ? (A.state === 'any' ? 'Any state' : A.state) : '', FIT_BUDGET[A.budget] ? FIT_BUDGET[A.budget][0] : '', FIT_LEVEL[A.level] ? FIT_LEVEL[A.level][0] : ''].filter(Boolean).join(' · ')], ['Careers you mentioned', A.careerNote || '']].filter(function (r) { return r[1]; });
+            const saved = getSavedCareers().map(function (id) { return careersData.find(function (x) { return x.id === id; }); }).filter(Boolean);
+            const risky = top.slice(1).map(function (c) { return { c: c, g: intelGap(c, A) }; }).filter(function (r) { return r.g.length; }).sort(function (x, y) { return y.g.length - x.g.length; })[0];
+            const P = [];
+            // 1 profile
+            P.push(['Your career profile', 'Who this report is written for, and what we heard from the quiz.',
+                '<div class="cr-banner ci-cover" style="background:linear-gradient(120deg,' + vis[1] + ',' + vis[2] + ')"><div><div class="cr-cat">Plan4it Career Intelligence Report</div><div class="cr-name" style="font-size:19px">Don\'t just find a career.</div><div class="cr-sub" style="font-size:11.5px;margin-top:4px">Understand why it fits you, what it takes to get there, and what your alternatives are.</div></div><div style="margin-left:auto">' + ppHeroArt(rec.category, vis) + '</div></div>' +
+                '<div class="ci-verdict"><div class="ci-v ci-v1"><b>DO THIS</b><span>Aim for <u>' + e(rec.title) + '</u> (' + pct(rec) + '% match). First step: ' + e((X.yp && X.yp[0] && X.yp[0][1][0]) || 'pick the first skill from the skills page') + '.</span></div><div class="ci-v ci-v2"><b>BY WHEN</b><span>' + (X.exams[0] ? 'Register for <u>' + e(X.exams[0].name) + '</u>' + (X.exams[0].regCloses ? ' (registration closes ' + e(X.exams[0].regCloses) + ', tentative)' : '') + ' and check dates on the official site.' : 'No entrance exam is needed for most routes here. Start building proof of skill this month.') + '</span></div><div class="ci-v ci-v3"><b>KEEP AS PLAN B</b><span>' + e(X.planB.slice(0, 2).map(function (r) { return r.c.title; }).join(' or ')) + '. They use similar skills.</span></div><div class="ci-v ci-v4"><b>THINK TWICE ABOUT</b><span>' + (risky ? '<u>' + e(risky.c.title) + '</u>: ' + e(risky.g[0]) : 'Nothing in your top 5 clashes strongly with your answers.') + '</span></div></div>' +
+                '<div class="pp-cols"><table class="pp-t pp-kv" style="flex:1.3">' + rows.map(function (r) { return '<tr><th>' + e(r[0]) + '</th><td>' + e(r[1]) + '</td></tr>'; }).join('') + '</table><div class="pp-card pp-note" style="flex:1"><b>Key takeaways</b>' + ipUl(['Your answers point most strongly to ' + rec.title + ' (' + pct(rec) + '% match).', 'Next best: ' + top.slice(1, 3).map(function (c) { return c.title; }).join(' and ') + '.', saved.length ? 'You saved ' + saved.length + ' careers: ' + saved.slice(0, 3).map(function (c) { return c.title; }).join(', ') + '.' : 'Save careers in Plan4it and they appear here.', 'The most important thing you control is the proof of skill you build, not only a certificate.']) + '</div></div>']);
+            // 2 DNA
+            const t20 = pool.slice(0, 20), wsum = {}, isum = {}; let tw = 0;
+            t20.forEach(function (c) { const w = pct(c); tw += w; wsum[c.workStyle] = (wsum[c.workStyle] || 0) + w; (c.interestTags || []).slice(0, 2).forEach(function (t) { isum[t] = (isum[t] || 0) + w; }); });
+            const dnaCol = { Logic: '#0284c7', People: '#0d9488', 'Hands-on': '#d97706', Creative: '#db2777', Research: '#7c3aed', Leadership: '#dc2626' };
+            const dna = Object.keys(wsum).sort(function (a, b) { return wsum[b] - wsum[a]; }), ints = Object.keys(isum).sort(function (a, b) { return isum[b] - isum[a]; }).slice(0, 4);
+            const common = pool.slice(0, 10)[0].reasons.filter(function (r) { return pool.slice(0, 10).every(function (t) { return t.reasons.indexOf(r) > -1; }); });
+            P.push(['Your career DNA', 'The mix of work styles and strengths in your best 20 matches, weighted by fit.',
+                '<div class="pp-cols"><div style="flex:1.2">' + dna.slice(0, 6).map(function (k) { return ppMeter(IP_STYLE_TXT[k] ? k : k, wsum[k] / tw * 100, Math.round(wsum[k] / tw * 100) + '%', dnaCol[k] || '#0284c7'); }).join('') + '<p class="pp-sm pp-mut">Shares add up across your 20 best careers.</p></div><div>' + ipCard('Fields you keep matching with', '<div>' + ints.map(function (x) { return '<span class="cr-chip">' + e(x) + '</span>'; }).join('') + '</div>' + (common.length ? '<p class="pp-sm"><b>What your matches share:</b> ' + e(common.join('; ')) + '.</p>' : '')) + '</div></div>' +
+                ipH('What you told us, and what it means') + '<div class="pp-cols3">' + ipCard('Your interests', '<p class="pp-sm">' + e((A.interests3 || []).length ? 'You picked ' + A.interests3.join(', ').toLowerCase() + '. Careers in these fields score highest.' : 'You are still exploring, so we weighed work style and priorities more.') + '</p>') + ipCard('Your work style', '<p class="pp-sm">' + e(A.workStyle ? 'You prefer ' + (IP_STYLE_TXT[A.workStyle] || A.workStyle) + '. We favour careers where that is most of the day.' : 'You did not pick a clear style, so we kept a mix.') + '</p>') + ipCard('What matters most', '<p class="pp-sm">' + e(A.constraint ? 'You said ' + (WIZARD_PRIORITY_LABELS[A.constraint] || ['your priority'])[0] + ' matters most. We used it to favour routes that fit.' : 'No single priority was chosen.') + '</p>') + '</div>' +
+                ipH('How to read your DNA') + ipUl(['A high share for one style does not rule out the others; it shows where your best days are likely spent.', 'A smaller share is your edge: a creative person with a logical streak, for example, is rare and useful.', 'Careers that need a style you scored low in are not closed to you, but they will take more effort.'])]);
+            // 3 top5
+            const t5 = top.map(function (c, i) { const v = CAT_VIS[c.category] || vis; return '<div class="ci-t5" style="border-top:4px solid ' + v[2] + '"><div class="ci-t5i">' + v[0] + '</div><div class="ci-t5n">' + (i + 1) + '. ' + e(c.title) + '</div><div class="ci-t5f" style="color:' + v[1] + '">' + pct(c) + '%</div><div class="pp-sm pp-mut">' + e(c.category) + '</div><div class="pp-sm"><b>' + e(c.salary) + '</b></div><div class="pp-sm pp-mut">Demand: ' + e(c.demand) + '</div></div>'; }).join('');
+            P.push(['Your top 5 career matches', 'Ranked by how well each career fits your answers.', '<div class="ci-top5">' + t5 + '</div>' + ipH('Match strength') + top.map(function (c) { return ppMeter(c.title, pct(c), pct(c) + '% · ' + fitInfo(pct(c)).text, pct(c) >= 85 ? '#16a34a' : pct(c) >= 70 ? '#65a30d' : '#d97706'); }).join('') + ipH('What each one is, in one line') + ipRows(['Career', 'What you actually do', 'Where it starts'], top.map(function (c) { const rd = c.roadmap || []; return ['<b>' + e(c.title) + '</b>', e(c.overview || ''), e(rd.length ? rd[rd.length - 1] : 'Entry-level role')]; })) + '<p class="pp-sm pp-mut">Fit comes from your answers only. It shows how well a career matches what you told us.</p>']);
+            // 4 why
+            P.push(['Why these careers fit you', 'Every line comes from something you told us.', top.map(function (c) { const gp = intelGap(c, A); return '<div class="ci-why"><b>' + e(c.title) + '</b><span>' + intelWhy(c, A).map(function (x) { return '<span class="g">✓ ' + e(x) + '</span>'; }).join('<br>') + (gp.length ? '<br><span class="ci-warn">! ' + e(gp[0]) + '</span>' : '') + '</span></div>'; }).join('') + ipCard('The pattern', ipUl([common.length ? 'All your top careers share: ' + common.join('; ') + '.' : 'Your top careers share a broad fit with your answers.', 'The careers that stand out from the rest are the ones that also match something specific you told us, such as a career you named or a priority.', 'Treat the lower-ranked ones as useful alternatives and Plan B options.']), 'pp-note')]);
+            // 5 fit score
+            const bd = intelBreakdown(rec, A);
+            P.push(['Career fit score', 'What drives the ' + pct(rec) + '% for ' + rec.title + ', and how to read it.', '<div class="ip-score"><div class="ip-ring"><b>' + pct(rec) + '%</b><span>' + e(fitInfo(pct(rec)).text) + '</span></div><div style="flex:1">' + bd.map(function (r) { return ppMeter(r[0], r[1], r[1] + '%', r[1] >= 70 ? '#16a34a' : r[1] >= 45 ? '#d97706' : '#dc2626'); }).join('') + '</div></div>' +
+                ipH('What the four parts mean') + ipRows(['Part', 'Your result', 'What it means'], [['Your interests', bd[0][1] + '%', 'How closely the career\'s field matches the interests you picked.'], ['Your work style', bd[1][1] + '%', 'Whether the day-to-day work matches how you like to work.'], ['What matters most', bd[2][1] + '%', 'How well the route fits your top priority (cost, speed or depth).'], ['Practical fit', bd[3][1] + '%', 'Entry difficulty set against your marks or readiness.']].map(function (r) { return r.map(e); })) +
+                '<div class="pp-cols"><div>' + ipCard('Score bands', ipRows(['Score', 'Meaning'], [['85%+', 'Strong fit: lead with this'], ['70 to 84%', 'Good fit: look closely'], ['55 to 69%', 'Possible: check the downsides'], ['Below 55%', 'Weak fit for your answers']])) + '</div><div>' + ipCard('What the score is not', ipUl(['Not a prediction that you will succeed.', 'It does not know your talent or effort.', 'It changes if you retake the quiz.', 'Treat close scores as equal.']), 'pp-note') + '</div></div><p class="pp-sm pp-mut">Method: rule-based. Plan4it compares your answers with each career\'s data. Nothing is hidden.</p>']);
+            // 6 matrix
+            const demN = function (c) { return PP_LEVEL[c.demand] || 2; }, difN = function (c) { return PP_LEVEL[c.difficulty] || 2; }, costN = function (c) { return PP_LEVEL[c.costTier] || 2; };
+            const mx = [['Fit', function (c) { return [pct(c) + '%', pct(c) >= 85 ? 'cx-g' : pct(c) >= 70 ? 'cx-m' : 'cx-b']; }], ['Pay (yearly)', function (c) { return [c.salary, Number(c.salaryMax) >= 25 ? 'cx-g' : Number(c.salaryMax) >= 12 ? 'cx-m' : 'cx-b']; }], ['Time to start', function (c) { return ['~' + c.entryYears + ' yr', intelFlag(c.entryYears, 3, 5)]; }], ['Cost to enter', function (c) { return [c.costTier, intelFlag(costN(c), 1, 3)]; }], ['Demand', function (c) { return [c.demand, demN(c) >= 3 ? 'cx-g' : demN(c) === 2 ? 'cx-m' : 'cx-b']; }], ['Difficulty', function (c) { return [c.difficulty, intelFlag(difN(c), 1, 3)]; }], ['Work-life', function (c) { const w = String(c.workLife || ''); return [w.replace(/\s*\(.*$/, '') || 'n/a', /good/i.test(w) ? 'cx-g' : /moderate/i.test(w) ? 'cx-m' : 'cx-b']; }], ['Mobility abroad', function (c) { const m = String(c.mobility || ''); return [m.split(/\s[—-]\s/)[0] || 'n/a', /excellent|good/i.test(m) ? 'cx-g' : /moderate/i.test(m) ? 'cx-m' : 'cx-b']; }]];
+            const fastest = top.slice().sort(function (a, b) { return a.entryYears - b.entryYears; })[0], richest = top.slice().sort(function (a, b) { return b.salaryMax - a.salaryMax; })[0], cheapest = top.slice().sort(function (a, b) { return costN(a) - costN(b) || b.score - a.score; })[0];
+            const mxmax = Math.max.apply(null, top.map(function (c) { return Number(c.salaryMax) || 1; }));
+            P.push(['Career comparison matrix', 'Green is easier or better for most people, amber is middling, red needs thought.', '<table class="pp-t ci-mx"><tr><th></th>' + top.map(function (c) { return '<th>' + e(c.title) + '</th>'; }).join('') + '</tr>' + mx.map(function (r) { return '<tr><th>' + e(r[0]) + '</th>' + top.map(function (c) { const v = r[1](c); return '<td class="' + v[1] + '">' + e(v[0]) + '</td>'; }).join('') + '</tr>'; }).join('') + '</table>' +
+                '<div class="pp-cols3">' + ipCard('Best fit', '<p class="pp-sm"><b>' + e(top[0].title) + '</b> has the highest match with your answers.</p>') + ipCard('Fastest to start', '<p class="pp-sm"><b>' + e(fastest.title) + '</b> takes about ' + e(fastest.entryYears) + ' years.</p>') + ipCard('Highest pay ceiling', '<p class="pp-sm"><b>' + e(richest.title) + '</b>: up to about ₹' + e(richest.salaryMax) + ' lakh a year (estimate).</p>') + '</div>' + ipH('Pay ranges at a glance (₹ lakh a year, estimated band)') +
+                top.map(function (c) { return '<div class="cr-hb"><span class="cr-hbl">' + e(c.title) + '</span><span class="cr-hbt"><i style="margin-left:' + (Number(c.salaryMin) / mxmax * 100) + '%;width:' + Math.max(3, (Number(c.salaryMax) - Number(c.salaryMin)) / mxmax * 100) + '%"></i></span><span class="cr-hbv">' + e(c.salaryMin + ' to ' + c.salaryMax) + '</span></div>'; }).join('') + '<p class="pp-sm pp-mut">Pay bands are estimates from Plan4it career data. Where a range is wide, the top is reached by a smaller share of people. Lowest cost route among these: ' + e(cheapest.title) + '.</p>']);
+            // 7 recommended
+            P.push([rec.title + ': your recommended career', 'What the job is, and what a week looks like.', ipHero(rec, vis, '<div class="cr-fit"><b>' + pct(rec) + '%</b><span>your match</span></div>') + ipMeters(rec) + ipJob(X)]);
+            // 8 why / why not
+            P.push(['Why this career, and why it might not be right', 'An honest two-sided view, based on your answers.', ipWhyNot(X)]);
+            // 9 education
+            P.push(['Education pathway', 'The usual route into ' + rec.title + ', and other ways in.', ipRoute(X)]);
+            // 10 colleges
+            P.push([X.student ? 'College and course options' + (X.f && X.f.state && X.f.state !== 'any' ? ' in ' + X.f.state : '') : 'Courses and certifications', X.student ? 'Programmes that fit your budget and marks.' : 'Ways to build the credentials this career asks for.', ipColleges(X, false)]);
+            // 11 exams
+            P.push(['Entrance and eligibility roadmap', 'Exams that open the door, with dates, fees and format. Dates are tentative until confirmed.', ipExams(X, false)]);
+            // 12 skills
+            P.push(['Skills gap', 'What you need, where you stand, and how to close it.', ipSkills(X, false)]);
+            // 13 salary
+            P.push(['Salary and opportunity outlook', 'Pay by stage, who hires, and what moves pay up. Pay figures are estimates.', ipPay(X, false)]);
+            // 14 reality
+            P.push(['Career reality check', 'The honest picture, so there are no surprises.', ipReality(X, false)]);
+            // 15 plan B
+            P.push(['Plan B and adjacent careers', 'Close alternatives that use similar skills, so a missed cut-off or a changed mind is not a dead end.', ipPlanB(X, false)]);
+            // 16 90 days
+            P.push(['Your 90-day action plan', 'Week by week. Tick items off as you go.', ipDays(X)]);
+            // 17 1 to 3 year
+            P.push(['Your 1 to 3 year roadmap', 'From where you are today to a first role in ' + rec.title + '.', ipYears(X)]);
+            // 18 parents
+            P.push(['Parent discussion guide', 'Use this page to talk it through together.', ipParents(X)]);
+            return P.map(function (p, i) { return ipPage(i + 1, P.length, p[0], p[1], p[2], kind, right); }).join('');
+        }
+        /* ---- the 5-page career report (general, or made for the user) ---- */
+        function careerGuide5(c, mode) {
+            const gen = mode === 'general', A = gen ? null : getStoredWizardAnswers(), X = ipCtx(A, c.id, gen), e = X.e;
+            const rec = X.rec, vis = CAT_VIS[rec.category] || ['⭐', '#0c4a6e', '#0284c7'];
+            const kind = (gen ? 'Career Guide' : 'Career Report') + ' · ' + rec.title, right = (gen ? '' : 'Prepared for <b>' + e(X.name) + '</b><br>') + e(X.today);
+            const fit = A ? '<div class="cr-fit"><b>' + X.pct(rec) + '%</b><span>your match</span></div>' : '';
+            const pay = careerReportPay(rec);
+            const tips = CAREER_TIPS[rec.category] || CAREER_TIPS['Business'];
+            const P = [];
+            P.push([rec.title + ': at a glance', gen ? 'What it is, what it pays, and whether it could suit you.' : 'What it is, and how it fits you.',
+                ipHero(rec, vis, fit) + ipMeters(rec) + ipJob(X) + (pay ? ipH('Pay: how it grows') + ppPayChart(pay.map(function (r) { return [r[2], r[3], r[4], r[1]]; }), Number(rec.salaryMax)) : '')]);
+            P.push(['Why it can be great, and the downsides', 'An honest two-sided view' + (A ? ', based on your answers.' : '.'), ipWhyNot(X)]);
+            P.push(['How to get there', 'Routes, exams and colleges.', ipRoute(X) + ipH('Exams that lead here') + ipExams(X, true) + (X.student ? ipH('Colleges to look at') + ipColleges(X, true) : '')]);
+            P.push(['Skills, pay and the reality', 'What to learn, what you can earn, and what people do not tell you.', ipSkills(X, true) + ipH('Pay and who hires') + ipPay(X, true)]);
+            P.push(['Plan B and your first 90 days', 'Close alternatives and what to do next.', ipPlanB(X, true) + ipH('Your first 90 days') + ipDays(X) + '<p class="pp-sm pp-mut">Pay, demand and cost figures are estimates and not a guarantee. Confirm exam dates, fees and eligibility on official websites. Report generated ' + e(X.today) + ' at plan4it.co.</p>']);
+            return P.map(function (p, i) { return ipPage(i + 1, P.length, p[0], p[1], p[2], kind, right); }).join('');
+        }
+
         function printPlan() {
             const f0 = getFit();
             if (f0 && f0.state && f0.state !== 'any' && !(DIR.index && DIR.shards[DIR.codeOf[f0.state]])) {
@@ -12326,9 +12608,9 @@
         function printPlanNow() {
             const sheet = document.getElementById('plan-print-sheet');
             let html = '';
-            try { html = (typeof intelBuild === 'function' && intelBuild()) || planBuild(); } catch (er) { console.error(er); showToast('Could not build your plan. Please try again.'); return; }
+            try { html = (typeof intelBuild18 === 'function' && intelBuild18()) || planBuild(); } catch (er) { console.error(er); showToast('Could not build your plan. Please try again.'); return; }
             if (!html) { showToast('Save a few careers, colleges or exams, or take the quiz, then download your plan.'); return; }
-            sheet.innerHTML = html;
+            sheet.innerHTML = html; ppFitPages(sheet);
             document.body.classList.add('printing-plan');
             const done = function () { document.body.classList.remove('printing-plan'); };
             window.addEventListener('afterprint', done, { once: true });
@@ -12465,7 +12747,7 @@
                 '<div class="flex items-start justify-between gap-3"><div><p class="text-[11px] font-bold uppercase tracking-wider text-brand-700">Report for ' + e(c.title) + '</p><h2 class="text-xl font-bold text-slate-900 mt-1">How would you like your report?</h2></div><button type="button" onclick="careerReportChoiceClose()" aria-label="Close" class="min-h-[44px] min-w-[44px] text-slate-500 hover:text-slate-900 text-xl">✕</button></div>' +
                 '<div class="grid sm:grid-cols-2 gap-3 mt-4">' +
                 '<div class="border border-slate-200 rounded-xl p-4 flex flex-col"><p class="font-bold text-slate-900">🔎 Explore this career</p><p class="text-xs text-slate-600 mt-1 flex-grow">Just curious? No quiz needed. What the job is, pay, skills, how to get in, who it suits, and a first 90 days. 2 pages.</p><button type="button" onclick="careerReportRun(\'' + e(id) + '\',\'general\')" class="mt-3 min-h-[44px] bg-white border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-bold rounded-xl text-sm">Get the career guide' + (PREMIUM_CFG.mode === 'launch' ? ' · free now' : ' · ₹' + PREMIUM_CFG.careerPrice) + '</button></div>' +
-                '<div class="border-2 border-brand-600 rounded-xl p-4 flex flex-col bg-brand-50"><p class="font-bold text-slate-900">🎯 Made for me</p><p class="text-xs text-slate-600 mt-1 flex-grow">' + (has ? 'Uses your quiz answers: your fit and why, what could go wrong for you, colleges and exams for your state, a 90-day plan and a parent guide. About 6 pages.' : 'Takes 2 minutes. Answer a few questions and we write the report around you: fit, risks, colleges and exams for your state, and a parent guide.') + '</p>' +
+                '<div class="border-2 border-brand-600 rounded-xl p-4 flex flex-col bg-brand-50"><p class="font-bold text-slate-900">🎯 Made for me</p><p class="text-xs text-slate-600 mt-1 flex-grow">' + (has ? 'Uses your quiz answers: your fit and why, what could go wrong for you, colleges and exams for your state, and your first 90 days. 5 pages.' : 'Takes 2 minutes. Answer a few questions and we write the report around you: fit, risks, colleges and exams for your state, and a parent guide.') + '</p>' +
                 (has ? '<button type="button" onclick="careerReportRun(\'' + e(id) + '\',\'me\')" class="mt-3 min-h-[44px] bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm">Get my report' + (PREMIUM_CFG.mode === 'launch' ? ' · free now' : ' · ₹' + PREMIUM_CFG.price) + '</button>' : '<button type="button" onclick="careerReportChoiceClose();switchView(\'confusedMode\')" class="mt-3 min-h-[44px] bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm">Take the quiz first</button>') + '</div></div>' +
                 '<p class="text-[11px] text-slate-500 mt-3">Both are PDFs you can keep. Pay and cost figures are estimates; confirm exam dates and fees on official sites.</p></div>';
             const b = m.querySelector('button[onclick^="careerReportRun"]'); if (b) b.focus();
@@ -12478,7 +12760,7 @@
             if (!premiumUnlocked()) { premiumOpenUnlock(mode === 'me' ? 'career-me' : 'career', id); return; }
             trackEvent('career_report_' + mode);
             const run = function () {
-                let html = ''; try { html = mode === 'me' ? (intelBuild(id) || careerReportBuild(c, 'general')) : careerReportBuild(c, 'general'); } catch (er) { console.error(er); showToast('Could not build the report. Please try again.'); return; }
+                let html = ''; try { html = careerGuide5(c, mode === 'me' && getStoredWizardAnswers() ? 'me' : 'general'); } catch (er) { console.error(er); showToast('Could not build the report. Please try again.'); return; }
                 printSheetHTML(html);
             };
             const f0 = getFit();
@@ -12488,7 +12770,7 @@
             } else run();
         }
         function printSheetHTML(html) {
-            const sheet = document.getElementById('plan-print-sheet'); sheet.innerHTML = html;
+            const sheet = document.getElementById('plan-print-sheet'); sheet.innerHTML = html; ppFitPages(sheet);
             document.body.classList.add('printing-plan');
             const done = function () { document.body.classList.remove('printing-plan'); };
             window.addEventListener('afterprint', done, { once: true });
