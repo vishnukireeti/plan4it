@@ -11902,8 +11902,8 @@
             const sd = c.skillDetails || [];
             const ready = sd.length ? Math.round(sd.filter(function (s) { return done.indexOf(s.name) > -1; }).length / sd.length * 100) : null;
             const qa = getStoredWizardAnswers(), okEx = qa ? premiumExamFilter(qa) : function () { return true; };
-            const exams = examsForCareer(c).filter(okEx).slice(0, 4);
-            const lcr = localColleges(collegesForCareer(c), 3), cols = (seg === 'working' || lcr.none) ? [] : lcr.list;
+            const exams = examsForCareer(c).filter(okEx).slice(0, gen ? 3 : 4);
+            const lcr = localColleges(collegesForCareer(c), gen ? 2 : 3), cols = (seg === 'working' || lcr.none) ? [] : lcr.list;
             return '<div class="pp-card"><div class="pp-h3"><span>' + e(c.title) + ' <span class="pp-tag ' + (tag === 'Saved' ? '' : 'a') + '">' + e(tag) + '</span>' + (fitText ? ' <span class="pp-tag g">' + e(fitText) + '</span>' : '') + '</span><span class="pp-mut">' + e(c.category) + '</span></div>' +
                 '<div class="pp-facts"><span>Pay: ' + e(c.salary) + approxText(c, 'salary') + '</span><span>Demand: ' + e(c.demand) + '</span><span>Difficulty: ' + e(c.difficulty) + '</span><span>Start in ~' + e(c.entryYears) + ' yr</span><span>Cost: ' + e(c.costTier) + '</span>' + (c.workLife ? '<span>Work-life: ' + e(c.workLife) + '</span>' : '') + '</div>' +
                 (c.overview ? '<p>' + e(c.overview) + '</p>' : '') + (c.suitability ? '<p><b>Suits:</b> ' + e(c.suitability) + '</p>' : '') +
@@ -12434,7 +12434,7 @@
                 sec('The downsides, honestly') + '<div class="cr-bad">' + (c.cons || []).map(function (x) { return '<div><span>!</span>' + e(x) + '</div>'; }).join('') + (difP >= 75 ? '<div><span>!</span>Getting in is rated ' + e(c.difficulty) + '</div>' : '') + (wl <= 2 ? '<div><span>!</span>Hours are ' + e(wlTxt.toLowerCase()) + '</div>' : '') + '</div>' +
                 sec('Who it suits') + '<div class="pp-card pp-note"><p>' + e(c.suitability || 'People who enjoy this kind of work.') + '</p><div>' + chips + '</div></div>' +
                 sec('Your route: ' + routeIntro.toLowerCase()) + (road.length ? '<div class="cr-steps">' + road.map(function (x, i) { return '<div class="cr-step"><b>' + (i + 1) + '</b><span>' + e(x) + '</span></div>'; }).join('') + '</div>' : '') +
-                sec('Your first 90 days') + '<div class="pp-cols3">' + days.map(function (d) { return '<div class="pp-card pp-slim"><b>' + e(d[0]) + '</b>' + li(d[1]) + '</div>'; }).join('') + '</div>' +
+                (gen ? '' : sec('Your first 90 days') + '<div class="pp-cols3">' + days.map(function (d) { return '<div class="pp-card pp-slim"><b>' + e(d[0]) + '</b>' + li(d[1]) + '</div>'; }).join('') + '</div>') +
                 '</div>' +
                 '<div class="cr-page cr-break">' + ppMasthead(c.title + (gen ? ' · Career Guide' : ' · Career Report'), e(today)) +
                 sec('Skills to build, and where to learn them') + (sd.length ? '<table class="pp-t"><tr><th>Skill</th><th>Level</th><th>Learn it</th></tr>' + sd.slice(0, 6).map(function (s) {
@@ -12450,7 +12450,7 @@
                 sec('Reality check: mistakes to avoid and questions to ask') +
                 '<div class="pp-cols"><div class="pp-card"><b>Common mistakes</b>' + li(['Choosing only for the pay figure, without checking the day-to-day work', 'Collecting certificates instead of building one thing you can show', 'Applying late: exam, admission and hiring windows close months ahead', c.entryYears >= 4 ? 'Not planning the cost of a long route: check fees and loans before you commit' : 'Skipping the basics and jumping straight to advanced tools']) + '</div>' +
                 '<div class="pp-card"><b>Ask someone already doing this job</b>' + li(['What does a normal week look like, and what is the hardest part?', 'What did you wish you had learned before starting?', 'What did your first year actually pay, and how did it grow?', 'Which employers or colleges would you pick today, and why?', 'What would make you leave this field?']) + '</div></div>' +
-                sec('Your next step') + '<div class="pp-card pp-note"><b>This week:</b> ' + e(days[0][1][0]) + '. <b>Then:</b> ' + e(days[0][1][1] || days[1][1][0]) + '.</div>' +
+                (gen ? sec('Your first 90 days') + '<div class="pp-cols3">' + days.map(function (d) { return '<div class="pp-card pp-slim"><b>' + e(d[0]) + '</b>' + li(d[1]) + '</div>'; }).join('') + '</div>' : '') + (gen ? '' : sec('Your next step') + '<div class="pp-card pp-note"><b>This week:</b> ' + e(days[0][1][0]) + '. <b>Then:</b> ' + e(days[0][1][1] || days[1][1][0]) + '.</div>') +
                 '<p class="pp-sm pp-mut pp-foot">Plan4it is free career guidance for students and working professionals in India. Pay, demand and cost figures are approximate estimates and not a guarantee of any job or salary. Verify exam dates, fees and eligibility on official websites before you act. Report generated ' + e(today) + ' at plan4it.co.</p></div>';
             return h;
         }
