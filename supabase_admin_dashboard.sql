@@ -171,3 +171,69 @@ end;
 $fn$;
 revoke all on function public.admin_purchases() from public, anon;
 grant execute on function public.admin_purchases() to authenticated;
+
+
+-- Reports generated while the site was charging, with no matching paid purchase (Possible payment bypass panel).
+create table if not exists public.report_log (
+  id bigint generated always as identity primary key,
+  user_id uuid not null default auth.uid() references auth.users(id) on delete cascade,
+  kind text not null check (kind in ('full','career')),
+  career_id text check (career_id is null or char_length(career_id) <= 80),
+  scope text check (scope is null or scope in ('me','general')),
+  snapshot text check (snapshot is null or snapshot ~ '^[qs]:[a-z0-9]{6,40}$'),
+  src text check (src is null or src in ('quiz','saved')),
+  launch boolean not null default false,
+  created_at timestamptz not null default now()
+);
+create index if not exists report_log_user_idx on public.report_log (user_id, created_at desc);
+create index if not exists report_log_created_idx on public.report_log (created_at);
+alter table public.report_log enable row level security;
+revoke all on public.report_log from anon;
+create policy "log own report" on public.report_log for insert to authenticated with check (user_id = (select auth.uid()));
+create or replace function public.report_log_guard() returns trigger
+language plpgsql security definer set search_path = public as $$
+begin
+  if (select count(*) from public.report_log where user_id = new.user_id and created_at > now() - interval '1 hour') >= 60 then
+    raise exception 'too many';
+  end if;
+  return new;
+end $$;
+revoke all on function public.report_log_guard() from public, anon, authenticated;
+drop trigger if exists report_log_guard_trg on public.report_log;
+create trigger report_log_guard_trg before insert on public.report_log for each row execute function public.report_log_guard();
+create or replace function public.admin_report_flags()
+returns jsonb
+language plpgsql
+security definer
+set search_path = public, auth
+as $fn$
+declare
+  v_email text := lower(trim(coalesce(auth.jwt() ->> 'email', '')));
+  v_hash  text := '9961aa7282a77e47a4d55ee130265381e911da7cafb1f4b7f1c3385104871532';
+  v_checked int; v_launch int; v_flags jsonb;
+begin
+  if v_email = '' or encode(sha256(convert_to(v_email, 'UTF8')), 'hex') <> v_hash then
+    raise exception 'not authorised' using errcode = '42501';
+  end if;
+  select count(*) filter (where not l.launch), count(*) filter (where l.launch) into v_checked, v_launch
+    from public.report_log l join auth.users u on u.id = l.user_id
+    where l.created_at > now() - interval '90 days' and encode(sha256(convert_to(lower(u.email), 'UTF8')), 'hex') <> v_hash;
+  select coalesce(jsonb_agg(to_jsonb(f) order by f.created_at desc), '[]'::jsonb) into v_flags from (
+    select u.email, l.kind, l.career_id, l.scope, l.src, l.created_at
+    from public.report_log l join auth.users u on u.id = l.user_id
+    where l.launch = false and l.created_at > now() - interval '90 days'
+      and encode(sha256(convert_to(lower(u.email), 'UTF8')), 'hex') <> v_hash
+      and not exists (
+        select 1 from public.purchases pu
+        where pu.user_id = l.user_id and pu.status = 'paid' and pu.kind = l.kind
+          and (
+            (l.kind = 'full' and pu.snapshot = l.snapshot)
+            or (l.kind = 'career' and pu.career_id = l.career_id and (l.scope = 'general' or (pu.scope = 'me' and pu.snapshot = l.snapshot)))
+          ))
+    order by l.created_at desc limit 500) f;
+  return jsonb_build_object('checked', v_checked, 'launch_free', v_launch, 'flags', v_flags);
+end;
+$fn$;
+revoke all on function public.admin_report_flags() from public, anon;
+grant execute on function public.admin_report_flags() to authenticated;
+select cron.schedule('purge-old-report-log', '41 3 * * 0', $$delete from public.report_log where created_at < now() - interval '120 days'$$);

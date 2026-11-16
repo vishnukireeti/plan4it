@@ -8628,6 +8628,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 else { AD.data = r.data; AD.at = new Date(); }
                 adRender();
                 try { sb.rpc('admin_purchases').then(function (w) { AD.pay = w.error ? null : (w.data || []); adRender(); }, function () {}); } catch (er) {}
+                try { sb.rpc('admin_report_flags').then(function (w) { AD.flags = w.error ? null : (w.data || null); adRender(); }, function () {}); } catch (er) {}
                 try { sb.rpc('admin_waitlist').then(function (w) { AD.wait = w.error ? null : (w.data || []); AD.waitErr = w.error ? String(w.error.message || 'error') : ''; adRender(); }, function () {}); } catch (er) {}
             }, function (er) { AD.loading = false; AD.err = 'error'; AD.errMsg = String(er && er.message || er); adRender(); });
         }
@@ -8649,6 +8650,21 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 return '<tr class="border-b border-slate-100 align-top"><td class="py-2 px-1 whitespace-nowrap text-slate-600">' + e(when(p.paid_at || p.created_at)) + '</td><td class="py-2 px-1 break-all">' + e(p.email) + '</td><td class="py-2 px-1">' + (p.kind === 'full' ? 'Full report' : 'Career: ' + e(p.career_id || '')) + '</td><td class="py-2 px-1 whitespace-nowrap">₹' + (p.amount_paise / 100) + '</td><td class="py-2 px-1 ' + (p.status === 'paid' ? 'text-emerald-700' : 'text-amber-700') + '">' + (p.status === 'paid' ? 'Paid' : 'Not completed') + '</td><td class="py-2 px-1 break-all text-slate-600">' + e(p.razorpay_payment_id || '') + '</td></tr>';
             }).join('') + '</tbody></table></div>' : '<p class="text-sm text-slate-500">No payments yet.</p>';
             return adPanel('Payments', adN(paid.length) + ' paid · ₹' + adN(rev) + ' collected · ' + adN(rows.length - paid.length) + ' started but not completed', table, 'mt-4');
+        }
+        function adFlagPanel() {
+            const e = escapeAuth, f = AD.flags;
+            if (!f) return '';
+            const rows = f.flags || [], by = {};
+            rows.forEach(function (x) { const b = by[x.email] || (by[x.email] = { email: x.email, n: 0, last: x.created_at, items: {} }); b.n++; b.items[(x.kind === 'full' ? 'Full report' : 'Career: ' + (x.career_id || '') + (x.scope === 'me' ? ' (personal)' : ''))] = 1; if (x.created_at > b.last) b.last = x.created_at; });
+            const people = Object.keys(by).map(function (k) { return by[k]; }).sort(function (a, b) { return b.n - a.n; });
+            const when = function (t) { return new Date(t).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }); };
+            const ok = !rows.length;
+            const table = ok ? '<p class="text-sm text-emerald-700 font-semibold">No reports without a matching payment. All clear.</p>' :
+                '<div class="overflow-x-auto -mx-1"><table class="w-full text-sm min-w-[620px]"><thead><tr class="text-left text-[11px] uppercase tracking-wide text-slate-500 border-b border-slate-200"><th class="py-2 px-1 font-semibold">Email</th><th class="py-2 px-1 font-semibold">Reports</th><th class="py-2 px-1 font-semibold">What</th><th class="py-2 px-1 font-semibold">Last</th></tr></thead><tbody>' + people.map(function (p) {
+                    return '<tr class="border-b border-slate-100 align-top"><td class="py-2 px-1 break-all">' + e(p.email) + '</td><td class="py-2 px-1 font-bold text-red-700">' + p.n + '</td><td class="py-2 px-1 text-slate-700">' + Object.keys(p.items).map(e).join(', ') + '</td><td class="py-2 px-1 whitespace-nowrap text-slate-600">' + e(when(p.last)) + '</td></tr>';
+                }).join('') + '</tbody></table></div>';
+            return adPanel('Possible payment bypass', adN(rows.length) + ' ' + (rows.length === 1 ? 'report' : 'reports') + ' without a matching payment · ' + adN(f.checked || 0) + ' paid-mode reports checked in the last 90 days' + (f.launch_free ? ' · ' + adN(f.launch_free) + ' made free during launch (not checked)' : ''),
+                '<p class="text-xs text-slate-500 mb-3">A report counts here when someone generated it while the site was charging but has no paid purchase for that quiz or saved data, or that career. Check Razorpay before acting: a payment may be delayed. Someone who skips the site\'s own report code will not appear.</p>' + table, 'mt-4');
         }
         function adWaitPanel() {
             const e = escapeAuth, rows = AD.wait;
@@ -8776,6 +8792,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 adPanel('Saved careers', 'Most saved', savedList('careers')) + adPanel('Saved exams', 'Most saved', savedList('exams')) + adPanel('Saved colleges', 'Most saved', savedList('colleges')) +
                 '</div>' +
                 adPayPanel() +
+                adFlagPanel() +
                 adWaitPanel() +
                 adPanel('Who is taking the quiz', 'Answers saved by signed-in users (' + adN(d.quiz_takers) + ' people)', quizHTML, 'mt-4') +
                 adPanel('Newest accounts', 'Emails are partly hidden. ' + adN(t.accounts) + ' accounts in total, ' + adN(t.with_saved_data) + ' with saved data.', accs.length ? '<ul>' + accRows + '</ul>' : '<p class="text-sm text-slate-500">No accounts yet.</p>', 'mt-4') +
@@ -11267,6 +11284,13 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 }).then(function (r) { if (r && !r.error) { renderDashReports(); showToast('A copy is kept in your dashboard for 3 days. Download it before then.'); } }, function () {});
             } catch (er) {}
         }
+        // Permanent, minimal record of each full / career report generated, so the admin can spot reports built without a matching payment.
+        function reportLogInsert(kind, careerId, scope, snapshot, src) {
+            try {
+                if (typeof sb === 'undefined' || !sb || !authGetSession()) return;
+                sb.from('report_log').insert({ kind: kind, career_id: careerId || null, scope: scope || null, snapshot: snapshot || null, src: src || null, launch: !!premiumLaunch() }).then(function () {}, function () {});
+            } catch (er) {}
+        }
         function reportCopyDays(iso) { return Math.max(0, Math.ceil((new Date(iso).getTime() - Date.now()) / 86400000)); }
         function renderDashReports() {
             const el = document.getElementById('dash-reports'); if (!el) return;
@@ -13581,7 +13605,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             try { html = (typeof intelBuild18 === 'function' && reportWith(REPORT_SRC, intelBuild18)) || planBuild(); } catch (er) { console.error(er); showToast('Could not build your plan. Please try again.'); return; }
             if (!html) { showToast('Save a few careers, colleges or exams, or take the quiz, then download your plan.'); return; }
             sheet.innerHTML = html; ppFitPages(sheet); try { localStorage.setItem('marg_report_done', '1'); } catch (er) {}
-            { const sn = reportSnapshot(REPORT_SRC); if (sn) reportCopySave('full:' + sn, 'full', 'Career Intelligence Report (' + (REPORT_SRC === 'saved' ? 'from your saved items' : 'from your quiz answers') + ')', html); }
+            { const sn = reportSnapshot(REPORT_SRC); reportLogInsert('full', null, null, sn, REPORT_SRC); if (sn) reportCopySave('full:' + sn, 'full', 'Career Intelligence Report (' + (REPORT_SRC === 'saved' ? 'from your saved items' : 'from your quiz answers') + ')', html); }
             document.body.classList.add('printing-plan');
             const done = function () { document.body.classList.remove('printing-plan'); };
             window.addEventListener('afterprint', done, { once: true });
@@ -13734,6 +13758,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             trackEvent('career_report_' + mode); try { localStorage.setItem('marg_report_done', '1'); } catch (er) {}
             const run = function () {
                 let html = ''; try { html = careerGuide5(c, mode === 'me' && getStoredWizardAnswers() ? 'me' : 'general'); } catch (er) { console.error(er); showToast('Could not build the report. Please try again.'); return; }
+                reportLogInsert('career', c.id, mode === 'me' && getStoredWizardAnswers() ? 'me' : 'general', mode === 'me' && getStoredWizardAnswers() ? reportSnapshot('quiz') : null, null);
                 reportCopySave('career:' + c.id + ':' + (mode === 'me' && getStoredWizardAnswers() ? 'me' : 'general'), 'career', c.title + (mode === 'me' && getStoredWizardAnswers() ? ': your personal career report' : ': career guide'), html);
                 printSheetHTML(html);
             };
