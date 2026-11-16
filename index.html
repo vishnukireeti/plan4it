@@ -292,16 +292,22 @@
             /* Phone browsers paint their own white/blue fill on email & password fields while you type
                (autofill preview, suggestions) and in every focus/hover state. Cover all of them with the
                dark field colour, keep the focus ring, and stop the browser's fill from fading back in. */
-            html.dark input:-webkit-autofill, html.dark input:-webkit-autofill:hover, html.dark input:-webkit-autofill:active,
-            html.dark input:autofill {
+            /* One rule per pseudo-class: a browser that does not know one of them (e.g. :autofill) drops the WHOLE rule if they share a selector list. */
+            html.dark input:-webkit-autofill, html.dark input:-webkit-autofill:hover, html.dark input:-webkit-autofill:active, html.dark textarea:-webkit-autofill, html.dark select:-webkit-autofill {
                 -webkit-box-shadow: 0 0 0 1000px #181e22 inset !important; box-shadow: 0 0 0 1000px #181e22 inset !important;
-                -webkit-text-fill-color: #f3f7f9 !important; caret-color: #38bdf8;
+                -webkit-text-fill-color: #f3f7f9 !important; caret-color: #38bdf8; background-image: none !important; background-color: #181e22 !important; color: #f3f7f9 !important;
                 transition: background-color 99999s ease-out 0s, color 99999s ease-out 0s;
             }
-            html.dark input:-webkit-autofill:focus, html.dark input:autofill:focus {
+            html.dark input:-webkit-autofill:focus, html.dark input:-webkit-autofill:focus-visible {
                 -webkit-box-shadow: 0 0 0 1000px #181e22 inset, 0 0 0 2px #0ea5e9 !important; box-shadow: 0 0 0 1000px #181e22 inset, 0 0 0 2px #0ea5e9 !important;
-                -webkit-text-fill-color: #f3f7f9 !important;
+                -webkit-text-fill-color: #f3f7f9 !important; background-image: none !important; background-color: #181e22 !important; color: #f3f7f9 !important;
             }
+            html.dark input:autofill, html.dark input:autofill:hover, html.dark input:autofill:active {
+                box-shadow: 0 0 0 1000px #181e22 inset !important; -webkit-text-fill-color: #f3f7f9 !important; background-color: #181e22 !important; background-image: none !important; color: #f3f7f9 !important; caret-color: #38bdf8;
+            }
+            html.dark input:autofill:focus { box-shadow: 0 0 0 1000px #181e22 inset, 0 0 0 2px #0ea5e9 !important; -webkit-text-fill-color: #f3f7f9 !important; background-color: #181e22 !important; }
+            /* Tell the phone this is a dark field so its own fill and strong-password highlight are not painted white. */
+            html.dark input, html.dark textarea, html.dark select { color-scheme: dark; }
             html.dark input:focus, html.dark textarea:focus, html.dark select:focus { background-color: #181e22; color: #f3f7f9; -webkit-text-fill-color: #f3f7f9; }
             html.dark input[type="text"], html.dark input[type="email"], html.dark input[type="password"], html.dark input[type="search"], html.dark input[type="tel"], html.dark input[type="number"] { -webkit-appearance: none; appearance: none; background-clip: padding-box; }
             html.dark input[type="range"] { background: #333c44; -webkit-text-fill-color: initial; }
