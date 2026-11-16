@@ -186,3 +186,22 @@ $fn$;
 revoke all on function public.waitlist_guard() from public, anon, authenticated;
 drop trigger if exists waitlist_guard_trg on public.learnership_waitlist;
 create trigger waitlist_guard_trg before insert on public.learnership_waitlist for each row execute function public.waitlist_guard();
+
+-- Purchases (Razorpay). Written only by the razorpay-* edge functions (service role); a signed-in user can read their own rows.
+create table if not exists public.purchases (
+  id bigint generated always as identity primary key,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  kind text not null check (kind in ('full','career')),
+  career_id text check (career_id is null or char_length(career_id) <= 80),
+  amount_paise integer not null check (amount_paise > 0),
+  currency text not null default 'INR',
+  razorpay_order_id text not null unique,
+  razorpay_payment_id text,
+  status text not null default 'created' check (status in ('created','paid')),
+  created_at timestamptz not null default now(),
+  paid_at timestamptz,
+  check ((kind = 'career') = (career_id is not null))
+);
+create index if not exists purchases_user_idx on public.purchases (user_id, status);
+alter table public.purchases enable row level security;
+create policy "read own purchases" on public.purchases for select to authenticated using (user_id = (select auth.uid()));

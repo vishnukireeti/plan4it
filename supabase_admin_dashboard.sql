@@ -149,3 +149,25 @@ end;
 $fn$;
 revoke all on function public.admin_waitlist() from public, anon;
 grant execute on function public.admin_waitlist() to authenticated;
+
+-- Admin-only: every purchase with the buyer's email, for the Payments panel.
+create or replace function public.admin_purchases()
+returns jsonb
+language plpgsql
+security definer
+set search_path = public, auth
+as $fn$
+declare
+  v_email text := lower(trim(coalesce(auth.jwt() ->> 'email', '')));
+  v_hash  text := '9961aa7282a77e47a4d55ee130265381e911da7cafb1f4b7f1c3385104871532';
+begin
+  if v_email = '' or encode(sha256(convert_to(v_email, 'UTF8')), 'hex') <> v_hash then
+    raise exception 'not authorised' using errcode = '42501';
+  end if;
+  return coalesce((select jsonb_agg(to_jsonb(p) order by p.created_at desc) from (
+    select pu.id, u.email, pu.kind, pu.career_id, pu.amount_paise, pu.status, pu.razorpay_order_id, pu.razorpay_payment_id, pu.created_at, pu.paid_at
+    from public.purchases pu join auth.users u on u.id = pu.user_id order by pu.created_at desc limit 1000) p), '[]'::jsonb);
+end;
+$fn$;
+revoke all on function public.admin_purchases() from public, anon;
+grant execute on function public.admin_purchases() to authenticated;
