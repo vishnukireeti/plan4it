@@ -9463,6 +9463,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             }
             setSavedCareers(saved);
             renderExplorerCareers();
+            refreshDashboardIfOpen();
             if (!document.getElementById('view-careerDetail').classList.contains('hidden')) openCareerDetail(careerId, true);
         }
 
@@ -9489,6 +9490,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             }
             setSavedColleges(saved);
             renderColleges();
+            refreshDashboardIfOpen();
             if (!document.getElementById('view-collegeDetail').classList.contains('hidden')) openCollegeDetail(collegeId, true);
         }
 
@@ -9515,9 +9517,12 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             }
             setSavedExams(saved);
             renderExams();
+            refreshDashboardIfOpen();
             if (!document.getElementById('view-examDetail').classList.contains('hidden')) openExamDetail(examId, true);
         }
 
+        // Saved items show on the dashboard too, so it must update the moment one is removed or added.
+        function refreshDashboardIfOpen() { const v = document.getElementById('view-dashboard'); if (v && !v.classList.contains('hidden')) { try { renderDashboard(); } catch (er) { console.error(er); } } }
         function updateSavedBadge() {
             const count = getSavedCareers().length + getSavedColleges().length + getSavedExams().length;
             const badge = document.getElementById('saved-count-badge');
