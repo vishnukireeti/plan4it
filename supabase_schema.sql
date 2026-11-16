@@ -167,3 +167,22 @@ create unique index if not exists learnership_waitlist_email_track on public.lea
 alter table public.learnership_waitlist enable row level security;
 create policy "anyone can join waitlist" on public.learnership_waitlist for insert to anon, authenticated with check (user_id is null or user_id = (select auth.uid()));
 create policy "read own waitlist rows" on public.learnership_waitlist for select to authenticated using (user_id = (select auth.uid()));
+
+-- Waitlist flood guard: 8 sign-ups per hour per network (stored only as a salted hash) and 60 per 10 minutes overall.
+alter table public.learnership_waitlist add column if not exists ip_hash text;
+create or replace function public.waitlist_guard() returns trigger language plpgsql security definer set search_path = public as $fn$
+declare v_hdr json; v_ip text;
+begin
+  begin v_hdr := current_setting('request.headers', true)::json; exception when others then v_hdr := null; end;
+  v_ip := nullif(trim(split_part(coalesce(v_hdr ->> 'x-forwarded-for', v_hdr ->> 'cf-connecting-ip', ''), ',', 1)), '');
+  if v_ip is not null then
+    new.ip_hash := encode(sha256(convert_to('plan4it-waitlist:' || v_ip, 'UTF8')), 'hex');
+    if (select count(*) from public.learnership_waitlist where ip_hash = new.ip_hash and created_at > now() - interval '1 hour') >= 8 then raise exception 'rate_limited' using errcode = 'P0001'; end if;
+  end if;
+  if (select count(*) from public.learnership_waitlist where created_at > now() - interval '10 minutes') >= 60 then raise exception 'rate_limited' using errcode = 'P0001'; end if;
+  return new;
+end;
+$fn$;
+revoke all on function public.waitlist_guard() from public, anon, authenticated;
+drop trigger if exists waitlist_guard_trg on public.learnership_waitlist;
+create trigger waitlist_guard_trg before insert on public.learnership_waitlist for each row execute function public.waitlist_guard();

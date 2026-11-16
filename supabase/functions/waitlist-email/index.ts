@@ -22,10 +22,12 @@ Deno.serve(async (req: Request) => {
   if (!email || !track) return json({ error: "bad request" }, 400);
 
   const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
-  const { data: row } = await db.from("learnership_waitlist").select("id,name,email,track,duration,email_sent_at")
+  const { data: row } = await db.from("learnership_waitlist").select("id,name,email,track,duration,email_sent_at,created_at")
     .ilike("email", email).eq("track", track).maybeSingle();
   if (!row) return json({ error: "not on the waitlist" }, 404);
   if (row.email_sent_at) return json({ sent: true, already: true });
+  // only for a sign-up made in the last 15 minutes, so this cannot be used to re-trigger mail later
+  if (Date.now() - new Date(row.created_at).getTime() > 15 * 60 * 1000) return json({ sent: false, reason: "too old" });
 
   const key = Deno.env.get("RESEND_API_KEY");
   if (!key) {

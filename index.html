@@ -1822,6 +1822,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     <p class="text-sm font-bold text-slate-900">Join the Learnership waitlist</p>
                     <p class="text-xs text-slate-600">This is a paid programme. The price for each duration and the first batch dates will be announced before launch. Joining the waitlist is free and does not commit you to paying.</p>
                     <form id="p4-wait-form" onsubmit="return internshipJoin(event)" class="grid sm:grid-cols-2 gap-3 text-sm" novalidate>
+                        <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label>Website<input id="p4-wait-site" type="text" tabindex="-1" autocomplete="off"></label></div>
                         <label class="block"><span class="font-semibold text-slate-700">Your name</span>
                             <input id="p4-wait-name" maxlength="80" autocomplete="name" required class="mt-1 w-full border border-slate-300 rounded-xl px-3 min-h-[44px]" placeholder="Full name"></label>
                         <label class="block"><span class="font-semibold text-slate-700">Your email</span>
@@ -9749,6 +9750,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 }).join('') + '</div></div>';
             }).join('');
         }
+        document.addEventListener('focusin', function (ev) { if (ev.target && ev.target.closest && ev.target.closest('#p4-wait-form') && !window.__p4Opened) window.__p4Opened = Date.now(); });
         function internshipPick(id) {
             const sel = document.getElementById('p4-wait-track'); if (sel) sel.value = id;
             internshipDurPlan();
@@ -9759,6 +9761,9 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const msg = document.getElementById('p4-wait-msg'), btn = document.getElementById('p4-wait-btn');
             const say = function (t, ok) { msg.textContent = t; msg.className = 'text-sm ' + (ok ? 'text-emerald-700' : 'text-red-700'); };
             const track = document.getElementById('p4-wait-track').value, stage = document.getElementById('p4-wait-stage').value;
+            if (!window.__p4Opened) window.__p4Opened = Date.now();
+            const hp = document.getElementById('p4-wait-site');
+            if ((hp && hp.value) || Date.now() - window.__p4Opened < 3000) { say('You are on the list. We will email you when this track opens.', true); return false; } // looks like a bot: act as if it worked, save nothing
             const nm = (document.getElementById('p4-wait-name').value || '').trim().slice(0, 80), em = (document.getElementById('p4-wait-email').value || '').trim().slice(0, 254);
             if (!nm) { say('Please enter your name.', false); document.getElementById('p4-wait-name').focus(); return false; }
             if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { say('Please enter a valid email address.', false); document.getElementById('p4-wait-email').focus(); return false; }
@@ -9775,6 +9780,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 btn.disabled = false;
                 if (res.error) {
                     if (res.error.code === '23505') { say('This email is already on the waitlist for this track. We will email you before launch.', true); return; }
+                    if (/rate_limited/.test(String(res.error.message || ''))) { say('Too many sign-ups from your network just now. Please try again in a little while.', false); return; }
                     say('Could not save right now. Please try again in a moment.', false); return;
                 }
                 trackEvent('learnership_waitlist', { track: track, duration: p4Dur });
