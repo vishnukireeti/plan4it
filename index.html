@@ -1785,7 +1785,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         <!-- ================= VIEW: INTERNSHIPS ================= -->
         <!-- Unlock dialog for the premium report -->
         <div id="premium-modal" class="hidden fixed inset-0 z-[70] items-center justify-center bg-slate-900/60 p-4" role="dialog" aria-modal="true" aria-labelledby="premium-modal-title" onclick="if(event.target===this)premiumCloseUnlock()">
-            <div class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-xl max-h-[92vh] overflow-y-auto">
+            <div class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-xl max-h-[calc(100vh-2rem)] overflow-y-auto overscroll-contain">
                 <div class="flex items-start justify-between gap-3"><h3 id="premium-modal-title" class="text-xl font-extrabold text-slate-900">Unlock your full report</h3><button type="button" onclick="premiumCloseUnlock()" aria-label="Close" class="w-10 h-10 -mr-2 -mt-2 rounded-full text-slate-500 hover:bg-slate-100 text-xl">×</button></div>
                 <p id="premium-modal-desc" class="text-sm text-slate-600 mt-1">One-time payment of <b class="text-slate-900">₹<span class="premium-price">99</span></b>. Built from your answers and updated whenever you retake the quiz.</p>
                 <div id="premium-modal-list" class="mt-3"></div>
@@ -13073,7 +13073,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             trackEvent('report_choose_open');
             const e = escapeAuth, taken = !!getStoredWizardAnswers(), nc = getSavedCareers().length, ne = getSavedExams().length, ncl = getSavedColleges().length, saved = nc + ne + ncl;
             let m = document.getElementById('report-choose'); if (!m) { m = document.createElement('div'); m.id = 'report-choose'; document.body.appendChild(m); }
-            m.className = 'fixed inset-0 z-[75] flex items-start sm:items-center justify-center bg-slate-900/60 p-3 sm:p-4 overflow-y-auto';
+            m.className = 'fixed inset-0 z-[75] flex items-center justify-center bg-slate-900/60 p-3 sm:p-4';
             m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-label', 'Choose how to build your report');
             m.onclick = function (ev) { if (ev.target === m) reportChooseClose(); };
             const card = function (title, text, label, act, on) {
@@ -13084,7 +13084,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 card('Quiz based report', taken ? 'Built from your quiz answers: your best matches with fit scores, colleges, exams and a 90-day plan.' : 'Built from your quiz answers. You have not taken the quiz yet. It takes about 2 minutes.', taken ? 'Get this report' : 'Take the quiz', taken ? "reportChoosePick('quiz')" : "reportChoosePick('take')", taken) +
                 card('Retake quiz', taken ? 'Answers changed, or want a fresh start? Retake the quiz and come back for your report. You can do this before you pay.' : 'Available once you have taken the quiz.', 'Retake quiz', taken ? "reportChoosePick('retake')" : "reportChoosePick('take')", false) +
                 card('Saved items report', saved ? 'Built from what you saved to your dashboard: <b>' + nc + '</b> career' + (nc === 1 ? '' : 's') + ', <b>' + ne + '</b> exam' + (ne === 1 ? '' : 's') + ' and <b>' + ncl + '</b> college' + (ncl === 1 ? '' : 's') + '. No quiz needed.' : 'Nothing saved yet. Save careers, exams and colleges to your dashboard, then build your report from them. No quiz needed.', saved ? 'Get this report' : 'Browse careers', saved ? "reportChoosePick('saved')" : "reportChoosePick('browse')", !!saved);
-            m.innerHTML = '<div class="bg-white rounded-3xl max-w-3xl w-full p-4 sm:p-6 shadow-xl relative"><button type="button" onclick="reportChooseClose()" aria-label="Close" class="absolute top-2 right-2 min-h-[44px] min-w-[44px] text-slate-500 hover:text-slate-900 text-xl">✕</button>' +
+            m.innerHTML = '<div class="bg-white rounded-3xl max-w-3xl w-full p-4 sm:p-6 shadow-xl relative max-h-[calc(100vh-1.5rem)] sm:max-h-[calc(100vh-2rem)] overflow-y-auto overscroll-contain"><button type="button" onclick="reportChooseClose()" aria-label="Close" class="absolute top-2 right-2 min-h-[44px] min-w-[44px] text-slate-500 hover:text-slate-900 text-xl">✕</button>' +
                 '<p class="text-[11px] font-bold uppercase tracking-wider text-brand-700">Plan4it flagship</p><h3 class="text-xl font-extrabold text-slate-900 mt-1">How should we build your Career Intelligence Report?</h3>' +
                 '<div class="grid gap-3 md:grid-cols-3 mt-4">' + cards + '</div>' +
                 '<p class="text-xs text-slate-500 mt-4">The quiz report is generated from your quiz answers. The saved items report is generated from what you have saved to your dashboard. Retake the quiz or change what you saved before you pay.</p></div>';
@@ -13119,10 +13119,10 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         function reportHubOpen() {
             trackEvent('report_hub_open');
             let m = document.getElementById('report-hub'); if (!m) { m = document.createElement('div'); m.id = 'report-hub'; document.body.appendChild(m); }
-            m.className = 'fixed inset-0 z-[70] flex items-start sm:items-center justify-center bg-slate-900/60 p-3 sm:p-4 overflow-y-auto';
+            m.className = 'fixed inset-0 z-[70] flex items-center justify-center bg-slate-900/60 p-3 sm:p-4';
             m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-label', 'Your Career Intelligence Report');
             m.onclick = function (ev) { if (ev.target === m) reportHubClose(); };
-            m.innerHTML = '<div class="bg-white rounded-3xl max-w-3xl w-full p-3 sm:p-4 shadow-xl relative"><button type="button" onclick="reportHubClose()" aria-label="Close" class="absolute top-2 right-2 z-10 min-h-[44px] min-w-[44px] text-slate-500 hover:text-slate-900 text-xl">✕</button>' + reportPromoHTML(true) + '</div>';
+            m.innerHTML = '<div class="bg-white rounded-3xl max-w-3xl w-full shadow-xl relative"><button type="button" onclick="reportHubClose()" aria-label="Close" class="absolute top-2 right-2 z-10 min-h-[44px] min-w-[44px] text-slate-500 hover:text-slate-900 text-xl">✕</button><div class="p-3 sm:p-4 max-h-[calc(100vh-1.5rem)] sm:max-h-[calc(100vh-2rem)] overflow-y-auto overscroll-contain rounded-3xl">' + reportPromoHTML(true) + '</div></div>';
             const b = m.querySelector('button[onclick="reportMainAction()"]'); if (b) b.focus();
         }
         function reportHubClose() { const m = document.getElementById('report-hub'); if (m) { m.className = 'hidden'; m.innerHTML = ''; } }
@@ -13275,7 +13275,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             m.className = 'fixed inset-0 z-[70] flex items-center justify-center bg-slate-900/60 p-4';
             m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-label', 'Choose your report');
             m.onclick = function (ev) { if (ev.target === m) careerReportChoiceClose(); };
-            m.innerHTML = '<div class="bg-white rounded-2xl max-w-xl w-full p-5 sm:p-6 shadow-xl max-h-[90vh] overflow-y-auto">' +
+            m.innerHTML = '<div class="bg-white rounded-2xl max-w-xl w-full p-5 sm:p-6 shadow-xl max-h-[calc(100vh-2rem)] overflow-y-auto overscroll-contain">' +
                 '<div class="flex items-start justify-between gap-3"><div><p class="text-[11px] font-bold uppercase tracking-wider text-brand-700">Report for ' + e(c.title) + '</p><h2 class="text-xl font-bold text-slate-900 mt-1">How would you like your report?</h2></div><button type="button" onclick="careerReportChoiceClose()" aria-label="Close" class="min-h-[44px] min-w-[44px] text-slate-500 hover:text-slate-900 text-xl">✕</button></div>' +
                 '<div class="grid sm:grid-cols-2 gap-3 mt-4">' +
                 '<div class="border border-slate-200 rounded-xl p-4 flex flex-col"><p class="font-bold text-slate-900"><i class=ic-search></i> Explore this career</p><p class="text-xs text-slate-600 mt-1 flex-grow">Just curious? No quiz needed. What the job is, pay at each stage, skills, how to get in, exams, colleges and a first 90 days. 5 pages.</p><button type="button" onclick="careerReportRun(\'' + e(id) + '\',\'general\')" class="mt-3 min-h-[44px] bg-white border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-bold rounded-xl text-sm">Get the career guide' + (PREMIUM_CFG.mode === 'launch' ? ' · free now' : ' · ₹' + PREMIUM_CFG.careerPrice) + '</button></div>' +
