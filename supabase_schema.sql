@@ -208,3 +208,44 @@ alter table public.purchases add column if not exists snapshot text;
 create index if not exists purchases_user_idx on public.purchases (user_id, status);
 alter table public.purchases enable row level security;
 create policy "read own purchases" on public.purchases for select to authenticated using (user_id = (select auth.uid()));
+
+-- ---------------------------------------------------------------------------
+-- Report copies: each full / career report a signed-in person creates is kept for 7 days so it can be
+-- downloaded from the dashboard. The server sets the expiry, caps copies per person, and purges hourly.
+-- ---------------------------------------------------------------------------
+create extension if not exists pg_cron;
+create table if not exists public.saved_reports (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null default auth.uid() references auth.users(id) on delete cascade,
+  report_key text not null check (char_length(report_key) between 1 and 160),
+  kind text not null check (kind in ('full','career')),
+  title text not null check (char_length(title) between 1 and 200),
+  html text not null check (char_length(html) between 1 and 3000000),
+  created_at timestamptz not null default now(),
+  expires_at timestamptz not null default (now() + interval '7 days'),
+  unique (user_id, report_key)
+);
+create index if not exists saved_reports_user_idx on public.saved_reports (user_id, expires_at);
+create index if not exists saved_reports_expiry_idx on public.saved_reports (expires_at);
+create or replace function public.saved_reports_guard() returns trigger
+language plpgsql security definer set search_path = public as $$
+begin
+  new.created_at := now();
+  new.expires_at := now() + interval '7 days';
+  delete from public.saved_reports where user_id = new.user_id and expires_at < now();
+  delete from public.saved_reports where id in (
+    select id from public.saved_reports where user_id = new.user_id and report_key <> new.report_key
+    order by created_at desc offset 19
+  );
+  return new;
+end $$;
+revoke all on function public.saved_reports_guard() from public, anon, authenticated;
+drop trigger if exists saved_reports_guard_trg on public.saved_reports;
+create trigger saved_reports_guard_trg before insert or update on public.saved_reports for each row execute function public.saved_reports_guard();
+alter table public.saved_reports enable row level security;
+revoke all on public.saved_reports from anon;
+create policy "read own unexpired copies" on public.saved_reports for select to authenticated using (user_id = (select auth.uid()) and expires_at > now());
+create policy "add own copies" on public.saved_reports for insert to authenticated with check (user_id = (select auth.uid()));
+create policy "refresh own copies" on public.saved_reports for update to authenticated using (user_id = (select auth.uid())) with check (user_id = (select auth.uid()));
+create policy "delete own copies" on public.saved_reports for delete to authenticated using (user_id = (select auth.uid()));
+select cron.schedule('purge-expired-saved-reports', '17 * * * *', $$delete from public.saved_reports where expires_at < now()$$);
