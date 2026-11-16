@@ -1822,6 +1822,10 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     <p class="text-sm font-bold text-slate-900">Join the Learnership waitlist</p>
                     <p class="text-xs text-slate-600">This is a paid programme. The price for each duration and the first batch dates will be announced before launch. Joining the waitlist is free and does not commit you to paying.</p>
                     <form id="p4-wait-form" onsubmit="return internshipJoin(event)" class="grid sm:grid-cols-2 gap-3 text-sm" novalidate>
+                        <label class="block"><span class="font-semibold text-slate-700">Your name</span>
+                            <input id="p4-wait-name" maxlength="80" autocomplete="name" required class="mt-1 w-full border border-slate-300 rounded-xl px-3 min-h-[44px]" placeholder="Full name"></label>
+                        <label class="block"><span class="font-semibold text-slate-700">Your email</span>
+                            <input id="p4-wait-email" type="email" inputmode="email" maxlength="254" autocomplete="email" required class="mt-1 w-full border border-slate-300 rounded-xl px-3 min-h-[44px]" placeholder="you@example.com"></label>
                         <label class="block"><span class="font-semibold text-slate-700">Track</span>
                             <select id="p4-wait-track" class="mt-1 w-full border border-slate-300 rounded-xl px-3 min-h-[44px] bg-white"></select></label>
                         <label class="block"><span class="font-semibold text-slate-700">Where are you now?</span>
@@ -9702,6 +9706,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (sel && !sel.options.length) sel.innerHTML = '<option value="">Select a track</option>' + P4_TRACKS.map(function (t) { return '<option value="' + t.id + '">' + e(t.name) + '</option>'; }).join('') + '<option value="not_sure">Not sure yet</option>';
             if (sel && !sel.value && sug) sel.value = sug;
             const st = document.getElementById('p4-wait-stage');
+            { const sn = authGetSession(), ne = document.getElementById('p4-wait-name'), ee = document.getElementById('p4-wait-email'); if (sn && sn.user) { if (ee && !ee.value) ee.value = sn.user.email || ''; if (ne && !ne.value && typeof authDisplayName === 'function') { const dn = authDisplayName(sn); if (dn && dn.indexOf('@') < 0) ne.value = dn; } } }
             if (st && !st.value) st.value = a && a.working ? 'Working professional' : a && a.stage === 'School 11-12' ? 'Class 11-12' : '';
             const dw = document.getElementById('p4-wait-dur');
             if (dw && !dw.children.length) { dw.innerHTML = P4_DURATIONS.map(function (d) { return '<button type="button" aria-pressed="false" data-dur="' + d.id + '" onclick="internshipDur(\'' + d.id + '\')"><span class="block font-bold text-slate-900">' + e(d.label) + '</span><span class="block text-[11px] text-slate-500 whitespace-nowrap">' + e(d.sub) + '</span></button>'; }).join(''); internshipDur(p4Dur); if (sel) sel.addEventListener('change', internshipDurPlan); }
@@ -9728,25 +9733,26 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const msg = document.getElementById('p4-wait-msg'), btn = document.getElementById('p4-wait-btn');
             const say = function (t, ok) { msg.textContent = t; msg.className = 'text-sm ' + (ok ? 'text-emerald-700' : 'text-red-700'); };
             const track = document.getElementById('p4-wait-track').value, stage = document.getElementById('p4-wait-stage').value;
+            const nm = (document.getElementById('p4-wait-name').value || '').trim().slice(0, 80), em = (document.getElementById('p4-wait-email').value || '').trim().slice(0, 254);
+            if (!nm) { say('Please enter your name.', false); document.getElementById('p4-wait-name').focus(); return false; }
+            if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { say('Please enter a valid email address.', false); document.getElementById('p4-wait-email').focus(); return false; }
             if (!track) { say('Please choose a track.', false); return false; }
             if (!stage) { say('Please tell us where you are now.', false); return false; }
             if (!p4Dur) { say('Please choose a duration (1 to 6 months).', false); return false; }
-            say('', true);
-            if (!requireAuth('Sign in to join the Plan4it Learnership waitlist.', function () { internshipJoin(); })) return false;
-            const s = authGetSession(); if (!s || !s.user) return false;
+            const s = authGetSession();
             btn.disabled = true; say('Saving…', true);
             sb.from('learnership_waitlist').insert({
-                user_id: s.user.id, email: s.user.email || null, track: track, stage: stage, duration: p4Dur,
+                user_id: (s && s.user && s.user.id) || null, name: nm, email: em, track: track, stage: stage, duration: p4Dur,
                 college: (document.getElementById('p4-wait-college').value || '').trim().slice(0, 120) || null,
                 note: (document.getElementById('p4-wait-note').value || '').trim().slice(0, 400) || null
             }).then(function (res) {
                 btn.disabled = false;
                 if (res.error) {
-                    if (res.error.code === '23505') { say('You are already on the waitlist for this track. We will email you before launch.', true); return; }
+                    if (res.error.code === '23505') { say('This email is already on the waitlist for this track. We will email you before launch.', true); return; }
                     say('Could not save right now. Please try again in a moment.', false); return;
                 }
                 trackEvent('learnership_waitlist', { track: track, duration: p4Dur });
-                say('You are on the list. We will email you when this track opens.', true);
+                say('You are on the list, ' + nm.split(' ')[0] + '. We will email ' + em + ' when this track opens.', true);
             }, function () { btn.disabled = false; say('Could not save right now. Please try again in a moment.', false); });
             return false;
         }

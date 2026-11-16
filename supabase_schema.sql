@@ -147,19 +147,21 @@ create trigger trg_user_data_updated_at
 -- enabled) belongs in this file alongside usage_events, not as a separate file.
 -- ============================================================================
 
--- Learnership waitlist (Plan4it Learnership Program, paid). Signed-in users add and read only their own rows.
+-- Learnership waitlist (Plan4it Learnership Program, paid). Anyone can join with a name and email (signed in or not);
+-- a signed-in user can only attach their own id. The list is not readable from the browser except a signed-in user's own rows.
 create table if not exists public.learnership_waitlist (
   id bigint generated always as identity primary key,
-  user_id uuid not null references auth.users(id) on delete cascade,
-  email text,
+  user_id uuid references auth.users(id) on delete set null,
+  name text not null check (char_length(name) between 1 and 80),
+  email text not null check (char_length(email) between 5 and 254 and email ~ '^[^@\s]+@[^@\s]+\.[^@\s]+$'),
   track text not null check (char_length(track) <= 40),
   stage text not null check (char_length(stage) <= 40),
   duration text not null check (duration in ('1m','2m','3m','4m','5m','6m')),
   college text check (char_length(college) <= 120),
   note text check (char_length(note) <= 400),
-  created_at timestamptz not null default now(),
-  unique (user_id, track)
+  created_at timestamptz not null default now()
 );
+create unique index if not exists learnership_waitlist_email_track on public.learnership_waitlist (lower(email), track);
 alter table public.learnership_waitlist enable row level security;
-create policy "insert own waitlist row" on public.learnership_waitlist for insert to authenticated with check ((select auth.uid()) = user_id);
-create policy "read own waitlist rows" on public.learnership_waitlist for select to authenticated using ((select auth.uid()) = user_id);
+create policy "anyone can join waitlist" on public.learnership_waitlist for insert to anon, authenticated with check (user_id is null or user_id = (select auth.uid()));
+create policy "read own waitlist rows" on public.learnership_waitlist for select to authenticated using (user_id = (select auth.uid()));
