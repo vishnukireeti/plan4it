@@ -1782,7 +1782,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 <p id="premium-modal-desc" class="text-sm text-slate-600 mt-1">One-time payment of <b class="text-slate-900">₹<span class="premium-price">99</span></b>. Built from your answers and updated whenever you retake the quiz.</p>
                 <div id="premium-modal-list" class="mt-3"></div>
                 <button id="premium-pay-btn" type="button" onclick="premiumPay()" class="mt-5 w-full min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl">Pay ₹<span class="premium-price">99</span></button>
-                <button id="premium-snapshot-btn" type="button" onclick="intelSnapshotRun()" class="mt-2 w-full min-h-[44px] border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-bold rounded-xl text-sm">Get the free 1-page snapshot instead</button>
+                <button id="premium-snapshot-btn" type="button" onclick="intelSnapshotRun()" class="mt-2 w-full min-h-[44px] border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-bold rounded-xl text-sm">Get the free 2-page report instead</button>
                 <p id="premium-pay-msg" class="text-xs text-slate-600 mt-2" role="status" aria-live="polite"></p>
             </div>
         </div>
@@ -12841,6 +12841,49 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             return P.map(function (p, i) { return ipPage(i + 1, P.length, p[0], p[1], p[2], kind, right); }).join('');
         }
         /* ---- the 5-page career report (general, or made for the user) ---- */
+        // A short block that changes with the reader's stage (Class 10, 11-12, undergraduate, graduate, working).
+        function ipStageCard(X) {
+            const e = X.e, c = X.rec, A = X.A; if (!A || X.gen) return '';
+            const sd = c.skillDetails || [], s1 = sd[0] ? sd[0].name : 'the first core skill', s2 = sd[1] ? sd[1].name : 'a second skill';
+            const cert = (c.certifications || [])[0], ex = X.exams[0], road = c.roadmap || [];
+            let t = '', items = [];
+            if (X.seg === 'c10') {
+                t = 'For you as a Class 10 student: choosing the stream';
+                items = ['Your big decision now is the stream or route after Class 10. For ' + c.title + ', the usual path starts like this: ' + (road[0] || 'Class 11 and 12 in a stream that suits your best subjects') + '.',
+                    'Ask your school or a counsellor which stream keeps ' + c.title + ' open. If you are unsure, pick the stream that keeps the most doors open for the subjects you do best in.',
+                    'The route takes about ' + c.entryYears + ' years to a first role, so there is time. You do not need to lock in everything at 15.',
+                    'Before Class 11 starts, try one small activity linked to ' + s1 + ' to test whether you enjoy it.',
+                    'Keep a diploma or ITI route in mind as a backup if marks fall short.'];
+            } else if (X.seg === 'c1112') {
+                t = 'For you as a Class 11 or 12 student: this year and the next';
+                items = ['You have two jobs: do well in your boards, and prepare for the entrance route. ' + (ex ? 'The exam most linked to this career for you is ' + ex.name + '. Put its registration date in your calendar now.' : 'Find the entrance exam for your course and note its registration date.'),
+                    'Pick your course from the roadmap: ' + (road[1] || road[0] || 'a degree in a related field') + '.',
+                    'Keep a second course in a related field, so one missed cut-off does not cost you a year.',
+                    'Use holidays to try ' + s1 + ' once. It tells you early whether the work suits you.'];
+            } else if (X.seg === 'ug') {
+                t = 'For you as an undergraduate: use your remaining degree years';
+                items = ['Choose electives and your final-year project around ' + c.title + ' wherever the course allows.',
+                    'Aim for one internship or live project before your final year, in work linked to ' + s1 + '.',
+                    cert ? 'Earn ' + cert + ' before your final year. Employers read it as proof.' : 'Earn one recognised certification before your final year.',
+                    'Join a club, hackathon or competition that uses ' + s2 + '.',
+                    'If your degree is in a different field, add a short bridge course in ' + s1 + '. Employers care more about proof of skill than the degree name.'];
+            } else if (X.seg === 'grad') {
+                t = 'For you as a graduate: getting your first role';
+                items = ['Build two small pieces of work in ' + s1 + ' that you can show a recruiter. A link beats a claim.',
+                    cert ? 'Earn ' + cert + ' to close the gap between your degree and this career.' : 'Add one recognised certification that this career asks for.',
+                    'Apply directly to companies and for internships. Do not wait for campus drives.',
+                    'Practise one interview a week with a friend. Use the skills page to prepare your answers.',
+                    'Consider a master’s degree only if this field needs it. About ' + c.entryYears + ' years is the usual total route.'];
+            } else if (X.seg === 'working') {
+                t = 'For you as a working professional: moving into this career';
+                const rw = A.runway === '0-3' ? 'You have under three months of savings, so learn alongside your job first and do not leave it yet.' : A.runway === '3-6' ? 'You have three to six months of savings, so a part-time course alongside work is safer than a full break.' : A.runway ? 'You have six months or more saved, so a short full-time course is an option if you need one.' : '';
+                items = [rw, 'List what you already do that carries over into ' + c.title + '. Lead with it on your CV.',
+                    'Look for a bridge role next to your current one, in your company or industry, before making the full jump.',
+                    'Build one real piece of work in ' + s1 + ' in the next 60 days, so you have proof.',
+                    'Entry pay is usually at the lower end of ' + c.salary + '. Compare it with your current pay and your monthly costs before you decide.'].filter(Boolean);
+            }
+            return items.length ? ipCard(e(t), ipUl(items), 'pp-note') : '';
+        }
         function careerGuide5(c, mode) {
             const gen = mode === 'general', A = gen ? null : getStoredWizardAnswers(), X = ipCtx(A, c.id, gen), e = X.e;
             const rec = X.rec, vis = CAT_VIS[rec.category] || ['<i class=ic-star></i>', '#0c4a6e', '#0284c7'];
@@ -12852,16 +12895,16 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             P.push([rec.title + ': at a glance', gen ? 'What it is, what it pays, and whether it could suit you.' : 'What it is, and how it fits you.',
                 ipHero(rec, vis, fit) + ipMeters(rec) + ipJob(X) + (pay ? ipH('Pay: how it grows') + ppPayChart(pay.map(function (r) { return [r[2], r[3], r[4], r[1]]; }), Number(rec.salaryMax)) : '')]);
             P.push(['Why it can be great, and the downsides', 'An honest two-sided view' + (A ? ', based on your answers.' : '.'), ipWhyNot(X)]);
-            P.push(['How to get there', 'Routes, exams and colleges.', ipRoute(X) + ipH('Exams that lead here') + ipExams(X, true) + (X.student ? ipH('Colleges to look at') + ipColleges(X, true) : '')]);
+            P.push(['How to get there', gen ? 'Routes, exams and colleges.' : 'Routes, exams and colleges, for a ' + PLAN_SEG_LABEL[X.seg].toLowerCase() + '.', ipRoute(X) + ipH('Exams that lead here') + ipExams(X, true) + (X.student ? ipH('Colleges to look at') + ipColleges(X, true) : '')]);
             P.push(['Skills, pay and the reality', 'What to learn, what you can earn, and what people do not tell you.', ipSkills(X, true) + ipH('Pay and who hires') + ipPay(X, true)]);
-            P.push(['Plan B and your first 90 days', 'Close alternatives and what to do next.', ipPlanB(X, true) + ipH('Your first 90 days') + ipDays(X) + '<p class="pp-sm pp-mut">Pay, demand and cost figures are estimates and not a guarantee. Confirm exam dates, fees and eligibility on official websites. Report generated ' + e(X.today) + ' at plan4it.co.</p>']);
+            P.push(['Plan B and your first 90 days', gen ? 'Close alternatives and what to do next.' : 'Close alternatives, and what to do next as a ' + PLAN_SEG_LABEL[X.seg].toLowerCase() + '.', ipStageCard(X) + ipPlanB(X, true) + ipH('Your first 90 days') + ipDays(X) + '<p class="pp-sm pp-mut">Pay, demand and cost figures are estimates and not a guarantee. Confirm exam dates, fees and eligibility on official websites. Report generated ' + e(X.today) + ' at plan4it.co.</p>']);
             return P.map(function (p, i) { return ipPage(i + 1, P.length, p[0], p[1], p[2], kind, right); }).join('');
         }
 
 
         /* ============================================================
            WHAT IS INSIDE, AND THE FREE SNAPSHOTS
-           The full reports are paid. Everyone can get a 1-page snapshot that is useful
+           The full reports are paid. Everyone can get a 2-page report (intelSnapshot) that is useful
            (the job, the pay band, difficulty, three skills, one upside, one downside)
            but leaves out the plan: stage pay, exams and dates, colleges, skills with
            learning links, Plan B and the 90-day plan.
@@ -12903,15 +12946,36 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         }
         function intelSnapshot() {
             const A = getStoredWizardAnswers(); if (!A) return null;
-            const X = ipCtx(A, null, false), e = X.e, top = X.top.slice(0, 3), rec = X.rec;
-            const vis = CAT_VIS[rec.category] || ['<i class=ic-star></i>', '#0c4a6e', '#0284c7'], lab = function (k) { return quizLabel(k, A, k === 'cls'); };
-            const rows = [['Stage', lab('cls')], ['Interests', A.interests3 && A.interests3.length ? A.interests3.join(', ') : 'Still exploring'], ['Work style', IP_STYLE_TXT[A.workStyle] || A.workStyle], ['Matters most', (WIZARD_PRIORITY_LABELS[A.constraint] || [''])[0]]].filter(function (r) { return r[1]; });
-            const body = '<div class="cr-banner" style="background:linear-gradient(120deg,' + vis[1] + ',' + vis[2] + ')"><div><div class="cr-cat">Your best match</div><div class="cr-name">' + e(rec.title) + '</div><div class="cr-sub">' + e(rec.overview || '') + '</div></div><div class="cr-fit"><b>' + X.pct(rec) + '%</b><span>your match</span></div></div>' +
-                ipH('Your top 3 matches') + '<div class="ci-top5" style="grid-template-columns:repeat(3,1fr)">' + top.map(function (c, i) { const v = CAT_VIS[c.category] || vis; return '<div class="ci-t5" style="border-top:4px solid ' + v[2] + '"><div class="ci-t5i">' + v[0] + '</div><div class="ci-t5n">' + (i + 1) + '. ' + e(c.title) + '</div><div class="ci-t5f" style="color:' + v[1] + '">' + X.pct(c) + '%</div><div class="pp-sm"><b>' + e(c.salary) + '</b></div><div class="pp-sm pp-mut">Demand: ' + e(c.demand) + '</div></div>'; }).join('') + '</div>' +
-                '<div class="pp-cols"><table class="pp-t pp-kv" style="flex:1.2">' + rows.map(function (r) { return '<tr><th>' + e(r[0]) + '</th><td>' + e(r[1]) + '</td></tr>'; }).join('') + '</table>' + ipCard('What we heard', '<p class="pp-sm">Your answers point most strongly to ' + e(rec.title) + '. The full report explains why, what could go wrong for you, and what to do next.</p>', 'pp-note') + '</div>' +
-                rptLockedBox('In the full 18-page report', RPT_FULL18, rptPriceText('full'), 'open plan4it.co, finish the quiz and tap Unlock on your results page.') +
+            const X = ipCtx(A, null, false), e = X.e, rec = X.rec, top = X.top, pct = X.pct, pool = X.pool;
+            if (!rec) return null;
+            const vis = CAT_VIS[rec.category] || ['<i class=ic-star></i>', '#0c4a6e', '#0284c7'];
+            const kind = 'Free 2-page report · ' + PLAN_SEG_LABEL[X.seg], right = 'Prepared for <b>' + e(X.name) + '</b><br>' + e(X.today);
+            const sd = (rec.skillDetails || []).slice(0, 3), s1 = sd[0] ? sd[0].name : 'the first core skill';
+            const col = { Logic: '#0284c7', People: '#0d9488', 'Hands-on': '#d97706', Creative: '#db2777', Research: '#7c3aed', Leadership: '#dc2626' };
+            const wsum = {}; let tw = 0;
+            pool.slice(0, 20).forEach(function (c) { const w = pct(c); tw += w; wsum[c.workStyle] = (wsum[c.workStyle] || 0) + w; });
+            const dna = Object.keys(wsum).sort(function (a, b) { return wsum[b] - wsum[a]; }).slice(0, 3);
+            const bd = intelBreakdown(rec, A), why = intelWhy(rec, A).slice(0, 2), gap = intelGap(rec, A)[0];
+            const fit = '<div class="cr-fit"><b>' + pct(rec) + '%</b><span>your match</span></div>';
+            const pay = careerReportPay(rec), road = (rec.roadmap || []).slice(0, 3), sec = top[1];
+            const p1 = ipHero(rec, vis, fit) +
+                '<div class="pp-cols"><div style="flex:1.1">' + ipCard('Your career DNA (top 3 styles)', dna.map(function (k) { return ppMeter(k, wsum[k] / tw * 100, Math.round(wsum[k] / tw * 100) + '%', col[k] || '#0284c7'); }).join('') + '<p class="pp-sm pp-mut">Taken from your 20 best-matching careers. The full report shows all six styles and the fields you keep matching with.</p>') + '</div>' +
+                '<div style="flex:1.1">' + ipCard('What drives your ' + pct(rec) + '% match', bd.map(function (r) { return ppMeter(r[0], r[1], r[1] + '%', r[1] >= 70 ? '#16a34a' : r[1] >= 45 ? '#d97706' : '#dc2626'); }).join('') + '<p class="pp-sm pp-mut">The full report explains each part and what the score does not tell you.</p>') + '</div></div>' +
+                '<div class="pp-cols"><div>' + ipCard('Why ' + e(rec.title) + ' fits you', ipUl(why)) + '</div><div>' + ipCard('One thing to think about', ipUl([gap || 'Nothing in your answers clashes strongly with this career. The full report still lists the honest downsides every person should know.']), 'pp-note') + '</div></div>' +
+                ipH('What the job involves') + '<p>' + e(rec.overview || '') + '</p>' + (rec.suitability ? '<p><b>Who it suits:</b> ' + e(rec.suitability) + '</p>' : '') +
+                '<p class="pp-sm pp-mut">Pages 7 and 8 of the full report add a typical week, the downsides in detail and a reality check.</p>';
+            const rows2 = [['Match with your answers', pct(rec) + '%', sec ? pct(sec) + '%' : ''], ['Pay band (estimate)', rec.salary, sec ? sec.salary : ''], ['Time to start', '~' + rec.entryYears + ' yr', sec ? '~' + sec.entryYears + ' yr' : ''], ['Cost to enter', rec.costTier, sec ? sec.costTier : '']];
+            const items = X.student ? ['All 5 careers side by side, with scores and downsides', 'Colleges for you with fees, cut-offs and placements', 'Exams with dates, fees and eligibility', 'Skills gap with free learning links', 'Pay at every stage and who hires', 'Plan B careers if plans change', 'Week-by-week 90-day plan and a 1 to 3 year roadmap', 'A guide to talk it through with your parents'] : ['All 5 careers side by side, with scores and downsides', 'Courses and certifications that employers accept', 'Skills gap with free learning links', 'Pay at every stage and who hires', 'Bridge roles and adjacent careers', 'Week-by-week 90-day plan and a 1 to 3 year roadmap', 'A decision worksheet for your notice period and savings', 'A guide to talk it through at home'];
+            const p2 = (pay ? ipH('Pay: how it grows (first two stages)') + ppPayChart(pay.slice(0, 2).map(function (r) { return [r[2], r[3], r[4], r[1]]; }), Number(rec.salaryMax)) + '<p class="pp-sm pp-mut">Senior pay, who hires and what moves pay up are in the full report.</p>' : '') +
+                ipH('Your route, in outline') + '<div class="cr-steps">' + road.map(function (x, i) { return '<div class="cr-step"><b>' + (i + 1) + '</b><span>' + e(x) + '</span></div>'; }).join('') + '</div>' +
+                '<p class="pp-sm">Most people start work in about <b>' + e(rec.entryYears) + ' years</b>. Cost to enter is rated <b>' + e(String(rec.costTier).toLowerCase()) + '</b>. The full report compares four ways in, side by side, for a ' + e(PLAN_SEG_LABEL[X.seg].toLowerCase()) + '.</p>' +
+                '<div class="pp-cols"><div>' + ipCard('Three skills to build first', ipUl(sd.map(function (s) { return s.name + (s.why ? ': ' + s.why : ''); })) + '<p class="pp-sm pp-mut">The full report shows where you stand on each and a free course for every one.</p>') + '</div>' +
+                '<div>' + ipCard('Your first 7 days', ipUl(['Day 1: write down why ' + rec.title + ' fits you, using the reasons on page 1.', 'Days 2 to 5: spend 30 minutes a day on ' + s1 + ' with one free beginner lesson.', 'Days 6 and 7: ask one person who does this job what a normal week looks like.']), 'pp-note') + '</div></div>' +
+                (sec ? ipH('Your top two, side by side') + ipRows(['', rec.title, sec.title], rows2.map(function (r) { return [r[0]].concat(r.slice(1)).map(function (x, i) { return i === 0 ? '<b>' + e(x) + '</b>' : e(x); }); })) : '') +
+                rptLockedBox('Want the whole picture? The full 18-page report adds', items, rptPriceText('full'), 'open plan4it.co, finish the quiz and tap Unlock on your results page.') +
                 '<p class="pp-sm pp-mut">Fit shows how well a career matches your answers. Pay figures are estimates. Generated ' + e(X.today) + ' at plan4it.co.</p>';
-            return ipPage(1, 1, 'Your free career snapshot', 'The headline from your quiz. The full report has the plan.', body, 'Free snapshot · ' + PLAN_SEG_LABEL[X.seg], 'Prepared for <b>' + e(X.name) + '</b><br>' + e(X.today));
+            const P = [['Your best career match and why', 'What the quiz says about you, and why ' + rec.title + ' came first.', p1], ['What it takes, and where to start', 'Pay, route and skills for ' + rec.title + ', with a first week you can begin on.', p2]];
+            return P.map(function (p, n) { return ipPage(n + 1, P.length, p[0], p[1], p[2], kind, right); }).join('');
         }
         function careerSnapshotRun(id, mode) {
             const c = careersData.find(function (x) { return x.id === id; }); if (!c) return;
@@ -12922,7 +12986,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         function intelSnapshotRun() {
             premiumCloseUnlock(); trackEvent('snapshot_full');
             let html = null; try { html = intelSnapshot(); } catch (er) { console.error(er); }
-            if (!html) { showToast('Take the quiz first, then you can get your snapshot.'); return; }
+            if (!html) { showToast('Take the quiz first, then you can get your free report.'); return; }
             printSheetHTML(html);
         }
 
@@ -12941,14 +13005,14 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const e = escapeAuth, A = !!getStoredWizardAnswers(), launch = PREMIUM_CFG.mode === 'launch' && !premiumHasPurchase(), unlocked = premiumUnlocked();
             const steps = [
                 { n: 1, done: A, t: 'Take the 2-minute quiz', d: 'Make a free account so your answers are saved, then answer a few questions. Add your state to get college and exam picks.' },
-                { n: 2, done: false, t: 'Get your free snapshot', d: 'One page: your top 3 matches with fit scores. No payment.', ok: A },
+                { n: 2, done: false, t: 'Get your free 2-page report', d: 'Two pages: your career DNA, fit score, pay and route outline, and a first week to start on. No payment.', ok: A },
                 { n: 3, done: false, t: 'Get the full 18-page report', d: launch ? 'Free during our launch, then ₹' + PREMIUM_CFG.price + ' one-time. Download it as a PDF.' : '₹' + PREMIUM_CFG.price + ' one-time. Download it as a PDF.', ok: A }
             ];
             const primary = !A ? '<button type="button" onclick="reportMainAction()" class="min-h-[48px] px-6 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-base shadow">Start the 2-minute quiz →</button>'
                 : '<button type="button" onclick="reportMainAction()" class="min-h-[48px] px-6 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-base shadow"><i class=ic-file></i> Download my full 18-page report' + (unlocked ? (launch ? ' · free now' : '') : ' · ₹' + PREMIUM_CFG.price) + '</button>' +
-                  '<button type="button" onclick="reportHubClose();intelSnapshotRun()" class="min-h-[48px] px-5 rounded-xl border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-bold text-sm">Free 1-page snapshot</button>';
-            const free = ['Your best match and top 3 careers with fit %', 'Pay band and demand for each', 'A summary of what you told us', 'A list of everything in the full report'];
-            const contents = '<div class="mt-4 grid ' + (cmp ? '' : 'sm:grid-cols-2 ') + 'gap-4"><div class="rounded-xl border border-slate-200 bg-white p-4"><p class="text-xs font-bold uppercase tracking-wider text-slate-500">Free snapshot · 1 page</p><ul class="mt-2 text-sm text-slate-700 space-y-1">' + free.map(function (x) { return '<li class="flex gap-2"><span class="text-emerald-600">✓</span><span>' + e(x) + '</span></li>'; }).join('') + '</ul></div>' +
+                  '<button type="button" onclick="reportHubClose();intelSnapshotRun()" class="min-h-[48px] px-5 rounded-xl border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-bold text-sm">Free 2-page report</button>';
+            const free = ['Your career DNA and what drives your fit score', 'Why your best match fits you, and one thing to watch', 'Pay for the first two stages, route outline and key skills', 'A first week to start on, and your top two compared'];
+            const contents = '<div class="mt-4 grid ' + (cmp ? '' : 'sm:grid-cols-2 ') + 'gap-4"><div class="rounded-xl border border-slate-200 bg-white p-4"><p class="text-xs font-bold uppercase tracking-wider text-slate-500">Free 2-page report</p><ul class="mt-2 text-sm text-slate-700 space-y-1">' + free.map(function (x) { return '<li class="flex gap-2"><span class="text-emerald-600">✓</span><span>' + e(x) + '</span></li>'; }).join('') + '</ul></div>' +
                 '<div class="rounded-xl border-2 border-amber-400 bg-white p-4"><p class="text-xs font-bold uppercase tracking-wider text-brand-700">Full report · 18 pages · ' + (launch ? 'free now, ₹' + PREMIUM_CFG.price + ' later' : '₹' + PREMIUM_CFG.price) + '</p>' + rptGroupsHTML() + '</div></div>';
             return '<div class="rounded-2xl border-2 border-amber-400 bg-white p-5 md:p-6 text-left">' +
                 '<div class="flex flex-wrap items-center gap-2"><span class="text-[11px] font-bold uppercase tracking-wider bg-brand-600 text-white px-2.5 py-1 rounded-full">Plan4it flagship</span><span class="text-[11px] font-semibold text-slate-600">18 pages · one topic per page · PDF</span></div>' +
