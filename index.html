@@ -466,7 +466,68 @@
             #wizard-results > * { grid-column: 1; min-width: 0; }
             #wizard-results > #report-promo-results { grid-column: 2; grid-row: 1 / span 40; position: sticky; top: 5.5rem; margin-bottom: 0; max-height: calc(100vh - 6.5rem); overflow-y: auto; border-radius: 1rem; }
         }
-    </style>
+    /* Professional line icons (replace emoji). Usage: <i class=ic-NAME></i>; colour follows the text colour. */
+i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em;background-color:currentColor;-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat;-webkit-print-color-adjust:exact;print-color-adjust:exact;flex:none}
+.ic-file{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z%22/%3E%3Cpath d=%22M14 2v6h6M16 13H8M16 17H8M10 9H8%22/%3E%3C/svg%3E")}
+.ic-check{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%2210%22/%3E%3Cpath d=%22m9 12 2 2 4-4%22/%3E%3C/svg%3E")}
+.ic-chat{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z%22/%3E%3C/svg%3E")}
+.ic-search{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%2211%22 cy=%2211%22 r=%228%22/%3E%3Cpath d=%22m21 21-4.3-4.3%22/%3E%3C/svg%3E")}
+.ic-target{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%2210%22/%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%226%22/%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%222%22/%3E%3C/svg%3E")}
+.ic-school{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 10h.01M15 10h.01%22/%3E%3C/svg%3E")}
+.ic-alert{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z%22/%3E%3Cpath d=%22M12 9v4M12 17h.01%22/%3E%3C/svg%3E")}
+.ic-wallet{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5%22/%3E%3Cpath d=%22M16 13h2%22/%3E%3C/svg%3E")}
+.ic-cap{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M22 10 12 5 2 10l10 5z%22/%3E%3Cpath d=%22M6 12v5c3 2 9 2 12 0v-5M22 10v6%22/%3E%3C/svg%3E")}
+.ic-landmark{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M3 22h18M6 18v-7M10 18v-7M14 18v-7M18 18v-7M12 2 3 7h18z%22/%3E%3C/svg%3E")}
+.ic-calc{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Crect x=%224%22 y=%222%22 width=%2216%22 height=%2220%22 rx=%222%22/%3E%3Cpath d=%22M8 6h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h.01M12 19h.01M16 19h.01%22/%3E%3C/svg%3E")}
+.ic-scale{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M12 3v18M5 21h14M5 7h14%22/%3E%3Cpath d=%22m5 7-3 8a4 4 0 0 0 6 0zM19 7l-3 8a4 4 0 0 0 6 0z%22/%3E%3C/svg%3E")}
+.ic-wrench{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z%22/%3E%3C/svg%3E")}
+.ic-users{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2%22/%3E%3Ccircle cx=%229%22 cy=%227%22 r=%224%22/%3E%3Cpath d=%22M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8%22/%3E%3C/svg%3E")}
+.ic-award{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%2212%22 cy=%228%22 r=%226%22/%3E%3Cpath d=%22M15.5 13 17 22l-5-3-5 3 1.5-9%22/%3E%3C/svg%3E")}
+.ic-chart{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M3 3v18h18%22/%3E%3Cpath d=%22M8 17v-5M13 17V8M18 17v-9%22/%3E%3C/svg%3E")}
+.ic-clipboard{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Crect x=%228%22 y=%222%22 width=%228%22 height=%224%22 rx=%221%22/%3E%3Cpath d=%22M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2M9 13h6M9 17h4%22/%3E%3C/svg%3E")}
+.ic-compass{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%2210%22/%3E%3Cpath d=%22m16.2 7.8-2.1 6.3-6.3 2.1 2.1-6.3z%22/%3E%3C/svg%3E")}
+.ic-repeat{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22m17 2 4 4-4 4%22/%3E%3Cpath d=%22M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4 4-4%22/%3E%3Cpath d=%22M21 13v1a4 4 0 0 1-4 4H3%22/%3E%3C/svg%3E")}
+.ic-refresh{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5%22/%3E%3C/svg%3E")}
+.ic-book{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z%22/%3E%3C/svg%3E")}
+.ic-briefcase{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Crect x=%222%22 y=%227%22 width=%2220%22 height=%2214%22 rx=%222%22/%3E%3Cpath d=%22M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16%22/%3E%3C/svg%3E")}
+.ic-down{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22m22 17-8.5-8.5-5 5L2 7%22/%3E%3Cpath d=%22M16 17h6v-6%22/%3E%3C/svg%3E")}
+.ic-up{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22m22 7-8.5 8.5-5-5L2 17%22/%3E%3Cpath d=%22M16 7h6v6%22/%3E%3C/svg%3E")}
+.ic-edit{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M12 20h9%22/%3E%3Cpath d=%22M16.4 3.6a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z%22/%3E%3C/svg%3E")}
+.ic-sprout{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M7 20h10M10 20c5.5-2.5.8-6.4 3-10%22/%3E%3Cpath d=%22M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8zM14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z%22/%3E%3C/svg%3E")}
+.ic-exit{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9%22/%3E%3C/svg%3E")}
+.ic-help{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%2210%22/%3E%3Cpath d=%22M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01%22/%3E%3C/svg%3E")}
+.ic-laptop{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Crect x=%223%22 y=%224%22 width=%2218%22 height=%2212%22 rx=%222%22/%3E%3Cpath d=%22M2 20h20%22/%3E%3C/svg%3E")}
+.ic-megaphone{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22m3 11 18-5v12L3 14z%22/%3E%3Cpath d=%22M11.6 16.8a3 3 0 1 1-5.8-1.6%22/%3E%3C/svg%3E")}
+.ic-palette{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%2213.5%22 cy=%226.5%22 r=%22.6%22/%3E%3Ccircle cx=%2217.5%22 cy=%2210.5%22 r=%22.6%22/%3E%3Ccircle cx=%228.5%22 cy=%227.5%22 r=%22.6%22/%3E%3Ccircle cx=%226.5%22 cy=%2212.5%22 r=%22.6%22/%3E%3Cpath d=%22M12 2a10 10 0 0 0 0 20c1 0 1.7-.8 1.7-1.7 0-.4-.2-.8-.4-1.1-.3-.3-.5-.7-.5-1.1 0-.9.8-1.7 1.7-1.7H16a6 6 0 0 0 6-6c0-5-4.5-9-10-9z%22/%3E%3C/svg%3E")}
+.ic-divide{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%2212%22 cy=%226%22 r=%221%22/%3E%3Cpath d=%22M5 12h14%22/%3E%3Ccircle cx=%2212%22 cy=%2218%22 r=%221%22/%3E%3C/svg%3E")}
+.ic-shuffle{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5%22/%3E%3C/svg%3E")}
+.ic-calendar{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Crect x=%223%22 y=%224%22 width=%2218%22 height=%2218%22 rx=%222%22/%3E%3Cpath d=%22M16 2v4M8 2v4M3 10h18%22/%3E%3C/svg%3E")}
+.ic-lifebuoy{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%2210%22/%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%224%22/%3E%3Cpath d=%22m4.9 4.9 4.3 4.3M14.8 14.8l4.3 4.3M14.8 9.2l4.3-4.3M4.9 19.1l4.3-4.3%22/%3E%3C/svg%3E")}
+.ic-plane{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z%22/%3E%3C/svg%3E")}
+.ic-map{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M3 6 9 3l6 3 6-3v15l-6 3-6-3-6 3z%22/%3E%3Cpath d=%22M9 3v15M15 6v15%22/%3E%3C/svg%3E")}
+.ic-route{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%226%22 cy=%2219%22 r=%223%22/%3E%3Cpath d=%22M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15%22/%3E%3Ccircle cx=%2218%22 cy=%225%22 r=%223%22/%3E%3C/svg%3E")}
+.ic-trash{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M3 6h18M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2%22/%3E%3C/svg%3E")}
+.ic-star{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21 7 14.2l-5-4.9 6.9-1z%22/%3E%3C/svg%3E")}
+.ic-lock{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Crect x=%223%22 y=%2211%22 width=%2218%22 height=%2211%22 rx=%222%22/%3E%3Cpath d=%22M7 11V7a5 5 0 0 1 10 0v4%22/%3E%3C/svg%3E")}
+.ic-clock{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%2210%22/%3E%3Cpath d=%22M12 6v6l4 2%22/%3E%3C/svg%3E")}
+.ic-folder{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.7-.9l-.8-1.2A2 2 0 0 0 7.9 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2z%22/%3E%3C/svg%3E")}
+.ic-train{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Crect x=%224%22 y=%223%22 width=%2216%22 height=%2216%22 rx=%222%22/%3E%3Cpath d=%22M4 11h16M12 3v8M8 19l-2 3M18 22l-2-3M8 15h.01M16 15h.01%22/%3E%3C/svg%3E")}
+.ic-shield{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z%22/%3E%3C/svg%3E")}
+.ic-shieldok{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z%22/%3E%3Cpath d=%22m9 12 2 2 4-4%22/%3E%3C/svg%3E")}
+.ic-mail{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Crect x=%222%22 y=%224%22 width=%2220%22 height=%2216%22 rx=%222%22/%3E%3Cpath d=%22m22 7-10 6L2 7%22/%3E%3C/svg%3E")}
+.ic-branch{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M6 3v12%22/%3E%3Ccircle cx=%2218%22 cy=%226%22 r=%223%22/%3E%3Ccircle cx=%226%22 cy=%2218%22 r=%223%22/%3E%3Cpath d=%22M18 9a9 9 0 0 1-9 9%22/%3E%3C/svg%3E")}
+.ic-rocket{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M4.5 16.5c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9a2.1 2.1 0 0 0-2.9-.1zM12 15l-3-3a22 22 0 0 1 2-3.9A12.9 12.9 0 0 1 22 2c0 2.7-.8 7.5-6 11a22 22 0 0 1-4 2zM9 12H4s.6-3 2-4c1.6-1.1 5 0 5 0M12 15v5s3-.6 4-2c1.1-1.6 0-5 0-5%22/%3E%3C/svg%3E")}
+.ic-link{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7%22/%3E%3C/svg%3E")}
+.ic-bookmark{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z%22/%3E%3C/svg%3E")}
+.ic-cog{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%223%22/%3E%3Cpath d=%22M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z%22/%3E%3C/svg%3E")}
+.ic-pulse{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z%22/%3E%3Cpath d=%22M3.2 12H9l1.5-3 3 6 1.5-3h5.8%22/%3E%3C/svg%3E")}
+.ic-flask{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M9 2h6M10 2v6.5L4 19a2 2 0 0 0 1.8 3h12.4A2 2 0 0 0 20 19l-6-10.5V2M7 15h10%22/%3E%3C/svg%3E")}
+.ic-film{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Crect x=%222%22 y=%222%22 width=%2220%22 height=%2220%22 rx=%222.2%22/%3E%3Cpath d=%22M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 17h5M17 7h5%22/%3E%3C/svg%3E")}
+.ic-mic{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Crect x=%229%22 y=%222%22 width=%226%22 height=%2212%22 rx=%223%22/%3E%3Cpath d=%22M19 10v2a7 7 0 0 1-14 0v-2M12 19v3%22/%3E%3C/svg%3E")}
+.ic-heart{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z%22/%3E%3C/svg%3E")}
+.ic-present{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M2 3h20M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3M7 21l5-5 5 5%22/%3E%3C/svg%3E")}
+.ic-pin{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z%22/%3E%3Ccircle cx=%2212%22 cy=%2210%22 r=%223%22/%3E%3C/svg%3E")}
+</style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
     <a href="#main" class="skip-link">Skip to main content</a>
@@ -626,11 +687,11 @@
                 <button data-nav="colleges" onclick="switchView('colleges')" class="nav-link hover:text-brand-600 transition">Colleges</button>
                 <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad')" class="nav-link hover:text-brand-600 transition">Govt & Money</button>
                 <button data-nav="internships" onclick="switchView('internships')" class="nav-link hover:text-brand-600 transition">Internships</button>
-                <button type="button" onclick="reportHubOpen()" class="inline-flex items-center gap-1.5 min-h-[36px] px-3 rounded-full bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 font-bold transition"><span aria-hidden="true">📄</span> Career Report</button>
+                <button type="button" onclick="reportHubOpen()" class="inline-flex items-center gap-1.5 min-h-[36px] px-3 rounded-full bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 font-bold transition"><span aria-hidden="true"><i class=ic-file></i></span> Career Report</button>
             </nav>
 
             <div class="flex items-center gap-1 sm:gap-3 shrink-0">
-                <button type="button" onclick="reportHubOpen()" aria-label="Full career report" title="Full career report" class="2xl:hidden min-h-[40px] px-2.5 sm:px-3 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 text-xs font-bold whitespace-nowrap"><span aria-hidden="true">📄</span><span class="hidden min-[420px]:inline"> Report</span></button>
+                <button type="button" onclick="reportHubOpen()" aria-label="Full career report" title="Full career report" class="2xl:hidden min-h-[40px] px-2.5 sm:px-3 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 text-xs font-bold whitespace-nowrap"><span aria-hidden="true"><i class=ic-file></i></span><span class="hidden min-[420px]:inline"> Report</span></button>
                 <button id="gs-btn" type="button" onclick="openGlobalSearch()" aria-label="Search careers, exams and colleges" title="Search (press /)" class="min-h-[40px] min-w-[40px] border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl px-2.5 sm:px-3 flex items-center justify-center gap-2 text-sm font-semibold transition"><svg class="w-5 h-5" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="M13.5 13.5L17 17" stroke-linecap="round"/></svg><span class="hidden">Search</span></button>
                 <button id="admin-header-btn" type="button" onclick="openAdmin()" class="hidden min-h-[40px] border border-amber-200 text-amber-800 bg-amber-50 hover:bg-amber-100 px-3 rounded-xl text-xs font-semibold transition">Admin</button>
                     <button id="auth-header-btn" type="button" onclick="openAuth()" aria-label="Sign up or log in" title="Create an account or log in" class="min-h-[40px] whitespace-nowrap border border-brand-200 text-brand-700 hover:bg-brand-50 px-2.5 sm:px-4 py-2 rounded-xl text-sm font-semibold transition">Sign up</button>
@@ -655,7 +716,7 @@
             <button data-nav="colleges" onclick="switchView('colleges');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Colleges</button>
             <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Govt & Money</button>
             <button data-nav="internships" onclick="switchView('internships');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Internships</button>
-            <button type="button" onclick="closeMobileMenu();reportHubOpen()" class="text-left min-h-[48px] px-5 flex items-center gap-2 font-bold text-amber-900 bg-amber-50 hover:bg-amber-100"><span aria-hidden="true">📄</span> Full Career Report (18 pages)</button>
+            <button type="button" onclick="closeMobileMenu();reportHubOpen()" class="text-left min-h-[48px] px-5 flex items-center gap-2 font-bold text-amber-900 bg-amber-50 hover:bg-amber-100"><span aria-hidden="true"><i class=ic-file></i></span> Full Career Report (18 pages)</button>
             <div class="my-1 border-t border-slate-200"></div>
             <button data-nav="dashboard" onclick="switchView('dashboard');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">My Dashboard</button>
         </div>
@@ -798,7 +859,7 @@
                 <!-- Wizard Results -->
                 <div id="wizard-results" class="hidden">
                     <div class="celebrate-pop bg-brand-50 border border-brand-100 rounded-2xl p-6 mb-6">
-                        <span class="bg-brand-600 text-white text-xs font-bold px-2.5 py-1 rounded-full">🎉 Discovery Complete</span>
+                        <span class="bg-brand-600 text-white text-xs font-bold px-2.5 py-1 rounded-full"><i class=ic-check></i> Discovery Complete</span>
                         <h3 class="text-xl font-bold text-slate-900 mt-3 mb-1">Your results are ready</h3>
                         <p class="text-sm text-slate-600 mb-3">Here is what we found, in plain words. Start with the first match below.</p>
                         <p class="text-slate-600 text-sm" id="wizard-results-summary">Based on your inputs, here are your matching tracks:</p>
@@ -825,7 +886,7 @@
 
                     <!-- Family Expectation vs. Your Interest Reflection -->
                     <div id="wizard-family" data-jump="Family talk" class="scroll-mt-32 bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-4 mb-6">
-                        <h4 class="font-bold text-slate-900 text-sm">🗣️ One More Thing: Family Expectations vs. Your Interest</h4>
+                        <h4 class="font-bold text-slate-900 text-sm"><i class=ic-chat></i> One More Thing: Family Expectations vs. Your Interest</h4>
                         <p class="text-xs text-slate-600">Career fit in India is rarely just about you — it's also about what family expects. This won't resolve it, but it can help you see the gap (or lack of one) clearly enough to actually talk about it.</p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
@@ -965,7 +1026,7 @@
             </div>
             <div id="explorer-more" class="hidden text-center"></div>
             <div id="explorer-empty-state" class="hidden text-center py-16">
-                <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl" aria-hidden="true">🔍</div>
+                <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl" aria-hidden="true"><i class=ic-search></i></div>
                 <p class="text-slate-700 font-semibold">No careers match your filters</p>
                 <p class="text-slate-500 text-sm mt-1">Try removing a filter or searching a different word.</p>
                 <button type="button" onclick="resetExplorerFilters()" class="mt-4 min-h-[40px] px-4 border border-brand-200 text-brand-700 hover:bg-brand-50 rounded-xl text-sm font-semibold transition">Clear all filters</button>
@@ -1141,7 +1202,7 @@
             </div>
             <div id="exams-more" class="hidden text-center"></div>
             <div id="exams-empty-state" class="hidden text-center py-16">
-                <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl" aria-hidden="true">🎯</div>
+                <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl" aria-hidden="true"><i class=ic-target></i></div>
                 <p class="text-slate-700 font-semibold">No exams match your filters</p>
                 <p class="text-slate-500 text-sm mt-1">Try removing a filter or searching a different word.</p>
                 <button type="button" onclick="resetExamFilters()" class="mt-4 min-h-[40px] px-4 border border-brand-200 text-brand-700 hover:bg-brand-50 rounded-xl text-sm font-semibold transition">Clear all filters</button>
@@ -1482,7 +1543,7 @@
             </div>
             <div data-cmode="degree" id="colleges-more" class="hidden text-center"></div>
             <div data-cmode="degree" id="colleges-empty-state" class="hidden text-center py-16">
-                <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl" aria-hidden="true">🏫</div>
+                <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl" aria-hidden="true"><i class=ic-school></i></div>
                 <p class="text-slate-700 font-semibold">No colleges match your filters</p>
                 <p class="text-slate-500 text-sm mt-1">Try removing a filter or searching a different word.</p>
                 <button type="button" onclick="resetCollegeFilters()" class="mt-4 min-h-[40px] px-4 border border-brand-200 text-brand-700 hover:bg-brand-50 rounded-xl text-sm font-semibold transition">Clear all filters</button>
@@ -1523,7 +1584,7 @@
                 <p class="text-slate-600 text-sm">Find the exams you can apply for, check your age limit and attempts, see what each job is really like, get a month-by-month prep plan, and learn what your category gets you.</p>
                 <div id="gt-tabs" role="tablist" aria-label="Government jobs toolkit" class="flex flex-wrap gap-2"></div>
                 <div id="gt-panel" role="tabpanel" aria-live="polite"></div>
-                <div class="verify-note flex items-start gap-2 text-xs bg-amber-50 border border-amber-200 text-amber-900 rounded-xl px-3 py-2"><span aria-hidden="true">⚠️</span><p>Age limits, pay levels, vacancy and quota details here are typical figures from recent notifications. We have not verified them against this year's notifications. The official notification always decides. Check <a href="https://upsc.gov.in/" target="_blank" rel="noopener" class="underline font-semibold">UPSC</a>, <a href="https://ssc.gov.in/" target="_blank" rel="noopener" class="underline font-semibold">SSC</a>, <a href="https://www.rrbcdg.gov.in/" target="_blank" rel="noopener" class="underline font-semibold">Railways</a>, <a href="https://www.ibps.in/" target="_blank" rel="noopener" class="underline font-semibold">IBPS</a> or your State PSC site before you apply.</p></div>
+                <div class="verify-note flex items-start gap-2 text-xs bg-amber-50 border border-amber-200 text-amber-900 rounded-xl px-3 py-2"><span aria-hidden="true"><i class=ic-alert></i></span><p>Age limits, pay levels, vacancy and quota details here are typical figures from recent notifications. We have not verified them against this year's notifications. The official notification always decides. Check <a href="https://upsc.gov.in/" target="_blank" rel="noopener" class="underline font-semibold">UPSC</a>, <a href="https://ssc.gov.in/" target="_blank" rel="noopener" class="underline font-semibold">SSC</a>, <a href="https://www.rrbcdg.gov.in/" target="_blank" rel="noopener" class="underline font-semibold">Railways</a>, <a href="https://www.ibps.in/" target="_blank" rel="noopener" class="underline font-semibold">IBPS</a> or your State PSC site before you apply.</p></div>
             </div>
 
             <!-- Govt Section -->
@@ -1561,13 +1622,13 @@
 
             <!-- Funding Your Education Section -->
             <div data-nav="Funding your education" class="bg-white border border-slate-200 p-8 rounded-3xl space-y-6 shadow-sm">
-                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">💰 Money Matters</span>
+                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full"><i class=ic-wallet></i> Money Matters</span>
                 <h3 class="text-2xl font-bold text-slate-900">Funding Your Education in India</h3>
                 <p class="text-slate-600 text-sm leading-relaxed">Money is one of the biggest reasons students drop out or settle for a lesser option — not lack of merit. These tools help you find scholarships, understand loans, and see the real total cost before you commit.</p>
 
                 <!-- Scholarship Matcher -->
                 <div id="scholarship-matcher-block" class="scroll-mt-32 bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-4">
-                    <h4 class="font-bold text-slate-900 text-sm">🎓 Scholarship Matcher</h4>
+                    <h4 class="font-bold text-slate-900 text-sm"><i class=ic-cap></i> Scholarship Matcher</h4>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div>
                             <label for="scholarship-category" class="text-slate-600 block text-xs font-semibold mb-1">Category</label>
@@ -1597,7 +1658,7 @@
 
                 <!-- Education Loan Navigator -->
                 <div id="loan-navigator-block" class="scroll-mt-32 bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-4">
-                    <h4 class="font-bold text-slate-900 text-sm">🏦 Education Loan Navigator</h4>
+                    <h4 class="font-bold text-slate-900 text-sm"><i class=ic-landmark></i> Education Loan Navigator</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                         <div class="bg-white border border-slate-200 rounded-xl p-4 space-y-1.5">
                             <p class="font-bold text-slate-800">Public Bank / Govt Scheme</p>
@@ -1628,7 +1689,7 @@
 
                 <!-- Hidden Cost Calculator -->
                 <div id="hidden-cost-block" class="scroll-mt-32 bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-4">
-                    <h4 class="font-bold text-slate-900 text-sm">🧮 Hidden Cost Calculator</h4>
+                    <h4 class="font-bold text-slate-900 text-sm"><i class=ic-calc></i> Hidden Cost Calculator</h4>
                     <p class="text-xs text-slate-600">Families often budget only for tuition. Add the extras below to see a more realistic first-year total.</p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
@@ -1669,7 +1730,7 @@
 
             <!-- Reservation & Quota Explainer -->
             <div data-nav="Category and quota" id="reservation-quota-block" class="scroll-mt-32 bg-white border border-slate-200 p-8 rounded-3xl space-y-5 shadow-sm">
-                <span class="bg-brand-100 text-brand-800 text-xs font-bold px-3 py-1 rounded-full">⚖️ Reservation & Quota Explainer</span>
+                <span class="bg-brand-100 text-brand-800 text-xs font-bold px-3 py-1 rounded-full"><i class=ic-scale></i> Reservation & Quota Explainer</span>
                 <h3 class="text-2xl font-bold text-slate-900">Understand Your Category & Quota</h3>
                 <p class="text-slate-600 text-sm leading-relaxed">A huge number of otherwise-eligible students lose seats simply from misunderstanding how their category, domicile, and quota interact. Pick your category and exam to see how it typically works.</p>
 
@@ -1741,9 +1802,9 @@
                 <h3 class="text-2xl md:text-3xl font-extrabold text-slate-900">Do a real industry project while you study, and get it reviewed and certified</h3>
                 <p class="text-slate-700 text-sm md:text-base max-w-3xl">Most companies only take interns in their final year, and ask for experience you cannot get without an internship. The Plan4it Learnership Program closes that gap. Choose a track and a duration from 1 to 6 months, and you get one industry-standard project sized to that time. A mentor reviews your work at every milestone, and when you finish you get a Plan4it certificate and a project you can put on your resume, LinkedIn and portfolio.</p>
                 <div class="grid sm:grid-cols-3 gap-3 text-sm">
-                    <div class="bg-white border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900">🛠️ Industry-standard project</p><p class="text-slate-600 mt-1">A real-world brief using the tools companies use today, sized to the duration you pick.</p></div>
-                    <div class="bg-white border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900">🧑‍🏫 Reviewed at every milestone</p><p class="text-slate-600 mt-1">A mentor reviews each milestone and tells you what to fix before a recruiter sees it.</p></div>
-                    <div class="bg-white border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900">📜 Certificate + resume project</p><p class="text-slate-600 mt-1">A Plan4it certificate of completion, and a finished project to list on your resume.</p></div>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900"><i class=ic-wrench></i> Industry-standard project</p><p class="text-slate-600 mt-1">A real-world brief using the tools companies use today, sized to the duration you pick.</p></div>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900"><i class=ic-present></i> Reviewed at every milestone</p><p class="text-slate-600 mt-1">A mentor reviews each milestone and tells you what to fix before a recruiter sees it.</p></div>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900"><i class=ic-award></i> Certificate + resume project</p><p class="text-slate-600 mt-1">A Plan4it certificate of completion, and a finished project to list on your resume.</p></div>
                 </div>
                 <div>
                     <p class="text-sm font-bold text-slate-900 mb-2">Choose a track</p>
@@ -1786,7 +1847,7 @@
                     <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900">How to reach out</p>
                         <ul class="list-disc pl-5 text-slate-700 mt-1 space-y-1"><li>Write 3 lines: who you are, one thing you built, what you are asking for</li><li>Send it to the person who would manage you, not general HR</li><li>Apply to small companies and startups first; they say yes more often</li><li>Follow up once after a week, then move on</li></ul></div>
                 </div>
-                <div class="verify-note flex items-start gap-2 text-xs bg-red-50 border border-red-200 text-red-900 rounded-xl px-3 py-2"><span aria-hidden="true">⚠️</span><p><b>Never pay a company to give you an internship</b> or a "registration fee" for a job offer. Real employers do not charge interns. If someone asks, report it on the portal and walk away.</p></div>
+                <div class="verify-note flex items-start gap-2 text-xs bg-red-50 border border-red-200 text-red-900 rounded-xl px-3 py-2"><span aria-hidden="true"><i class=ic-alert></i></span><p><b>Never pay a company to give you an internship</b> or a "registration fee" for a job offer. Real employers do not charge interns. If someone asks, report it on the portal and walk away.</p></div>
             </div>
 
             <!-- Portals -->
@@ -1796,7 +1857,7 @@
                     <p class="text-slate-600 text-sm mt-1">Official and well-known portals, grouped by what they are good for. Each link opens the portal in a new tab.</p>
                 </div>
                 <div id="intern-portals" class="space-y-6"></div>
-                <div class="verify-note flex items-start gap-2 text-xs bg-amber-50 border border-amber-200 text-amber-900 rounded-xl px-3 py-2"><span aria-hidden="true">⚠️</span><p>Portals change their rules and web addresses from time to time, and government schemes open and close by season. Check the current eligibility on each portal before you apply.</p></div>
+                <div class="verify-note flex items-start gap-2 text-xs bg-amber-50 border border-amber-200 text-amber-900 rounded-xl px-3 py-2"><span aria-hidden="true"><i class=ic-alert></i></span><p>Portals change their rules and web addresses from time to time, and government schemes open and close by season. Check the current eligibility on each portal before you apply.</p></div>
             </div>
         </section>
 
@@ -1857,7 +1918,7 @@
 
                 <div class="space-y-6">
                     <div id="attendance-block" class="scroll-mt-32 bg-white border border-slate-200 p-6 rounded-2xl space-y-4">
-                        <h3 data-nav="Attendance calculator" class="font-bold text-slate-900 text-lg">📊 Attendance Survival Calculator</h3>
+                        <h3 data-nav="Attendance calculator" class="font-bold text-slate-900 text-lg"><i class=ic-chart></i> Attendance Survival Calculator</h3>
                         <p class="text-xs text-slate-600">See how many more classes you can afford to miss — or how many you need to attend in a row to get back on track.</p>
                         <div class="grid grid-cols-2 gap-3">
                             <div>
@@ -1890,7 +1951,7 @@
         <!-- BACKUP PLAN GENERATOR -->
         <section id="view-backupPlan" class="view-section hidden space-y-8">
             <div data-nav="Overview" class="bg-gradient-to-r from-brand-900 to-brand-800 text-white p-8 rounded-3xl shadow-xl">
-                <span class="bg-brand-500/40 text-brand-200 text-xs font-semibold px-3 py-1 rounded-full">📋 Backup Plan Generator</span>
+                <span class="bg-brand-500/40 text-brand-200 text-xs font-semibold px-3 py-1 rounded-full"><i class=ic-clipboard></i> Backup Plan Generator</span>
                 <h2 class="text-3xl font-extrabold mt-3">Plan Your Safety Net</h2>
                 <p class="text-brand-200 text-sm mt-1 max-w-2xl">Enter your target exam, dream college, and mock score to get 5 ranked backup colleges you can realistically get into.</p>
             </div>
@@ -1969,7 +2030,7 @@
                 <!-- RESULTS -->
                 <div>
                     <div id="backup-empty-state" class="bg-white border border-dashed border-slate-300 rounded-2xl p-6 sm:p-8 text-center space-y-3">
-                        <div class="text-4xl">🧭</div>
+                        <div class="text-4xl"><i class=ic-compass></i></div>
                         <h3 class="font-bold text-slate-900 text-lg">Your backup plan will appear here</h3>
                         <p class="text-slate-600 text-sm max-w-md mx-auto">Fill in your details and we'll rank 5 realistic backup colleges based on your mock score and priorities.</p>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl mx-auto text-left text-xs text-slate-600 mt-4">
@@ -2002,7 +2063,7 @@
 
             <!-- Setbacks & Non-Linear Paths Section -->
             <div data-nav="Wrong course? Fix it" id="wrong-course-block" class="scroll-mt-32 bg-white border border-slate-200 p-8 rounded-3xl space-y-6 shadow-sm">
-                <span class="bg-brand-600 text-white text-xs font-bold px-3 py-1 rounded-full">🔁 You can change direction</span>
+                <span class="bg-brand-600 text-white text-xs font-bold px-3 py-1 rounded-full"><i class=ic-repeat></i> You can change direction</span>
                 <h3 class="text-2xl font-bold text-slate-900">Picked the wrong course, or was it someone else's choice?</h3>
                 <p class="text-slate-600 text-sm leading-relaxed">Many students end up somewhere they didn't want to be: a choice that didn't work out, a decision made by family, or plain circumstances. It can be fixed, and the earlier you act, the cheaper it usually is. Tell us where you are and we'll show the ways back.</p>
                 <div>
@@ -2017,7 +2078,7 @@
             </div>
 
             <div data-nav="Facing a setback?" id="setback-guidance-block" class="scroll-mt-32 bg-white border border-slate-200 p-8 rounded-3xl space-y-6 shadow-sm">
-                <span class="bg-slate-800 text-white text-xs font-bold px-3 py-1 rounded-full">🔄 Not Everyone's Path Is Linear</span>
+                <span class="bg-slate-800 text-white text-xs font-bold px-3 py-1 rounded-full"><i class=ic-refresh></i> Not Everyone's Path Is Linear</span>
                 <h3 class="text-2xl font-bold text-slate-900">Already Facing a Setback?</h3>
                 <p class="text-slate-600 text-sm leading-relaxed">A backlog, a dropped year, a missed exam, or realizing you're in the wrong course doesn't mean it's over — it means the path bends, not ends. Pick what's closest to your situation.</p>
 
@@ -8083,7 +8144,7 @@
         // Setback guidance. Plain, general advice: rules differ by board, university and state, so each situation says to confirm locally.
         // go = what the button does. For links, ext = an official site.
         const SETBACKS = [
-            { id: 'backlog', icon: '📚', label: 'Backlog or failed subject', title: 'A backlog is a delay, not the end of your degree',
+            { id: 'backlog', icon: '<i class=ic-book></i>', label: 'Backlog or failed subject', title: 'A backlog is a delay, not the end of your degree',
               lead: 'Most students who clear a backlog finish with the same degree as everyone else. What matters is a plan and a date.',
               week: ['Find your college\'s backlog rule in writing: how many attempts you get, and the last date.', 'List each backlog subject with its next exam date and exam fee.', 'Ask the teacher or a senior which topics cost you the marks.', 'Put fixed hours in your week for the retake, next to your current semester.'],
               months: ['Clear the oldest backlogs first. Many colleges set a time limit on them.', 'If one subject keeps failing, ask about tutoring, past papers or a study group.', 'Ask the placement cell if backlogs affect which companies you can sit for.', 'Keep your attendance up. Short attendance can stop you from sitting an exam at all.'],
@@ -8095,44 +8156,44 @@
               months: ['Use the year well: a course, a project or an internship, and keep proof of it.', 'Retake an exam only if your mock scores are rising. Use the Backup Plan tool above with your latest score.', 'Prepare a short, honest answer about the gap for interviews and forms.'],
               doors: [['Make my backup plan', 'Enter your exam and score.', "goToBlock('backup-generator-block')"], ['Exams that suit me', 'See exams in my field.', "goExams('')"]],
               avoid: ['Starting another drop year with no plan.', 'Comparing yourself with batchmates. Their year was different from yours.'] },
-            { id: 'missed-exam', icon: '🎯', label: 'Didn\'t clear my entrance exam', title: 'One attempt is one result, not your ceiling',
+            { id: 'missed-exam', icon: '<i class=ic-target></i>', label: 'Didn\'t clear my entrance exam', title: 'One attempt is one result, not your ceiling',
               lead: 'You have two honest choices: try again with a better plan, or take a good seat now. Both are fine.',
               week: ['Check your score and category rank against last year\'s cutoffs on the official site.', 'List other entrance exams in your field that are still open this year.', 'Talk with your family about the two choices: try again, or join a good college now.'],
               months: ['If you try again, take a mock test every week and fix your weakest topics first.', 'If you take a seat, shortlist 3 colleges you would be happy to attend, and compare fees.', 'Check attempt and age limits before you commit another year.'],
               doors: [['Make my backup plan', 'Get 5 realistic backups for your score.', "goToBlock('backup-generator-block')"], ['State exams in my field', 'See state-level entrance exams.', "goExams('CET')"], ['Colleges that fit me', 'See colleges picked for my budget and marks.', "goColleges()"]],
               avoid: ['Waiting for next year\'s dates before you act on anything.', 'Taking the first seat offered without comparing fees and placements.'] },
-            { id: 'wrong-course', icon: '🧭', label: 'Wrong course or stream', title: 'Finding out it is the wrong fit early is useful information',
+            { id: 'wrong-course', icon: '<i class=ic-compass></i>', label: 'Wrong course or stream', title: 'Finding out it is the wrong fit early is useful information',
               lead: 'The earlier you act, the cheaper it is to change. There are more ways back than most people know.',
               week: ['Write down what you dislike: the subjects, the daily work, or the career at the end.', 'Read the "Picked the wrong course?" guide just above for your stage.', 'Ask your college about branch change or transfer windows, and the last date.'],
               months: ['Compare 2 alternatives: how many credits carry over, how many extra years, and the cost.', 'Talk to 2 people who already work in the field you want.', 'Use the career switch planner to see what is missing between where you are and where you want to be.'],
               doors: [['Picked the wrong course?', 'Step-by-step guide for your stage.', "goToBlock('wrong-course-block')"], ['Plan a career switch', 'See the gap between two careers.', "goToBlock('career-switch-block')"], ['Find my path', 'Take the 5-minute quiz again.', "switchView('confusedMode');retakeQuiz()"]],
               avoid: ['Leaving before you know what you are moving to.', 'Switching only because a friend did.'] },
-            { id: 'no-campus-placement', icon: '💼', label: 'No campus placement', title: 'Missing campus placement is a delay, not a dead end',
+            { id: 'no-campus-placement', icon: '<i class=ic-briefcase></i>', label: 'No campus placement', title: 'Missing campus placement is a delay, not a dead end',
               lead: 'Most jobs in India are filled off campus. Treat it as your main route now, with a fixed weekly routine.',
               week: ['Make a simple, honest profile on LinkedIn and one job site, the same week.', 'Write one clear CV page and ask a senior or teacher to read it.', 'Message 5 alumni from your college in your field. Short and specific works best.'],
               months: ['Apply on a schedule, such as a fixed number each week, not in bursts.', 'Build one small project or take one certificate that shows the skill you want to be hired for.', 'Look at government and PSU exams as well, since many accept any degree.'],
               doors: [['Government job exams', 'See exams that accept most degrees.', "goExams('Government Jobs')"], ['Careers that suit me', 'See careers matching my quiz.', "switchView('explorer')"]],
               avoid: ['Paying a "registration fee" to get a job. Real recruiters do not ask candidates to pay.', 'Waiting for the next campus drive and doing nothing in between.'] },
-            { id: 'low-marks', icon: '📉', label: 'Lower marks than I hoped', title: 'Marks open some doors. They are not the only ones',
+            { id: 'low-marks', icon: '<i class=ic-down></i>', label: 'Lower marks than I hoped', title: 'Marks open some doors. They are not the only ones',
               lead: 'Many good courses and careers are chosen by entrance exams, skills or portfolios, not only by board marks.',
               week: ['Check whether your board allows an improvement or supplementary exam, and the dates.', 'Look up the minimum marks for the courses you want. Some ask for 50 or 60 percent.', 'List the entrance exams for those courses, since they often matter more than marks.'],
               months: ['Prepare for the entrance exam on top of your marks.', 'Look at skill-based routes too: diploma, ITI and certificates reward what you can do.', 'Build one project or portfolio that shows your ability beyond the marksheet.'],
               doors: [['Exams that suit me', 'Entrance exams matched to my interest.', "goExams('')"], ['Colleges that fit me', 'See colleges for my marks and budget.', "goColleges()"], ['Diploma and ITI routes', 'See polytechnic and ITI entrances.', "goExams('Diploma & ITI')"]],
               avoid: ['Choosing a course only because it is the "safe" one.', 'Believing one marksheet decides your whole life.'] },
-            { id: 'failed-board', icon: '📝', label: 'Failed a board exam', title: 'Boards give another chance. Use it well',
+            { id: 'failed-board', icon: '<i class=ic-edit></i>', label: 'Failed a board exam', title: 'Boards give another chance. Use it well',
               lead: 'Failing one or two subjects is more common than people say, and there is a clear next step.',
               week: ['Ask your school or board for the supplementary exam date and the last date to apply.', 'If you think marks are wrong, ask about re-checking or re-evaluation. The window is short.', 'Pick the subjects that need the most work and start today.'],
               months: ['If you cannot take the supplementary route, ask about repeating the year, or NIOS (the National Institute of Open Schooling), which holds exams more than once a year.', 'Keep other routes in mind, like an ITI or diploma after Class 10, which many states allow.'],
               doors: [['Diploma and ITI routes', 'See polytechnic and ITI entrances.', "goExams('Diploma & ITI')"], ['Find my path', 'Take the quiz to see options.', "switchView('confusedMode')"]],
               avoid: ['Missing the supplementary form date. It is usually a short window.', 'Letting a result decide how you feel about yourself.'] },
-            { id: 'money', icon: '💰', label: 'Can\'t afford the fees', title: 'Fees are a real problem, and there are real ways to ease them',
+            { id: 'money', icon: '<i class=ic-wallet></i>', label: 'Can\'t afford the fees', title: 'Fees are a real problem, and there are real ways to ease them',
               lead: 'Government colleges, scholarships and education loans together cover a lot. Start with the cheapest good option.',
               week: ['Ask the college accounts office about fee waivers, instalments and merit or means scholarships.', 'Use the scholarship matcher below to list schemes you may qualify for, and note each deadline.', 'Look at government colleges. Fees are much lower and many are very good.'],
               months: ['Apply on the National Scholarship Portal and your state portal before the deadlines.', 'If you need a loan, compare the interest, when repayment starts and any subsidy. The government\'s Vidya Lakshmi portal is a good place to begin.', 'Look at earn-while-you-learn routes: apprenticeships, or open and distance learning.'],
               doors: [['Scholarships for me', 'Match scholarships to your category and income.', "goToBlock('scholarship-matcher-block')"], ['Low-fee colleges', 'See colleges with the lowest fees first.', "goLowFee()"], ['Apprenticeships', 'See the NATS apprenticeship exam page.', "goExams('NATS')"]],
               links: [['National Scholarship Portal', 'https://scholarships.gov.in/'], ['Vidya Lakshmi (education loans)', 'https://www.vidyalakshmi.co.in/']],
               avoid: ['Borrowing from informal lenders.', 'Paying any "processing fee" for a scholarship. Real portals do not charge you to apply.'] },
-            { id: 'break', icon: '🌱', label: 'Had to take a break', title: 'Looking after yourself first is not failing',
+            { id: 'break', icon: '<i class=ic-sprout></i>', label: 'Had to take a break', title: 'Looking after yourself first is not failing',
               lead: 'Health, family and hard times can pause a year. Most colleges have a way back, if you ask early and keep your papers.',
               week: ['Talk to someone you trust: a parent, a teacher, a counsellor or a friend. You do not have to carry this alone.', 'Keep any medical or official papers. The college may ask for them later.', 'Write to your college about a leave, a break or re-admission, and ask what the rule is.'],
               months: ['Ask whether you can resume where you stopped, or must restart the year.', 'Return to a light routine first and add study hours slowly.', 'Ask about the Academic Bank of Credits so credits you earned are not lost.'],
@@ -8140,19 +8201,19 @@
               links: [['Tele-MANAS (government mental health service)', 'https://telemanas.mohfw.gov.in/']],
               doors: [['Pathways that keep credits', 'See ways to switch tracks without starting over.', "goToBlock('pathways-block')"]],
               avoid: ['Rushing back before you are ready.', 'Hiding the reason from the college. Most have a clear rule for breaks.'] },
-            { id: 'attempts-over', icon: '🚪', label: 'Out of attempts or over age', title: 'One exam closing does not close the field',
+            { id: 'attempts-over', icon: '<i class=ic-exit></i>', label: 'Out of attempts or over age', title: 'One exam closing does not close the field',
               lead: 'The same kind of work usually has more than one door. Find the nearest one that is still open.',
               week: ['Confirm the rule in the official notice. Some categories get relaxation.', 'List other exams that lead to the same kind of work.', 'Write what you really want from the goal: the title, the work, the pay or the respect. That shows you the best alternatives.'],
               months: ['Pick the nearest alternative: a state exam, another service, or a related course.', 'Look at private-sector roles that use the same skills.', 'Take a course or certificate that makes you ready for the new route.'],
               doors: [['Exams that suit me', 'See exams in my field.', "goExams('')"], ['Careers that suit me', 'See careers matching my quiz.', "switchView('explorer')"]],
               avoid: ['Using the last attempt with no change in how you prepare.', 'Telling yourself the goal was the only thing that mattered.'] },
-            { id: 'left-college', icon: '🔁', label: 'Left college midway', title: 'Many people finish their degree later, through another door',
+            { id: 'left-college', icon: '<i class=ic-repeat></i>', label: 'Left college midway', title: 'Many people finish their degree later, through another door',
               lead: 'Credits and years you already did often still count. Ask before you assume you must start again.',
               week: ['Collect your marksheets and any transfer or leaving certificates.', 'Ask your old college if you can re-join, or whether your credits are saved.', 'Check whether your state or university has a re-admission rule.'],
               months: ['Open and distance learning (IGNOU or state open universities) lets you finish a degree at your own pace.', 'Under NEP 2020, many universities allow a certificate or diploma for the years you completed. Ask your university.', 'Add one skill (a short course or a project) while you finish.'],
               doors: [['Pathways that keep credits', 'Lateral entry, open universities, credit transfer.', "goToBlock('pathways-block')"], ['Careers that suit me', 'See careers matching my quiz.', "switchView('explorer')"]],
               avoid: ['Assuming the years you did are lost.', 'Joining a new course without checking if credits transfer.'] },
-            { id: 'lost', icon: '🧩', label: 'Just feeling lost', title: 'Not knowing yet is a fine place to start',
+            { id: 'lost', icon: '<i class=ic-help></i>', label: 'Just feeling lost', title: 'Not knowing yet is a fine place to start',
               lead: 'You do not need the whole plan today. A few small steps will show you what to try next.',
               week: ['Take the 5-minute Find my path quiz.', 'Write down 3 things you enjoyed doing in the last year, even small ones.', 'Talk to one person who works in a field you are curious about.'],
               months: ['Try one short free course or a small project in your top field.', 'Read the real day-to-day of your top career matches in the Careers page.', 'Keep a list of options and do not decide in a day.'],
@@ -9054,7 +9115,7 @@
             return ' <a href="' + escapeAuth(u) + '" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="verify-link inline-block align-middle text-[11px] font-semibold text-brand-700 hover:underline whitespace-nowrap">' + escapeAuth(label || 'Verify on official site') + ' ↗</a>';
         }
         function verifyNoteHTML(text, item, kind, label) {
-            return '<div class="verify-note flex items-start gap-2 text-xs bg-amber-50 border border-amber-200 text-amber-900 rounded-xl px-3 py-2"><span aria-hidden="true">⚠️</span><p>' + text + verifyLinkHTML(item, kind, label) + '</p></div>';
+            return '<div class="verify-note flex items-start gap-2 text-xs bg-amber-50 border border-amber-200 text-amber-900 rounded-xl px-3 py-2"><span aria-hidden="true"><i class=ic-alert></i></span><p>' + text + verifyLinkHTML(item, kind, label) + '</p></div>';
         }
         function examFeeText(e) { return String(e.examFee || '').replace(/\s*\((?:approx\.?|approximate)\)/i, ''); }
         function approxTag(item, kind) {
@@ -9529,12 +9590,12 @@
            INTERNSHIPS: Plan4it Learnership Program (paid) + portal directory
            ============================================================ */
         const P4_TRACKS = [
-            { id: 'software', icon: '💻', name: 'Software Development', projects: ['Build and deploy a small web app with a database', 'Fix issues in a real open-source style codebase using Git and pull requests', 'Write tests and set up a simple CI check'], tags: 'technology engineering science computer' },
-            { id: 'data', icon: '📊', name: 'Data Analytics', projects: ['Clean a messy business dataset and find three insights', 'Build a dashboard a manager could use', 'Write a short report with a recommendation'], tags: 'technology science data math statistics' },
-            { id: 'marketing', icon: '📣', name: 'Digital Marketing', projects: ['Plan a 4-week content calendar for a small brand', 'Run a small search or social campaign and read the numbers', 'Write a one-page growth report'], tags: 'creative media business marketing communication' },
-            { id: 'product', icon: '🧭', name: 'Product and Business Analysis', projects: ['Write requirements for a new feature from user feedback', 'Map a process and find where it breaks', 'Present a prioritised roadmap'], tags: 'business management technology' },
-            { id: 'design', icon: '🎨', name: 'UI/UX Design', projects: ['Redesign one flow of a real app and explain why', 'Run 5 short user interviews and summarise them', 'Build a clickable prototype and a case study'], tags: 'creative design arts' },
-            { id: 'finance', icon: '🧮', name: 'Finance and Accounting', projects: ['Build a 3-statement model for a listed company from public filings', 'Reconcile accounts and prepare GST-style working in a sheet', 'Write a short investment-style note'], tags: 'finance commerce business accounting law' }
+            { id: 'software', icon: '<i class=ic-laptop></i>', name: 'Software Development', projects: ['Build and deploy a small web app with a database', 'Fix issues in a real open-source style codebase using Git and pull requests', 'Write tests and set up a simple CI check'], tags: 'technology engineering science computer' },
+            { id: 'data', icon: '<i class=ic-chart></i>', name: 'Data Analytics', projects: ['Clean a messy business dataset and find three insights', 'Build a dashboard a manager could use', 'Write a short report with a recommendation'], tags: 'technology science data math statistics' },
+            { id: 'marketing', icon: '<i class=ic-megaphone></i>', name: 'Digital Marketing', projects: ['Plan a 4-week content calendar for a small brand', 'Run a small search or social campaign and read the numbers', 'Write a one-page growth report'], tags: 'creative media business marketing communication' },
+            { id: 'product', icon: '<i class=ic-compass></i>', name: 'Product and Business Analysis', projects: ['Write requirements for a new feature from user feedback', 'Map a process and find where it breaks', 'Present a prioritised roadmap'], tags: 'business management technology' },
+            { id: 'design', icon: '<i class=ic-palette></i>', name: 'UI/UX Design', projects: ['Redesign one flow of a real app and explain why', 'Run 5 short user interviews and summarise them', 'Build a clickable prototype and a case study'], tags: 'creative design arts' },
+            { id: 'finance', icon: '<i class=ic-calc></i>', name: 'Finance and Accounting', projects: ['Build a 3-statement model for a listed company from public filings', 'Reconcile accounts and prepare GST-style working in a sheet', 'Write a short investment-style note'], tags: 'finance commerce business accounting law' }
         ];
         const P4_LADDER = [
             { yr: '1st year', stage: 1, title: 'Build the base', body: ['Pick one direction and learn its basics with a free or low-cost course', 'Make 1 small project and put it online', 'Join a college club or a student community'] },
@@ -9676,7 +9737,7 @@
             const el = document.createElement('div');
             el.className = 'toast-enter bg-slate-900 text-white text-sm font-medium px-4 py-3 rounded-xl shadow-lg flex items-center gap-2';
             el.dataset.msg = msg;
-            const icon = /^(Saved|Added|Marked)/.test(msg) ? '✅' : /^Removed/.test(msg) ? '🗑️' : '';
+            const icon = /^(Saved|Added|Marked)/.test(msg) ? '<i class=ic-check></i>' : /^Removed/.test(msg) ? '<i class=ic-trash></i>' : '';
             el.innerHTML = (icon ? '<span aria-hidden="true" class="text-base leading-none">' + icon + '</span>' : '') + '<span>' + escapeAuth(msg) + '</span>';
             container.appendChild(el);
             setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .3s'; setTimeout(() => el.remove(), 300); }, 2400);
@@ -10784,63 +10845,63 @@
             const add = function (icon, title, text, actions) { cards.push({ icon: icon, title: title, text: text, actions: actions || '' }); };
             const named = (a.mentioned || []).map(function (id) { return careersData.find(function (c) { return c.id === id; }); }).filter(Boolean);
             // a career in mind: plan backwards from it
-            if (a.mode === 'reverse' && named.length) add('🎯', 'Plan backwards from ' + named[0].title, 'Start from where you want to end up: the roadmap shows the stream, exams, degree and skills this career needs, step by step.', btn('Open the ' + e(named[0].title) + ' roadmap', "openCareerDetail('" + named[0].id + "')", true));
+            if (a.mode === 'reverse' && named.length) add('<i class=ic-target></i>', 'Plan backwards from ' + named[0].title, 'Start from where you want to end up: the roadmap shows the stream, exams, degree and skills this career needs, step by step.', btn('Open the ' + e(named[0].title) + ' roadmap', "openCareerDetail('" + named[0].id + "')", true));
             // ----- Class 10
             if (a.cls === '10') {
                 const w = a.worry;
-                if (w === 'wrong') add('🧭', 'Worried about picking the wrong stream', 'It is less final than it feels. Many degree courses accept students from more than one stream, and the routes below show what each stream keeps open.', btn('See every route after Class 10', "goToPathwayBranch('Class 10')", true));
-                if (w === 'marks') add('📈', 'Your Class 10 marks don\'t decide everything', 'Most degree admissions depend on Class 12 subjects and entrance exams, not Class 10 marks. Diploma, ITI and many state colleges also don\'t need top scores.', btn('See every route after Class 10', "goToPathwayBranch('Class 10')", true));
-                if (w === 'parents' || (is('decider', ['parents', 'decided']) && w !== 'parents')) add('🗣️', w === 'parents' ? 'You and your parents disagree' : 'Your parents are deciding', 'Use the family section below to see where your interest and their expectation overlap, then print a one-page summary to talk it through together.', btn('Compare with family expectations', "document.getElementById('wizard-family').scrollIntoView({behavior:'smooth'})", true) + btn('Print a summary for parents', 'printParentSummary()', false));
-                if (w === 'cost') add('💰', 'Keeping the cost down', 'Government schools, colleges and many scholarships keep costs low. The scholarship matcher shows which ones you may qualify for.', btn('Open the scholarship matcher', "goToBlock('scholarship-matcher-block')", true));
-                if (w === 'friends') add('👥', 'Your friends\' stream is not a reason to pick yours', 'You will make new friends in Class 11; you will live with your subjects for years. Pick for what you enjoy and what it opens up.');
+                if (w === 'wrong') add('<i class=ic-compass></i>', 'Worried about picking the wrong stream', 'It is less final than it feels. Many degree courses accept students from more than one stream, and the routes below show what each stream keeps open.', btn('See every route after Class 10', "goToPathwayBranch('Class 10')", true));
+                if (w === 'marks') add('<i class=ic-up></i>', 'Your Class 10 marks don\'t decide everything', 'Most degree admissions depend on Class 12 subjects and entrance exams, not Class 10 marks. Diploma, ITI and many state colleges also don\'t need top scores.', btn('See every route after Class 10', "goToPathwayBranch('Class 10')", true));
+                if (w === 'parents' || (is('decider', ['parents', 'decided']) && w !== 'parents')) add('<i class=ic-chat></i>', w === 'parents' ? 'You and your parents disagree' : 'Your parents are deciding', 'Use the family section below to see where your interest and their expectation overlap, then print a one-page summary to talk it through together.', btn('Compare with family expectations', "document.getElementById('wizard-family').scrollIntoView({behavior:'smooth'})", true) + btn('Print a summary for parents', 'printParentSummary()', false));
+                if (w === 'cost') add('<i class=ic-wallet></i>', 'Keeping the cost down', 'Government schools, colleges and many scholarships keep costs low. The scholarship matcher shows which ones you may qualify for.', btn('Open the scholarship matcher', "goToBlock('scholarship-matcher-block')", true));
+                if (w === 'friends') add('<i class=ic-users></i>', 'Your friends\' stream is not a reason to pick yours', 'You will make new friends in Class 11; you will live with your subjects for years. Pick for what you enjoy and what it opens up.');
                 const ints = (a.interests || []).filter(function (x) { return x !== 'none'; }), str = (a.strong || []).filter(function (x) { return x !== 'none'; });
                 if (ints.length && str.length && !ints.some(function (x) { return str.indexOf(x) > -1; })) {
                     const L = function (k, list) { return list.map(function (x) { const o = QZ_BANK[k].opts.find(function (p) { return p[0] === x; }); return o ? o[1].split(',')[0].toLowerCase() : x; }).join(', '); };
-                    add('⚖️', 'What you enjoy and what you score in are different', 'You enjoy ' + e(L('interests', ints)) + ' but score well in ' + e(L('strong', str)) + '. Both matter: interest keeps you going for years, marks open doors now. Routes that use both are ranked higher below.');
+                    add('<i class=ic-scale></i>', 'What you enjoy and what you score in are different', 'You enjoy ' + e(L('interests', ints)) + ' but score well in ' + e(L('strong', str)) + '. Both matter: interest keeps you going for years, marks open doors now. Routes that use both are ranked higher below.');
                 }
-                if (a.maths === 'drop') add('➗', 'Dropping Maths closes some doors', 'Without Maths, PCM, most engineering and some Commerce and Economics courses are closed. Commerce without Maths, Humanities and PCB stay open.');
-                if ((a.routes || []).some(function (r) { return r === 'diploma' || r === 'iti'; })) add('🛠️', 'You are open to diploma or ITI', 'These routes get you working sooner, and a diploma can lead into the second year of engineering through lateral entry.', btn('See diploma and ITI routes', "goToPathwayBranch('Class 10')", false));
+                if (a.maths === 'drop') add('<i class=ic-divide></i>', 'Dropping Maths closes some doors', 'Without Maths, PCM, most engineering and some Commerce and Economics courses are closed. Commerce without Maths, Humanities and PCB stay open.');
+                if ((a.routes || []).some(function (r) { return r === 'diploma' || r === 'iti'; })) add('<i class=ic-wrench></i>', 'You are open to diploma or ITI', 'These routes get you working sooner, and a diploma can lead into the second year of engineering through lateral entry.', btn('See diploma and ITI routes', "goToPathwayBranch('Class 10')", false));
             }
             // ----- Class 11-12
             if (a.cls === '11' || a.cls === '12') {
-                if (is('streamAgain', ['no', 'unsure'])) add('🔀', a.streamAgain === 'no' ? 'You want out of your stream' : 'Not sure about your stream', 'Many degrees take students from any stream: BA, BBA, law through CLAT, design through NID and UCEED, journalism and hotel management. Check each course\'s eligibility.', btn('See routes after Class 12', "goToPathwayBranch('Class 12')", true));
-                if (is('examStatus', ['none', 'dontknow'])) add('📝', 'Find the exams that apply to you', 'The exams page lists every major entrance exam with dates, fees and eligibility, with the ones that fit your stream first.', btn('Exams for me', 'goExams()', true));
-                else if (is('examStatus', ['serious', 'registered'])) add('📅', a.examStatus === 'serious' ? 'Keep every exam date in one place' : 'Registered but not preparing yet', a.examStatus === 'serious' ? 'Save the exams you are taking so their dates and deadlines show on your dashboard.' : 'Even 1 to 2 focused hours a day from now adds up. Save your exams so you see how many weeks are left.', btn('My exams', 'goExams()', true));
-                if (has('planB')) add('🛟', a.planB === 'none' ? 'Have a Plan B ready' : a.planB === 'drop' ? 'Planning a drop year' : 'Your Safety Net', a.planB === 'drop' ? 'Set a deadline and a fallback college list now, so a drop year is a choice and not a default.' : a.planB === 'none' ? 'Cut-offs move every year. A backup list made now saves panic in results week.' : 'The Safety Net tool lists realistic alternatives for the exam or college you are aiming for.', btn('Open my Safety Net', "switchView('backupPlan')", true));
-                if (is('pay', 'scholarship')) add('🎓', 'Scholarships first', 'We put low-cost routes first. The scholarship matcher checks which national and state scholarships you may qualify for.', btn('Open the scholarship matcher', "goToBlock('scholarship-matcher-block')", true));
-                if (is('pay', 'loan')) add('🏦', 'Planning an education loan', 'The loan navigator explains collateral rules, interest subsidies and what to ask the bank.', btn('Open the loan navigator', "goToBlock('loan-navigator-block')", true));
-                if (is('pay', 'earn')) add('💼', 'Study while you earn', 'Open and distance universities such as IGNOU, evening colleges and apprenticeship-linked degrees let you earn alongside your studies.');
-                if (is('move', 'abroad')) add('✈️', 'Studying abroad too', 'The Govt & Money page covers the costs and funding to plan for if you study outside India.', btn('Open Govt & Money', "switchView('govAndAbroad')", false));
+                if (is('streamAgain', ['no', 'unsure'])) add('<i class=ic-shuffle></i>', a.streamAgain === 'no' ? 'You want out of your stream' : 'Not sure about your stream', 'Many degrees take students from any stream: BA, BBA, law through CLAT, design through NID and UCEED, journalism and hotel management. Check each course\'s eligibility.', btn('See routes after Class 12', "goToPathwayBranch('Class 12')", true));
+                if (is('examStatus', ['none', 'dontknow'])) add('<i class=ic-edit></i>', 'Find the exams that apply to you', 'The exams page lists every major entrance exam with dates, fees and eligibility, with the ones that fit your stream first.', btn('Exams for me', 'goExams()', true));
+                else if (is('examStatus', ['serious', 'registered'])) add('<i class=ic-calendar></i>', a.examStatus === 'serious' ? 'Keep every exam date in one place' : 'Registered but not preparing yet', a.examStatus === 'serious' ? 'Save the exams you are taking so their dates and deadlines show on your dashboard.' : 'Even 1 to 2 focused hours a day from now adds up. Save your exams so you see how many weeks are left.', btn('My exams', 'goExams()', true));
+                if (has('planB')) add('<i class=ic-lifebuoy></i>', a.planB === 'none' ? 'Have a Plan B ready' : a.planB === 'drop' ? 'Planning a drop year' : 'Your Safety Net', a.planB === 'drop' ? 'Set a deadline and a fallback college list now, so a drop year is a choice and not a default.' : a.planB === 'none' ? 'Cut-offs move every year. A backup list made now saves panic in results week.' : 'The Safety Net tool lists realistic alternatives for the exam or college you are aiming for.', btn('Open my Safety Net', "switchView('backupPlan')", true));
+                if (is('pay', 'scholarship')) add('<i class=ic-cap></i>', 'Scholarships first', 'We put low-cost routes first. The scholarship matcher checks which national and state scholarships you may qualify for.', btn('Open the scholarship matcher', "goToBlock('scholarship-matcher-block')", true));
+                if (is('pay', 'loan')) add('<i class=ic-landmark></i>', 'Planning an education loan', 'The loan navigator explains collateral rules, interest subsidies and what to ask the bank.', btn('Open the loan navigator', "goToBlock('loan-navigator-block')", true));
+                if (is('pay', 'earn')) add('<i class=ic-briefcase></i>', 'Study while you earn', 'Open and distance universities such as IGNOU, evening colleges and apprenticeship-linked degrees let you earn alongside your studies.');
+                if (is('move', 'abroad')) add('<i class=ic-plane></i>', 'Studying abroad too', 'The Govt & Money page covers the costs and funding to plan for if you study outside India.', btn('Open Govt & Money', "switchView('govAndAbroad')", false));
             }
             // ----- Undergraduate and recent graduates
             if (a.cls === 'ug' || a.cls === 'grad') {
-                if (is('ugHow', ['wrong', 'out'])) add('🔁', a.ugHow === 'out' ? 'You want out of your course' : 'Wrong course, but you will finish', 'You have more options than it feels: finish and switch through a master\'s or a skills route, or change course. The guide below walks through each.', btn('Open the wrong-course guide', "goToBlock('wrong-course-block')", true));
+                if (is('ugHow', ['wrong', 'out'])) add('<i class=ic-repeat></i>', a.ugHow === 'out' ? 'You want out of your course' : 'Wrong course, but you will finish', 'You have more options than it feels: finish and switch through a master\'s or a skills route, or change course. The guide below walks through each.', btn('Open the wrong-course guide', "goToBlock('wrong-course-block')", true));
                 const pf = a.proof || [];
-                if (has('proof') && (pf.indexOf('none') > -1 || (pf.length === 1 && pf[0] === 'certs'))) add('🧰', 'Build proof before you apply', 'Recruiters want to see work, not only certificates. One project or a short internship changes your resume more than anything else.', btn('Ways to get experience', "switchView('internships')", true));
-                if (is('placements', ['few', 'none'])) add('🔎', 'Plan an off-campus search', 'With few companies on campus, apply directly through job and internship portals and alumni referrals, starting a semester earlier than your batch.', btn('Job and internship portals', "goToBlock('intern-portals-block')", true));
-                if (is('cgpa', 'u6') || a.backlogs === 'yes') add('⚠️', 'Watch the cut-offs', 'Many companies and programmes set a minimum CGPA, often around 6 to 7, and ask for no active backlogs. ' + (a.backlogs === 'yes' ? 'Clearing backlogs first opens the most doors.' : 'Check each listing and lean on projects and skills tests where marks are not the filter.'));
-                if (is('after', 'msAbroad')) add('✈️', 'A master\'s abroad', 'Plan exams (GRE, IELTS or TOEFL), funding and timelines a year ahead.', btn('Open Govt & Money', "switchView('govAndAbroad')", false));
-                if (is('after', 'govt')) add('🏛️', 'Government exams', 'See which government careers fit your degree and the exams that lead to them.', btn('Government careers', "goToBlock('govt-careers-block')", true));
-                if (is('since', ['1-2', '2+'])) add('🗓️', 'Have an answer for the gap', 'Recruiters ask about time since graduation. A recent project, course or internship gives you a good answer.');
+                if (has('proof') && (pf.indexOf('none') > -1 || (pf.length === 1 && pf[0] === 'certs'))) add('<i class=ic-wrench></i>', 'Build proof before you apply', 'Recruiters want to see work, not only certificates. One project or a short internship changes your resume more than anything else.', btn('Ways to get experience', "switchView('internships')", true));
+                if (is('placements', ['few', 'none'])) add('<i class=ic-search></i>', 'Plan an off-campus search', 'With few companies on campus, apply directly through job and internship portals and alumni referrals, starting a semester earlier than your batch.', btn('Job and internship portals', "goToBlock('intern-portals-block')", true));
+                if (is('cgpa', 'u6') || a.backlogs === 'yes') add('<i class=ic-alert></i>', 'Watch the cut-offs', 'Many companies and programmes set a minimum CGPA, often around 6 to 7, and ask for no active backlogs. ' + (a.backlogs === 'yes' ? 'Clearing backlogs first opens the most doors.' : 'Check each listing and lean on projects and skills tests where marks are not the filter.'));
+                if (is('after', 'msAbroad')) add('<i class=ic-plane></i>', 'A master\'s abroad', 'Plan exams (GRE, IELTS or TOEFL), funding and timelines a year ahead.', btn('Open Govt & Money', "switchView('govAndAbroad')", false));
+                if (is('after', 'govt')) add('<i class=ic-landmark></i>', 'Government exams', 'See which government careers fit your degree and the exams that lead to them.', btn('Government careers', "goToBlock('govt-careers-block')", true));
+                if (is('since', ['1-2', '2+'])) add('<i class=ic-calendar></i>', 'Have an answer for the gap', 'Recruiters ask about time since graduation. A recent project, course or internship gives you a good answer.');
                 const DB = { btech: 'B.Tech', bsc: 'B.Sc', bcom: 'B.Com', ba: 'BA', bba: 'BBA', bca: 'BCA', med: 'MBBS Graduate', design: 'B.Des', law: 'LLB Graduate', diploma: 'Diploma / Polytechnic' };
-                if (DB[a.degree] && cards.length < 4) add('🗺️', 'Where your degree can lead', 'See every route from your degree: jobs, higher study, exams and switches.', btn('Open the ' + e(DB[a.degree].replace(' Graduate', '')) + ' pathway', "goToPathwayBranch('" + DB[a.degree] + "')", false));
+                if (DB[a.degree] && cards.length < 4) add('<i class=ic-map></i>', 'Where your degree can lead', 'See every route from your degree: jobs, higher study, exams and switches.', btn('Open the ' + e(DB[a.degree].replace(' Graduate', '')) + ' pathway', "goToPathwayBranch('" + DB[a.degree] + "')", false));
             }
             // ----- Postgraduate
             if (a.cls === 'pg') {
-                if (is('pgWhy', 'time')) add('🧮', 'An honest cost check', 'A postgraduate degree costs fees plus one to two years of income. If it is mainly to buy time, a year of work or a focused certification may cost less and teach you more about what you want.');
-                if (is('pgWhy', 'change')) add('🔀', 'Changing field through a PG degree', 'Check that the programme accepts your undergraduate degree, and compare it with a direct switch route.', btn('See careers that fit', "sortExplorerByQuizMatch(); switchView('explorer')", true));
-                if (is('pgSpec', ['two', 'none'])) add('⚖️', 'Compare specialisations side by side', 'Rank careers by your answers, then compare two or three on pay, demand, entry time and cost.', btn('Compare careers', "sortExplorerByQuizMatch(); switchView('explorer')", true));
+                if (is('pgWhy', 'time')) add('<i class=ic-calc></i>', 'An honest cost check', 'A postgraduate degree costs fees plus one to two years of income. If it is mainly to buy time, a year of work or a focused certification may cost less and teach you more about what you want.');
+                if (is('pgWhy', 'change')) add('<i class=ic-shuffle></i>', 'Changing field through a PG degree', 'Check that the programme accepts your undergraduate degree, and compare it with a direct switch route.', btn('See careers that fit', "sortExplorerByQuizMatch(); switchView('explorer')", true));
+                if (is('pgSpec', ['two', 'none'])) add('<i class=ic-scale></i>', 'Compare specialisations side by side', 'Rank careers by your answers, then compare two or three on pay, demand, entry time and cost.', btn('Compare careers', "sortExplorerByQuizMatch(); switchView('explorer')", true));
                 const M = { exposure: ['Get industry exposure', 'Do one internship or live project this term, even a short one.', btn('Find internships', "switchView('internships')", false)], research: ['Build research output', 'Ask a professor about a small project you can turn into a poster or paper within 90 days.', ''], network: ['Grow your network', 'Message two alumni a week and attend one industry event a month.', ''], skills: ['Close the skill gap', 'Pick one skill your target roles list and finish one project or certification in it.', btn('See careers and skills', "sortExplorerByQuizMatch(); switchView('explorer')", false)] };
-                if (M[a.pgMissing]) add('🗓️', 'Next 90 days: ' + M[a.pgMissing][0].toLowerCase(), M[a.pgMissing][1], M[a.pgMissing][2]);
-                if (a.loan === 'yes') add('🏦', 'Planning an education loan', 'The loan navigator explains collateral rules, interest subsidies and what to ask the bank.', btn('Open the loan navigator', "goToBlock('loan-navigator-block')", false));
+                if (M[a.pgMissing]) add('<i class=ic-calendar></i>', 'Next 90 days: ' + M[a.pgMissing][0].toLowerCase(), M[a.pgMissing][1], M[a.pgMissing][2]);
+                if (a.loan === 'yes') add('<i class=ic-landmark></i>', 'Planning an education loan', 'The loan navigator explains collateral rules, interest subsidies and what to ask the bank.', btn('Open the loan navigator', "goToBlock('loan-navigator-block')", false));
             }
             // ----- Working professionals
             if (a.cls === 'working') {
-                if (a.mode === 'switch' || a.help === 'switch') add('🧭', 'Your switch plan', 'We have filled the switch planner with your current work, experience, study hours and savings. It shows what you already bring, what is missing and a realistic timeline.', btn('Build my switch plan', 'wizardOpenSwitchPlanner()', true));
-                if (a.mode === 'grow' || is('whyMove', ['pay', 'stalled'])) add('📈', 'Grow where you are first', 'Ask your manager what the next level needs, pick one skill that gets you there, and look at internal moves before switching companies or fields.');
-                if (is('paycut', 'none')) add('🌉', 'Use a bridge role', 'Move into a role next to your current one first, in the same company or industry, then make the jump. You keep your pay while you build proof.');
-                if (is('wroute', 'fulltime') && a.runway === '0-3') add('⚠️', 'Careful with a full-time break', 'With under three months of savings, upskilling alongside your job is safer. Aim for about six months of expenses before taking a full-time break.');
-                if (is('whyMove', 'return')) add('🔁', 'Returning after a break', 'Many companies run returnship programmes. A short refresher course and one recent project make the gap easy to explain.');
+                if (a.mode === 'switch' || a.help === 'switch') add('<i class=ic-compass></i>', 'Your switch plan', 'We have filled the switch planner with your current work, experience, study hours and savings. It shows what you already bring, what is missing and a realistic timeline.', btn('Build my switch plan', 'wizardOpenSwitchPlanner()', true));
+                if (a.mode === 'grow' || is('whyMove', ['pay', 'stalled'])) add('<i class=ic-up></i>', 'Grow where you are first', 'Ask your manager what the next level needs, pick one skill that gets you there, and look at internal moves before switching companies or fields.');
+                if (is('paycut', 'none')) add('<i class=ic-route></i>', 'Use a bridge role', 'Move into a role next to your current one first, in the same company or industry, then make the jump. You keep your pay while you build proof.');
+                if (is('wroute', 'fulltime') && a.runway === '0-3') add('<i class=ic-alert></i>', 'Careful with a full-time break', 'With under three months of savings, upskilling alongside your job is safer. Aim for about six months of expenses before taking a full-time break.');
+                if (is('whyMove', 'return')) add('<i class=ic-repeat></i>', 'Returning after a break', 'Many companies run returnship programmes. A short refresher course and one recent project make the gap easy to explain.');
             }
             return cards;
         }
@@ -11063,7 +11124,7 @@
             exams.sort(function (a, b) { return dl(a) - dl(b); });
             let h = '';
             // 1. next exams
-            if (exams.length) h += premiumSec('📅', 'Exams to prepare for', 'The next 3 that fit your answers, nearest deadline first. Always confirm on the official site.', '<ul class="divide-y divide-slate-100">' + exams.slice(0, 3).map(function (x) {
+            if (exams.length) h += premiumSec('<i class=ic-calendar></i>', 'Exams to prepare for', 'The next 3 that fit your answers, nearest deadline first. Always confirm on the official site.', '<ul class="divide-y divide-slate-100">' + exams.slice(0, 3).map(function (x) {
                 return '<li class="py-2.5 flex flex-wrap items-start justify-between gap-2"><div class="min-w-0"><p class="font-semibold text-slate-900 text-sm">' + e(x.name) + '</p><p class="text-xs text-slate-600">' + e(examRegLine(x)) + '</p><p class="text-xs text-slate-500">' + e(examDateLine(x)) + '</p></div><button type="button" onclick="openExamDetail(\'' + x.id + '\')" class="text-sm font-semibold text-brand-700 hover:underline min-h-[44px]">Details \u2192</button></li>';
             }).join('') + '</ul><button type="button" onclick="setFitOff(false);switchView(\'exams\')" class="mt-2 min-h-[44px] text-sm font-semibold text-brand-700 hover:underline">See all exams for me \u2192</button>');
             // 2. colleges in their state (school students already have colleges as their main matches above)
@@ -11075,21 +11136,21 @@
                 const picks = pickDiverseColleges(ranked, fx, 3);
                 const ut = fx.level ? FIT_LEVEL[fx.level][1] : null;
                 const band = function (c) { if (ut == null || c.dir) return 'Good fit'; const d = collegeTier(c) - ut; return d < 0 ? 'Dream' : d === 0 ? 'Target' : 'Safe'; };
-                if (picks.length) h += premiumSec('🏫', 'Colleges for you in ' + (fx.state === 'any' ? 'India' : fx.state), ut == null ? 'Three picks matched to your interest, fees and location. Add your marks in the quiz to see which are a stretch, a good match or safe.' : 'Dream = a stretch, Target = a good match for your marks, Safe = likely to get in.',
+                if (picks.length) h += premiumSec('<i class=ic-school></i>', 'Colleges for you in ' + (fx.state === 'any' ? 'India' : fx.state), ut == null ? 'Three picks matched to your interest, fees and location. Add your marks in the quiz to see which are a stretch, a good match or safe.' : 'Dream = a stretch, Target = a good match for your marks, Safe = likely to get in.',
                     '<ul class="grid md:grid-cols-3 gap-2">' + picks.map(function (r) {
                         const b = band(r.c), bc = b === 'Dream' ? 'bg-violet-100 text-violet-800' : b === 'Safe' ? 'bg-emerald-100 text-emerald-800' : 'bg-brand-100 text-brand-800';
                         return '<li class="border border-slate-200 rounded-xl p-3"><span class="text-[11px] font-bold px-2 py-0.5 rounded ' + bc + '">' + b + '</span><button type="button" onclick="openCollegeDetail(\'' + r.c.id + '\')" class="block mt-1.5 font-semibold text-slate-900 hover:text-brand-700 text-left text-sm">' + e(r.c.name.replace(/\s*\(.*?\)\s*/g, ' ').trim()) + '</button><p class="text-xs text-slate-500">' + e(r.c.location || r.c.district || '') + '</p></li>';
                     }).join('') + '</ul><button type="button" onclick="setFitOff(false);switchView(\'colleges\')" class="mt-2 min-h-[44px] text-sm font-semibold text-brand-700 hover:underline">See more colleges for me \u2192</button>');
             } else if (A.cls === 'working') {
                 const certs = []; top3.forEach(function (c) { (c.certifications || []).forEach(function (x) { if (certs.indexOf(x) < 0) certs.push(x); }); });
-                if (certs.length) h += premiumSec('🎓', 'Courses and certifications for your move', 'Recognised credentials your target roles ask for. Pick one and finish it.', '<div class="flex flex-wrap gap-2">' + certs.slice(0, 5).map(function (x) { return '<span class="text-sm font-semibold bg-slate-50 border border-slate-200 rounded-full px-3 py-1">' + e(x) + '</span>'; }).join('') + '</div>');
+                if (certs.length) h += premiumSec('<i class=ic-cap></i>', 'Courses and certifications for your move', 'Recognised credentials your target roles ask for. Pick one and finish it.', '<div class="flex flex-wrap gap-2">' + certs.slice(0, 5).map(function (x) { return '<span class="text-sm font-semibold bg-slate-50 border border-slate-200 rounded-full px-3 py-1">' + e(x) + '</span>'; }).join('') + '</div>');
             }
             // 3. first steps (the first quarter of the plan, three actions)
             let steps = []; try { const q = premiumYearPlanData(A, top3, exams)[0]; steps = (q && q[1] || []).slice(0, 3); } catch (er) {}
-            if (steps.length) h += premiumSec('✅', 'Your next steps', 'Three things to do in the next few weeks. The report turns this into a week-by-week plan.', '<ol class="space-y-2">' + steps.map(function (t, i) { return '<li class="flex gap-3 text-sm text-slate-800"><span class="inline-flex w-6 h-6 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-800 text-xs font-bold">' + (i + 1) + '</span><span>' + e(String(t).replace('the deadlines below', 'the deadlines above')) + '</span></li>'; }).join('') + '</ol>');
+            if (steps.length) h += premiumSec('<i class=ic-check></i>', 'Your next steps', 'Three things to do in the next few weeks. The report turns this into a week-by-week plan.', '<ol class="space-y-2">' + steps.map(function (t, i) { return '<li class="flex gap-3 text-sm text-slate-800"><span class="inline-flex w-6 h-6 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-800 text-xs font-bold">' + (i + 1) + '</span><span>' + e(String(t).replace('the deadlines below', 'the deadlines above')) + '</span></li>'; }).join('') + '</ol>');
             // 4. one backup
             const planB = !schoolStage && top3.length ? premiumPlanB(top3[0], pool, top3.map(function (c) { return c.id; })) : [];
-            if (planB.length) { const r = planB[0]; h += premiumSec('🛟', 'A backup option', 'If ' + top3[0].title + ' does not work out, this uses many of the same skills.', '<div class="flex flex-wrap items-start justify-between gap-2"><div class="min-w-0"><p class="font-semibold text-slate-900 text-sm">' + e(r.c.title) + '</p><p class="text-xs text-slate-600">' + (r.shared.length ? 'Shares ' + e(r.shared.slice(0, 3).join(', ')) + '. ' : 'Same field, similar day-to-day work. ') + 'About ' + r.c.entryYears + ' years to enter, ' + e(r.c.costTier.toLowerCase()) + ' cost, ' + e(r.c.salary) + '.</p></div><button type="button" onclick="openCareerDetail(\'' + r.c.id + '\')" class="text-sm font-semibold text-brand-700 hover:underline min-h-[44px]">View \u2192</button></div>'); }
+            if (planB.length) { const r = planB[0]; h += premiumSec('<i class=ic-lifebuoy></i>', 'A backup option', 'If ' + top3[0].title + ' does not work out, this uses many of the same skills.', '<div class="flex flex-wrap items-start justify-between gap-2"><div class="min-w-0"><p class="font-semibold text-slate-900 text-sm">' + e(r.c.title) + '</p><p class="text-xs text-slate-600">' + (r.shared.length ? 'Shares ' + e(r.shared.slice(0, 3).join(', ')) + '. ' : 'Same field, similar day-to-day work. ') + 'About ' + r.c.entryYears + ' years to enter, ' + e(r.c.costTier.toLowerCase()) + ' cost, ' + e(r.c.salary) + '.</p></div><button type="button" onclick="openCareerDetail(\'' + r.c.id + '\')" class="text-sm font-semibold text-brand-700 hover:underline min-h-[44px]">View \u2192</button></div>'); }
             box.innerHTML = '<div class="space-y-4">' + h + '</div>';
         }
         // Plain-language guide at the top of the results: what each part is, what the fit labels mean, and jump links.
@@ -11378,8 +11439,8 @@
                         <p class="text-xs text-slate-500 mb-3"><strong>Suitable For:</strong> ${c.suitability}</p>
                         <div class="flex items-center gap-2 text-[11px] font-semibold text-slate-500 mb-3 flex-wrap">
                             <span class="bg-slate-50 border border-slate-200 px-2 py-1 rounded-md">⏱ Entry: ~${c.entryYears} yrs</span>
-                            <span class="bg-slate-50 border border-slate-200 px-2 py-1 rounded-md">📊 ${c.difficulty}</span>
-                            ${readinessPct !== null ? `<span class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-2 py-1 rounded-md">✅ ${readinessPct}% skill-ready</span>` : ''}
+                            <span class="bg-slate-50 border border-slate-200 px-2 py-1 rounded-md"><i class=ic-chart></i> ${c.difficulty}</span>
+                            ${readinessPct !== null ? `<span class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-2 py-1 rounded-md"><i class=ic-check></i> ${readinessPct}% skill-ready</span>` : ''}
                         </div>
                         <div class="flex items-center justify-between text-xs font-semibold text-slate-700">
                             <span>Demand: <span class="text-brand-600">${c.demand}</span></span>
@@ -12421,7 +12482,7 @@
             const li = function (arr) { return '<ul>' + arr.filter(Boolean).map(function (x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul>'; };
             let n = 0; const sec = function (t, sub) { n++; return '<h2 class="pp-h2 cr-h2">' + n + '. ' + e(t) + '</h2>' + (sub ? '<p class="pp-sm pp-mut ci-sub">' + e(sub) + '</p>' : ''); };
             const pageBreak = '<div class="ci-pb"></div>';
-            const vis = CAT_VIS[rec.category] || ['⭐', '#0c4a6e', '#0284c7'];
+            const vis = CAT_VIS[rec.category] || ['<i class=ic-star></i>', '#0c4a6e', '#0284c7'];
             const styleWords = { Logic: 'solving problems', People: 'working with people', 'Hands-on': 'hands-on work', Creative: 'creative work', Leadership: 'leading and organising', Research: 'researching', Mixed: 'a mix of styles' };
             const lab = function (k) { return quizLabel(k, A, k === 'cls'); };
             const student = seg !== 'working';
@@ -12713,7 +12774,7 @@
             const A = getStoredWizardAnswers(); if (!A) return null;
             const X = ipCtx(A, null, false), e = X.e, rec = X.rec, top = X.top, pct = X.pct, pool = X.pool;
             if (!rec) return null;
-            const vis = CAT_VIS[rec.category] || ['⭐', '#0c4a6e', '#0284c7'];
+            const vis = CAT_VIS[rec.category] || ['<i class=ic-star></i>', '#0c4a6e', '#0284c7'];
             const kind = 'Career Intelligence Report · ' + PLAN_SEG_LABEL[X.seg] + ' edition', right = 'Prepared for <b>' + e(X.name) + '</b><br>' + e(X.today);
             const lab = function (k) { return quizLabel(k, A, k === 'cls'); };
             const rows = [['Stage', lab('cls')], ['Interests', A.interests3 && A.interests3.length ? A.interests3.join(', ') : 'Still exploring'], ['Work style', IP_STYLE_TXT[A.workStyle] || A.workStyle], ['Matters most', (WIZARD_PRIORITY_LABELS[A.constraint] || [''])[0]], ['Help needed with', lab('help')], ['Where', [A.district && A.state && A.state !== 'any' ? A.district : '', A.state ? (A.state === 'any' ? 'Any state' : A.state) : '', FIT_BUDGET[A.budget] ? FIT_BUDGET[A.budget][0] : '', FIT_LEVEL[A.level] ? FIT_LEVEL[A.level][0] : ''].filter(Boolean).join(' · ')], ['Careers you mentioned', A.careerNote || '']].filter(function (r) { return r[1]; });
@@ -12782,7 +12843,7 @@
         /* ---- the 5-page career report (general, or made for the user) ---- */
         function careerGuide5(c, mode) {
             const gen = mode === 'general', A = gen ? null : getStoredWizardAnswers(), X = ipCtx(A, c.id, gen), e = X.e;
-            const rec = X.rec, vis = CAT_VIS[rec.category] || ['⭐', '#0c4a6e', '#0284c7'];
+            const rec = X.rec, vis = CAT_VIS[rec.category] || ['<i class=ic-star></i>', '#0c4a6e', '#0284c7'];
             const kind = (gen ? 'Career Guide' : 'Career Report') + ' · ' + rec.title, right = (gen ? '' : 'Prepared for <b>' + e(X.name) + '</b><br>') + e(X.today);
             const fit = A ? '<div class="cr-fit"><b>' + X.pct(rec) + '%</b><span>your match</span></div>' : '';
             const pay = careerReportPay(rec);
@@ -12825,11 +12886,11 @@
         function rptInsideHTML(list, cls) { return '<ol class="' + (cls || '') + ' text-xs text-slate-700 space-y-0.5">' + list.map(function (t, i) { return '<li class="flex gap-2"><span class="shrink-0 w-5 text-right font-bold text-brand-700">' + (i + 1) + '</span><span>' + escapeAuth(t) + '</span></li>'; }).join('') + '</ol>'; }
         function rptLockedBox(title, items, price, how) {
             const e = escapeAuth;
-            return '<div class="pp-card pp-note"><b>' + e(title) + '</b><div class="pp-cols" style="margin-top:4px">' + [items.slice(0, Math.ceil(items.length / 2)), items.slice(Math.ceil(items.length / 2))].map(function (col) { return '<div>' + col.map(function (t) { return '<div class="pp-sm" style="margin:2px 0">🔒 ' + e(t) + '</div>'; }).join('') + '</div>'; }).join('') + '</div><p class="pp-sm" style="margin-top:6px"><b>' + e(price) + '</b> · ' + e(how || 'open plan4it.co and tap the report button on this career to get it.') + '</p></div>';
+            return '<div class="pp-card pp-note"><b>' + e(title) + '</b><div class="pp-cols" style="margin-top:4px">' + [items.slice(0, Math.ceil(items.length / 2)), items.slice(Math.ceil(items.length / 2))].map(function (col) { return '<div>' + col.map(function (t) { return '<div class="pp-sm" style="margin:2px 0"><i class=ic-lock></i> ' + e(t) + '</div>'; }).join('') + '</div>'; }).join('') + '</div><p class="pp-sm" style="margin-top:6px"><b>' + e(price) + '</b> · ' + e(how || 'open plan4it.co and tap the report button on this career to get it.') + '</p></div>';
         }
         function careerSnapshot(c, mode) {
             const A = mode === 'me' ? getStoredWizardAnswers() : null, X = ipCtx(A, c.id, !A), e = X.e, rec = X.rec;
-            const vis = CAT_VIS[rec.category] || ['⭐', '#0c4a6e', '#0284c7'], sd = (rec.skillDetails || []).slice(0, 3);
+            const vis = CAT_VIS[rec.category] || ['<i class=ic-star></i>', '#0c4a6e', '#0284c7'], sd = (rec.skillDetails || []).slice(0, 3);
             const kind = 'Free career snapshot · ' + rec.title, right = (A ? 'Prepared for <b>' + e(X.name) + '</b><br>' : '') + e(X.today);
             const fit = A ? '<div class="cr-fit"><b>' + X.pct(rec) + '%</b><span>your match</span></div>' : '';
             const body = ipHero(rec, vis, fit) + ipMeters(rec) +
@@ -12843,7 +12904,7 @@
         function intelSnapshot() {
             const A = getStoredWizardAnswers(); if (!A) return null;
             const X = ipCtx(A, null, false), e = X.e, top = X.top.slice(0, 3), rec = X.rec;
-            const vis = CAT_VIS[rec.category] || ['⭐', '#0c4a6e', '#0284c7'], lab = function (k) { return quizLabel(k, A, k === 'cls'); };
+            const vis = CAT_VIS[rec.category] || ['<i class=ic-star></i>', '#0c4a6e', '#0284c7'], lab = function (k) { return quizLabel(k, A, k === 'cls'); };
             const rows = [['Stage', lab('cls')], ['Interests', A.interests3 && A.interests3.length ? A.interests3.join(', ') : 'Still exploring'], ['Work style', IP_STYLE_TXT[A.workStyle] || A.workStyle], ['Matters most', (WIZARD_PRIORITY_LABELS[A.constraint] || [''])[0]]].filter(function (r) { return r[1]; });
             const body = '<div class="cr-banner" style="background:linear-gradient(120deg,' + vis[1] + ',' + vis[2] + ')"><div><div class="cr-cat">Your best match</div><div class="cr-name">' + e(rec.title) + '</div><div class="cr-sub">' + e(rec.overview || '') + '</div></div><div class="cr-fit"><b>' + X.pct(rec) + '%</b><span>your match</span></div></div>' +
                 ipH('Your top 3 matches') + '<div class="ci-top5" style="grid-template-columns:repeat(3,1fr)">' + top.map(function (c, i) { const v = CAT_VIS[c.category] || vis; return '<div class="ci-t5" style="border-top:4px solid ' + v[2] + '"><div class="ci-t5i">' + v[0] + '</div><div class="ci-t5n">' + (i + 1) + '. ' + e(c.title) + '</div><div class="ci-t5f" style="color:' + v[1] + '">' + X.pct(c) + '%</div><div class="pp-sm"><b>' + e(c.salary) + '</b></div><div class="pp-sm pp-mut">Demand: ' + e(c.demand) + '</div></div>'; }).join('') + '</div>' +
@@ -12884,7 +12945,7 @@
                 { n: 3, done: false, t: 'Get the full 18-page report', d: launch ? 'Free during our launch, then ₹' + PREMIUM_CFG.price + ' one-time. Download it as a PDF.' : '₹' + PREMIUM_CFG.price + ' one-time. Download it as a PDF.', ok: A }
             ];
             const primary = !A ? '<button type="button" onclick="reportMainAction()" class="min-h-[48px] px-6 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-base shadow">Start the 2-minute quiz →</button>'
-                : '<button type="button" onclick="reportMainAction()" class="min-h-[48px] px-6 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-base shadow">📄 Download my full 18-page report' + (unlocked ? (launch ? ' · free now' : '') : ' · ₹' + PREMIUM_CFG.price) + '</button>' +
+                : '<button type="button" onclick="reportMainAction()" class="min-h-[48px] px-6 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-base shadow"><i class=ic-file></i> Download my full 18-page report' + (unlocked ? (launch ? ' · free now' : '') : ' · ₹' + PREMIUM_CFG.price) + '</button>' +
                   '<button type="button" onclick="reportHubClose();intelSnapshotRun()" class="min-h-[48px] px-5 rounded-xl border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-bold text-sm">Free 1-page snapshot</button>';
             const free = ['Your best match and top 3 careers with fit %', 'Pay band and demand for each', 'A summary of what you told us', 'A list of everything in the full report'];
             const contents = '<div class="mt-4 grid ' + (cmp ? '' : 'sm:grid-cols-2 ') + 'gap-4"><div class="rounded-xl border border-slate-200 bg-white p-4"><p class="text-xs font-bold uppercase tracking-wider text-slate-500">Free snapshot · 1 page</p><ul class="mt-2 text-sm text-slate-700 space-y-1">' + free.map(function (x) { return '<li class="flex gap-2"><span class="text-emerald-600">✓</span><span>' + e(x) + '</span></li>'; }).join('') + '</ul></div>' +
@@ -12981,7 +13042,7 @@
             const n = /adv/i.test(level) ? 3 : /inter/i.test(level) ? 2 : 1;
             return '<span class="cr-dots">' + [1, 2, 3].map(function (i) { return '<i class="' + (i <= n ? 'on' : '') + '"></i>'; }).join('') + '</span> ' + escapeAuth(level || '');
         }
-        const CAT_VIS = { 'Technology': ['💻', '#0369a1', '#0ea5e9'], 'Engineering': ['⚙️', '#334155', '#64748b'], 'Healthcare': ['🩺', '#0f766e', '#14b8a6'], 'Finance': ['📈', '#166534', '#22c55e'], 'Business': ['💼', '#7c2d12', '#f97316'], 'Law & Public Service': ['⚖️', '#4c1d95', '#8b5cf6'], 'Science': ['🔬', '#1e3a8a', '#3b82f6'], 'Creative': ['🎨', '#9d174d', '#ec4899'], 'Arts & Entertainment': ['🎭', '#86198f', '#d946ef'], 'Media': ['🎙️', '#9a3412', '#fb923c'], 'Education': ['🎓', '#854d0e', '#eab308'], 'Agriculture & Environment': ['🌱', '#14532d', '#4ade80'], 'Skilled Trades': ['🛠️', '#44403c', '#a8a29e'], 'Aviation & Hospitality': ['✈️', '#075985', '#38bdf8'], 'Personal Services & Wellness': ['💆', '#9f1239', '#fb7185'], 'Sports & Fitness': ['🏅', '#b45309', '#f59e0b'] };
+        const CAT_VIS = { 'Technology': ['<i class=ic-laptop></i>', '#0369a1', '#0ea5e9'], 'Engineering': ['<i class=ic-cog></i>', '#334155', '#64748b'], 'Healthcare': ['<i class=ic-pulse></i>', '#0f766e', '#14b8a6'], 'Finance': ['<i class=ic-up></i>', '#166534', '#22c55e'], 'Business': ['<i class=ic-briefcase></i>', '#7c2d12', '#f97316'], 'Law & Public Service': ['<i class=ic-scale></i>', '#4c1d95', '#8b5cf6'], 'Science': ['<i class=ic-flask></i>', '#1e3a8a', '#3b82f6'], 'Creative': ['<i class=ic-palette></i>', '#9d174d', '#ec4899'], 'Arts & Entertainment': ['<i class=ic-film></i>', '#86198f', '#d946ef'], 'Media': ['<i class=ic-mic></i>', '#9a3412', '#fb923c'], 'Education': ['<i class=ic-cap></i>', '#854d0e', '#eab308'], 'Agriculture & Environment': ['<i class=ic-sprout></i>', '#14532d', '#4ade80'], 'Skilled Trades': ['<i class=ic-wrench></i>', '#44403c', '#a8a29e'], 'Aviation & Hospitality': ['<i class=ic-plane></i>', '#075985', '#38bdf8'], 'Personal Services & Wellness': ['<i class=ic-heart></i>', '#9f1239', '#fb7185'], 'Sports & Fitness': ['<i class=ic-award></i>', '#b45309', '#f59e0b'] };
         function ppPayChart(rows, hi) {
             // rows: [label, lo, hi, text]; columns are drawn to the middle of each range, scaled to the top of the band
             const H = 52;
@@ -13029,7 +13090,7 @@
                     : [['Days 1 to 30', [first.length ? 'Start learning ' + first.join(' and ') : 'Pick the first skill from the table', 'Ask 2 people in the role what they wish they had learned first']], ['Days 31 to 60', ['Build one project that you can show, and put it online', 'Apply to 2 or 3 internships or entry roles each week']], ['Days 61 to 90', [cert ? 'Start ' + cert : 'Choose one certification the role asks for', 'Get the project reviewed by someone in the field and improve it']]];
             const li = function (arr) { return '<ul>' + arr.map(function (x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul>'; };
             const sec = function (t) { return '<h2 class="pp-h2 cr-h2">' + e(t) + '</h2>'; };
-            const vis = CAT_VIS[c.category] || ['⭐', '#0c4a6e', '#0284c7'];
+            const vis = CAT_VIS[c.category] || ['<i class=ic-star></i>', '#0c4a6e', '#0284c7'];
             const wl = /good/i.test(c.workLife || '') ? 4 : /moderate/i.test(c.workLife || '') ? 3 : /irregular/i.test(c.workLife || '') ? 2 : 1;
             const wlTxt = String(c.workLife || '').replace(/\s*\(.*$/, '') || 'n/a';
             const costP = (PP_LEVEL[c.costTier] || 2) * 33, demP = (PP_LEVEL[c.demand] || 2) * 25, difP = (PP_LEVEL[c.difficulty] || 2) * 25;
@@ -13073,8 +13134,8 @@
             m.innerHTML = '<div class="bg-white rounded-2xl max-w-xl w-full p-5 sm:p-6 shadow-xl max-h-[90vh] overflow-y-auto">' +
                 '<div class="flex items-start justify-between gap-3"><div><p class="text-[11px] font-bold uppercase tracking-wider text-brand-700">Report for ' + e(c.title) + '</p><h2 class="text-xl font-bold text-slate-900 mt-1">How would you like your report?</h2></div><button type="button" onclick="careerReportChoiceClose()" aria-label="Close" class="min-h-[44px] min-w-[44px] text-slate-500 hover:text-slate-900 text-xl">✕</button></div>' +
                 '<div class="grid sm:grid-cols-2 gap-3 mt-4">' +
-                '<div class="border border-slate-200 rounded-xl p-4 flex flex-col"><p class="font-bold text-slate-900">🔎 Explore this career</p><p class="text-xs text-slate-600 mt-1 flex-grow">Just curious? No quiz needed. What the job is, pay at each stage, skills, how to get in, exams, colleges and a first 90 days. 5 pages.</p><button type="button" onclick="careerReportRun(\'' + e(id) + '\',\'general\')" class="mt-3 min-h-[44px] bg-white border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-bold rounded-xl text-sm">Get the career guide' + (PREMIUM_CFG.mode === 'launch' ? ' · free now' : ' · ₹' + PREMIUM_CFG.careerPrice) + '</button></div>' +
-                '<div class="border-2 border-brand-600 rounded-xl p-4 flex flex-col bg-brand-50"><p class="font-bold text-slate-900">🎯 Made for me</p><p class="text-xs text-slate-600 mt-1 flex-grow">' + (has ? 'Uses your quiz answers: your fit and why, what could go wrong for you, colleges and exams for your state, and your first 90 days. 5 pages.' : 'Takes 2 minutes. Answer a few questions and we write the report around you: fit, risks, colleges and exams for your state, and a parent guide.') + '</p>' +
+                '<div class="border border-slate-200 rounded-xl p-4 flex flex-col"><p class="font-bold text-slate-900"><i class=ic-search></i> Explore this career</p><p class="text-xs text-slate-600 mt-1 flex-grow">Just curious? No quiz needed. What the job is, pay at each stage, skills, how to get in, exams, colleges and a first 90 days. 5 pages.</p><button type="button" onclick="careerReportRun(\'' + e(id) + '\',\'general\')" class="mt-3 min-h-[44px] bg-white border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-bold rounded-xl text-sm">Get the career guide' + (PREMIUM_CFG.mode === 'launch' ? ' · free now' : ' · ₹' + PREMIUM_CFG.careerPrice) + '</button></div>' +
+                '<div class="border-2 border-brand-600 rounded-xl p-4 flex flex-col bg-brand-50"><p class="font-bold text-slate-900"><i class=ic-target></i> Made for me</p><p class="text-xs text-slate-600 mt-1 flex-grow">' + (has ? 'Uses your quiz answers: your fit and why, what could go wrong for you, colleges and exams for your state, and your first 90 days. 5 pages.' : 'Takes 2 minutes. Answer a few questions and we write the report around you: fit, risks, colleges and exams for your state, and a parent guide.') + '</p>' +
                 (has ? '<button type="button" onclick="careerReportRun(\'' + e(id) + '\',\'me\')" class="mt-3 min-h-[44px] bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm">Get my report' + (PREMIUM_CFG.mode === 'launch' ? ' · free now' : ' · ₹' + PREMIUM_CFG.price) + '</button>' : '<button type="button" onclick="careerReportChoiceClose();switchView(\'confusedMode\')" class="mt-3 min-h-[44px] bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm">Take the quiz first</button>') + '</div></div>' +
                 '<details class="mt-3 border border-slate-200 rounded-xl p-3"><summary class="text-xs font-bold text-slate-800 cursor-pointer min-h-[32px] flex items-center">What is inside the 5 pages</summary><div class="mt-2">' + rptInsideHTML(RPT_GUIDE5) + '</div></details>' +
                 (premiumUnlocked() ? '' : '<div class="mt-3 border-t border-slate-100 pt-3 flex items-center justify-between gap-3 flex-wrap"><p class="text-xs text-slate-600"><b>Not ready to pay?</b> A free 1-page snapshot has the job, pay band and skills.</p><button type="button" onclick="careerSnapshotRun(\'' + e(id) + '\',\'' + (has ? 'me' : 'general') + '\')" class="min-h-[44px] px-4 border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-bold rounded-xl text-sm">Free snapshot</button></div>') +
@@ -13741,7 +13802,7 @@
                     <div class="flex items-center gap-3 flex-wrap">
                         <span class="text-sm font-bold text-emerald-600">${c.salary}</span> ${approxTag(c, 'salary')}
                         <button onclick="toggleSaveCareer('${c.id}')" aria-pressed="${saved}" class="inline-flex items-center gap-2 min-h-[44px] px-5 rounded-xl text-sm font-bold text-white shadow-sm transition ${saved ? 'bg-brand-700' : 'bg-brand-600 hover:bg-brand-700'}"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="${saved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.6"><path d="M5 3.5a1 1 0 011-1h8a1 1 0 011 1v13.2a.5.5 0 01-.79.41L10 13.5l-4.21 3.6a.5.5 0 01-.79-.4V3.5z"/></svg>${saved ? 'Saved to your dashboard' : 'Save to my dashboard'}</button>
-                        <button onclick="careerReportOpen('${c.id}')" class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-xl text-sm font-bold border-2 border-brand-600 text-brand-700 hover:bg-brand-50 transition">📄 Career report (PDF)${PREMIUM_CFG.mode === 'launch' ? ' <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">Free now</span>' : ''}</button>
+                        <button onclick="careerReportOpen('${c.id}')" class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-xl text-sm font-bold border-2 border-brand-600 text-brand-700 hover:bg-brand-50 transition"><i class=ic-file></i> Career report (PDF)${PREMIUM_CFG.mode === 'launch' ? ' <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">Free now</span>' : ''}</button>
                     </div>
                 </div>
                 <h2 class="text-3xl font-extrabold text-slate-900">${c.title}</h2>
@@ -13830,7 +13891,7 @@
                     <div class="mt-5 pt-4 border-t border-slate-100">
                         <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">Certifications Worth Targeting</p>
                         <div class="flex flex-wrap gap-2">
-                            ${c.certifications.map(cert => `<span class="text-xs bg-brand-50 border border-brand-100 text-brand-700 px-3 py-1.5 rounded-full font-medium">🎓 ${cert}</span>`).join('')}
+                            ${c.certifications.map(cert => `<span class="text-xs bg-brand-50 border border-brand-100 text-brand-700 px-3 py-1.5 rounded-full font-medium"><i class=ic-cap></i> ${cert}</span>`).join('')}
                         </div>
                     </div>
                 </div>
@@ -14119,8 +14180,8 @@
                     <p class="text-xs text-slate-500"><strong>Eligibility:</strong> ${e.eligibility}</p>
                     <p class="text-xs text-slate-500"><strong>Leads to:</strong> ${e.courses}</p>
                     <div class="bg-amber-50 border border-amber-100 rounded-lg px-3 py-2 text-xs text-amber-800 font-semibold space-y-0.5">
-                        <p>📝 ${examRegLine(e, false)}</p>
-                        <p>📅 ${examDateLine(e, false)}</p>
+                        <p><i class=ic-edit></i> ${examRegLine(e, false)}</p>
+                        <p><i class=ic-calendar></i> ${examDateLine(e, false)}</p>
                         <p class="pt-0.5">${examStatusChip(e)}${verifyLinkHTML(e, 'date', 'Verify dates')}</p>
                     </div>
                     <div class="pt-2 mt-auto border-t border-slate-100 flex flex-wrap justify-between items-center gap-x-3 gap-y-1 text-xs">
@@ -14238,8 +14299,8 @@
                 <p class="text-slate-600 text-sm">${e.body} · Leads to: ${e.courses}</p>
 
                 <div class="bg-amber-50 border border-amber-100 rounded-2xl p-5 text-sm text-amber-900">
-                    <p class="font-bold mb-1">📝 ${examRegLine(e, true)}</p>
-                    <p>📅 ${examDateLine(e, true)}</p>
+                    <p class="font-bold mb-1"><i class=ic-edit></i> ${examRegLine(e, true)}</p>
+                    <p><i class=ic-calendar></i> ${examDateLine(e, true)}</p>
                     <p class="mt-2">${examStatusChip(e)}${verifyLinkHTML(e, 'date', e.dateStatus === 'Official' ? 'Check official site for changes' : 'Confirm dates on official site')}</p>
                 </div>
                 ${(e.feeVerified && e.dateStatus === 'Official') ? '' : verifyNoteHTML('Exam dates and fees can change. Anything marked approximate or tentative is not confirmed, so please check the exam\'s official website before you apply.', e, 'date', 'Open official site')}
@@ -14516,7 +14577,7 @@
                         <span class="text-xs ${c.nirf || c.nirfCategory ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-600'} px-2 py-0.5 rounded font-semibold" title="${nirfLabel(c, true)}">${nirfLabel(c)}</span>
                     </div>
                     <h3 class="font-bold text-slate-900 text-base leading-snug break-words">${c.name}</h3>
-                    <p class="text-xs text-slate-500">📍 ${c.location} · <span class="font-semibold text-slate-700">${c.type}</span></p>
+                    <p class="text-xs text-slate-500"><i class=ic-pin></i> ${c.location} · <span class="font-semibold text-slate-700">${c.type}</span></p>
                     ${CUR_FIT ? fitTagsHTML(collegeFit(c, CUR_FIT).tags) : ''}
                     <p class="text-xs text-slate-500"><strong>Avg Fees:</strong> ${c.fees} ${approxTag(c, 'fee')}${c.feeVerified ? '' : verifyLinkHTML(c, 'fee', c.listingOnly ? 'Check fees on official site' : 'Verify')}</p>
                     <div class="flex flex-wrap gap-1.5">
@@ -14560,7 +14621,7 @@
                 '<div class="flex flex-wrap items-center gap-1.5 pr-10 min-h-[32px]">' + dirTierBadge(c) + '</div>' +
                 '<div><h3 class="font-bold text-slate-900 text-base leading-snug break-words line-clamp-3" title="' + e(c.name) + '">' + e(c.name) + '</h3>' +
                 (dirLocality(c) ? '<p class="text-xs text-slate-600 mt-0.5 truncate">' + e(dirLocality(c)) + '</p>' : '') + '</div>' +
-                '<p class="text-xs text-slate-500">📍 ' + e(c.location) + (dirFacts(c) ? ' · <span class="font-semibold text-slate-700">' + e(dirFacts(c)) + '</span>' : '') + '</p>' +
+                '<p class="text-xs text-slate-500"><i class=ic-pin></i> ' + e(c.location) + (dirFacts(c) ? ' · <span class="font-semibold text-slate-700">' + e(dirFacts(c)) + '</span>' : '') + '</p>' +
                 (collegeNearKm(c) ? '<p class="text-xs font-semibold text-slate-700">About ' + collegeNearKm(c) + ' km from ' + escapeAuth(document.getElementById('college-district-filter').value) + '</p>' : '') +
                 (CUR_FIT ? fitTagsHTML(collegeFit(c, CUR_FIT).tags) : '') +
                 (c._fields.length ? '<div class="flex flex-wrap gap-1.5">' + c._fields.slice(0, 3).map(function (f) { return '<span class="text-[10px] bg-brand-50 text-brand-700 px-2 py-0.5 rounded-full font-semibold">' + e(f) + '</span>'; }).join('') + '</div>' : '') +
@@ -14626,7 +14687,7 @@
                 '<div class="flex items-center gap-3">' + dirTierBadge(c) +
                 '<button onclick="toggleSaveCollege(\'' + c.id + '\')" class="text-xs font-semibold px-3 py-1.5 rounded-lg border ' + (saved ? 'bg-brand-600 text-white border-brand-600' : 'border-slate-300 text-slate-700 hover:bg-slate-50') + ' transition">' + (saved ? '✓ Saved' : '+ Save to Dashboard') + '</button></div></div>' +
                 '<h2 class="text-3xl font-extrabold text-slate-900">' + e(c.name) + '</h2>' +
-                '<p class="text-slate-600 text-sm">📍 ' + e(c.location) + (c.pin ? ' · PIN ' + e(c.pin) : '') + '</p>' +
+                '<p class="text-slate-600 text-sm"><i class=ic-pin></i> ' + e(c.location) + (c.pin ? ' · PIN ' + e(c.pin) : '') + '</p>' +
                 (c.address ? '<p class="text-xs text-slate-500 -mt-4">' + e(c.address) + '</p>' : '') +
                 (c.tier === 3 ? '<p class="text-sm bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-700"><strong>Basic profile.</strong> Detailed information is being updated. This college is listed with the Ministry of Education, but we do not yet have its courses, fees or admission details, so confirm them with the college.</p>' : '') +
                 '<div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">' +
@@ -15089,7 +15150,7 @@
                     </div>
                 </div>
                 <h2 class="text-3xl font-extrabold text-slate-900">${c.name}</h2>
-                <p class="text-slate-600 text-sm">📍 ${c.location} · ${c.type}${c.district && c.location.indexOf(c.district) < 0 ? ' · ' + escapeAuth(c.district) + ' district' : ''}${c.aishe ? ' · AISHE code ' + escapeAuth(c.aishe) : ''}</p>
+                <p class="text-slate-600 text-sm"><i class=ic-pin></i> ${c.location} · ${c.type}${c.district && c.location.indexOf(c.district) < 0 ? ' · ' + escapeAuth(c.district) + ' district' : ''}${c.aishe ? ' · AISHE code ' + escapeAuth(c.aishe) : ''}</p>
                 ${nirfDetailHTML(c)}
                 ${(c.feeVerified && c.placeSrc) ? '' : verifyNoteHTML('Fees, placements and cut-offs shown here are approximate or not added yet. Please confirm them on the college\'s official website before you decide.', c, 'fee', 'Open official site')}
 
@@ -15214,7 +15275,7 @@
                     const d = /^\d{4}-\d{2}-\d{2}$/.test(x.examDate || '') ? Math.round((new Date(x.examDate + 'T00:00:00') - today) / 86400000) : null, sv = exams.indexOf(x.id) > -1;
                     return '<div class="flex items-center justify-between gap-2 py-1.5 border-b border-slate-100 last:border-0"><div class="min-w-0"><p class="text-sm font-semibold truncate">' + e(x.name) + '</p><p class="text-[11px] text-slate-500">' + (d !== null && d >= 0 ? 'Exam ' + e(examDateText(x.examDate)) + (x.dateStatus && x.dateStatus !== 'Official' ? ' (tentative)' : '') + ' · in ' + d + ' days' : 'Check the official site for dates') + '</p></div><button onclick="' + (sv ? "openExamDetail('" + x.id + "')" : "toggleSaveExam('" + x.id + "')") + '" class="shrink-0 text-xs font-semibold px-3 min-h-[40px] rounded-lg ' + (sv ? 'border border-slate-300 text-slate-600' : 'bg-brand-600 text-white') + '">' + (sv ? 'Open' : 'Save exam') + '</button></div>';
                 }).join('');
-                h += '<div class="bg-white border-2 border-brand-300 rounded-2xl p-5"><div class="flex items-start justify-between gap-3 flex-wrap"><div><p class="text-[11px] font-bold uppercase tracking-wider text-brand-700">🎯 My goal</p><h3 class="text-2xl font-extrabold text-slate-900 mt-0.5">' + e(goal.title) + '</h3><p class="text-xs text-slate-600 mt-1">' + e(goal.salary) + ' · ' + e(goal.demand) + ' demand · about ' + e(goal.entryYears) + ' years to start</p></div><div class="flex gap-2 flex-wrap"><button onclick="careerReportOpen(\'' + goal.id + '\')" class="min-h-[44px] px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold">📄 Career report</button><button onclick="openCareerDetail(\'' + goal.id + '\')" class="min-h-[44px] px-4 rounded-xl border border-slate-300 bg-white text-sm font-semibold">Roadmap</button></div></div>' +
+                h += '<div class="bg-white border-2 border-brand-300 rounded-2xl p-5"><div class="flex items-start justify-between gap-3 flex-wrap"><div><p class="text-[11px] font-bold uppercase tracking-wider text-brand-700"><i class=ic-target></i> My goal</p><h3 class="text-2xl font-extrabold text-slate-900 mt-0.5">' + e(goal.title) + '</h3><p class="text-xs text-slate-600 mt-1">' + e(goal.salary) + ' · ' + e(goal.demand) + ' demand · about ' + e(goal.entryYears) + ' years to start</p></div><div class="flex gap-2 flex-wrap"><button onclick="careerReportOpen(\'' + goal.id + '\')" class="min-h-[44px] px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold"><i class=ic-file></i> Career report</button><button onclick="openCareerDetail(\'' + goal.id + '\')" class="min-h-[44px] px-4 rounded-xl border border-slate-300 bg-white text-sm font-semibold">Roadmap</button></div></div>' +
                     '<div class="grid md:grid-cols-2 gap-5 mt-4"><div><p class="text-sm font-bold text-slate-900">Skill readiness: ' + pct + '%</p><div class="mt-1 h-2 rounded-full bg-slate-100 overflow-hidden"><div class="h-full bg-emerald-500 rounded-full" style="width:' + pct + '%"></div></div>' +
                     (todo.length ? '<p class="text-xs text-slate-600 mt-3 font-semibold">Learn next</p><ul class="text-xs text-slate-700 mt-1 space-y-1">' + todo.map(function (s) { return '<li>• ' + e(s.name) + (s.why ? ': ' + e(s.why) : '') + '</li>'; }).join('') + '</ul><button onclick="openCareerDetail(\'' + goal.id + '\')" class="mt-2 text-xs font-semibold text-brand-700 underline min-h-[40px]">Tick skills you already have</button>' : '<p class="text-xs text-slate-600 mt-3">You have ticked every skill for this career.</p>') +
                     (A ? '<button onclick="premiumPrintPlan()" class="mt-3 w-full min-h-[44px] rounded-xl border border-brand-300 bg-white text-brand-700 text-sm font-bold">Full 18-page report (from your quiz)</button>' : '') +
@@ -15224,7 +15285,7 @@
             if (saved.length >= 2) {
                 const rows = [['Pay (yearly)', function (c) { return e(c.salary); }], ['Time to start', function (c) { return '~' + e(c.entryYears) + ' yr'; }], ['Demand', function (c) { return e(c.demand); }], ['Difficulty', function (c) { return e(c.difficulty); }], ['Cost to enter', function (c) { return e(c.costTier); }]];
                 if (A) rows.unshift(['Your fit', function (c) { const r = scoreCareerForWizard(c, A); return premiumFitPct(r.score) + '%'; }]);
-                h += '<div class="bg-white border border-slate-200 rounded-2xl p-5 min-w-0 max-w-full"><h3 class="text-lg font-bold text-slate-900">Compare your saved careers</h3><p class="text-xs text-slate-500 mt-0.5">Side by side, so you can decide.</p><div class="overflow-x-auto mt-3"><table class="w-full text-sm min-w-[520px]"><thead><tr><th class="text-left p-2"></th>' + saved.slice(0, 5).map(function (c) { return '<th class="text-left p-2 font-bold text-slate-900">' + e(c.title) + (c.id === goalId ? ' 🎯' : '') + '</th>'; }).join('') + '</tr></thead><tbody>' + rows.map(function (r) { return '<tr class="border-t border-slate-100"><td class="p-2 text-xs font-semibold text-slate-500">' + r[0] + '</td>' + saved.slice(0, 5).map(function (c) { return '<td class="p-2 text-slate-700">' + r[1](c) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div></div>';
+                h += '<div class="bg-white border border-slate-200 rounded-2xl p-5 min-w-0 max-w-full"><h3 class="text-lg font-bold text-slate-900">Compare your saved careers</h3><p class="text-xs text-slate-500 mt-0.5">Side by side, so you can decide.</p><div class="overflow-x-auto mt-3"><table class="w-full text-sm min-w-[520px]"><thead><tr><th class="text-left p-2"></th>' + saved.slice(0, 5).map(function (c) { return '<th class="text-left p-2 font-bold text-slate-900">' + e(c.title) + (c.id === goalId ? ' <i class=ic-target></i>' : '') + '</th>'; }).join('') + '</tr></thead><tbody>' + rows.map(function (r) { return '<tr class="border-t border-slate-100"><td class="p-2 text-xs font-semibold text-slate-500">' + r[0] + '</td>' + saved.slice(0, 5).map(function (c) { return '<td class="p-2 text-slate-700">' + r[1](c) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div></div>';
             } else {
                 h += '<div class="bg-white border border-brand-200 rounded-2xl p-5"><p class="text-sm font-bold text-slate-900">What saving unlocks</p><ul class="mt-2 text-sm text-slate-700 space-y-1"><li>• <b>Save 2 careers</b> to compare pay, time and difficulty side by side</li><li>• <b>Pick a goal</b> to get skill progress, the exams you need and a career report</li><li>• <b>Save exams</b> to see registration and exam deadlines, soonest first</li><li>• <b>Save colleges</b> to build your shortlist in one place</li></ul></div>';
             }
@@ -15252,14 +15313,14 @@
                         <div>
                             <div class="flex items-center gap-2 flex-wrap">
                                 <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">${c.category}</span>
-                                ${readinessPct !== null ? `<span class="text-xs bg-brand-50 text-brand-700 border border-brand-100 font-bold px-2 py-0.5 rounded">✅ ${readinessPct}% skill-ready</span>` : ''}
+                                ${readinessPct !== null ? `<span class="text-xs bg-brand-50 text-brand-700 border border-brand-100 font-bold px-2 py-0.5 rounded"><i class=ic-check></i> ${readinessPct}% skill-ready</span>` : ''}
                             </div>
                             <h4 class="font-bold text-slate-900 text-lg mt-1">${c.title}</h4>
                             <p class="text-slate-600 text-xs mt-0.5">${c.salary}${approxText(c, 'salary')} · ${c.demand} demand</p>
                         </div>
                         <div class="flex items-center gap-2 flex-wrap">
                             <button onclick="openCareerDetail('${c.id}')" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-xl text-xs font-semibold transition">View Roadmap</button>
-                            <button onclick="dashSetGoal('${c.id}')" class="${dashGoalId() === c.id ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-white text-brand-700 border-brand-200 hover:bg-brand-50'} border px-3 py-2 rounded-xl text-xs font-semibold transition">${dashGoalId() === c.id ? '🎯 My goal' : 'Make my goal'}</button>
+                            <button onclick="dashSetGoal('${c.id}')" class="${dashGoalId() === c.id ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-white text-brand-700 border-brand-200 hover:bg-brand-50'} border px-3 py-2 rounded-xl text-xs font-semibold transition">${dashGoalId() === c.id ? '<i class=ic-target></i> My goal' : 'Make my goal'}</button>
                             <button onclick="toggleSaveCareer('${c.id}')" class="text-slate-400 hover:text-rose-500 text-xs font-semibold px-2 min-h-[44px]">Remove</button>
                         </div>
                     </div>`;
@@ -15570,12 +15631,12 @@
                 else {
                     const d = tgtTier - ut;
                     head = d >= 1 ? '<p class="font-bold text-emerald-800">✓ ' + name + ' looks reachable for your score</p><p class="text-sm text-emerald-700">Based on rank, it is usually easier to get into than your score suggests. Keep backups ready anyway.</p>'
-                        : d === 0 ? '<p class="font-bold text-amber-800">⚠ Close call for ' + name + '</p><p class="text-sm text-amber-700">It is about at your level, so it could go either way. Treat the backups as seriously as your dream college.</p>'
+                        : d === 0 ? '<p class="font-bold text-amber-800"><i class=ic-alert></i> Close call for ' + name + '</p><p class="text-sm text-amber-700">It is about at your level, so it could go either way. Treat the backups as seriously as your dream college.</p>'
                             : '<p class="font-bold text-rose-800">' + name + ' is a stretch for your score</p><p class="text-sm text-rose-700">It is usually harder to get into than your score suggests. Apply anyway if you wish, and build the plan around the backups below.</p>';
                 }
                 cards = top.map(function (x, i) {
                     const odds = backupOdds(x.d), c = x.c;
-                    return { i: i, title: c.name, sub: '📍 ' + c.location + ' · ' + c.stream, why: c.tradeoff ? 'Good to know: ' + c.tradeoff : '', odds: odds, stats: [['Fees', (c.feesLakh != null ? '₹' + c.feesLakh + 'L/yr' : 'Not added') + (c.feesLakh != null && !c.feeVerified ? ' (approx.)' : '')], ['Placement', c.medianLPA != null ? '₹' + c.medianLPA + 'L median' : 'Not added'], ['Entry', ['Hardest', 'Very hard', 'Moderate', 'More accessible'][collegeTier(c)]]], go: "openCollegeDetail('" + c.id + "')", goText: 'View college →' };
+                    return { i: i, title: c.name, sub: '' + c.location + ' · ' + c.stream, why: c.tradeoff ? 'Good to know: ' + c.tradeoff : '', odds: odds, stats: [['Fees', (c.feesLakh != null ? '₹' + c.feesLakh + 'L/yr' : 'Not added') + (c.feesLakh != null && !c.feeVerified ? ' (approx.)' : '')], ['Placement', c.medianLPA != null ? '₹' + c.medianLPA + 'L median' : 'Not added'], ['Entry', ['Hardest', 'Very hard', 'Moderate', 'More accessible'][collegeTier(c)]]], go: "openCollegeDetail('" + c.id + "')", goText: 'View college →' };
                 });
             }
             summaryEl.className = 'p-5 rounded-2xl border space-y-1 bg-brand-50 border-brand-200';
@@ -15674,7 +15735,7 @@
                     <p class="text-sm text-emerald-700">Your mock score of ${score} is about ${scoreGap} points above the ${targetCollege.cutoff} cutoff. Still worth having backups ready — cutoffs shift year to year.</p>`;
             } else if (scoreGap >= -5) {
                 summaryEl.className = 'p-5 rounded-2xl border space-y-1 bg-amber-50 border-amber-200';
-                summaryHTML = `<p class="font-bold text-amber-800">⚠ Close call for ${escapeAuth(targetCollege.name)}</p>
+                summaryHTML = `<p class="font-bold text-amber-800"><i class=ic-alert></i> Close call for ${escapeAuth(targetCollege.name)}</p>
                     <p class="text-sm text-amber-700">Your mock score of ${score} is within ${Math.abs(scoreGap)} points of the ${targetCollege.cutoff} cutoff — it could go either way. Treat the backups below as seriously as your dream college.</p>`;
             } else {
                 summaryEl.className = 'p-5 rounded-2xl border space-y-1 bg-rose-50 border-rose-200';
@@ -15698,7 +15759,7 @@
                             <span class="w-8 h-8 rounded-full bg-brand-50 text-brand-700 font-bold text-sm flex items-center justify-center shrink-0">#${idx + 1}</span>
                             <div>
                                 <h4 class="font-bold text-slate-900">${c.name}</h4>
-                                <p class="text-xs text-slate-500">📍 ${c.location} · ${c.stream}</p>
+                                <p class="text-xs text-slate-500"><i class=ic-pin></i> ${c.location} · ${c.stream}</p>
                             </div>
                         </div>
                         <span class="text-xs font-semibold px-2.5 py-1 rounded-full border ${oddsClass}">${oddsLabel}</span>
@@ -15804,7 +15865,7 @@
 
         // ===== Government jobs toolkit (finder, age check, job explainers, prep path, category benefits) =====
         const GT = { tab: 'find', qual: '', grp: 'All', dob: '', asOn: '', cat: 'gen', pwbd: 'no', qcat: 'gen', job: 'upsc', prep: 'ssc', months: 9, hours: 4 };
-        const GT_TABS = [['find', '🔎 Find my exams'], ['age', '🎂 Age and attempts'], ['jobs', '💼 What the job is like'], ['prep', '🗓️ Prep path'], ['quota', '📜 Category benefits']];
+        const GT_TABS = [['find', '<i class=ic-search></i> Find my exams'], ['age', '<i class=ic-clock></i> Age and attempts'], ['jobs', '<i class=ic-briefcase></i> What the job is like'], ['prep', '<i class=ic-calendar></i> Prep path'], ['quota', '<i class=ic-award></i> Category benefits']];
         const GT_QUALS = [
             { id: 'c10', label: 'Class 10 passed', rank: 1, tags: [] },
             { id: 'c12', label: 'Class 12 passed (any stream)', rank: 2, tags: [] },
@@ -15879,55 +15940,55 @@
         const GT_NO_LIMIT = 'CTET and State TETs have no upper age limit. UGC NET for Assistant Professor has no upper age limit (the JRF fellowship has one, around 30 with relaxations). State PSCs and state police vary by state, usually between 21 and 32-40.';
 
         const GT_JOBS = [
-            { id: 'upsc', icon: '🏛️', title: 'IAS / IPS / IFS (Civil Services)', exams: ['upsc-cse'], pay: 'Entry Pay Level 10 (basic about ₹56,100) plus allowances, housing and a vehicle for most posts.',
+            { id: 'upsc', icon: '<i class=ic-landmark></i>', title: 'IAS / IPS / IFS (Civil Services)', exams: ['upsc-cse'], pay: 'Entry Pay Level 10 (basic about ₹56,100) plus allowances, housing and a vehicle for most posts.',
               does: 'IAS officers run districts and departments, IPS officers lead policing, IFS officers represent India abroad. You carry out government policy and handle real emergencies.',
               life: 'Frequent transfers every 1 to 3 years, long and unpredictable hours, public and political pressure.', grow: 'Collector, Secretary, Chief Secretary, and Cabinet Secretary at the top. Promotions follow years of service.',
               good: 'Authority, variety, social impact, high respect and strong job security.', hard: 'Very few seats against lakhs of applicants, often several attempts, and a long wait before results.', suits: 'People who like responsibility, can handle pressure and accept moving often.' },
-            { id: 'state', icon: '🗺️', title: 'State civil services (PCS, SDM, DSP)', exams: ['uppsc-pcs', 'bpsc', 'mppsc', 'rpsc-ras', 'tnpsc', 'kpsc', 'wbcs', 'mpsc'], pay: 'Entry pay is usually around Pay Level 10 of the state scale (varies by state).',
+            { id: 'state', icon: '<i class=ic-map></i>', title: 'State civil services (PCS, SDM, DSP)', exams: ['uppsc-pcs', 'bpsc', 'mppsc', 'rpsc-ras', 'tnpsc', 'kpsc', 'wbcs', 'mpsc'], pay: 'Entry pay is usually around Pay Level 10 of the state scale (varies by state).',
               does: 'Work as Deputy Collector or SDM, DSP, Tehsildar or block-level officers in your own state. You administer your area and enforce state rules.',
               life: 'You mostly stay in one state and near home, with transfers inside the state.', grow: 'Can be promoted to IAS or IPS through the state quota after years of service.',
               good: 'Home-state posting, real authority, less competition than UPSC.', hard: 'Exams are often delayed by court cases or paper leaks, so timelines can stretch.', suits: 'People who want an officer role but prefer to stay in their home state.' },
-            { id: 'cgl', icon: '📑', title: 'SSC CGL posts (Inspector, ASO, Auditor, Tax Assistant)', exams: ['ssc-cgl'], pay: 'Pay Levels 4 to 8 depending on post (basic roughly ₹25,500 to ₹47,600).',
+            { id: 'cgl', icon: '<i class=ic-file></i>', title: 'SSC CGL posts (Inspector, ASO, Auditor, Tax Assistant)', exams: ['ssc-cgl'], pay: 'Pay Levels 4 to 8 depending on post (basic roughly ₹25,500 to ₹47,600).',
               does: 'Office and field jobs in central ministries, income tax, customs, CBI and audit offices. Work is mostly files, checks and inspections.',
               life: 'Fixed hours in a central government office, mostly in cities, with some posting changes.', grow: 'Departmental promotions up to Section Officer and above, and some officers reach Group A over many years.',
               good: 'Steady 9-to-5 life, central pay and pension scheme, many vacancies each year.', hard: 'Heavy competition for the best posts, and the first posting can be far from home.', suits: 'Graduates who want a stable central job and can prepare for a speed-based exam.' },
-            { id: 'chsl', icon: '🗂️', title: 'SSC CHSL / MTS (clerk, data entry, office staff)', exams: ['ssc-chsl', 'ssc-mts'], pay: 'CHSL posts sit around Pay Levels 2 to 4 (basic about ₹19,900 to ₹25,500). MTS is Pay Level 1 (basic about ₹18,000).',
+            { id: 'chsl', icon: '<i class=ic-folder></i>', title: 'SSC CHSL / MTS (clerk, data entry, office staff)', exams: ['ssc-chsl', 'ssc-mts'], pay: 'CHSL posts sit around Pay Levels 2 to 4 (basic about ₹19,900 to ₹25,500). MTS is Pay Level 1 (basic about ₹18,000).',
               does: 'Clerical and support work in central offices: typing, filing, records and data entry. MTS covers peon and helper-type duties.',
               life: 'Regular hours and a steady routine.', grow: 'Departmental exams can take you to Upper Division Clerk and beyond.',
               good: 'Entry with Class 12 or Class 10, a secure job and a clear pay scale.', hard: 'Promotions are slow, and the work can feel repetitive.', suits: 'Class 10 or 12 pass students who want a secure job early.' },
-            { id: 'rail', icon: '🚆', title: 'Railways (NTPC, ALP, JE)', exams: ['rrb-ntpc', 'rrb-alp', 'rrb-je', 'rrb-group-d'], pay: 'NTPC posts range from Pay Level 2 (clerk) to Level 6 (station master). ALP is Level 2, JE is Level 6, Group D is Level 1.',
+            { id: 'rail', icon: '<i class=ic-train></i>', title: 'Railways (NTPC, ALP, JE)', exams: ['rrb-ntpc', 'rrb-alp', 'rrb-je', 'rrb-group-d'], pay: 'NTPC posts range from Pay Level 2 (clerk) to Level 6 (station master). ALP is Level 2, JE is Level 6, Group D is Level 1.',
               does: 'Run trains and stations, maintain tracks and engines, handle tickets, goods and signalling.',
               life: 'Shift work, including nights and holidays. Railway quarters and travel passes are common perks.', grow: 'Promotions through departmental exams: for example Station Master to Station Superintendent.',
               good: 'Very large number of vacancies, stable job, railway housing and passes.', hard: 'Shift duties affect sleep and family time, and some roles are physically demanding.', suits: 'People who do not mind shifts and want a large, stable employer.' },
-            { id: 'bank', icon: '🏦', title: 'Bank PO / Clerk (public sector banks)', exams: ['ibps-po', 'sbi-po', 'ibps-clerk', 'sbi-clerk', 'ibps-rrb-po'], pay: 'PO starting basic is roughly ₹48,000 to ₹50,000 plus allowances. Clerk starting basic is roughly ₹24,000 plus allowances. Please check the current notification.',
+            { id: 'bank', icon: '<i class=ic-landmark></i>', title: 'Bank PO / Clerk (public sector banks)', exams: ['ibps-po', 'sbi-po', 'ibps-clerk', 'sbi-clerk', 'ibps-rrb-po'], pay: 'PO starting basic is roughly ₹48,000 to ₹50,000 plus allowances. Clerk starting basic is roughly ₹24,000 plus allowances. Please check the current notification.',
               does: 'Handle customer accounts, loans, deposits and branch operations. POs manage teams and targets.',
               life: 'Branch jobs with fixed hours but sales targets. Transfers across branches and states are common, especially early on.', grow: 'Scale I to Scale II, III and beyond, up to branch head and regional manager.',
               good: 'Good pay with allowances, structured promotions, and a wide choice of cities.', hard: 'Target pressure, customer load, and posting far from home in the first years.', suits: 'People comfortable with numbers, customers and targets.' },
-            { id: 'rbi', icon: '💹', title: 'RBI Grade B, NABARD, SEBI (regulator officers)', exams: ['rbi-grade-b', 'nabard-grade-a', 'sebi-grade-a'], pay: 'Starting basic is roughly ₹70,000 to ₹80,000 plus allowances (differs by organisation).',
+            { id: 'rbi', icon: '<i class=ic-up></i>', title: 'RBI Grade B, NABARD, SEBI (regulator officers)', exams: ['rbi-grade-b', 'nabard-grade-a', 'sebi-grade-a'], pay: 'Starting basic is roughly ₹70,000 to ₹80,000 plus allowances (differs by organisation).',
               does: 'Policy, research, supervision and regulation of banks, markets and rural finance. Work is more analytical than customer-facing.',
               life: 'Office hours in a big city, with fewer transfers than public-sector banks.', grow: 'Steady promotions to Grade C, D and senior management.',
               good: 'Among the best-paid government jobs below civil services, with good work-life balance.', hard: 'Very few vacancies and tough exams with Economics and Finance depth.', suits: 'Graduates who enjoy economics, finance and analysis.' },
-            { id: 'defence', icon: '🎖️', title: 'Armed forces officer (NDA, CDS, AFCAT)', exams: ['nda', 'cds', 'afcat'], pay: 'Lieutenant (or equivalent) starts at Pay Level 10 (basic about ₹56,100) plus military service pay and allowances.',
+            { id: 'defence', icon: '<i class=ic-award></i>', title: 'Armed forces officer (NDA, CDS, AFCAT)', exams: ['nda', 'cds', 'afcat'], pay: 'Lieutenant (or equivalent) starts at Pay Level 10 (basic about ₹56,100) plus military service pay and allowances.',
               does: 'Lead soldiers, sailors or airmen, and handle operations, training and logistics. You can also fly aircraft in the Air Force flying branch.',
               life: 'Postings in many places, including remote and border areas. Discipline is strict and families may not always move with you.', grow: 'Time-bound promotions to Captain, Major, Colonel, with selection ranks above.',
               good: 'Respect, adventure, discipline, subsidised housing, canteen and medical benefits.', hard: 'Physical and medical standards are strict, and the SSB interview rejects many strong candidates. Separation from family is common.', suits: 'People who enjoy physical challenge, leadership and a life of service.' },
-            { id: 'agni', icon: '🪖', title: 'Agniveer (Army, Navy, Air Force)', exams: ['army-agniveer', 'airforce-agniveervayu', 'navy-agniveer-ssr'], pay: 'Package is about ₹30,000 a month in year one, rising to about ₹40,000 in year four, with a Seva Nidhi lump sum at exit.',
+            { id: 'agni', icon: '<i class=ic-shield></i>', title: 'Agniveer (Army, Navy, Air Force)', exams: ['army-agniveer', 'airforce-agniveervayu', 'navy-agniveer-ssr'], pay: 'Package is about ₹30,000 a month in year one, rising to about ₹40,000 in year four, with a Seva Nidhi lump sum at exit.',
               does: 'Four-year service in the ranks of the armed forces, including training and deployment.',
               life: 'Camp or barracks life with a fitness-heavy routine.', grow: 'A limited share (around one fourth) of each batch is retained for regular service. The rest leave after four years.',
               good: 'Early entry after Class 10 or 12, discipline training and an exit lump sum.', hard: 'Most Agniveers do not get a permanent job in the forces after four years. Plan what comes next from day one.', suits: 'Young people who want forces experience and are ready to plan a second career.' },
-            { id: 'police', icon: '👮', title: 'Police (Constable, Sub-Inspector, CAPF)', exams: ['ssc-gd', 'ssc-cpo', 'upsc-capf', 'up-police'], pay: 'Constable is around Pay Level 3 (basic about ₹21,700). Sub-Inspector is around Level 6 (basic about ₹35,400). Assistant Commandant is Level 10.',
+            { id: 'police', icon: '<i class=ic-shieldok></i>', title: 'Police (Constable, Sub-Inspector, CAPF)', exams: ['ssc-gd', 'ssc-cpo', 'upsc-capf', 'up-police'], pay: 'Constable is around Pay Level 3 (basic about ₹21,700). Sub-Inspector is around Level 6 (basic about ₹35,400). Assistant Commandant is Level 10.',
               does: 'Law enforcement, patrol, investigation, border or internal security depending on the force.',
               life: 'Long shifts, duty on holidays, and postings that can be far from home, especially in CAPF.', grow: 'Promotions up the ranks through departmental exams and seniority.',
               good: 'Respect, job security, and housing or allowances in many forces.', hard: 'Physical tests, long hours and a stressful work environment.', suits: 'Physically fit people who want field-based work.' },
-            { id: 'teach', icon: '🍎', title: 'Government teacher (KVS, NVS, state TET)', exams: ['ctet', 'kvs-recruit', 'nvs-recruit', 'dsssb-teacher'], pay: 'PRT is about Pay Level 6, TGT Level 7, PGT Level 8 in central schools (basic roughly ₹35,400 to ₹47,600). State schools follow state pay scales.',
+            { id: 'teach', icon: '<i class=ic-book></i>', title: 'Government teacher (KVS, NVS, state TET)', exams: ['ctet', 'kvs-recruit', 'nvs-recruit', 'dsssb-teacher'], pay: 'PRT is about Pay Level 6, TGT Level 7, PGT Level 8 in central schools (basic roughly ₹35,400 to ₹47,600). State schools follow state pay scales.',
               does: 'Teach and mentor students, prepare lessons, and handle exams and school duties.',
               life: 'School hours with long holidays. Government schools may also assign census and election duties.', grow: 'Promotions to Vice Principal and Principal over time.',
               good: 'Stable job, good holidays and meaningful work with students.', hard: 'Eligibility needs CTET or TET plus a teaching degree, and vacancies are state-specific.', suits: 'People who enjoy teaching and want a calm, stable work life.' },
-            { id: 'eng', icon: '🔧', title: 'Government engineer (SSC JE, RRB JE, ESE)', exams: ['ssc-je', 'rrb-je', 'ies-ese'], pay: 'JE is about Pay Level 6 (basic about ₹35,400). ESE (Class 1 officers) starts at Level 8 or above.',
+            { id: 'eng', icon: '<i class=ic-wrench></i>', title: 'Government engineer (SSC JE, RRB JE, ESE)', exams: ['ssc-je', 'rrb-je', 'ies-ese'], pay: 'JE is about Pay Level 6 (basic about ₹35,400). ESE (Class 1 officers) starts at Level 8 or above.',
               does: 'Build and maintain roads, buildings, power systems and railways. ESE officers manage large projects and teams.',
               life: 'Field sites and project offices; postings vary by department.', grow: 'JE to AE to Executive Engineer, with ESE moving up faster to senior posts.',
               good: 'Stable engineering work with a pay scale, plus real project responsibility.', hard: 'Field work in difficult locations, and ESE is one of the hardest exams in the country.', suits: 'Engineers who prefer a stable role over the private-sector pace.' },
-            { id: 'post', icon: '📮', title: 'India Post (Gramin Dak Sevak)', exams: ['india-post-gds'], pay: 'Monthly allowance is roughly ₹10,000 to ₹30,000 depending on the role (Branch Postmaster, Assistant). It is not the regular central pay scale.',
+            { id: 'post', icon: '<i class=ic-mail></i>', title: 'India Post (Gramin Dak Sevak)', exams: ['india-post-gds'], pay: 'Monthly allowance is roughly ₹10,000 to ₹30,000 depending on the role (Branch Postmaster, Assistant). It is not the regular central pay scale.',
               does: 'Run village post offices: letters, parcels, savings schemes and basic banking services.',
               life: 'Local work in your own village or nearby, with fixed working hours.', grow: 'Limited promotions inside the GDS system; you can also sit for departmental exams.',
               good: 'Selection mostly on Class 10 marks with no written test, and you stay near home.', hard: 'Lower pay than regular posts, and fewer benefits.', suits: 'Class 10 passed students who want a local job close to home.' }
@@ -16655,30 +16716,30 @@
         ];
         const VIEW_NAMES = { confusedMode: 'Find my path', explorer: 'Careers', afterDegree: 'Pathways', exams: 'Exams', colleges: 'Colleges', govAndAbroad: 'Govt & Money', internships: 'Internships', backupPlan: 'Safety Net', dashboard: 'My Dashboard' };
         const TOOL_DIRECTORY = [
-            { group: 'decide', view: 'confusedMode', block: '', label: '🧭 Career quiz', title: 'Career quiz', desc: 'Answer a few quick questions to get matched careers, then check how your family\'s expectations line up with your own interest.', kw: 'confused find my path direction wizard interest match parents family stuck' },
-            { group: 'decide', view: 'explorer', block: '', label: '🔎 Careers', title: 'Career explorer', desc: 'Browse and filter every career by category, with salary, demand, skills, and a roadmap for each.', kw: 'careers browse salary skills roadmap' },
-            { group: 'decide', view: 'afterDegree', block: 'branching-engine-block', label: '🌳 Branching engine', title: 'What can I do after this?', desc: 'Pick your current stage, from Class 10 to postgrad or a gap year, and see the options that branch from it.', kw: 'after 10th 12th stream degree diploma gap year next' },
-            { group: 'decide', view: 'exams', block: '', label: '📝 Exams', title: 'Entrance exams', desc: 'Registration dates, eligibility, difficulty, and preparation tips for each major exam.', kw: 'jee neet cuet clat cat upsc entrance dates registration' },
-            { group: 'decide', view: 'colleges', block: '', label: '🏫 Colleges', title: 'Colleges', desc: 'Compare colleges by fees, cutoffs, and placements, and find ones that fit your budget.', kw: 'college fees cutoff placement compare budget' },
-            { group: 'decide', view: 'colleges', block: 'after10-panel', label: '🏫 After Class 10', title: 'Where can I study after Class 10?', desc: 'Class 11–12 in Science, Commerce or Humanities, polytechnic, ITI and other diplomas, with the official admission portals by state.', kw: 'after 10th class 10 class 11 junior college pu plus one fyjc polytechnic diploma iti admission portal state' },
-            { group: 'decide', view: 'colleges', block: 'integrated-panel', label: '🎒 Integrated programmes', title: 'Integrated school + JEE/NEET programmes', desc: 'How programmes like ALLEN and Aakash work after Class 10, who they suit, and what to ask before you pay.', kw: 'integrated allen aakash coaching after 10th class 11 jee neet foundation dummy school fiitjee resonance' },
-            { group: 'recover', view: 'backupPlan', block: 'backup-generator-block', label: '📋 Backup plan', title: 'Backup plan generator', desc: 'Enter your target exam, dream college, and mock score to get 5 ranked backup colleges.', kw: 'backup cutoff safety net college rank score' },
-            { group: 'recover', view: 'backupPlan', block: 'wrong-course-block', label: '🔁 Wrong course?', title: 'Wrong course or forced choice?', desc: 'Step-by-step ways to change stream, branch or field, and how to talk to family if the choice was not yours.', kw: 'wrong course stream forced pressure parents switch change branch regret unhappy drop unhappy' },
-            { group: 'recover', view: 'backupPlan', block: 'setback-guidance-block', label: '🔄 Setback?', title: 'Facing a setback?', desc: 'Backlog, dropped year, missed exam, wrong course, or no campus placement: get practical next steps.', kw: 'backlog fail failed dropped drop year missed placement wrong course placed campus' },
-            { group: 'recover', view: 'backupPlan', block: 'pathways-block', label: '🛤️ Alternate pathways', title: 'Alternate pathways', desc: 'Lateral entry, open universities, Academic Bank of Credits, bridge courses, and apprenticeships.', kw: 'lateral entry open university distance bridge course apprenticeship credits naps' },
-            { group: 'intern', view: 'internships', block: 'p4-intern-block', label: '🚀 Plan4it Learnership', title: 'Plan4it Learnership Program', desc: 'Pick 1 to 6 months, do a reviewed industry-standard project, and get a certificate for your resume. Paid programme; join the waitlist.', kw: 'learnership internship intern project certificate experience first year second year paid waitlist resume' },
-            { group: 'intern', view: 'internships', block: 'intern-ladder-block', label: '🪜 First internship', title: 'How to get your first internship', desc: 'A year-by-year route from no experience to a formal internship, with resume and outreach tips.', kw: 'internship no experience first year resume outreach fresher' },
-            { group: 'intern', view: 'internships', block: 'intern-portals-block', label: '🔗 Internship portals', title: 'Internship portals', desc: 'Internshala, LinkedIn, Unstop, AICTE, PM Internship, Forage and more, with links.', kw: 'internship portal internshala linkedin unstop aicte pm internship naps nats forage gsoc' },
-            { group: 'money', view: 'govAndAbroad', block: 'scholarship-matcher-block', label: '🎓 Scholarships', title: 'Scholarship matcher', desc: 'Match scholarships to your category, family income, and stream.', kw: 'scholarship funding income category fees waiver' },
-            { group: 'money', view: 'govAndAbroad', block: 'loan-navigator-block', label: '🏦 Loans', title: 'Education loan navigator', desc: 'How education loans work, what to compare, and the terms worth understanding.', kw: 'loan emi bank borrow interest' },
-            { group: 'money', view: 'govAndAbroad', block: 'hidden-cost-block', label: '🧮 Real cost', title: 'Hidden cost calculator', desc: 'Add living costs and travel to the tuition fee to see what a course really costs per year.', kw: 'cost fees hostel living budget expense tuition' },
-            { group: 'money', view: 'govAndAbroad', block: 'reservation-quota-block', label: '⚖️ Reservation & quota', title: 'Reservation and quota explainer', desc: 'Pick your category and exam to see how category, domicile, and quota usually interact.', kw: 'quota obc sc st ews category domicile reservation' },
-            { group: 'money', view: 'govAndAbroad', block: 'govt-toolkit-block', label: '🧰 Govt jobs toolkit', title: 'Government jobs toolkit', desc: 'Find exams for your qualification, check age limits and attempts, see what each job is like, get a prep plan and category benefits.', kw: 'government exam finder eligibility age limit attempts relaxation reservation category obc sc st ews pwd prep plan upsc ssc bank railway defence police teacher job pay sarkari' },
-            { group: 'money', view: 'govAndAbroad', block: 'govt-careers-block', label: '🏛️ Govt careers', title: 'Government careers', desc: 'Public sector and UPSC-track options, with the trade-off between job security and competition.', kw: 'government upsc ssc banking sarkari psu' },
-            { group: 'switch', view: 'afterDegree', block: 'career-switch-block', label: '🔄 Switch careers', title: 'Career switch planner', desc: 'Already working? Plan a move to a new field backwards from your goal, with skill gaps, routes, and a timeline.', kw: 'working professional switch change career pivot experience job' },
-            { group: 'track', view: 'dashboard', block: 'dash-saved-block', label: '🔖 Saved items', title: 'Saved items', desc: 'The careers, colleges, and exams you have bookmarked, in one place.', kw: 'saved bookmarks shortlist' },
-            { group: 'track', view: 'dashboard', block: 'dash-checklist-block', label: '✅ Checklist', title: 'Action checklist', desc: 'Steps to keep you moving, including any plan you add from the other tools.', kw: 'checklist tasks todo progress' },
-            { group: 'track', view: 'dashboard', block: 'attendance-block', label: '📊 Attendance', title: 'Attendance calculator', desc: 'See how many classes you can miss, or must attend in a row, to stay above the required percentage.', kw: 'attendance percentage 75 classes bunk shortage' },
+            { group: 'decide', view: 'confusedMode', block: '', label: 'Career quiz', title: 'Career quiz', desc: 'Answer a few quick questions to get matched careers, then check how your family\'s expectations line up with your own interest.', kw: 'confused find my path direction wizard interest match parents family stuck' },
+            { group: 'decide', view: 'explorer', block: '', label: 'Careers', title: 'Career explorer', desc: 'Browse and filter every career by category, with salary, demand, skills, and a roadmap for each.', kw: 'careers browse salary skills roadmap' },
+            { group: 'decide', view: 'afterDegree', block: 'branching-engine-block', label: 'Branching engine', title: 'What can I do after this?', desc: 'Pick your current stage, from Class 10 to postgrad or a gap year, and see the options that branch from it.', kw: 'after 10th 12th stream degree diploma gap year next' },
+            { group: 'decide', view: 'exams', block: '', label: 'Exams', title: 'Entrance exams', desc: 'Registration dates, eligibility, difficulty, and preparation tips for each major exam.', kw: 'jee neet cuet clat cat upsc entrance dates registration' },
+            { group: 'decide', view: 'colleges', block: '', label: 'Colleges', title: 'Colleges', desc: 'Compare colleges by fees, cutoffs, and placements, and find ones that fit your budget.', kw: 'college fees cutoff placement compare budget' },
+            { group: 'decide', view: 'colleges', block: 'after10-panel', label: 'After Class 10', title: 'Where can I study after Class 10?', desc: 'Class 11–12 in Science, Commerce or Humanities, polytechnic, ITI and other diplomas, with the official admission portals by state.', kw: 'after 10th class 10 class 11 junior college pu plus one fyjc polytechnic diploma iti admission portal state' },
+            { group: 'decide', view: 'colleges', block: 'integrated-panel', label: 'Integrated programmes', title: 'Integrated school + JEE/NEET programmes', desc: 'How programmes like ALLEN and Aakash work after Class 10, who they suit, and what to ask before you pay.', kw: 'integrated allen aakash coaching after 10th class 11 jee neet foundation dummy school fiitjee resonance' },
+            { group: 'recover', view: 'backupPlan', block: 'backup-generator-block', label: 'Backup plan', title: 'Backup plan generator', desc: 'Enter your target exam, dream college, and mock score to get 5 ranked backup colleges.', kw: 'backup cutoff safety net college rank score' },
+            { group: 'recover', view: 'backupPlan', block: 'wrong-course-block', label: 'Wrong course?', title: 'Wrong course or forced choice?', desc: 'Step-by-step ways to change stream, branch or field, and how to talk to family if the choice was not yours.', kw: 'wrong course stream forced pressure parents switch change branch regret unhappy drop unhappy' },
+            { group: 'recover', view: 'backupPlan', block: 'setback-guidance-block', label: 'Setback?', title: 'Facing a setback?', desc: 'Backlog, dropped year, missed exam, wrong course, or no campus placement: get practical next steps.', kw: 'backlog fail failed dropped drop year missed placement wrong course placed campus' },
+            { group: 'recover', view: 'backupPlan', block: 'pathways-block', label: 'Alternate pathways', title: 'Alternate pathways', desc: 'Lateral entry, open universities, Academic Bank of Credits, bridge courses, and apprenticeships.', kw: 'lateral entry open university distance bridge course apprenticeship credits naps' },
+            { group: 'intern', view: 'internships', block: 'p4-intern-block', label: 'Plan4it Learnership', title: 'Plan4it Learnership Program', desc: 'Pick 1 to 6 months, do a reviewed industry-standard project, and get a certificate for your resume. Paid programme; join the waitlist.', kw: 'learnership internship intern project certificate experience first year second year paid waitlist resume' },
+            { group: 'intern', view: 'internships', block: 'intern-ladder-block', label: 'First internship', title: 'How to get your first internship', desc: 'A year-by-year route from no experience to a formal internship, with resume and outreach tips.', kw: 'internship no experience first year resume outreach fresher' },
+            { group: 'intern', view: 'internships', block: 'intern-portals-block', label: 'Internship portals', title: 'Internship portals', desc: 'Internshala, LinkedIn, Unstop, AICTE, PM Internship, Forage and more, with links.', kw: 'internship portal internshala linkedin unstop aicte pm internship naps nats forage gsoc' },
+            { group: 'money', view: 'govAndAbroad', block: 'scholarship-matcher-block', label: 'Scholarships', title: 'Scholarship matcher', desc: 'Match scholarships to your category, family income, and stream.', kw: 'scholarship funding income category fees waiver' },
+            { group: 'money', view: 'govAndAbroad', block: 'loan-navigator-block', label: 'Loans', title: 'Education loan navigator', desc: 'How education loans work, what to compare, and the terms worth understanding.', kw: 'loan emi bank borrow interest' },
+            { group: 'money', view: 'govAndAbroad', block: 'hidden-cost-block', label: 'Real cost', title: 'Hidden cost calculator', desc: 'Add living costs and travel to the tuition fee to see what a course really costs per year.', kw: 'cost fees hostel living budget expense tuition' },
+            { group: 'money', view: 'govAndAbroad', block: 'reservation-quota-block', label: 'Reservation & quota', title: 'Reservation and quota explainer', desc: 'Pick your category and exam to see how category, domicile, and quota usually interact.', kw: 'quota obc sc st ews category domicile reservation' },
+            { group: 'money', view: 'govAndAbroad', block: 'govt-toolkit-block', label: 'Govt jobs toolkit', title: 'Government jobs toolkit', desc: 'Find exams for your qualification, check age limits and attempts, see what each job is like, get a prep plan and category benefits.', kw: 'government exam finder eligibility age limit attempts relaxation reservation category obc sc st ews pwd prep plan upsc ssc bank railway defence police teacher job pay sarkari' },
+            { group: 'money', view: 'govAndAbroad', block: 'govt-careers-block', label: 'Govt careers', title: 'Government careers', desc: 'Public sector and UPSC-track options, with the trade-off between job security and competition.', kw: 'government upsc ssc banking sarkari psu' },
+            { group: 'switch', view: 'afterDegree', block: 'career-switch-block', label: 'Switch careers', title: 'Career switch planner', desc: 'Already working? Plan a move to a new field backwards from your goal, with skill gaps, routes, and a timeline.', kw: 'working professional switch change career pivot experience job' },
+            { group: 'track', view: 'dashboard', block: 'dash-saved-block', label: 'Saved items', title: 'Saved items', desc: 'The careers, colleges, and exams you have bookmarked, in one place.', kw: 'saved bookmarks shortlist' },
+            { group: 'track', view: 'dashboard', block: 'dash-checklist-block', label: 'Checklist', title: 'Action checklist', desc: 'Steps to keep you moving, including any plan you add from the other tools.', kw: 'checklist tasks todo progress' },
+            { group: 'track', view: 'dashboard', block: 'attendance-block', label: 'Attendance', title: 'Attendance calculator', desc: 'See how many classes you can miss, or must attend in a row, to stay above the required percentage.', kw: 'attendance percentage 75 classes bunk shortage' },
         ];
 
         function goToTool(view, block) {
@@ -16953,7 +17014,7 @@
             }
         });
     </script>
-    <button type="button" id="report-fab" onclick="reportHubOpen()" aria-haspopup="dialog" class="hidden fixed z-40 left-4 items-center gap-2 min-h-[52px] px-4 rounded-full border-2 border-amber-400 bg-brand-600 text-white font-bold text-sm shadow-lg" style="bottom:max(1rem, env(safe-area-inset-bottom, 0px))"><span aria-hidden="true">📄</span> Career report</button>
+    <button type="button" id="report-fab" onclick="reportHubOpen()" aria-haspopup="dialog" class="hidden fixed z-40 left-4 items-center gap-2 min-h-[52px] px-4 rounded-full border-2 border-amber-400 bg-brand-600 text-white font-bold text-sm shadow-lg" style="bottom:max(1rem, env(safe-area-inset-bottom, 0px))"><span aria-hidden="true"><i class=ic-file></i></span> Career report</button>
     <div id="admin-dash" tabindex="-1" class="hidden fixed inset-0 z-[94] overflow-y-auto bg-slate-50 outline-none" role="dialog" aria-modal="true" aria-labelledby="ad-title"><div id="ad-body" class="max-w-6xl mx-auto px-4 sm:px-6 py-5 pb-16"></div></div>
     <div id="admin-modal" class="hidden fixed inset-0 z-[95] items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="admin-title">
         <div class="absolute inset-0 bg-slate-900/60" onclick="closeAdmin()"></div>
