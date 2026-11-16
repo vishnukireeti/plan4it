@@ -169,7 +169,14 @@
         #auth-modal:not(.hidden) .auth-card { animation: marg-pop .22s ease-out; }
         @media (prefers-reduced-motion: reduce) { #auth-modal:not(.hidden) .auth-card { animation: none; } button:active:not(:disabled) { transform: none; } }
         input[aria-invalid="true"] { border-color: #e11d48; }
+        @media screen {
+            body.viewing-report { overflow: hidden; }
+            body.viewing-report #plan-print-sheet { display: block !important; position: fixed; top: calc(52px + env(safe-area-inset-top, 0px)); left: 0; right: 0; bottom: 0; overflow: auto; -webkit-overflow-scrolling: touch; background: #cbd5e1; z-index: 96; padding: 14px 0 48px; }
+            body.viewing-report #plan-print-sheet .ip { zoom: var(--rv-zoom, 1); width: 210mm; height: 268mm !important; padding: 10mm; box-sizing: border-box; background: #fff; box-shadow: 0 6px 24px rgba(15,23,42,.25); margin: 0 auto 16px; overflow: hidden; position: relative; }
+            body.viewing-report #plan-print-sheet .ipf { left: 10mm; right: 10mm; bottom: 10mm; }
+        }
         @media print {
+            #report-view-bar { display: none !important; }
             header, #toast-container, #auth-modal, footer, .lg\:hidden, button, details > summary .chev { display: none !important; }
             .view-section { display: none !important; }
             #view-dashboard { display: block !important; }
@@ -11302,9 +11309,9 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         function reportCopyOpen(id) {
             if (typeof sb === 'undefined' || !sb) return;
             showToast('Opening your report…');
-            sb.from('saved_reports').select('html').eq('id', id).maybeSingle().then(function (r) {
+            sb.from('saved_reports').select('html,title').eq('id', id).maybeSingle().then(function (r) {
                 if (!r || r.error || !r.data) { showToast('This report has been removed. Please build it again.'); renderDashReports(); return; }
-                trackEvent('report_copy_download'); printSheetHTML(r.data.html);
+                trackEvent('report_copy_download'); printSheetHTML(r.data.html, r.data.title);
             }, function () { showToast('Could not open the report. Please try again.'); });
         }
         function reportCopyDelete(id) {
@@ -13412,7 +13419,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (!requireAuth('Sign in or create a free account to get your free report.', function () { careerSnapshotRun(id, mode); })) return;
             trackEvent('snapshot_career');
             let html = ''; try { html = careerSnapshot(c, mode === 'me' && getStoredWizardAnswers() ? 'me' : 'general'); } catch (er) { console.error(er); showToast('Could not build the snapshot.'); return; }
-            printSheetHTML(html);
+            printSheetHTML(html, c.title + ': free snapshot');
         }
         function intelSnapshotRun(src) {
             premiumCloseUnlock();
@@ -13421,7 +13428,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const from = src === 'quiz' || src === 'saved' ? src : (getStoredWizardAnswers() ? 'quiz' : getSavedCareers().length ? 'saved' : 'quiz');
             let html = null; try { html = reportWith(from, intelSnapshot); } catch (er) { console.error(er); }
             if (!html) { showToast('Take the quiz, or save a career to your dashboard, then you can get your free report.'); return; }
-            printSheetHTML(html);
+            printSheetHTML(html, 'Your free report');
         }
 
 
@@ -13598,10 +13605,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (!html) { showToast('Save a few careers, colleges or exams, or take the quiz, then download your plan.'); return; }
             sheet.innerHTML = html; ppFitPages(sheet); try { localStorage.setItem('marg_report_done', '1'); } catch (er) {}
             { const sn = reportSnapshot(REPORT_SRC); reportLogInsert('full', null, null, sn, REPORT_SRC); if (sn) reportCopySave('full:' + sn, 'full', 'Career Intelligence Report (' + (REPORT_SRC === 'saved' ? 'from your saved items' : 'from your quiz answers') + ')', html); }
-            document.body.classList.add('printing-plan');
-            const done = function () { document.body.classList.remove('printing-plan'); };
-            window.addEventListener('afterprint', done, { once: true });
-            setTimeout(function () { try { window.print(); } catch (er) { done(); showToast('Printing is blocked here. Open the page in its own tab, then try again.'); } }, 200);
+            reportViewOpen(html, 'Career Intelligence Report', true);
         }
 
         /* ============================================================
@@ -13752,7 +13756,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 let html = ''; try { html = careerGuide5(c, mode === 'me' && getStoredWizardAnswers() ? 'me' : 'general'); } catch (er) { console.error(er); showToast('Could not build the report. Please try again.'); return; }
                 reportLogInsert('career', c.id, mode === 'me' && getStoredWizardAnswers() ? 'me' : 'general', mode === 'me' && getStoredWizardAnswers() ? reportSnapshot('quiz') : null, null);
                 reportCopySave('career:' + c.id + ':' + (mode === 'me' && getStoredWizardAnswers() ? 'me' : 'general'), 'career', c.title + (mode === 'me' && getStoredWizardAnswers() ? ': your personal career report' : ': career guide'), html);
-                printSheetHTML(html);
+                printSheetHTML(html, c.title + (mode === 'me' && getStoredWizardAnswers() ? ': your personal career report' : ': career guide'));
             };
             const f0 = getFit();
             if (f0 && f0.state && f0.state !== 'any' && !(DIR.index && DIR.shards[DIR.codeOf[f0.state]])) {
@@ -13760,13 +13764,53 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 (DIR.index ? Promise.resolve() : dirLoadIndex()).then(function () { const k = DIR.codeOf && DIR.codeOf[f0.state]; return k && !DIR.shards[k] ? dirLoadState(k) : null; }).catch(function () {}).then(run);
             } else run();
         }
-        function printSheetHTML(html) {
-            const sheet = document.getElementById('plan-print-sheet'); sheet.innerHTML = html; ppFitPages(sheet);
+        // Reports open on screen first, like a document. Printing or saving as a PDF is under Share.
+        function printSheetHTML(html, title) { reportViewOpen(html, title || 'Your report', false); }
+        let RV_ZOOM = 1, RV_FIT = 1;
+        function rvStyles() {
+            if (document.getElementById('rv-style')) return;
+            let css = '';
+            Array.prototype.forEach.call(document.styleSheets, function (ss) { try { Array.prototype.forEach.call(ss.cssRules, function (r) { if (r.type === 4 && /print/.test(r.conditionText || r.media.mediaText)) Array.prototype.forEach.call(r.cssRules, function (x) { if (x.selectorText && /plan-print-sheet|\.pp-|\.cr-|\.ci-|\.ip/.test(x.selectorText)) css += x.cssText.replace(/body\.printing-plan/g, 'body.viewing-report') + '\n'; }); }); } catch (er) {} });
+            const st = document.createElement('style'); st.id = 'rv-style'; st.textContent = '@media screen {\n' + css + '}'; document.head.appendChild(st);
+        }
+        function rvApplyZoom() { document.documentElement.style.setProperty('--rv-zoom', String(RV_ZOOM)); }
+        function reportViewOpen(html, title, fresh) {
+            const sheet = document.getElementById('plan-print-sheet'); if (!sheet) return;
+            sheet.innerHTML = html; ppFitPages(sheet);
+            try { localStorage.setItem('marg_report_done', '1'); } catch (er) {}
+            rvStyles();
+            const bar = document.getElementById('report-view-bar');
+            document.getElementById('report-view-title').textContent = title || 'Your report';
+            RV_FIT = Math.max(0.3, Math.min(1, (window.innerWidth - 16) / 794)); RV_ZOOM = RV_FIT; rvApplyZoom();
+            document.body.classList.add('viewing-report'); bar.classList.remove('hidden'); bar.style.display = 'flex';
+            sheet.setAttribute('aria-hidden', 'false'); sheet.scrollTop = 0;
+            rvShareClose();
+            setTimeout(function () { const b = document.getElementById('report-view-close'); if (b) b.focus(); }, 50);
+        }
+        function reportViewClose() {
+            document.body.classList.remove('viewing-report');
+            const bar = document.getElementById('report-view-bar'); if (bar) { bar.classList.add('hidden'); bar.style.display = 'none'; }
+            const sheet = document.getElementById('plan-print-sheet'); if (sheet) { sheet.setAttribute('aria-hidden', 'true'); sheet.innerHTML = ''; }
+            rvShareClose();
+        }
+        function reportViewZoom(f) { RV_ZOOM = Math.max(0.3, Math.min(2, RV_ZOOM * f)); rvApplyZoom(); }
+        function rvShareToggle() { const m = document.getElementById('report-view-share'); if (m) m.classList.toggle('hidden'); }
+        function rvShareClose() { const m = document.getElementById('report-view-share'); if (m) m.classList.add('hidden'); }
+        function reportViewPrint() {
+            rvShareClose();
             document.body.classList.add('printing-plan');
             const done = function () { document.body.classList.remove('printing-plan'); };
             window.addEventListener('afterprint', done, { once: true });
             setTimeout(function () { try { window.print(); } catch (er) { done(); showToast('Printing is blocked here. Open the page in its own tab, then try again.'); } }, 200);
         }
+        function reportViewShareSite() {
+            rvShareClose();
+            const data = { title: 'Plan4it', text: 'Free career guidance for students and professionals in India.', url: 'https://plan4it.co' };
+            if (navigator.share) { navigator.share(data).catch(function () {}); }
+            else if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(data.url).then(function () { showToast('Link copied.'); }, function () { showToast('Copy this link: plan4it.co'); }); }
+            else showToast('Copy this link: plan4it.co');
+        }
+        document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && document.body.classList.contains('viewing-report')) { const m = document.getElementById('report-view-share'); if (m && !m.classList.contains('hidden')) rvShareClose(); else reportViewClose(); } });
 
         // ---------- NIRF 2025 display ----------
         function nirfLabel(c, long) {
@@ -17616,6 +17660,17 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
     <div id="gloss-pop" role="tooltip" class="gloss-pop hidden bg-white border border-slate-200 rounded-xl shadow-lg p-3"></div>
     <div id="search-suggest" role="listbox" aria-label="Search suggestions" class="search-suggest hidden bg-white border border-slate-200 rounded-xl shadow-lg"></div>
     <div id="parent-print-sheet" style="display:none" aria-hidden="true"></div>
+    <div id="report-view-bar" class="hidden" style="display:none;position:fixed;top:0;left:0;right:0;z-index:97;height:calc(52px + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) max(10px,env(safe-area-inset-left,0px)) 0 max(10px,env(safe-area-inset-right,0px));align-items:center;gap:8px;background:#0f172a;color:#f8fafc;box-shadow:0 2px 10px rgba(0,0,0,.35)" role="dialog" aria-label="Your report">
+        <button type="button" id="report-view-close" onclick="reportViewClose()" style="min-height:40px;padding:0 12px;border:1px solid #475569;border-radius:10px;background:transparent;color:#f8fafc;font-weight:700;font-size:14px;cursor:pointer">&larr; Close</button>
+        <span id="report-view-title" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700;font-size:14px">Your report</span>
+        <button type="button" onclick="reportViewZoom(1/1.2)" aria-label="Zoom out" style="min-height:40px;min-width:40px;border:1px solid #475569;border-radius:10px;background:transparent;color:#f8fafc;font-weight:800;font-size:18px;cursor:pointer">&minus;</button>
+        <button type="button" onclick="reportViewZoom(1.2)" aria-label="Zoom in" style="min-height:40px;min-width:40px;border:1px solid #475569;border-radius:10px;background:transparent;color:#f8fafc;font-weight:800;font-size:18px;cursor:pointer">+</button>
+        <button type="button" onclick="rvShareToggle()" aria-haspopup="true" style="min-height:40px;padding:0 14px;border:0;border-radius:10px;background:#0284c7;color:#fff;font-weight:800;font-size:14px;cursor:pointer">Share</button>
+        <div id="report-view-share" class="hidden" style="position:absolute;top:calc(100% + 6px);right:max(10px,env(safe-area-inset-right,0px));min-width:230px;max-width:calc(100vw - 20px);background:#fff;color:#0f172a;border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.35);padding:6px">
+            <button type="button" onclick="reportViewPrint()" style="display:block;width:100%;text-align:left;min-height:48px;padding:0 14px;border:0;border-radius:10px;background:transparent;color:#0f172a;font-weight:700;font-size:14px;cursor:pointer">Print or save as PDF</button>
+            <button type="button" onclick="reportViewShareSite()" style="display:block;width:100%;text-align:left;min-height:48px;padding:0 14px;border:0;border-radius:10px;background:transparent;color:#0f172a;font-weight:600;font-size:14px;cursor:pointer">Tell a friend about Plan4it</button>
+        </div>
+    </div>
     <div id="plan-print-sheet" style="display:none" aria-hidden="true"></div>
 </body>
 </html>
