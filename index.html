@@ -936,7 +936,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
 
         <!-- ================= VIEW 3: CAREER EXPLORER ================= -->
         <section id="view-explorer" class="view-section hidden space-y-6">
-            <div class="flex md:justify-end"><button type="button" onclick="reportHubOpen()" class="w-full md:max-w-sm text-left flex items-start gap-3 min-h-[44px] rounded-xl border-2 border-amber-400 bg-white px-3 py-2.5 hover:bg-slate-50 print:hidden"><i class=ic-file></i><span class="text-xs text-slate-700 leading-relaxed"><b class="text-slate-900">Our flagship:</b> Save the careers you like, then generate your Career Intelligence Report: why each fits you, how to get there and your first 90 days. <span class="font-semibold text-brand-700 underline">See the Career Intelligence Report</span></span></button></div>
+            <div class="flex md:justify-end"><div class="w-full md:max-w-sm" data-report-note="car"></div></div>
             <div data-nav="Career Explorer" class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h2 class="text-3xl font-extrabold text-slate-900">Career Explorer System</h2>
@@ -1048,7 +1048,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
 
         <!-- ================= VIEW 5: "WHAT CAN I DO AFTER THIS?" BRANCHING ENGINE ================= -->
         <section id="view-afterDegree" class="view-section hidden max-w-4xl mx-auto space-y-6">
-            <div class="flex md:justify-end"><button type="button" onclick="reportHubOpen()" class="w-full md:max-w-sm text-left flex items-start gap-3 min-h-[44px] rounded-xl border-2 border-amber-400 bg-white px-3 py-2.5 hover:bg-slate-50 print:hidden"><i class=ic-file></i><span class="text-xs text-slate-700 leading-relaxed"><b class="text-slate-900">Our flagship:</b> Once you know your next step, your Career Intelligence Report lays out the education pathway and a 1 to 3 year roadmap. <span class="font-semibold text-brand-700 underline">See the Career Intelligence Report</span></span></button></div>
+            <div class="flex md:justify-end"><div class="w-full md:max-w-sm" data-report-note="path"></div></div>
 
             <div data-nav="What can I do after this?" id="branching-engine-block" class="scroll-mt-32 bg-white border border-slate-200 p-8 rounded-3xl shadow-sm">
                 <h2 class="text-2xl font-bold text-slate-900 mb-2">What can I do after this?</h2>
@@ -1147,7 +1147,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 <h2 class="text-3xl font-extrabold text-slate-900">India Entrance Exam Guidance Hub</h2>
                 <p class="text-slate-600 text-sm mt-1">Registration windows, fees, exam pattern, real competitiveness, and what each exam actually leads to.</p>
                 </div>
-                <button type="button" onclick="reportHubOpen()" class="w-full md:w-80 md:shrink-0 text-left flex items-start gap-3 min-h-[44px] rounded-xl border-2 border-amber-400 bg-white px-3 py-2.5 hover:bg-slate-50 print:hidden"><i class=ic-file></i><span class="text-xs text-slate-700 leading-relaxed"><b class="text-slate-900">Our flagship:</b> Your Career Intelligence Report maps the exams, dates and eligibility to the career you are aiming for. <span class="font-semibold text-brand-700 underline">See the Career Intelligence Report</span></span></button>
+                <div data-report-note="exam" class="md:w-80 md:shrink-0"></div>
             </div>
 
             <!-- Prep Playbook -->
@@ -1236,7 +1236,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 <h2 class="text-3xl font-extrabold text-slate-900">College & University Discovery Matrix</h2>
                 <p class="text-slate-600 text-sm mt-1">Evaluate institutions by fees, ownership, NIRF rankings, and realistic tradeoffs — not just the name.</p>
                 </div>
-                <button type="button" onclick="reportHubOpen()" class="w-full md:w-80 md:shrink-0 text-left flex items-start gap-3 min-h-[44px] rounded-xl border-2 border-amber-400 bg-white px-3 py-2.5 hover:bg-slate-50 print:hidden"><i class=ic-file></i><span class="text-xs text-slate-700 leading-relaxed"><b class="text-slate-900">Our flagship:</b> Your Career Intelligence Report lists the colleges and courses that fit your budget and marks, with the routes in. <span class="font-semibold text-brand-700 underline">See the Career Intelligence Report</span></span></button>
+                <div data-report-note="col" class="md:w-80 md:shrink-0"></div>
             </div>
 
             <div data-nav="Choose your stage">
@@ -13040,8 +13040,27 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 '<div class="mt-4 ' + (cmp ? 'grid gap-2' : 'flex flex-wrap items-center gap-3') + '">' + primary + '</div>' +
                 (full ? contents : '<details class="mt-3"><summary class="text-sm font-semibold text-brand-700 cursor-pointer min-h-[40px] flex items-center">' + (cmp ? 'See what is inside the 18-page report, and how it helps you' : 'What is free, and what is inside the 18-page report') + '</summary>' + contents + '</details>') + '</div>';
         }
+        // The flagship note on Careers, Pathways, Exams and Colleges. It changes with whether the reader has taken the quiz.
+        const REPORT_NOTE_TXT = {
+            car: 'Save the careers you like and the report shows why each fits you, how to get there and your first 90 days.',
+            path: 'The report lays out your education pathway and a 1 to 3 year roadmap.',
+            exam: 'The report maps the exams, dates and eligibility to the career you are aiming for.',
+            col: 'The report lists the colleges and courses that fit your budget and marks, with the routes in.'
+        };
+        function reportNoteHTML(key) {
+            const taken = !!getStoredWizardAnswers(), t = REPORT_NOTE_TXT[key] || '';
+            const btn = 'min-h-[44px] px-3 rounded-lg text-xs font-bold ';
+            const body = taken
+                ? '<b class="text-slate-900">Our flagship: your Career Intelligence Report.</b> ' + t + ' It is generated from your quiz answers, so if they have changed, retake the quiz before you pay. You can also save the items you like first.'
+                : '<b class="text-slate-900">Our flagship: the Career Intelligence Report.</b> ' + t + ' Take the quiz, or save items to your dashboard, to get yours. The report is generated from your quiz answers.';
+            const acts = taken
+                ? '<button type="button" onclick="reportHubOpen()" class="' + btn + 'bg-brand-600 hover:bg-brand-700 text-white">Get my report</button><button type="button" onclick="retakeQuiz();switchView(\'confusedMode\')" class="' + btn + 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50">Retake quiz</button>'
+                : '<button type="button" onclick="switchView(\'confusedMode\')" class="' + btn + 'bg-brand-600 hover:bg-brand-700 text-white">Take the quiz</button><button type="button" onclick="switchView(\'dashboard\')" class="' + btn + 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50">Open my dashboard</button>';
+            return '<div class="w-full text-left rounded-xl border-2 border-amber-400 bg-white px-3 py-2.5 print:hidden"><div class="flex items-start gap-3"><i class=ic-file></i><p class="text-xs text-slate-700 leading-relaxed">' + body + '</p></div><div class="flex flex-wrap gap-2 mt-2.5">' + acts + '</div></div>';
+        }
         function renderReportPromos() {
             [['report-promo-home', false, false], ['report-promo-dash', false, false], ['report-promo-results', false, true]].forEach(function (p) { const el = document.getElementById(p[0]); if (el) el.innerHTML = reportPromoHTML(p[1], p[2]); });
+            document.querySelectorAll('[data-report-note]').forEach(function (el) { el.innerHTML = reportNoteHTML(el.getAttribute('data-report-note')); });
         }
         // Phone and tablet: a floating "Career report" button on the quiz results instead of the inline card (laptops keep the card on the right).
         function reportFabSync() {
