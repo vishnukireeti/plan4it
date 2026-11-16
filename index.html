@@ -13021,8 +13021,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
            so students always know it exists, what they must do to get it, and what each version holds.
            ============================================================ */
         function reportMainAction() {
-            if (!getStoredWizardAnswers()) { reportHubClose(); switchView('confusedMode'); return; }
-            reportHubClose(); premiumPrintPlan();
+            reportHubClose(); reportChooseOpen();
         }
         function reportPromoHTML(full, compact) {
             const cmp = !!compact;
@@ -13032,8 +13031,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 { n: 2, done: false, t: 'Get your free 2-page report', d: 'Two pages: your career DNA, fit score, pay and route outline, and a first week to start on. No payment.', ok: A },
                 { n: 3, done: false, t: 'Get the full 18-page report', d: launch ? 'Free during our launch, then ₹' + PREMIUM_CFG.price + ' one-time. Download it as a PDF.' : '₹' + PREMIUM_CFG.price + ' one-time. Download it as a PDF.', ok: A }
             ];
-            const primary = !A ? '<button type="button" onclick="reportMainAction()" class="min-h-[48px] px-6 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-base shadow">Start the 2-minute quiz →</button>'
-                : '<button type="button" onclick="reportMainAction()" class="min-h-[48px] px-6 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-base shadow"><i class=ic-file></i> Download my full 18-page report' + (unlocked ? (launch ? ' · free now' : '') : ' · ₹' + PREMIUM_CFG.price) + '</button>' +
+            const primary = !A ? '<button type="button" onclick="reportMainAction()" class="min-h-[48px] px-6 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-base shadow">Get my report →</button>'
+                : '<button type="button" onclick="reportMainAction()" class="min-h-[48px] px-6 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-base shadow"><i class=ic-file></i> Get my report' + (unlocked ? (launch ? ' · free now' : '') : ' · ₹' + PREMIUM_CFG.price) + '</button>' +
                   '<button type="button" onclick="reportHubClose();intelSnapshotRun()" class="min-h-[48px] px-5 rounded-xl border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-bold text-sm">Free 2-page report</button>';
             const free = ['Your career DNA and what drives your fit score', 'Why your best match fits you, and one thing to watch', 'Pay for the first two stages, route outline and key skills', 'A first week to start on, and your top two compared'];
             const contents = '<div class="mt-4 grid ' + (cmp ? '' : 'sm:grid-cols-2 ') + 'gap-4"><div class="rounded-xl border border-slate-200 bg-white p-4"><p class="text-xs font-bold uppercase tracking-wider text-slate-500">Free 2-page report</p><ul class="mt-2 text-sm text-slate-700 space-y-1">' + free.map(function (x) { return '<li class="flex gap-2"><span class="text-emerald-600">✓</span><span>' + e(x) + '</span></li>'; }).join('') + '</ul></div>' +
@@ -15393,7 +15392,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 { done: !!goal, t: 'Choose your goal career', hint: saved.length ? 'Tap "Make my goal" on a saved career' : 'Save a career first', act: saved.length ? "document.getElementById('dashboard-saved-list').scrollIntoView({behavior:'smooth'})" : "switchView('explorer')", b: saved.length ? 'Pick a goal' : 'Browse careers' },
                 { done: exams.length >= 1, t: 'Save the exams you need', hint: exams.length + ' saved. Dates and deadlines appear below', act: "switchView('exams')", b: 'Open exams' },
                 { done: cols.length >= 1, t: 'Shortlist colleges', hint: cols.length + ' saved', act: "switchView('colleges')", b: 'Find colleges' },
-                { done: dashReportDone(), t: 'Download your report', hint: 'Your plan as a PDF to keep or share', act: goal ? "careerReportOpen('" + goal.id + "')" : (A ? 'premiumPrintPlan()' : "switchView('confusedMode')"), b: 'Get report' }
+                { done: dashReportDone(), t: 'Download your report', hint: 'Your plan as a PDF to keep or share', act: goal ? "careerReportOpen('" + goal.id + "')" : 'reportChooseOpen()', b: 'Get report' }
             ];
             const nDone = steps.filter(function (s) { return s.done; }).length, next = steps.find(function (s) { return !s.done; });
             let h = '<div class="bg-white border border-slate-200 rounded-2xl p-5">' +
@@ -15412,7 +15411,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 h += '<div class="bg-white border-2 border-brand-300 rounded-2xl p-5"><div class="flex items-start justify-between gap-3 flex-wrap"><div><p class="text-[11px] font-bold uppercase tracking-wider text-brand-700"><i class=ic-target></i> My goal</p><h3 class="text-2xl font-extrabold text-slate-900 mt-0.5">' + e(goal.title) + '</h3><p class="text-xs text-slate-600 mt-1">' + e(goal.salary) + ' · ' + e(goal.demand) + ' demand · about ' + e(goal.entryYears) + ' years to start</p></div><div class="flex gap-2 flex-wrap"><button onclick="careerReportOpen(\'' + goal.id + '\')" class="min-h-[44px] px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold"><i class=ic-file></i> Career report</button><button onclick="openCareerDetail(\'' + goal.id + '\')" class="min-h-[44px] px-4 rounded-xl border border-slate-300 bg-white text-sm font-semibold">Roadmap</button></div></div>' +
                     '<div class="grid md:grid-cols-2 gap-5 mt-4"><div><p class="text-sm font-bold text-slate-900">Skill readiness: ' + pct + '%</p><div class="mt-1 h-2 rounded-full bg-slate-100 overflow-hidden"><div class="h-full bg-emerald-500 rounded-full" style="width:' + pct + '%"></div></div>' +
                     (todo.length ? '<p class="text-xs text-slate-600 mt-3 font-semibold">Learn next</p><ul class="text-xs text-slate-700 mt-1 space-y-1">' + todo.map(function (s) { return '<li>• ' + e(s.name) + (s.why ? ': ' + e(s.why) : '') + '</li>'; }).join('') + '</ul><button onclick="openCareerDetail(\'' + goal.id + '\')" class="mt-2 text-xs font-semibold text-brand-700 underline min-h-[40px]">Tick skills you already have</button>' : '<p class="text-xs text-slate-600 mt-3">You have ticked every skill for this career.</p>') +
-                    (A ? '<button onclick="premiumPrintPlan()" class="mt-3 w-full min-h-[44px] rounded-xl border border-brand-300 bg-white text-brand-700 text-sm font-bold">Full 18-page report (from your quiz)</button>' : '') +
+                    '<button onclick="reportChooseOpen()" class="mt-3 w-full min-h-[44px] rounded-xl border border-brand-300 bg-white text-brand-700 text-sm font-bold">Get my full report</button>' +
                     '</div><div><p class="text-sm font-bold text-slate-900">Exams for this goal</p><div class="mt-1">' + (exRow || '<p class="text-xs text-slate-500 mt-1">No national exam is needed for most routes into this career.</p>') + '</div></div></div>' +
                     '<button onclick="dashClearGoal()" class="mt-3 text-[11px] text-slate-400 hover:text-slate-600 min-h-[32px]">Change goal</button></div>';
             }
