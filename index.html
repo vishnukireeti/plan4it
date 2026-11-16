@@ -242,7 +242,6 @@
             main.page-shell { display: grid; grid-template-columns: 15rem minmax(0, 1fr); column-gap: 2rem; align-items: start; }
             .page-nav { display: block; position: sticky; top: 5rem; max-height: calc(100vh - 6.5rem); overflow-y: auto; padding-right: .25rem; }
         }
-        @media (min-width: 1280px) and (max-width: 1535px) { .page-nav { top: 7.5rem; max-height: calc(100vh - 9rem); } }
         @media (min-width: 1024px) { main.page-shell.no-nav { display: block; } main.page-shell.no-nav .page-nav { display: none; } }
         @media (max-width: 1023.98px) {
             .page-nav-m { display: block; position: sticky; top: 4rem; z-index: 40; margin: -.5rem -1rem 1rem; padding: .5rem 1rem; background: inherit; }
@@ -600,9 +599,9 @@
 
     <!-- NAVIGATION BAR -->
     <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200">
-        <div class="max-w-7xl 2xl:max-w-[1440px] mx-auto px-3 min-[360px]:px-4 sm:px-6 lg:px-8 h-16 xl:h-auto xl:pt-2 xl:flex-wrap 2xl:h-16 2xl:pt-0 2xl:flex-nowrap flex items-center justify-between gap-x-4">
+        <div class="max-w-7xl 2xl:max-w-[1440px] mx-auto px-3 min-[360px]:px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
             <div class="flex items-center gap-1 shrink-0">
-                <button id="mobile-menu-btn" type="button" onclick="toggleMobileMenu()" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu-panel" class="xl:hidden -ml-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl hover:bg-slate-100 transition">
+                <button id="mobile-menu-btn" type="button" onclick="toggleMobileMenu()" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu-panel" class="2xl:hidden -ml-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl hover:bg-slate-100 transition">
                     <svg class="w-6 h-6" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
                 </button>
                 <div class="flex items-center gap-2 cursor-pointer" onclick="switchView('home')">
@@ -611,7 +610,7 @@
                 </div>
             </div>
 
-            <nav class="hidden xl:flex order-last w-full basis-full mt-1 min-h-[40px] 2xl:order-none 2xl:w-auto 2xl:basis-auto 2xl:mt-0 2xl:min-h-0 2xl:pl-5 flex-1 min-w-0 justify-center items-center gap-x-6 2xl:gap-x-4 text-sm font-medium text-slate-600 whitespace-nowrap">
+            <nav class="hidden 2xl:flex 2xl:pl-5 flex-1 min-w-0 justify-center items-center gap-x-4 text-sm font-medium text-slate-600 whitespace-nowrap">
                 <button data-nav="confusedMode" onclick="switchView('confusedMode')" class="nav-link text-brand-600 font-semibold hover:text-brand-700 transition">Find my path</button>
                 <button data-nav="backupPlan" onclick="switchView('backupPlan')" class="nav-link hover:text-brand-600 transition">Safety Net</button>
                 <button data-nav="explorer" onclick="switchView('explorer')" class="nav-link hover:text-brand-600 transition">Careers</button>
@@ -624,7 +623,7 @@
             </nav>
 
             <div class="flex items-center gap-1 sm:gap-3 shrink-0">
-                <button type="button" onclick="reportHubOpen()" aria-label="Full career report" title="Full career report" class="xl:hidden min-h-[40px] px-2.5 sm:px-3 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 text-xs font-bold whitespace-nowrap"><span aria-hidden="true">📄</span><span class="hidden min-[420px]:inline"> Report</span></button>
+                <button type="button" onclick="reportHubOpen()" aria-label="Full career report" title="Full career report" class="2xl:hidden min-h-[40px] px-2.5 sm:px-3 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 text-xs font-bold whitespace-nowrap"><span aria-hidden="true">📄</span><span class="hidden min-[420px]:inline"> Report</span></button>
                 <button id="gs-btn" type="button" onclick="openGlobalSearch()" aria-label="Search careers, exams and colleges" title="Search (press /)" class="min-h-[40px] min-w-[40px] border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl px-2.5 sm:px-3 flex items-center justify-center gap-2 text-sm font-semibold transition"><svg class="w-5 h-5" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="M13.5 13.5L17 17" stroke-linecap="round"/></svg><span class="hidden">Search</span></button>
                 <button id="admin-header-btn" type="button" onclick="openAdmin()" class="hidden min-h-[40px] border border-amber-200 text-amber-800 bg-amber-50 hover:bg-amber-100 px-3 rounded-xl text-xs font-semibold transition">Admin</button>
                     <button id="auth-header-btn" type="button" onclick="openAuth()" aria-label="Sign up or log in" title="Create an account or log in" class="min-h-[40px] whitespace-nowrap border border-brand-200 text-brand-700 hover:bg-brand-50 px-2.5 sm:px-4 py-2 rounded-xl text-sm font-semibold transition">Sign up</button>
@@ -638,8 +637,8 @@
     </header>
 
     <!-- MOBILE MENU (hamburger, phone only; desktop nav in header is untouched) -->
-    <div id="mobile-menu-overlay" class="hidden xl:hidden fixed inset-0 bg-black/30 z-40" onclick="closeMobileMenu()"></div>
-    <nav id="mobile-menu-panel" class="hidden xl:hidden fixed top-16 left-0 right-0 z-50 bg-white border-b border-slate-200 shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto" aria-label="Main menu">
+    <div id="mobile-menu-overlay" class="hidden 2xl:hidden fixed inset-0 bg-black/30 z-40" onclick="closeMobileMenu()"></div>
+    <nav id="mobile-menu-panel" class="hidden 2xl:hidden fixed top-16 left-0 right-0 z-50 bg-white border-b border-slate-200 shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto" aria-label="Main menu">
         <div class="flex flex-col py-2">
             <button data-nav="confusedMode" onclick="switchView('confusedMode');closeMobileMenu()" class="nav-link text-brand-600 font-semibold text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Find my path</button>
             <button data-nav="backupPlan" onclick="switchView('backupPlan');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Safety Net</button>
@@ -8329,7 +8328,7 @@
         function adminOwnerChanged() {
             try { applyAdminOverrides(); } catch (e) {}
             adminSyncUI();
-            if (!adminOwnerOk) { const m = document.getElementById('admin-modal'); if (m && !m.classList.contains('hidden')) closeAdmin(); }
+            if (!adminOwnerOk) { const m = document.getElementById('admin-modal'); if (m && !m.classList.contains('hidden')) closeAdmin(); } if (!adminOwnerOk) { const dm = document.getElementById('admin-dash'); if (dm && !dm.classList.contains('hidden')) closeAdminDash(); AD.data = null; }
             try { if (typeof renderExams === 'function') renderExams(); } catch (e) {}
         }
         function adminOn() {
@@ -8353,7 +8352,7 @@
             const b = document.getElementById('admin-header-btn');
             if (b) b.classList.toggle('hidden', !adminOwnerOk);
         }
-        function openAdmin() {
+        function openAdminTools() {
             if (!adminOwnerOk) return;
             adminState.opener = document.activeElement;
             const m = document.getElementById('admin-modal');
@@ -8369,6 +8368,170 @@
             document.body.style.overflow = '';
             if (adminState.opener && adminState.opener.focus) adminState.opener.focus();
         }
+        /* ============================================================
+           ADMIN DASHBOARD - every statistic from Supabase in one screen.
+           Data comes from the admin-only SQL function admin_dashboard()
+           (see supabase_admin_dashboard.sql). The server checks the signed-in
+           email itself, so a visitor who forces this screen open sees nothing.
+           ============================================================ */
+        const AD = { data: null, loading: false, err: null, metric: 'visitors', opener: null, at: null };
+        const AD_PAGES = { home: 'Home', explorer: 'Career explorer', confusedMode: 'Find my path (quiz)', dashboard: 'My dashboard', careerDetail: 'Career pages', afterDegree: 'Pathways', colleges: 'Colleges', backupPlan: 'Safety net', exams: 'Exam hub', govAndAbroad: 'Govt and money', internships: 'Internships', collegeDetail: 'College pages', examDetail: 'Exam pages', privacy: 'Privacy page' };
+        const AD_ACTIONS = { app_opened: 'App opened', quiz_completed: 'Quiz completed', career_saved: 'Career saved', career_report_open: 'Career report opened', career_report_general: 'Career report (explore)', career_report_me: 'Career report (made for me)', careers_compared: 'Careers compared', backup_plan_generated: 'Safety-net plan made', report_hub_open: 'Report hub opened' };
+        const AD_QUIZ = { stage: 'Stage', state: 'State', cls: 'Class or status', help: 'Looking for', clarity: 'Career clarity', constraint: 'Biggest constraint', degree: 'Degree', situation: 'Situation', mode: 'Goal', after: 'After school', interests: 'Interests', values: 'What matters most', workStyles: 'Work style' };
+        const AD_COL = { sky: '#38bdf8', amber: '#fbbf24', green: '#34d399', violet: '#a78bfa', rose: '#fb7185' };
+        function adN(n) { return Number(n || 0).toLocaleString('en-IN'); }
+        function adPct(a, b) { return b ? Math.round(a / b * 1000) / 10 : 0; }
+        const AD_VAL = { ug: 'Undergraduate', pg: 'Postgraduate', biz: 'Business', tech: 'Technology', grow: 'Grow in current field', start: 'Start a career', switch: 'Switch careers', careers: 'Explore careers', unsure: 'Unsure', few: 'A few ideas', none: 'No idea yet', done: 'Finished studies', earn: 'Earn well', own: 'Be my own boss', enjoy: 'Enjoy the work', skilled: 'Build skills', working: 'Working', discover: 'Discover options', fast: 'Need income fast', open: 'Open to anything' };
+        function adPretty(s) { const k = String(s == null ? '' : s); if (AD_VAL[k.toLowerCase()]) return AD_VAL[k.toLowerCase()]; return k.replace(/[-_]+/g, ' ').replace(/^./, function (c) { return c.toUpperCase(); }); }
+        function adDay(d) { const t = new Date(d + 'T00:00:00'); return t.getDate() + ' ' + t.toLocaleString('en-IN', { month: 'short' }); }
+        function adWhen(t) { if (!t) return 'never'; try { return new Date(t).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }); } catch (e) { return String(t).slice(0, 10); } }
+        function adName(kind, id) {
+            try {
+                if (kind === 'careers') { const c = careersData.find(function (x) { return x.id === id; }); if (c) return c.title; }
+                if (kind === 'exams') { const c = examsData.find(function (x) { return x.id === id; }); if (c) return c.name; }
+                if (kind === 'colleges') { const c = collegesData.find(function (x) { return x.id === id; }); if (c) return c.name; }
+            } catch (e) {}
+            return adPretty(id);
+        }
+        function openAdmin() {
+            if (!adminOwnerOk) return;
+            AD.opener = document.activeElement;
+            const m = document.getElementById('admin-dash');
+            m.classList.remove('hidden'); document.body.style.overflow = 'hidden';
+            adLoad();
+            m.scrollTop = 0; m.focus();
+        }
+        function closeAdminDash() {
+            const m = document.getElementById('admin-dash');
+            m.classList.add('hidden'); document.body.style.overflow = '';
+            if (AD.opener && AD.opener.focus) AD.opener.focus();
+        }
+        function adLoad() {
+            AD.loading = true; AD.err = null; adRender();
+            if (!sb) { AD.loading = false; AD.err = 'offline'; adRender(); return; }
+            sb.rpc('admin_dashboard').then(function (r) {
+                AD.loading = false;
+                if (r.error) { const m = String(r.error.message || ''); AD.err = /not authori|42501|permission/i.test(m + (r.error.code || '')) ? 'denied' : (/could not find|does not exist|42883|PGRST202/i.test(m + (r.error.code || '')) ? 'setup' : 'error'); AD.errMsg = m; }
+                else { AD.data = r.data; AD.at = new Date(); }
+                adRender();
+            }, function (er) { AD.loading = false; AD.err = 'error'; AD.errMsg = String(er && er.message || er); adRender(); });
+        }
+        function adMetric(k) { AD.metric = k; adRender(); }
+        function adExport() {
+            if (!AD.data) return;
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([JSON.stringify(AD.data, null, 2)], { type: 'application/json' }));
+            a.download = 'plan4it-stats-' + new Date().toISOString().slice(0, 10) + '.json';
+            document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+        }
+        function adCard(label, value, sub, tone) {
+            return '<div class="bg-white border border-slate-200 rounded-2xl p-4 min-w-0"><p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">' + label + '</p><p class="text-3xl font-bold text-slate-900 mt-1 leading-none"' + (tone ? ' style="color:' + tone + '"' : '') + '>' + value + '</p><p class="text-xs text-slate-500 mt-2">' + sub + '</p></div>';
+        }
+        function adPanel(title, note, inner, cls) {
+            return '<section class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 min-w-0 ' + (cls || '') + '"><h3 class="font-display text-base font-bold text-slate-900">' + title + '</h3>' + (note ? '<p class="text-xs text-slate-500 mt-0.5">' + note + '</p>' : '') + '<div class="mt-4">' + inner + '</div></section>';
+        }
+        function adBars(vals, labels, color, opts) {
+            opts = opts || {};
+            const n = vals.length, max = Math.max(1, Math.max.apply(null, vals)), top = max <= 4 ? 4 : Math.ceil(max / 4) * 4;
+            const W = 720, H = opts.h || 190, pl = 34, pb = 24, pt = 8, bw = (W - pl) / n, ih = H - pb - pt;
+            let g = '', b = '', x = '';
+            for (let i = 0; i <= 4; i++) { const y = pt + ih - ih * i / 4; g += '<line x1="' + pl + '" x2="' + W + '" y1="' + y + '" y2="' + y + '" stroke="currentColor" stroke-opacity=".12"/><text x="' + (pl - 6) + '" y="' + (y + 3.5) + '" text-anchor="end" font-size="10" fill="currentColor" fill-opacity=".6">' + Math.round(top * i / 4) + '</text>'; }
+            vals.forEach(function (v, i) {
+                const h = Math.max(v ? 2 : 0, ih * v / top), bx = pl + i * bw + bw * .15;
+                b += '<rect x="' + bx.toFixed(1) + '" y="' + (pt + ih - h).toFixed(1) + '" width="' + (bw * .7).toFixed(1) + '" height="' + h.toFixed(1) + '" rx="2.5" fill="' + color + '"><title>' + labels[i] + ': ' + adN(v) + '</title></rect>';
+            });
+            const every = n > 24 ? 5 : (n > 12 ? 3 : 1);
+            labels.forEach(function (l, i) { if (i % every === 0 || i === n - 1) x += '<text x="' + (pl + i * bw + bw / 2).toFixed(1) + '" y="' + (H - 7) + '" text-anchor="middle" font-size="10" fill="currentColor" fill-opacity=".6">' + (opts.short ? opts.short(l, i) : l) + '</text>'; });
+            return '<svg viewBox="0 0 ' + W + ' ' + H + '" class="w-full h-auto text-slate-500" role="img" aria-label="' + (opts.aria || 'Bar chart') + '">' + g + b + x + '</svg>';
+        }
+        function adList(items, color, emptyMsg, total) {
+            if (!items.length) return '<p class="text-sm text-slate-500">' + (emptyMsg || 'No data yet.') + '</p>';
+            const max = Math.max.apply(null, items.map(function (i) { return i.n; })) || 1;
+            return '<ul class="space-y-2.5">' + items.map(function (i) {
+                return '<li><div class="flex items-baseline justify-between gap-3 text-sm"><span class="text-slate-800 min-w-0 truncate">' + escapeAuth(i.label) + '</span><span class="font-bold text-slate-900 shrink-0">' + adN(i.n) + (i.sub ? ' <span class="font-normal text-xs text-slate-500">' + i.sub + '</span>' : '') + '</span></div><div class="h-2 rounded-full bg-slate-100 mt-1 overflow-hidden"><div class="h-2 rounded-full" style="width:' + Math.max(3, i.n / max * 100) + '%;background:' + color + '"></div></div></li>';
+            }).join('') + '</ul>';
+        }
+        function adMsg(title, text, extra) {
+            return '<div class="max-w-xl mx-auto mt-10 bg-white border border-slate-200 rounded-2xl p-6"><h3 class="font-display text-lg font-bold text-slate-900">' + title + '</h3><p class="text-sm text-slate-600 mt-2 leading-relaxed">' + text + '</p>' + (extra || '') + '</div>';
+        }
+        function adRender() {
+            const body = document.getElementById('ad-body'); if (!body) return;
+            const head = '<div class="flex flex-wrap items-center gap-3 justify-between mb-5"><div class="min-w-0"><span class="font-display inline-block bg-amber-700 text-white font-bold px-3 py-1 rounded-lg text-xs">Admin only</span><h2 id="ad-title" class="font-display text-2xl sm:text-3xl font-bold text-slate-900 mt-2">Plan4it dashboard</h2><p class="text-sm text-slate-500 mt-0.5">' + (AD.at ? 'Updated ' + adWhen(AD.at) + ' IST. Times are India time.' : 'Live numbers from your Supabase database.') + '</p></div>' +
+                '<div class="flex flex-wrap gap-2"><button type="button" onclick="adLoad()" class="min-h-[44px] px-4 rounded-xl border border-slate-200 bg-white text-slate-800 hover:border-brand-400 text-sm font-semibold">' + (AD.loading ? 'Loading…' : 'Refresh') + '</button>' +
+                '<button type="button" onclick="adExport()" class="min-h-[44px] px-4 rounded-xl border border-slate-200 bg-white text-slate-800 hover:border-brand-400 text-sm font-semibold">Download data</button>' +
+                '<button type="button" onclick="openAdminTools()" class="min-h-[44px] px-4 rounded-xl border border-slate-200 bg-white text-slate-800 hover:border-brand-400 text-sm font-semibold">Content tools</button>' +
+                '<button type="button" onclick="closeAdminDash()" class="min-h-[44px] px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold">Close</button></div></div>';
+            if (AD.err === 'setup') { body.innerHTML = head + adMsg('One-time setup needed', 'The dashboard reads its numbers through a small admin-only function in Supabase, and it has not been created yet. Open the Supabase SQL editor, paste the contents of <strong>supabase_admin_dashboard.sql</strong> from the project, and run it. Then press Refresh.'); return; }
+            if (AD.err === 'denied') { body.innerHTML = head + adMsg('Not allowed', 'The server says this account is not the admin account. Sign in with the admin email to see the numbers.'); return; }
+            if (AD.err) { body.innerHTML = head + adMsg('Could not load the numbers', 'Check your connection and press Refresh.' + (AD.errMsg ? ' <span class="block mt-2 text-xs text-slate-500">' + escapeAuth(AD.errMsg) + '</span>' : '')); return; }
+            const d = AD.data;
+            if (!d) { body.innerHTML = head + '<p class="text-sm text-slate-500 mt-6" role="status">Loading the latest numbers…</p>'; return; }
+            const t = d.totals || {}, fn = d.funnel || {}, daily = d.daily || [];
+            const ev = d.events_by_name || [];
+            const pages = ev.filter(function (x) { return x.name.indexOf('view_') === 0; }).map(function (x) { const k = x.name.slice(5); return { label: AD_PAGES[k] || adPretty(k), n: x.n, sub: adN(x.visitors) + ' people' }; });
+            const acts = ev.filter(function (x) { return x.name.indexOf('view_') !== 0; }).map(function (x) { return { label: AD_ACTIONS[x.name] || adPretty(x.name), n: x.n, sub: adN(x.visitors) + ' people' }; });
+            const mets = [['visitors', 'Visitors'], ['events', 'Actions'], ['quizzes', 'Quizzes'], ['signups', 'Sign-ups']];
+            const mcol = { visitors: AD_COL.sky, events: AD_COL.violet, quizzes: AD_COL.green, signups: AD_COL.amber };
+            const metBtns = mets.map(function (m) { const on = AD.metric === m[0]; return '<button type="button" onclick="adMetric(\'' + m[0] + '\')" aria-pressed="' + on + '" class="min-h-[36px] px-3 rounded-lg border text-xs font-semibold ' + (on ? 'border-brand-600 bg-brand-50 text-brand-800' : 'border-slate-200 text-slate-600 hover:border-brand-400') + '">' + m[1] + '</button>'; }).join('');
+            const dayVals = daily.map(function (x) { return x[AD.metric] || 0; }), dayLab = daily.map(function (x) { return adDay(x.d); });
+            const sum30 = dayVals.reduce(function (a, b) { return a + b; }, 0);
+            const steps = [['visited', 'Visited the app'], ['explored', 'Explored careers, exams or colleges'], ['quiz', 'Completed the quiz'], ['saved', 'Saved a career'], ['dashboard', 'Opened their dashboard'], ['report', 'Opened a career report']];
+            let prev = fn.visited || 0;
+            const funnelHTML = '<ul class="space-y-3">' + steps.map(function (s, i) {
+                const v = fn[s[0]] || 0, w = Math.max(2, adPct(v, fn.visited || 1)), step = i ? adPct(v, prev) : 100; prev = v || prev;
+                return '<li><div class="flex items-baseline justify-between gap-3 text-sm"><span class="text-slate-800">' + s[1] + '</span><span class="font-bold text-slate-900 shrink-0">' + adN(v) + ' <span class="font-normal text-xs text-slate-500">' + adPct(v, fn.visited) + '% of visitors' + (i && step <= 100 ? ' · ' + step + '% of previous step' : '') + '</span></span></div><div class="h-2.5 rounded-full bg-slate-100 mt-1 overflow-hidden"><div class="h-2.5 rounded-full" style="width:' + w + '%;background:' + AD_COL.sky + '"></div></div></li>';
+            }).join('') + '</ul><p class="text-xs text-slate-500 mt-3">Plus ' + adN(fn.account) + ' people created an account. Visitors are counted by browser, so one person on two devices counts twice.</p>';
+            const nr = d.new_vs_returning_7d || {};
+            const hours = d.hours || [];
+            const hrShort = function (l, i) { const h = hours[i] ? hours[i].h : i; return (h % 12 || 12) + (h < 12 ? 'a' : 'p'); };
+            const saved = d.saved_top || {}, st = saved.totals || {};
+            const savedList = function (kind) { return adList((saved[kind] || []).map(function (x) { return { label: adName(kind, x.item), n: x.n }; }), AD_COL.amber, 'Nobody has saved any yet.'); };
+            const quiz = d.quiz_profile || {};
+            const quizKeys = Object.keys(AD_QUIZ).filter(function (k) { return quiz[k] && quiz[k].length; });
+            const quizHTML = quizKeys.length ? '<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">' + quizKeys.map(function (k) {
+                return '<div class="min-w-0"><p class="text-xs font-bold uppercase tracking-wide text-slate-500 mb-2">' + AD_QUIZ[k] + '</p>' + adList(quiz[k].slice(0, 6).map(function (x) { return { label: adPretty(x.value), n: x.n }; }), AD_COL.green) + '</div>';
+            }).join('') + '</div>' : '<p class="text-sm text-slate-500">No quiz answers saved to accounts yet.</p>';
+            const accs = d.recent_accounts || [];
+            const accRows = accs.map(function (a) {
+                const items = a.careers + ' careers · ' + a.exams + ' exams · ' + a.colleges + ' colleges';
+                return '<li class="py-3 border-b border-slate-100 last:border-0"><div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1"><span class="text-sm font-semibold text-slate-900 break-all">' + escapeAuth(a.who) + (a.confirmed ? '' : ' <span class="text-xs font-normal text-amber-700">(unconfirmed)</span>') + '</span><span class="text-xs text-slate-500">Joined ' + adWhen(a.joined) + '</span></div><p class="text-xs text-slate-500 mt-0.5">Last seen ' + adWhen(a.last_seen) + ' · Saved: ' + items + (a.stage ? ' · ' + escapeAuth(a.stage) : '') + (a.state ? ', ' + escapeAuth(a.state) : '') + '</p></li>';
+            }).join('');
+            const inv = [];
+            try { inv.push(['Careers loaded', careersData.length], ['Exams', examsData.length], ['Detailed colleges', collegesData.length], ['Scholarships', SCHOLARSHIPS_DATA.length]); } catch (er) {}
+            const peak = hours.slice().sort(function (a, b) { return b.n - a.n; })[0];
+            const bestDay = daily.slice().sort(function (a, b) { return b.visitors - a.visitors; })[0];
+            body.innerHTML = head +
+                '<div class="grid grid-cols-2 lg:grid-cols-4 gap-3">' +
+                adCard('Visitors', adN(t.visitors), adN(t.visitors_today) + ' today · ' + adN(t.visitors_7d) + ' in 7 days', AD_COL.sky) +
+                adCard('Accounts', adN(t.accounts), '+' + adN(t.accounts_7d) + ' this week · ' + adN(t.signed_in_7d) + ' signed in', AD_COL.amber) +
+                adCard('Quiz completed', adN(fn.quiz), adPct(fn.quiz, fn.visited) + '% of visitors · ' + adN(d.quiz_takers) + ' saved to accounts', AD_COL.green) +
+                adCard('Actions logged', adN(t.events), adN(t.events_today) + ' today · ' + adN(t.events_7d) + ' in 7 days', AD_COL.violet) +
+                adCard('Returning visitors', adN(t.returning_visitors), adPct(t.returning_visitors, t.visitors) + '% came back on another day') +
+                adCard('Careers saved', adN(st.careers), adN(saved.careers ? saved.careers.length : 0) + ' different careers') +
+                adCard('Exams and colleges saved', adN((st.exams || 0) + (st.colleges || 0)), adN(st.exams) + ' exams · ' + adN(st.colleges) + ' colleges') +
+                adCard('Career reports', adN(fn.report), 'people who opened a report') +
+                '</div>' +
+                '<div class="grid lg:grid-cols-3 gap-4 mt-4">' +
+                adPanel('Last 30 days', (AD.metric === 'visitors' ? 'Unique visitors per day' : adN(sum30) + ' ' + (mets.find(function (m) { return m[0] === AD.metric; })[1]).toLowerCase() + ' in total') + (bestDay ? ' · busiest day ' + adDay(bestDay.d) + ' (' + adN(bestDay.visitors) + ' visitors)' : ''), '<div class="flex flex-wrap gap-2 mb-3" role="group" aria-label="Chart metric">' + metBtns + '</div>' + adBars(dayVals, dayLab, mcol[AD.metric], { aria: 'Daily ' + AD.metric + ' for the last 30 days' }), 'lg:col-span-2') +
+                adPanel('Who is visiting', 'Last 7 days', adList([{ label: 'New visitors', n: nr.new || 0 }, { label: 'Came back', n: nr.returning || 0 }], AD_COL.sky) + '<p class="text-xs font-bold uppercase tracking-wide text-slate-500 mt-5 mb-2">How people sign up</p>' + adList((d.signup_methods || []).map(function (x) { return { label: adPretty(x.method), n: x.n }; }), AD_COL.amber)) +
+                '</div>' +
+                '<div class="grid lg:grid-cols-2 gap-4 mt-4">' +
+                adPanel('From visit to report', 'How far people get', funnelHTML) +
+                adPanel('Busiest hours', peak && peak.n ? 'Peak around ' + ((peak.h % 12 || 12) + (peak.h < 12 ? ' AM' : ' PM')) + ' IST' : 'India time', adBars(hours.map(function (h) { return h.n; }), hours.map(function (h) { return h.h; }), AD_COL.violet, { short: hrShort, aria: 'Actions by hour of day', h: 170 })) +
+                '</div>' +
+                '<div class="grid lg:grid-cols-2 gap-4 mt-4">' +
+                adPanel('Most-visited pages', 'Page views, all time', adList(pages, AD_COL.sky)) +
+                adPanel('What people do', 'Actions, all time', adList(acts, AD_COL.green)) +
+                '</div>' +
+                '<div class="grid lg:grid-cols-3 gap-4 mt-4">' +
+                adPanel('Saved careers', 'Most saved', savedList('careers')) + adPanel('Saved exams', 'Most saved', savedList('exams')) + adPanel('Saved colleges', 'Most saved', savedList('colleges')) +
+                '</div>' +
+                adPanel('Who is taking the quiz', 'Answers saved by signed-in users (' + adN(d.quiz_takers) + ' people)', quizHTML, 'mt-4') +
+                adPanel('Newest accounts', 'Emails are partly hidden. ' + adN(t.accounts) + ' accounts in total, ' + adN(t.with_saved_data) + ' with saved data.', accs.length ? '<ul>' + accRows + '</ul>' : '<p class="text-sm text-slate-500">No accounts yet.</p>', 'mt-4') +
+                (inv.length ? adPanel('What is in the app', 'Content loaded in this browser', '<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">' + inv.map(function (i) { return '<div><p class="text-2xl font-bold text-slate-900">' + adN(i[1]) + '</p><p class="text-xs text-slate-500">' + i[0] + '</p></div>'; }).join('') + '</div>', 'mt-4') : '') +
+                '<p class="text-xs text-slate-500 mt-5">Tracking began ' + adWhen(t.first_event) + '. Visitors are anonymous browser IDs. Only this admin account can load these numbers; the server checks the email on every request.</p>';
+        }
+        document.addEventListener('keydown', function (ev) { if (ev.key !== 'Escape') return; const m = document.getElementById('admin-dash'), t = document.getElementById('admin-modal'); if (m && !m.classList.contains('hidden') && (!t || t.classList.contains('hidden'))) closeAdminDash(); });
         function enableAdmin(on) {
             if (!adminOwnerOk) return;
             safeSetItem(ADMIN_KEYS.flag, on ? '1' : '0');
@@ -16779,6 +16942,7 @@
             }
         });
     </script>
+    <div id="admin-dash" tabindex="-1" class="hidden fixed inset-0 z-[94] overflow-y-auto bg-slate-50 outline-none" role="dialog" aria-modal="true" aria-labelledby="ad-title"><div id="ad-body" class="max-w-6xl mx-auto px-4 sm:px-6 py-5 pb-16"></div></div>
     <div id="admin-modal" class="hidden fixed inset-0 z-[95] items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="admin-title">
         <div class="absolute inset-0 bg-slate-900/60" onclick="closeAdmin()"></div>
         <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto p-6 sm:p-8">
