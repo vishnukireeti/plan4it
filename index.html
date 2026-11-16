@@ -9846,6 +9846,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         }
 
         window.addEventListener('popstate', (e) => {
+            if (!(e.state && e.state.view) && parseShareHash()) { openSharedLink(true); return; }
             const view = (e.state && e.state.view) || (location.hash ? location.hash.replace('#','') : 'home');
             switchView(view, true);
         });
@@ -12124,6 +12125,28 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     '<button onclick="openExamDetail(\'' + x.e.id + '\')" class="text-xs font-semibold underline min-h-[44px] px-1">Open</button></div></div>';
             }).join('');
         }
+        /* ---- Shared links: https://plan4it.co/#career/<id>, #exam/<id>, #college/<id> open that item directly ---- */
+        function shareLinkFor(kind, id) { return location.origin + location.pathname + '#' + kind + '/' + encodeURIComponent(id); }
+        function parseShareHash() {
+            const m = /^#(career|exam|college)\/(.+)$/.exec(location.hash || '');
+            if (!m) return null;
+            let id = m[2]; try { id = decodeURIComponent(id); } catch (er) {}
+            return { kind: m[1], id: id };
+        }
+        // Opens the shared item. The full career, exam and college lists arrive a moment after the page, so when the item is not
+        // there yet this waits for them (afterMoreData calls it again with final = true).
+        function openSharedLink(final) {
+            const p = parseShareHash(); if (!p) return false;
+            const here = p.kind === 'career' ? careersData.some(function (x) { return x.id === p.id; }) : p.kind === 'exam' ? examsData.some(function (x) { return x.id === p.id; }) : !!(findCollege(p.id) || dirCodeFromId(p.id));
+            if (!here && !final) { window.__pendingShare = true; setTimeout(function () { if (window.__pendingShare) openSharedLink(true); }, 5000); return true; }
+            window.__pendingShare = false;
+            try {
+                if (p.kind === 'career') openCareerDetail(p.id, true); else if (p.kind === 'exam') openExamDetail(p.id, true); else openCollegeDetail(p.id, true);
+                switchView(p.kind + 'Detail', true);
+                history.replaceState({ view: p.kind + 'Detail' }, '', location.pathname + location.search + '#' + p.kind + '/' + encodeURIComponent(p.id));
+            } catch (er) { console.error(er); }
+            return true;
+        }
         function shareItem(kind, id) {
             const src = kind === 'career' ? careersData : kind === 'college' ? collegesData : examsData;
             const it = kind === 'college' ? findCollege(id) : src.find(x => x.id === id);
@@ -12131,7 +12154,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const title = it.title || it.name;
             const label = kind === 'career' ? 'career' : kind === 'college' ? 'college' : 'exam';
             const text = 'Take a look at this ' + label + ': ' + title + '. Found on Plan4it, a career guide for Class 10-12 students and families.';
-            const url = location.href.split('#')[0];
+            const url = shareLinkFor(kind, id);
             if (navigator.share) { navigator.share({ title: title, text: text, url: url }).catch(() => {}); return; }
             window.open('https://wa.me/?text=' + encodeURIComponent(text + ' ' + url), '_blank', 'noopener');
         }
@@ -17126,6 +17149,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             }));
         }
         function afterMoreData() {
+            if (window.__pendingShare) { try { openSharedLink(true); } catch (er) {} }
             try {
                 SEARCH_CACHE.clear();
                 const keep = ['college-level-filter', 'college-stream-filter', 'college-exam-filter', 'college-state-filter', 'college-fees-filter', 'scholarship-category', 'scholarship-income', 'scholarship-stream'].map(function (id) { const el = document.getElementById(id); return [id, el ? el.value : null]; });
@@ -17208,8 +17232,10 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 renderAfter10Colleges();
                 setCollegesMode('degree');
                 labelControls();
-                const initialView = location.hash ? location.hash.replace('#', '') : 'home';
+                const sharedLink = parseShareHash();
+                const initialView = sharedLink ? 'home' : location.hash ? location.hash.replace('#', '') : 'home';
                 switchView(initialView, true);
+                if (sharedLink) openSharedLink(false);
                 if (window.requestIdleCallback) requestIdleCallback(loadMoreData, { timeout: 2500 }); else setTimeout(loadMoreData, 700);
             } catch (err) {
                 console.error('Plan4it init error:', err);
