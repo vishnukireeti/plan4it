@@ -13803,12 +13803,94 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             window.addEventListener('afterprint', done, { once: true });
             setTimeout(function () { try { window.print(); } catch (er) { done(); showToast('Printing is blocked here. Open the page in its own tab, then try again.'); } }, 200);
         }
-        function reportViewShareSite() {
+        // ---- Share as a PDF file. Each report page is drawn to an image by the browser and written into a PDF, with no outside library.
+        function rvPdfCss() {
+            let css = '';
+            const add = function (rules) { Array.prototype.forEach.call(rules, function (r) {
+                if (r.type === 1) css += r.cssText.replace(/body\.printing-plan\s*/g, '').replace(/body\.viewing-report\s*/g, '') + '\n';
+                else if (r.type === 4) { const m = (r.conditionText || r.media.mediaText || ''); if (/print/.test(m) && !/screen/.test(m)) add(r.cssRules); }
+            }); };
+            Array.prototype.forEach.call(document.styleSheets, function (ss) { try { add(ss.cssRules); } catch (er) {} });
+            return css;
+        }
+        function rvDataUri(url) {
+            return fetch(url).then(function (r) { return r.blob(); }).then(function (b) { return new Promise(function (res) { const fr = new FileReader(); fr.onload = function () { res(fr.result); }; fr.readAsDataURL(b); }); });
+        }
+        function rvPageToJpeg(pg, css, imgMap) {
+            const clone = pg.cloneNode(true);
+            Array.prototype.forEach.call(clone.querySelectorAll('img'), function (im) { const u = im.getAttribute('src'); if (imgMap[u]) im.setAttribute('src', imgMap[u]); });
+            const W = 794, H = 1123, SC = 2;
+            const xml = new XMLSerializer().serializeToString(clone);
+            const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '"><foreignObject x="0" y="0" width="' + W + '" height="' + H + '"><div xmlns="http://www.w3.org/1999/xhtml" style="width:' + W + 'px;height:' + H + 'px;background:#fff;padding:38px;box-sizing:border-box;overflow:hidden"><style>' + css.replace(/</g, '\\3c ') + '\n#plan-print-sheet .ip{height:277mm !important;width:190mm !important;margin:0 !important;padding:0 !important;box-shadow:none !important;zoom:1 !important;position:relative;overflow:hidden}\n#plan-print-sheet .ipf{left:0 !important;right:0 !important;bottom:0 !important}\nbody,html{margin:0}</style><div id="plan-print-sheet" style="display:block;color:#0f172a;font-family:Inter,Arial,Helvetica,sans-serif;font-size:10.5px;line-height:1.45">' + xml + '</div></div></foreignObject></svg>';
+            return new Promise(function (resolve, reject) {
+                const img = new Image();
+                img.onload = function () {
+                    try {
+                        const cv = document.createElement('canvas'); cv.width = W * SC; cv.height = H * SC;
+                        const cx = cv.getContext('2d'); cx.fillStyle = '#fff'; cx.fillRect(0, 0, cv.width, cv.height); cx.drawImage(img, 0, 0, cv.width, cv.height);
+                        cv.toBlob(function (b) { if (!b) { reject(new Error('blob')); return; } b.arrayBuffer().then(function (ab) { resolve({ bytes: new Uint8Array(ab), w: cv.width, h: cv.height }); }, reject); }, 'image/jpeg', 0.86);
+                    } catch (er) { reject(er); }
+                };
+                img.onerror = function () { reject(new Error('render')); };
+                img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+            });
+        }
+        function rvMakePdf(pages) {
+            const enc = new TextEncoder(), parts = [], offs = []; let len = 0;
+            const push = function (u8) { parts.push(u8); len += u8.length; };
+            const str = function (t) { push(enc.encode(t)); };
+            const n = pages.length;
+            // objects: 1 catalog, 2 pages, then per page: page, content, image
+            str('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n');
+            const obj = function (id, bodyFn) { offs[id] = len; str(id + ' 0 obj\n'); bodyFn(); str('\nendobj\n'); };
+            obj(1, function () { str('<< /Type /Catalog /Pages 2 0 R >>'); });
+            obj(2, function () { str('<< /Type /Pages /Count ' + n + ' /Kids [' + pages.map(function (p, i) { return (3 + i * 3) + ' 0 R'; }).join(' ') + '] >>'); });
+            pages.forEach(function (p, i) {
+                const pid = 3 + i * 3, cid = pid + 1, iid = pid + 2, PW = 595.28, PH = 841.89, cs = 'q ' + PW + ' 0 0 ' + PH + ' 0 0 cm /Im0 Do Q';
+                obj(pid, function () { str('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ' + PW + ' ' + PH + '] /Resources << /XObject << /Im0 ' + iid + ' 0 R >> >> /Contents ' + cid + ' 0 R >>'); });
+                obj(cid, function () { str('<< /Length ' + cs.length + ' >>\nstream\n' + cs + '\nendstream'); });
+                obj(iid, function () { str('<< /Type /XObject /Subtype /Image /Width ' + p.w + ' /Height ' + p.h + ' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ' + p.bytes.length + ' >>\nstream\n'); push(p.bytes); str('\nendstream'); });
+            });
+            const total = 3 + n * 3, xrefAt = len;
+            str('xref\n0 ' + total + '\n0000000000 65535 f \n');
+            for (let id = 1; id < total; id++) str(String(offs[id]).padStart(10, '0') + ' 00000 n \n');
+            str('trailer\n<< /Size ' + total + ' /Root 1 0 R >>\nstartxref\n' + xrefAt + '\n%%EOF');
+            return new Blob(parts, { type: 'application/pdf' });
+        }
+        function rvBuildPdf(onProgress) {
+            const pgs = Array.prototype.slice.call(document.querySelectorAll('#plan-print-sheet .ip'));
+            if (!pgs.length) return Promise.reject(new Error('empty'));
+            const css = rvPdfCss(), srcs = {};
+            pgs.forEach(function (pg) { Array.prototype.forEach.call(pg.querySelectorAll('img'), function (im) { const u = im.getAttribute('src'); if (u && !/^data:/.test(u)) srcs[u] = ''; }); });
+            return Promise.all(Object.keys(srcs).map(function (u) { return rvDataUri(u).then(function (d) { srcs[u] = d; }, function () {}); })).then(function () {
+                const out = []; let chain = Promise.resolve();
+                pgs.forEach(function (pg, i) { chain = chain.then(function () { if (onProgress) onProgress(i + 1, pgs.length); return rvPageToJpeg(pg, css, srcs).then(function (r) { out.push(r); }); }); });
+                return chain.then(function () { return rvMakePdf(out); });
+            });
+        }
+        let RV_BUSY = false;
+        function reportViewSharePdf() {
             rvShareClose();
-            const data = { title: 'Plan4it', text: 'Free career guidance for students and professionals in India.', url: 'https://plan4it.co' };
-            if (navigator.share) { navigator.share(data).catch(function () {}); }
-            else if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(data.url).then(function () { showToast('Link copied.'); }, function () { showToast('Copy this link: plan4it.co'); }); }
-            else showToast('Copy this link: plan4it.co');
+            if (RV_BUSY) return; RV_BUSY = true;
+            const title = (document.getElementById('report-view-title') || {}).textContent || 'Plan4it report';
+            const fname = 'Plan4it-' + title.replace(/[^A-Za-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60) + '.pdf';
+            showToast('Preparing your PDF…');
+            rvBuildPdf(function (i, n) { if (n > 4 && (i === 1 || i % 6 === 0)) showToast('Preparing your PDF… page ' + i + ' of ' + n); }).then(function (blob) {
+                RV_BUSY = false; trackEvent('report_pdf_share');
+                const file = new File([blob], fname, { type: 'application/pdf' });
+                if (navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
+                    return navigator.share({ files: [file], title: title }).catch(function (er) { if (er && er.name === 'AbortError') return; rvDownload(blob, fname); });
+                }
+                rvDownload(blob, fname);
+            }).catch(function (er) {
+                RV_BUSY = false; console.error(er);
+                showToast('Could not make the PDF on this device. Use "Print or save as PDF" instead.');
+            });
+        }
+        function rvDownload(blob, fname) {
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = fname; a.rel = 'noopener';
+            document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 4000);
+            showToast('Your PDF is ready. Check your downloads.');
         }
         document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && document.body.classList.contains('viewing-report')) { const m = document.getElementById('report-view-share'); if (m && !m.classList.contains('hidden')) rvShareClose(); else reportViewClose(); } });
 
@@ -17668,7 +17750,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         <button type="button" onclick="rvShareToggle()" aria-haspopup="true" style="min-height:40px;padding:0 14px;border:0;border-radius:10px;background:#0284c7;color:#fff;font-weight:800;font-size:14px;cursor:pointer">Share</button>
         <div id="report-view-share" class="hidden" style="position:absolute;top:calc(100% + 6px);right:max(10px,env(safe-area-inset-right,0px));min-width:230px;max-width:calc(100vw - 20px);background:#fff;color:#0f172a;border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.35);padding:6px">
             <button type="button" onclick="reportViewPrint()" style="display:block;width:100%;text-align:left;min-height:48px;padding:0 14px;border:0;border-radius:10px;background:transparent;color:#0f172a;font-weight:700;font-size:14px;cursor:pointer">Print or save as PDF</button>
-            <button type="button" onclick="reportViewShareSite()" style="display:block;width:100%;text-align:left;min-height:48px;padding:0 14px;border:0;border-radius:10px;background:transparent;color:#0f172a;font-weight:600;font-size:14px;cursor:pointer">Tell a friend about Plan4it</button>
+            <button type="button" onclick="reportViewSharePdf()" style="display:block;width:100%;text-align:left;min-height:48px;padding:0 14px;border:0;border-radius:10px;background:transparent;color:#0f172a;font-weight:700;font-size:14px;cursor:pointer">Share as a PDF file</button>
         </div>
     </div>
     <div id="plan-print-sheet" style="display:none" aria-hidden="true"></div>
