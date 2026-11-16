@@ -2,7 +2,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
 // Creates a Razorpay order for the signed-in person. The PRICE IS SET HERE ON THE SERVER, never taken from the browser.
-// Secrets: RAZORPAY_KEY_SECRET (required). RAZORPAY_KEY_ID is optional; the test key id below is used if it is not set.
+// Secrets: RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET (both required; use the live pair in production).
 const PRICES: Record<string, number> = { full: 29900, career: 9900 }; // in paise: Rs 299 and Rs 99
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -15,8 +15,8 @@ Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   if (req.method !== "POST") return json({ error: "method" }, 405);
   const secret = Deno.env.get("RAZORPAY_KEY_SECRET");
-  const keyId = Deno.env.get("RAZORPAY_KEY_ID") || "rzp_test_U0qOhf5wTHJHXP";
-  if (!secret) return json({ error: "payments are not set up yet" }, 503);
+  const keyId = Deno.env.get("RAZORPAY_KEY_ID");
+  if (!secret || !keyId) return json({ error: "payments are not set up yet" }, 503);
 
   const url = Deno.env.get("SUPABASE_URL")!;
   const authHeader = req.headers.get("Authorization") || "";

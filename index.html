@@ -11225,7 +11225,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
            'paid' once payments are connected (see premiumHasPurchase).
            ============================================================ */
         // Prices in rupees. The REAL price is set on the server (razorpay-create-order); these numbers are only what the page shows.
-        const PREMIUM_CFG = { price: 299, careerPrice: 99, mode: 'launch' };
+        const PREMIUM_CFG = { price: 299, careerPrice: 99, mode: 'paid' };
         // ?paytest=1 lets the admin account try the real paid flow (with Razorpay test keys) while everyone else still sees launch mode.
         const PAYTEST = /[?&]paytest=1\b/.test(location.search);
         function premiumLaunch() { return PREMIUM_CFG.mode === 'launch' && !(PAYTEST && typeof adminOwnerOk !== 'undefined' && adminOwnerOk); }
