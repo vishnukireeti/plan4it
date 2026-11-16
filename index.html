@@ -8504,7 +8504,32 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 if (r.error) { const m = String(r.error.message || ''); AD.err = /not authori|42501|permission/i.test(m + (r.error.code || '')) ? 'denied' : (/could not find|does not exist|42883|PGRST202/i.test(m + (r.error.code || '')) ? 'setup' : 'error'); AD.errMsg = m; }
                 else { AD.data = r.data; AD.at = new Date(); }
                 adRender();
+                try { sb.rpc('admin_waitlist').then(function (w) { AD.wait = w.error ? null : (w.data || []); AD.waitErr = w.error ? String(w.error.message || 'error') : ''; adRender(); }, function () {}); } catch (er) {}
             }, function (er) { AD.loading = false; AD.err = 'error'; AD.errMsg = String(er && er.message || er); adRender(); });
+        }
+        function adWaitCsv() {
+            const rows = AD.wait || []; if (!rows.length) return;
+            const q = function (v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; };
+            const csv = ['Joined (IST)', 'Name', 'Email', 'Track', 'Stage', 'Duration', 'College or company', 'Note', 'Confirmation email'].map(q).join(',') + '\n' +
+                rows.map(function (w) { return [new Date(w.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }), w.name, w.email, w.track, w.stage, w.duration, w.college, w.note, w.email_sent_at ? 'sent' : 'not sent'].map(q).join(','); }).join('\n');
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = 'plan4it-waitlist-' + new Date().toISOString().slice(0, 10) + '.csv';
+            document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+        }
+        function adWaitPanel() {
+            const e = escapeAuth, rows = AD.wait;
+            if (!rows) return adPanel('Learnership waitlist', 'Everyone who joined the waitlist', '<p class="text-sm text-slate-500">' + (AD.waitErr ? 'Could not load the waitlist yet. Press Refresh.' : 'Loading the waitlist…') + '</p>', 'mt-4');
+            const trackName = function (id) { try { const t = (typeof P4_TRACKS !== 'undefined' ? P4_TRACKS : []).find(function (x) { return x.id === id; }); return t ? (t.name || t.title || id) : id; } catch (er) { return id; } };
+            const durName = function (d) { return /^\d+m$/.test(d) ? parseInt(d, 10) + (parseInt(d, 10) === 1 ? ' month' : ' months') : d; };
+            const count = function (k, f) { const m = {}; rows.forEach(function (w) { const v = f ? f(w[k]) : w[k]; m[v] = (m[v] || 0) + 1; }); return Object.keys(m).map(function (v) { return { label: v, n: m[v] }; }).sort(function (a, b) { return b.n - a.n; }); };
+            const sent = rows.filter(function (w) { return w.email_sent_at; }).length;
+            const when = function (t) { return new Date(t).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }); };
+            const summary = rows.length ? '<div class="grid sm:grid-cols-3 gap-5 mb-5"><div class="min-w-0"><p class="text-xs font-bold uppercase tracking-wide text-slate-500 mb-2">By track</p>' + adList(count('track', trackName), AD_COL.violet) + '</div><div class="min-w-0"><p class="text-xs font-bold uppercase tracking-wide text-slate-500 mb-2">By duration</p>' + adList(count('duration', durName), AD_COL.sky) + '</div><div class="min-w-0"><p class="text-xs font-bold uppercase tracking-wide text-slate-500 mb-2">By stage</p>' + adList(count('stage'), AD_COL.green) + '</div></div>' : '';
+            const table = rows.length ? '<div class="overflow-x-auto -mx-1"><table class="w-full text-sm min-w-[820px]"><thead><tr class="text-left text-[11px] uppercase tracking-wide text-slate-500 border-b border-slate-200"><th class="py-2 px-1 font-semibold">Joined</th><th class="py-2 px-1 font-semibold">Name</th><th class="py-2 px-1 font-semibold">Email</th><th class="py-2 px-1 font-semibold">Track</th><th class="py-2 px-1 font-semibold">Duration</th><th class="py-2 px-1 font-semibold">Stage</th><th class="py-2 px-1 font-semibold">College / note</th><th class="py-2 px-1 font-semibold">Email sent</th></tr></thead><tbody>' + rows.map(function (w) {
+                return '<tr class="border-b border-slate-100 align-top"><td class="py-2 px-1 whitespace-nowrap text-slate-600">' + e(when(w.created_at)) + '</td><td class="py-2 px-1 font-semibold text-slate-900">' + e(w.name) + '</td><td class="py-2 px-1 break-all text-slate-800">' + e(w.email) + '</td><td class="py-2 px-1">' + e(trackName(w.track)) + '</td><td class="py-2 px-1 whitespace-nowrap">' + e(durName(w.duration)) + '</td><td class="py-2 px-1">' + e(w.stage) + '</td><td class="py-2 px-1 text-slate-600">' + e([w.college, w.note].filter(Boolean).join(' · ')) + '</td><td class="py-2 px-1 whitespace-nowrap ' + (w.email_sent_at ? 'text-emerald-700' : 'text-amber-700') + '" title="' + e(w.email_error || '') + '">' + (w.email_sent_at ? 'Sent' : 'Not sent') + '</td></tr>';
+            }).join('') + '</tbody></table></div>' : '<p class="text-sm text-slate-500">Nobody has joined the waitlist yet.</p>';
+            const act = rows.length ? '<button type="button" onclick="adWaitCsv()" class="min-h-[40px] px-4 rounded-xl border border-slate-200 bg-white text-slate-800 hover:border-brand-400 text-sm font-semibold mb-4">Download as CSV</button>' : '';
+            return adPanel('Learnership waitlist', adN(rows.length) + ' ' + (rows.length === 1 ? 'person' : 'people') + ' joined · ' + adN(sent) + ' confirmation ' + (sent === 1 ? 'email' : 'emails') + ' sent', act + summary + table, 'mt-4');
         }
         function adMetric(k) { AD.metric = k; adRender(); }
         function adExport() {
@@ -8616,6 +8641,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 '<div class="grid lg:grid-cols-3 gap-4 mt-4">' +
                 adPanel('Saved careers', 'Most saved', savedList('careers')) + adPanel('Saved exams', 'Most saved', savedList('exams')) + adPanel('Saved colleges', 'Most saved', savedList('colleges')) +
                 '</div>' +
+                adWaitPanel() +
                 adPanel('Who is taking the quiz', 'Answers saved by signed-in users (' + adN(d.quiz_takers) + ' people)', quizHTML, 'mt-4') +
                 adPanel('Newest accounts', 'Emails are partly hidden. ' + adN(t.accounts) + ' accounts in total, ' + adN(t.with_saved_data) + ' with saved data.', accs.length ? '<ul>' + accRows + '</ul>' : '<p class="text-sm text-slate-500">No accounts yet.</p>', 'mt-4') +
                 (inv.length ? adPanel('What is in the app', 'Content loaded in this browser', '<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">' + inv.map(function (i) { return '<div><p class="text-2xl font-bold text-slate-900">' + adN(i[1]) + '</p><p class="text-xs text-slate-500">' + i[0] + '</p></div>'; }).join('') + '</div>', 'mt-4') : '') +
@@ -9753,6 +9779,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 }
                 trackEvent('learnership_waitlist', { track: track, duration: p4Dur });
                 say('You are on the list, ' + nm.split(' ')[0] + '. We will email ' + em + ' when this track opens.', true);
+                // the confirmation email is sent by a small server function; the sign-up above is already saved either way
+                try { if (sb.functions && sb.functions.invoke) sb.functions.invoke('waitlist-email', { body: { email: em, track: track } }).then(function (r) { if (r && r.data && r.data.sent) say('You are on the list, ' + nm.split(' ')[0] + '. We have emailed a confirmation to ' + em + ' and will update you there.', true); }, function () {}); } catch (er) {}
             }, function () { btn.disabled = false; say('Could not save right now. Please try again in a moment.', false); });
             return false;
         }

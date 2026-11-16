@@ -126,3 +126,26 @@ $fn$;
 
 revoke all on function public.admin_dashboard() from public, anon;
 grant execute on function public.admin_dashboard() to authenticated;
+
+
+-- Admin-only: every Learnership waitlist row (name, email, choices, whether the confirmation email went out).
+create or replace function public.admin_waitlist()
+returns jsonb
+language plpgsql
+security definer
+set search_path = public, auth
+as $fn$
+declare
+  v_email text := lower(trim(coalesce(auth.jwt() ->> 'email', '')));
+  v_hash  text := '9961aa7282a77e47a4d55ee130265381e911da7cafb1f4b7f1c3385104871532';
+begin
+  if v_email = '' or encode(sha256(convert_to(v_email, 'UTF8')), 'hex') <> v_hash then
+    raise exception 'not authorised' using errcode = '42501';
+  end if;
+  return coalesce((select jsonb_agg(to_jsonb(w) order by w.created_at desc)
+    from (select id, name, email, track, stage, duration, college, note, created_at, email_sent_at, email_error, (user_id is not null) as has_account
+          from public.learnership_waitlist order by created_at desc limit 2000) w), '[]'::jsonb);
+end;
+$fn$;
+revoke all on function public.admin_waitlist() from public, anon;
+grant execute on function public.admin_waitlist() to authenticated;

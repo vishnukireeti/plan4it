@@ -159,7 +159,9 @@ create table if not exists public.learnership_waitlist (
   duration text not null check (duration in ('1m','2m','3m','4m','5m','6m')),
   college text check (char_length(college) <= 120),
   note text check (char_length(note) <= 400),
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  email_sent_at timestamptz,
+  email_error text
 );
 create unique index if not exists learnership_waitlist_email_track on public.learnership_waitlist (lower(email), track);
 alter table public.learnership_waitlist enable row level security;
