@@ -13408,12 +13408,16 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         }
         function careerSnapshotRun(id, mode) {
             const c = careersData.find(function (x) { return x.id === id; }); if (!c) return;
-            careerReportChoiceClose(); premiumCloseUnlock(); trackEvent('snapshot_career');
+            careerReportChoiceClose(); premiumCloseUnlock();
+            if (!requireAuth('Sign in or create a free account to get your free report.', function () { careerSnapshotRun(id, mode); })) return;
+            trackEvent('snapshot_career');
             let html = ''; try { html = careerSnapshot(c, mode === 'me' && getStoredWizardAnswers() ? 'me' : 'general'); } catch (er) { console.error(er); showToast('Could not build the snapshot.'); return; }
             printSheetHTML(html);
         }
         function intelSnapshotRun(src) {
-            premiumCloseUnlock(); trackEvent('snapshot_full');
+            premiumCloseUnlock();
+            if (!requireAuth('Sign in or create a free account to get your free report.', function () { intelSnapshotRun(src); })) return;
+            trackEvent('snapshot_full');
             const from = src === 'quiz' || src === 'saved' ? src : (getStoredWizardAnswers() ? 'quiz' : getSavedCareers().length ? 'saved' : 'quiz');
             let html = null; try { html = reportWith(from, intelSnapshot); } catch (er) { console.error(er); }
             if (!html) { showToast('Take the quiz, or save a career to your dashboard, then you can get your free report.'); return; }
