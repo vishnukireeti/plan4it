@@ -107,7 +107,7 @@ begin
     'signup_methods', (select coalesce(jsonb_agg(jsonb_build_object('method', m, 'n', n) order by n desc), '[]') from (select coalesce(raw_app_meta_data ->> 'provider', 'email') m, count(*) n from auth.users group by 1) t),
     'recent_accounts', (select coalesce(jsonb_agg(r order by (r ->> 'joined') desc), '[]') from (
       select jsonb_build_object(
-        'who', left(split_part(u.email, '@', 1), 2) || '***@' || split_part(u.email, '@', 2),
+        'who', u.email,
         'joined', u.created_at, 'last_seen', u.last_sign_in_at,
         'confirmed', u.email_confirmed_at is not null,
         'careers', coalesce(jsonb_array_length(case when jsonb_typeof(d.data -> 'savedCareers') = 'array' then d.data -> 'savedCareers' end), 0),
