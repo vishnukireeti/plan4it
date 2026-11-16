@@ -204,7 +204,10 @@
             .cr-hb { display: flex; align-items: center; gap: 8px; margin: 3px 0; font-size: 9.5px; } .cr-hbl { width: 28%; font-weight: 700; } .cr-hbt { flex: 1; height: 9px; background: #e2e8f0; border-radius: 99px; overflow: hidden; } .cr-hbt i { display: block; height: 100%; background: linear-gradient(90deg,#38bdf8,#0369a1); border-radius: 99px; } .cr-hbv { width: 16%; text-align: right; color: #475569; }
             .cr-dots i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #cbd5e1; margin-right: 2px; } .cr-dots i.on { background: #0284c7; }
             @page { size: A4; margin: 10mm; }
-            .ip { height: 274mm; position: relative; overflow: hidden; page-break-after: always; break-after: page; } .ip:last-child { page-break-after: auto; break-after: auto; }
+            /* A report page never taller than the paper's printable area (phones use other paper sizes and margins), so no blank overflow pages.
+               Chromium: 100vh is the printable height. Other browsers (iOS Safari, Firefox): a fixed height that fits Letter and A4 with large margins. */
+            .ip { height: 236mm; position: relative; overflow: hidden; page-break-after: always; break-after: page; break-inside: avoid; page-break-inside: avoid; width: 100%; box-sizing: border-box; } .ip:last-child { page-break-after: auto; break-after: auto; }
+            html.pp-vh .ip { height: calc(100vh - 3mm); }
             .ipc { padding-bottom: 8mm; transform-origin: top left; } .ipf { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; gap: 8px; font-size: 8px; color: #64748b; border-top: 1px solid #cbd5e1; padding-top: 3px; }
             .ip-ttl { display: flex; align-items: center; gap: 10px; margin: 8px 0 8px; } .ip-n { font-size: 26px; font-weight: 800; color: #0284c7; line-height: 1; } .ip-t { font-size: 16px; font-weight: 800; color: #0f172a; line-height: 1.2; }
             .ip-h3 { font-size: 11.5px; font-weight: 800; color: #0c4a6e; margin: 9px 0 4px; border-bottom: 2px solid #e0f2fe; padding-bottom: 2px; }
@@ -13004,18 +13007,19 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 '<div class="ipf"><span>plan4it.co · Career guidance for India</span><span>Pay and cost figures are estimates; confirm dates and fees on official sites · Page ' + n + ' of ' + N + '</span></div></div>';
         }
         // scale each page so it fills the sheet; measured with the print rules applied off-screen
+        (function () { try { const ua = navigator.userAgent || ''; if (/Chrome|Chromium|Edg\//.test(ua) && !/iPhone|iPad|iPod|CriOS|EdgiOS/.test(ua)) document.documentElement.classList.add('pp-vh'); } catch (er) {} })();
         function ppFitPages(sheet) {
             try {
                 let css = '';
                 Array.prototype.forEach.call(document.styleSheets, function (ss) { try { Array.prototype.forEach.call(ss.cssRules, function (r) { if (r.type === 4 && /print/.test(r.conditionText || r.media.mediaText)) Array.prototype.forEach.call(r.cssRules, function (x) { if (x.selectorText && /plan-print-sheet|\.pp-|\.cr-|\.ci-|\.ip/.test(x.selectorText)) css += x.cssText + '\n'; }); }); } catch (er) {} });
                 const st = document.createElement('style'); st.id = 'pp-measure'; st.textContent = css; document.head.appendChild(st);
-                const old = sheet.style.cssText; sheet.style.cssText = 'display:block;position:fixed;left:-10000px;top:0;width:190mm;visibility:hidden;font-family:Inter,Arial,sans-serif;font-size:10.5px;line-height:1.45';
+                const old = sheet.style.cssText; sheet.style.cssText = 'display:block;position:fixed;left:-10000px;top:0;width:176mm;visibility:hidden;font-family:Inter,Arial,sans-serif;font-size:10.5px;line-height:1.45';
                 document.body.classList.add('printing-plan');
                 Array.prototype.forEach.call(sheet.querySelectorAll('.ip'), function (pg) {
-                    const c = pg.querySelector('.ipc'), lim = pg.clientHeight - 30; if (!c || !lim) return;
+                    pg.style.height = '232mm'; const c = pg.querySelector('.ipc'), lim = pg.clientHeight - 30; if (!c || !lim) return;
                     const fits = function (z) { c.style.zoom = z; return c.scrollHeight * 1 <= lim + 1 && c.getBoundingClientRect().height <= lim; };
                     let lo = 0.5, hi = 1.5; for (let k = 0; k < 12; k++) { const m = (lo + hi) / 2; if (fits(m)) lo = m; else hi = m; }
-                    c.style.zoom = lo.toFixed(3);
+                    c.style.zoom = lo.toFixed(3); pg.style.height = '';
                 });
                 sheet.style.cssText = old; st.remove();
             } catch (er) { console.error(er); }
