@@ -202,6 +202,9 @@ create table if not exists public.purchases (
   paid_at timestamptz,
   check ((kind = 'career') = (career_id is not null))
 );
+-- A full report is bought for one snapshot of quiz answers / saved items; a personal career report ('me') likewise.
+alter table public.purchases add column if not exists scope text;
+alter table public.purchases add column if not exists snapshot text;
 create index if not exists purchases_user_idx on public.purchases (user_id, status);
 alter table public.purchases enable row level security;
 create policy "read own purchases" on public.purchases for select to authenticated using (user_id = (select auth.uid()));

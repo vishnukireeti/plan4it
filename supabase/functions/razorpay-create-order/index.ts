@@ -25,30 +25,45 @@ Deno.serve(async (req: Request) => {
   const user = u?.user;
   if (!user) return json({ error: "sign in first" }, 401);
 
-  let body: { kind?: string; careerId?: string } = {};
+  let body: { kind?: string; careerId?: string; scope?: string; snapshot?: string } = {};
   try { body = await req.json(); } catch { return json({ error: "bad request" }, 400); }
   const kind = String(body.kind || "");
   if (!(kind in PRICES)) return json({ error: "bad request" }, 400);
   let careerId: string | null = null;
+  let scope: string | null = null;
+  // The snapshot is a fingerprint of the quiz answers or saved items the report is built from. A purchase only
+  // unlocks the report for that exact snapshot; if the person changes their data they buy again.
+  let snapshot: string | null = /^[qs]:[a-z0-9]{6,40}$/.test(String(body.snapshot || "")) ? String(body.snapshot) : null;
   if (kind === "career") {
     careerId = String(body.careerId || "");
     if (!/^[a-z0-9-]{1,80}$/.test(careerId)) return json({ error: "bad request" }, 400);
+    scope = body.scope === "me" ? "me" : "general";
+    if (scope === "general") snapshot = null; // the general guide does not depend on the person's answers
   }
 
+  // never take a payment that could not unlock anything: the full report and the personal report need a snapshot
+  if ((kind === "full" || scope === "me") && !snapshot) return json({ error: "bad request" }, 400);
+
   const db = createClient(url, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
-  const { data: owned } = await db.from("purchases").select("kind,career_id").eq("user_id", user.id).eq("status", "paid");
-  const has = (owned || []).some((p: { kind: string; career_id: string | null }) => p.kind === "full" || (kind === "career" && p.career_id === careerId));
+  const { data: owned } = await db.from("purchases").select("kind,career_id,scope,snapshot").eq("user_id", user.id).eq("status", "paid");
+  type P = { kind: string; career_id: string | null; scope: string | null; snapshot: string | null };
+  const has = (owned || []).some((p: P) => {
+    if (kind === "full") return p.kind === "full" && !!snapshot && p.snapshot === snapshot;
+    if (p.kind !== "career" || p.career_id !== careerId) return false;
+    // a personal report purchase also covers the general guide for that career; a general guide does not cover the personal report
+    return scope === "general" ? true : p.scope === "me" && !!snapshot && p.snapshot === snapshot;
+  });
   if (has) return json({ already: true });
 
   const amount = PRICES[kind];
   const r = await fetch("https://api.razorpay.com/v1/orders", {
     method: "POST",
     headers: { Authorization: "Basic " + btoa(`${keyId}:${secret}`), "Content-Type": "application/json" },
-    body: JSON.stringify({ amount, currency: "INR", receipt: `p4_${Date.now()}`.slice(0, 40), notes: { user_id: user.id, kind, career_id: careerId || "" } }),
+    body: JSON.stringify({ amount, currency: "INR", receipt: `p4_${Date.now()}`.slice(0, 40), notes: { user_id: user.id, kind, career_id: careerId || "", scope: scope || "", snapshot: snapshot || "" } }),
   });
   if (!r.ok) return json({ error: "could not start the payment" }, 502);
   const order = await r.json();
-  const { error } = await db.from("purchases").insert({ user_id: user.id, kind, career_id: careerId, amount_paise: amount, currency: "INR", razorpay_order_id: order.id, status: "created" });
+  const { error } = await db.from("purchases").insert({ user_id: user.id, kind, career_id: careerId, amount_paise: amount, currency: "INR", razorpay_order_id: order.id, status: "created", scope, snapshot });
   if (error) return json({ error: "could not start the payment" }, 500);
   return json({ orderId: order.id, amount, currency: "INR", keyId });
 });

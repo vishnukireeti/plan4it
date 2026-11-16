@@ -2268,15 +2268,15 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             <div class="space-y-5 text-sm text-slate-700 leading-relaxed">
                 <div><h3 class="font-bold text-slate-900 mb-1">What you can buy</h3>
                     <ul class="list-disc pl-5 space-y-1">
-                        <li><b>Career Intelligence Report (18 pages):</b> ₹299, one time.</li>
-                        <li><b>Single career report (5 pages):</b> ₹99, one time, for the career you choose.</li>
+                        <li><b>Career Intelligence Report (18 pages):</b> ₹299, one time. It is built from the quiz answers, or the saved careers, exams and colleges, that you had when you paid. If you change them and want an updated report, it is a new report and a new payment.</li>
+                        <li><b>Single career report (5 pages):</b> ₹99, one time, for the career you choose. Each career is paid for separately, and buying the full report does not include it. A personal career report is also tied to the quiz answers you had when you paid.</li>
                         <li>The 2-page report is free.</li>
                     </ul>
                     <p class="mt-2">Prices are in Indian rupees (₹). The price is shown before you pay. There is no subscription and nothing renews automatically.</p></div>
                 <div><h3 class="font-bold text-slate-900 mb-1">How you pay</h3>
                     <p>Payments are handled by Razorpay (cards, UPI, net banking and wallets). We never see or store your card or bank details. You need a Plan4it account so your purchase is saved to it.</p></div>
                 <div><h3 class="font-bold text-slate-900 mb-1">Delivery</h3>
-                    <p>These are digital products. After payment is confirmed, the report unlocks straight away in your account, and you can open it and save it as a PDF. It stays unlocked on your account.</p></div>
+                    <p>These are digital products. After payment is confirmed, the report unlocks straight away in your account, and you can open it and save it as a PDF. The report you bought stays unlocked for the same quiz answers or saved items. Please save the PDF as soon as it opens, because it cannot be regenerated once your data changes.</p></div>
                 <div><h3 class="font-bold text-slate-900 mb-1">Cancellation</h3>
                     <p>You can close the payment window at any time before paying and you will not be charged. Because the purchase is one time, there is nothing to cancel afterwards.</p></div>
                 <div><h3 class="font-bold text-slate-900 mb-1">Refunds</h3>
@@ -8133,7 +8133,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
 
         const faqData = [
             { q: "Who is Plan4it for?", a: "Students from Class 10 to postgraduate, and working professionals who want to switch or grow. You choose your stage first, so the questions, careers, exams and colleges you see fit where you are." },
-            { q: "What does Plan4it cost?", a: "You can try parts of Plan4it for free, including the quiz and a 2-page version of the report. The full 18-page Career Intelligence Report (₹299, or ₹99 for a single career report) and the Learnership Programme are paid. The price is always shown before you pay." },
+            { q: "What does Plan4it cost?", a: "You can try parts of Plan4it for free, including the quiz and a 2-page version of the report. The full 18-page Career Intelligence Report (₹299, for your current quiz answers or saved items) and each single career report (₹99 per career, bought separately) and the Learnership Programme are paid. The price is always shown before you pay." },
             { q: "How does the quiz work, and how long does it take?", a: "About 2 minutes. You pick your stage, then answer questions about your interests, how you like to work, what matters most to you, and your state. The questions change with your stage, so a Class 10 student and a working professional get different ones." },
             { q: "Can I change my answers or retake the quiz?", a: "Yes, any time. Tap \"Retake Quiz\" on your results, or tap any answer in the side menu to change just that one. Your matches update when you finish." },
             { q: "What is the Career Intelligence Report?", a: "Our flagship: an 18-page PDF with your career profile, best matches, why they fit, what it takes to get there, colleges and exams, skills, pay, a backup plan, a 90-day plan and a guide to talk it through with your parents. You can build it from your quiz answers, or from the careers, exams and colleges you saved to your dashboard." },
@@ -11204,18 +11204,47 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         const PAYTEST = /[?&]paytest=1\b/.test(location.search);
         function premiumLaunch() { return PREMIUM_CFG.mode === 'launch' && !(PAYTEST && typeof adminOwnerOk !== 'undefined' && adminOwnerOk); }
         // Set from purchases the SERVER has recorded for the signed-in account (read-only for the browser).
-        let PREMIUM_PURCHASED = false, PREMIUM_CAREERS = [];
-        function premiumHasPurchase() { return PREMIUM_PURCHASED; }
-        function premiumHasCareer(id) { return PREMIUM_CAREERS.indexOf(id) > -1; }
-        function premiumUnlocked() { return premiumLaunch() || premiumHasPurchase() || (typeof adminOwnerOk !== 'undefined' && adminOwnerOk && !PAYTEST); }
-        function premiumUnlockedFor(kind, id) { return premiumUnlocked() || ((kind === 'career' || kind === 'career-me') && premiumHasCareer(id)); }
+        // A full report is bought for one exact set of quiz answers or saved items (its "snapshot"); change them and a new report needs a new payment.
+        // A career report is bought for one career and is separate from the full report.
+        let PREMIUM_ROWS = [];
+        function premiumHasPurchase() { return PREMIUM_ROWS.some(function (x) { return x.kind === 'full'; }); }
+        function premiumBypass() { return premiumLaunch() || (typeof adminOwnerOk !== 'undefined' && adminOwnerOk && !PAYTEST); }
+        function cyrb(str) { let h1 = 0xdeadbeef, h2 = 0x41c6ce57; for (let i = 0; i < str.length; i++) { const ch = str.charCodeAt(i); h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677); } h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909); h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909); return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36); }
+        function stableJson(v) { if (Array.isArray(v)) return '[' + v.map(stableJson).join(',') + ']'; if (v && typeof v === 'object') return '{' + Object.keys(v).sort().filter(function (k) { return k.charAt(0) !== '_' && !/^(ts|at|updated|updatedAt|savedAt|time)$/i.test(k); }).map(function (k) { return JSON.stringify(k) + ':' + stableJson(v[k]); }).join(',') + '}'; return JSON.stringify(v === undefined ? null : v); }
+        // A fingerprint of what the report is built from. 'quiz' = the quiz answers; 'saved' = the saved careers, exams and colleges (and the goal career).
+        function reportSnapshot(src) {
+            try {
+                if (src === 'saved') {
+                    const key = { c: getSavedCareers().slice().sort(), e: getSavedExams().slice().sort(), col: getSavedColleges().slice().sort(), g: dashGoalId() };
+                    return key.c.length ? 's:' + cyrb(stableJson(key)) : '';
+                }
+                const a = REPORT_OVERRIDE ? null : getStoredWizardAnswers();
+                return a ? 'q:' + cyrb(stableJson(a)) : '';
+            } catch (er) { return ''; }
+        }
+        // Is the full report for this source (quiz or saved items) unlocked right now, with its current data?
+        function premiumFullUnlocked(src) {
+            if (premiumBypass()) return true;
+            const snap = reportSnapshot(src || REPORT_SRC);
+            return !!snap && PREMIUM_ROWS.some(function (x) { return x.kind === 'full' && x.snapshot === snap; });
+        }
+        // True when the person paid for a full report before but their quiz answers or saved items have changed since.
+        function premiumFullStale(src) {
+            return !premiumBypass() && premiumHasPurchase() && !premiumFullUnlocked(src);
+        }
+        function premiumUnlocked(src) { return premiumFullUnlocked(src || (typeof reportChooseSrc === 'function' ? reportChooseSrc() : REPORT_SRC)); }
+        // Career reports are separate purchases: a full report does NOT unlock them. A personal report also covers that career's general guide.
+        function premiumUnlockedFor(kind, id) {
+            if (premiumBypass()) return true;
+            if (kind === 'career-me') { const snap = reportSnapshot('quiz'); return !!snap && PREMIUM_ROWS.some(function (x) { return x.kind === 'career' && x.career_id === id && x.scope === 'me' && x.snapshot === snap; }); }
+            if (kind === 'career') return PREMIUM_ROWS.some(function (x) { return x.kind === 'career' && x.career_id === id; });
+            return premiumFullUnlocked();
+        }
         function premiumLoadPurchases() {
-            if (typeof sb === 'undefined' || !sb || !authGetSession()) { PREMIUM_PURCHASED = false; PREMIUM_CAREERS = []; return Promise.resolve(); }
-            return sb.from('purchases').select('kind,career_id').eq('status', 'paid').then(function (r) {
+            if (typeof sb === 'undefined' || !sb || !authGetSession()) { PREMIUM_ROWS = []; return Promise.resolve(); }
+            return sb.from('purchases').select('kind,career_id,scope,snapshot').eq('status', 'paid').then(function (r) {
                 if (r.error) return;
-                const rows = r.data || [];
-                PREMIUM_PURCHASED = rows.some(function (x) { return x.kind === 'full'; });
-                PREMIUM_CAREERS = rows.filter(function (x) { return x.kind === 'career' && x.career_id; }).map(function (x) { return x.career_id; });
+                PREMIUM_ROWS = r.data || [];
                 try { renderReportPromos(); } catch (er) {}
             }, function () {});
         }
@@ -11226,15 +11255,15 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const career = kind === 'career' || kind === 'career-me', me = kind === 'career-me'; PREMIUM_MODAL_KIND = career ? id : null;
             const c = career ? careersData.find(function (x) { return x.id === id; }) : null;
             const t = document.getElementById('premium-modal-title'); if (t) t.textContent = career && c ? (me ? 'Your personal report: ' : 'Career guide: ') + c.title : 'Unlock your full report';
-            const d = document.getElementById('premium-modal-desc'); if (d) d.innerHTML = career ? 'One-time payment of <b class="text-slate-900">₹' + PREMIUM_CFG.careerPrice + '</b> for this career, as a PDF you keep.' : 'One-time payment of <b class="text-slate-900">₹<span class="premium-price">' + PREMIUM_CFG.price + '</span></b>. Built from your answers and updated whenever you retake the quiz.';
+            const d = document.getElementById('premium-modal-desc'); if (d) d.innerHTML = career ? 'One-time payment of <b class="text-slate-900">₹' + PREMIUM_CFG.careerPrice + '</b> for this career report, as a PDF you keep. It is separate from the full report.' + (me ? '<span class="block mt-2 text-xs text-slate-600">It is built from your quiz answers as they are now. If you change them, a new personal report needs a new payment.</span>' : '') : 'One-time payment of <b class="text-slate-900">₹<span class="premium-price">' + PREMIUM_CFG.price + '</span></b> for the report built from your ' + (REPORT_SRC === 'saved' ? 'saved items' : 'quiz answers') + ' as they are now.' + '<span class="block mt-2 text-xs text-slate-600">If you change your ' + (REPORT_SRC === 'saved' ? 'saved careers, exams or colleges' : 'quiz answers') + ' later, a new report needs a new payment, so finish your quiz or saved items first. Save the PDF as soon as it opens.</span>' + (premiumFullStale(REPORT_SRC) ? '<span class="block mt-2 text-xs font-semibold text-amber-700">Your ' + (REPORT_SRC === 'saved' ? 'saved items' : 'quiz answers') + ' changed since your last purchase, so this is a new report.</span>' : '');
             const l = document.getElementById('premium-modal-list'); if (l) { l.className = 'mt-3'; l.innerHTML = '<p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">' + (career ? 'What is inside (5 pages)' : 'What is inside (18 pages)') + '</p>' + rptInsideHTML(career ? RPT_GUIDE5.concat(me ? ['Your fit and what could go wrong for you, from your quiz'] : []) : RPT_FULL18, career ? '' : 'sm:columns-2 gap-x-4 [&>li]:break-inside-avoid'); }
             const sn = document.getElementById('premium-snapshot-btn'); if (sn) { const ok = career || (REPORT_SRC === 'saved' ? getSavedCareers().length > 0 : !!getStoredWizardAnswers()); sn.classList.toggle('hidden', !ok); sn.setAttribute('onclick', career ? "careerSnapshotRun('" + id + "','" + (me ? 'me' : 'general') + "')" : 'intelSnapshotRun(REPORT_SRC)'); }
             const b = document.getElementById('premium-pay-btn'); if (b) b.innerHTML = 'Pay ₹' + (career ? PREMIUM_CFG.careerPrice : PREMIUM_CFG.price);
         }
-        let PREMIUM_PENDING = { kind: 'full', id: null };
+        let PREMIUM_PENDING = { kind: 'full', id: null, src: 'quiz' };
         function premiumOpenUnlock(kind, id) {
             trackEvent('premium_unlock_click');
-            PREMIUM_PENDING = { kind: kind || 'full', id: id || null };
+            PREMIUM_PENDING = { kind: kind || 'full', id: id || null, src: REPORT_SRC };
             { const pm = document.getElementById('premium-pay-msg'); if (pm) pm.textContent = ''; const pb = document.getElementById('premium-pay-btn'); if (pb) pb.disabled = false; }
             premiumModalSet(kind, id);
             const m = document.getElementById('premium-modal'); if (!m) return;
@@ -11268,7 +11297,13 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 showToast('Payment received. Your report is unlocked.');
                 if (isCareer) careerReportRun(item.id, item.kind === 'career-me' ? 'me' : 'general'); else printPlan();
             };
-            sb.functions.invoke('razorpay-create-order', { body: isCareer ? { kind: 'career', careerId: item.id } : { kind: 'full' } }).then(function (r) {
+            (function () {
+                const me = item.kind === 'career-me';
+                const snap = isCareer ? (me ? reportSnapshot('quiz') : '') : reportSnapshot(item.src);
+                if ((!isCareer || me) && !snap) { busy(false); say(me ? 'Take the quiz first so we can build your personal report.' : (item.src === 'saved' ? 'Save at least one career first.' : 'Take the quiz first.'), true); return null; }
+                if (!isCareer) REPORT_SRC = item.src;
+                return sb.functions.invoke('razorpay-create-order', { body: isCareer ? { kind: 'career', careerId: item.id, scope: me ? 'me' : 'general', snapshot: snap || undefined } : { kind: 'full', snapshot: snap } });
+            })().then(function (r) {
                 const d = r && r.data;
                 if (d && d.already) { premiumLoadPurchases().then(function () { busy(false); unlockNow(); }); return null; }
                 if (!d || !d.orderId) { busy(false); say(r && r.error && /not set up|503/i.test(String(r.error.message || '')) ? 'Payments are not open yet. Please try again soon.' : 'Could not start the payment. Please try again.', true); return null; }
@@ -13241,7 +13276,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
            ============================================================ */
         const RPT_FULL18 = ['Your career profile', 'Your career DNA', 'Your top 5 career matches', 'Why these careers fit you', 'Career fit score', 'Career comparison matrix', 'Your recommended career', 'What you need to consider', 'Education pathway', 'College and course options', 'Entrance and eligibility roadmap', 'Skills gap', 'Salary and opportunity outlook', 'Career reality check', 'Plan B and adjacent careers', 'Your 90-day action plan', 'Your 1 to 3 year roadmap', 'Parent discussion guide'];
         const RPT_GUIDE5 = ['At a glance: the job, a typical week and pay growth', 'Why it can be great, and the downsides', 'How to get there: routes, exams and colleges', 'Skills, pay at each stage and the reality check', 'Plan B careers and your first 90 days'];
-        function rptPriceText(kind) { const p = kind === 'full' ? PREMIUM_CFG.price : PREMIUM_CFG.careerPrice; return premiumLaunch() && !premiumHasPurchase() ? 'free during our launch, then ₹' + p : '₹' + p + ' one-time'; }
+        function rptPriceText(kind) { const p = kind === 'full' ? PREMIUM_CFG.price : PREMIUM_CFG.careerPrice; return premiumLaunch() ? 'free during our launch, then ₹' + p : '₹' + p + ' one-time'; }
         // The 18 pages in seven groups, each with what it does for the reader.
         const RPT_FULL18_GROUPS = [
             ['Pages 1-2', 'Who you are', 'Your career profile and career DNA', 'Puts your answers into plain words, so you see your own strengths and what you really want from work.'],
@@ -13332,7 +13367,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         }
         function reportPromoHTML(full, compact) {
             const cmp = !!compact;
-            const e = escapeAuth, A = !!getStoredWizardAnswers(), launch = premiumLaunch() && !premiumHasPurchase(), unlocked = premiumUnlocked();
+            const e = escapeAuth, A = !!getStoredWizardAnswers(), launch = premiumLaunch(), unlocked = premiumUnlocked();
             const steps = [
                 { n: 1, done: A, t: 'Take the 2-minute quiz', d: 'Make a free account so your answers are saved, then answer a few questions. Add your state to get college and exam picks.' },
                 { n: 2, done: false, t: 'Get your free 2-page report', d: 'Two pages: your career DNA, fit score, pay and route outline, and a first week to start on. No payment.', ok: A },
@@ -13375,7 +13410,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (!keep) { window.__rcSrc = null; trackEvent('report_choose_open'); }
             const e = escapeAuth, taken = !!getStoredWizardAnswers(), nc = getSavedCareers().length, ne = getSavedExams().length, ncl = getSavedColleges().length;
             const src = reportChooseSrc(), ready = src === 'quiz' ? taken : nc > 0;
-            const launch = premiumLaunch() && !premiumHasPurchase(), unlocked = premiumUnlocked();
+            const launch = premiumLaunch(), unlocked = premiumUnlocked();
             let m = document.getElementById('report-choose'); if (!m) { m = document.createElement('div'); m.id = 'report-choose'; document.body.appendChild(m); }
             m.className = 'fixed inset-0 z-[75] flex items-center justify-center bg-slate-900/60 p-3 sm:p-4';
             m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-label', 'Choose how to build your report');
@@ -13450,7 +13485,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const b = m.querySelector('button[data-main]'); if (b) b.focus();
         }
         function reportHubHTML() {
-            const e = escapeAuth, taken = !!getStoredWizardAnswers(), nc = getSavedCareers().length, launch = premiumLaunch() && !premiumHasPurchase(), unlocked = premiumUnlocked();
+            const e = escapeAuth, taken = !!getStoredWizardAnswers(), nc = getSavedCareers().length, launch = premiumLaunch(), unlocked = premiumUnlocked();
             const price = launch ? 'Free now · ₹' + PREMIUM_CFG.price + ' later' : '₹' + PREMIUM_CFG.price + ' one-time';
             const ready = taken || nc > 0;
             const li = function (arr) { return '<ul class="mt-3 space-y-2 text-sm text-slate-700">' + arr.map(function (x) { return '<li class="flex gap-2"><span class="text-emerald-600 font-bold">✓</span><span>' + e(x) + '</span></li>'; }).join('') + '</ul>'; };
@@ -13631,9 +13666,9 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 '<div class="grid sm:grid-cols-2 gap-3 mt-4">' +
                 '<div class="border border-slate-200 rounded-xl p-4 flex flex-col"><p class="font-bold text-slate-900"><i class=ic-search></i> Explore this career</p><p class="text-xs text-slate-600 mt-1 flex-grow">Just curious? No quiz needed. What the job is, pay at each stage, skills, how to get in, exams, colleges and a first 90 days. 5 pages.</p><button type="button" onclick="careerReportRun(\'' + e(id) + '\',\'general\')" class="mt-3 min-h-[44px] bg-white border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-bold rounded-xl text-sm">Get the career guide' + (premiumLaunch() ? ' · free now' : ' · ₹' + PREMIUM_CFG.careerPrice) + '</button></div>' +
                 '<div class="border-2 border-brand-600 rounded-xl p-4 flex flex-col bg-brand-50"><p class="font-bold text-slate-900"><i class=ic-target></i> Made for me</p><p class="text-xs text-slate-600 mt-1 flex-grow">' + (has ? 'Uses your quiz answers: your fit and why, what could go wrong for you, colleges and exams for your state, and your first 90 days. 5 pages.' : 'Takes 2 minutes. Answer a few questions and we write the report around you: fit, risks, colleges and exams for your state, and a parent guide.') + '</p>' +
-                (has ? '<button type="button" onclick="careerReportRun(\'' + e(id) + '\',\'me\')" class="mt-3 min-h-[44px] bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm">Get my report' + (premiumLaunch() ? ' · free now' : premiumHasCareer(id) || premiumUnlocked() ? '' : ' · ₹' + PREMIUM_CFG.careerPrice) + '</button>' : '<button type="button" onclick="careerReportChoiceClose();switchView(\'confusedMode\')" class="mt-3 min-h-[44px] bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm">Take the quiz first</button>') + '</div></div>' +
+                (has ? '<button type="button" onclick="careerReportRun(\'' + e(id) + '\',\'me\')" class="mt-3 min-h-[44px] bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm">Get my report' + (premiumLaunch() ? ' · free now' : premiumUnlockedFor('career-me', id) ? '' : ' · ₹' + PREMIUM_CFG.careerPrice) + '</button>' : '<button type="button" onclick="careerReportChoiceClose();switchView(\'confusedMode\')" class="mt-3 min-h-[44px] bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm">Take the quiz first</button>') + '</div></div>' +
                 '<details class="mt-3 border border-slate-200 rounded-xl p-3"><summary class="text-xs font-bold text-slate-800 cursor-pointer min-h-[32px] flex items-center">What is inside the 5 pages</summary><div class="mt-2">' + rptInsideHTML(RPT_GUIDE5) + '</div></details>' +
-                (premiumUnlocked() ? '' : '<div class="mt-3 border-t border-slate-100 pt-3 flex items-center justify-between gap-3 flex-wrap"><p class="text-xs text-slate-600"><b>Not ready to pay?</b> A free 1-page snapshot has the job, pay band and skills.</p><button type="button" onclick="careerSnapshotRun(\'' + e(id) + '\',\'' + (has ? 'me' : 'general') + '\')" class="min-h-[44px] px-4 border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-bold rounded-xl text-sm">Free snapshot</button></div>') +
+                (premiumUnlockedFor(has ? 'career-me' : 'career', id) ? '' : '<div class="mt-3 border-t border-slate-100 pt-3 flex items-center justify-between gap-3 flex-wrap"><p class="text-xs text-slate-600"><b>Not ready to pay?</b> A free 1-page snapshot has the job, pay band and skills.</p><button type="button" onclick="careerSnapshotRun(\'' + e(id) + '\',\'' + (has ? 'me' : 'general') + '\')" class="min-h-[44px] px-4 border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-bold rounded-xl text-sm">Free snapshot</button></div>') +
                 '<p class="text-[11px] text-slate-500 mt-3">Both are PDFs you can keep. Pay and cost figures are estimates; confirm exam dates and fees on official sites.</p></div>';
             const b = m.querySelector('button[onclick^="careerReportRun"]'); if (b) b.focus();
         }
