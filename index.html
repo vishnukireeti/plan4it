@@ -2163,7 +2163,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
 
                 <div>
                     <h3 class="font-bold text-slate-900 mb-1">Copies of your reports</h3>
-                    <p>When you create a full or single-career report while signed in, we keep a copy in your account so you can download it from your dashboard. Only you can see it. We delete each copy automatically 7 days after you create it. You can also remove a copy yourself at any time from your dashboard.</p>
+                    <p>When you create a full or single-career report while signed in, we keep a copy in your account so you can download it from your dashboard. Only you can see it. We delete each copy automatically 3 days after you create it. You can also remove a copy yourself at any time from your dashboard.</p>
                 </div>
 
                 <div>
@@ -11257,14 +11257,14 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 try { renderReportPromos(); } catch (er) {}
             }, function () {});
         }
-        // ---- Your reports: a copy of each full or career report is kept in the dashboard for 7 days, then removed by the server.
+        // ---- Your reports: a copy of each full or career report is kept in the dashboard for 3 days, then removed by the server.
         function reportCopySave(key, kind, title, html) {
             try {
                 if (!key || !html || typeof sb === 'undefined' || !sb || !authGetSession()) return;
                 const row = { report_key: key, kind: kind, title: title, html: html };
                 sb.from('saved_reports').delete().eq('report_key', key).then(function () {
                     return sb.from('saved_reports').insert(row);
-                }).then(function (r) { if (r && !r.error) { renderDashReports(); showToast('A copy is kept in your dashboard for 7 days. Download it before then.'); } }, function () {});
+                }).then(function (r) { if (r && !r.error) { renderDashReports(); showToast('A copy is kept in your dashboard for 3 days. Download it before then.'); } }, function () {});
             } catch (er) {}
         }
         function reportCopyDays(iso) { return Math.max(0, Math.ceil((new Date(iso).getTime() - Date.now()) / 86400000)); }
@@ -11276,9 +11276,9 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 if (!rows.length) { el.innerHTML = ''; return; }
                 const fmt = function (iso) { return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }); };
                 el.innerHTML = '<div class="bg-white border border-slate-200 rounded-3xl p-5 sm:p-6 shadow-sm"><h3 class="text-lg font-extrabold text-slate-900">Your reports</h3>' +
-                    '<p class="text-sm text-slate-600 mt-1">Download your reports before they are removed. We keep each one here for 7 days after you create it, then delete it. You can always buy and build it again.</p>' +
+                    '<p class="text-sm text-slate-600 mt-1">Download your reports before they are removed. We keep each one here for 3 days after you create it, then delete it. You can always buy and build it again.</p>' +
                     '<ul class="mt-4 space-y-3">' + rows.map(function (x) {
-                        const d = reportCopyDays(x.expires_at), soon = d <= 2;
+                        const d = reportCopyDays(x.expires_at), soon = d <= 1;
                         return '<li class="flex items-center justify-between gap-3 flex-wrap p-4 rounded-xl border ' + (soon ? 'border-amber-300 bg-amber-50' : 'border-slate-200 bg-slate-50') + '">' +
                             '<div class="min-w-0"><p class="font-bold text-slate-900 text-sm">' + escapeAuth(x.title) + '</p>' +
                             '<p class="text-xs mt-0.5 ' + (soon ? 'text-amber-800 font-semibold' : 'text-slate-600') + '">Created ' + escapeAuth(fmt(x.created_at)) + ' · ' + (d <= 1 ? 'removed within a day. Download it now.' : 'removed on ' + escapeAuth(fmt(x.expires_at)) + ' (' + d + ' days left)') + '</p></div>' +

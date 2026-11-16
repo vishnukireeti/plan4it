@@ -210,7 +210,7 @@ alter table public.purchases enable row level security;
 create policy "read own purchases" on public.purchases for select to authenticated using (user_id = (select auth.uid()));
 
 -- ---------------------------------------------------------------------------
--- Report copies: each full / career report a signed-in person creates is kept for 7 days so it can be
+-- Report copies: each full / career report a signed-in person creates is kept for 3 days so it can be
 -- downloaded from the dashboard. The server sets the expiry, caps copies per person, and purges hourly.
 -- ---------------------------------------------------------------------------
 create extension if not exists pg_cron;
@@ -222,7 +222,7 @@ create table if not exists public.saved_reports (
   title text not null check (char_length(title) between 1 and 200),
   html text not null check (char_length(html) between 1 and 3000000),
   created_at timestamptz not null default now(),
-  expires_at timestamptz not null default (now() + interval '7 days'),
+  expires_at timestamptz not null default (now() + interval '3 days'),
   unique (user_id, report_key)
 );
 create index if not exists saved_reports_user_idx on public.saved_reports (user_id, expires_at);
@@ -231,7 +231,7 @@ create or replace function public.saved_reports_guard() returns trigger
 language plpgsql security definer set search_path = public as $$
 begin
   new.created_at := now();
-  new.expires_at := now() + interval '7 days';
+  new.expires_at := now() + interval '3 days';
   delete from public.saved_reports where user_id = new.user_id and expires_at < now();
   delete from public.saved_reports where id in (
     select id from public.saved_reports where user_id = new.user_id and report_key <> new.report_key
