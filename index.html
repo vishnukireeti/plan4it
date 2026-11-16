@@ -936,6 +936,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
 
         <!-- ================= VIEW 3: CAREER EXPLORER ================= -->
         <section id="view-explorer" class="view-section hidden space-y-6">
+            <div class="flex md:justify-end"><button type="button" onclick="reportHubOpen()" class="w-full md:max-w-sm text-left flex items-start gap-3 min-h-[44px] rounded-xl border-2 border-amber-400 bg-white px-3 py-2.5 hover:bg-slate-50 print:hidden"><i class=ic-file></i><span class="text-xs text-slate-700 leading-relaxed"><b class="text-slate-900">Our flagship:</b> Save the careers you like, then generate your Career Intelligence Report: why each fits you, how to get there and your first 90 days. <span class="font-semibold text-brand-700 underline">See the Career Intelligence Report</span></span></button></div>
             <div data-nav="Career Explorer" class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h2 class="text-3xl font-extrabold text-slate-900">Career Explorer System</h2>
@@ -1047,6 +1048,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
 
         <!-- ================= VIEW 5: "WHAT CAN I DO AFTER THIS?" BRANCHING ENGINE ================= -->
         <section id="view-afterDegree" class="view-section hidden max-w-4xl mx-auto space-y-6">
+            <div class="flex md:justify-end"><button type="button" onclick="reportHubOpen()" class="w-full md:max-w-sm text-left flex items-start gap-3 min-h-[44px] rounded-xl border-2 border-amber-400 bg-white px-3 py-2.5 hover:bg-slate-50 print:hidden"><i class=ic-file></i><span class="text-xs text-slate-700 leading-relaxed"><b class="text-slate-900">Our flagship:</b> Once you know your next step, your Career Intelligence Report lays out the education pathway and a 1 to 3 year roadmap. <span class="font-semibold text-brand-700 underline">See the Career Intelligence Report</span></span></button></div>
 
             <div data-nav="What can I do after this?" id="branching-engine-block" class="scroll-mt-32 bg-white border border-slate-200 p-8 rounded-3xl shadow-sm">
                 <h2 class="text-2xl font-bold text-slate-900 mb-2">What can I do after this?</h2>
@@ -1140,9 +1142,12 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
 
         <!-- ================= VIEW 6: ENTRANCE EXAM GUIDANCE ================= -->
         <section id="view-exams" class="view-section hidden space-y-8">
-            <div data-nav="Exam hub">
+            <div data-nav="Exam hub" class="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                <div class="min-w-0">
                 <h2 class="text-3xl font-extrabold text-slate-900">India Entrance Exam Guidance Hub</h2>
                 <p class="text-slate-600 text-sm mt-1">Registration windows, fees, exam pattern, real competitiveness, and what each exam actually leads to.</p>
+                </div>
+                <button type="button" onclick="reportHubOpen()" class="w-full md:w-80 md:shrink-0 text-left flex items-start gap-3 min-h-[44px] rounded-xl border-2 border-amber-400 bg-white px-3 py-2.5 hover:bg-slate-50 print:hidden"><i class=ic-file></i><span class="text-xs text-slate-700 leading-relaxed"><b class="text-slate-900">Our flagship:</b> Your Career Intelligence Report maps the exams, dates and eligibility to the career you are aiming for. <span class="font-semibold text-brand-700 underline">See the Career Intelligence Report</span></span></button>
             </div>
 
             <!-- Prep Playbook -->
@@ -1226,9 +1231,12 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
 
         <!-- ================= VIEW 7: COLLEGE & UNIVERSITY DISCOVERY ================= -->
         <section id="view-colleges" class="view-section hidden space-y-8">
-            <div data-nav="Overview">
+            <div data-nav="Overview" class="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                <div class="min-w-0">
                 <h2 class="text-3xl font-extrabold text-slate-900">College & University Discovery Matrix</h2>
                 <p class="text-slate-600 text-sm mt-1">Evaluate institutions by fees, ownership, NIRF rankings, and realistic tradeoffs — not just the name.</p>
+                </div>
+                <button type="button" onclick="reportHubOpen()" class="w-full md:w-80 md:shrink-0 text-left flex items-start gap-3 min-h-[44px] rounded-xl border-2 border-amber-400 bg-white px-3 py-2.5 hover:bg-slate-50 print:hidden"><i class=ic-file></i><span class="text-xs text-slate-700 leading-relaxed"><b class="text-slate-900">Our flagship:</b> Your Career Intelligence Report lists the colleges and courses that fit your budget and marks, with the routes in. <span class="font-semibold text-brand-700 underline">See the Career Intelligence Report</span></span></button>
             </div>
 
             <div data-nav="Choose your stage">
@@ -1884,25 +1892,21 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         <h3 data-nav="Upcoming deadlines" class="text-xl font-bold text-slate-900">Upcoming Deadlines</h3>
                     </div>
                     <div id="dashboard-deadlines" class="bg-white border border-slate-200 p-4 rounded-2xl space-y-2 print:hidden"></div>
-                    <button type="button" onclick="reportHubOpen()" class="w-full text-left flex items-start gap-3 min-h-[44px] rounded-xl border-2 border-amber-400 bg-white px-3 py-2.5 hover:bg-slate-50 print:hidden"><i class=ic-file></i><span class="text-xs text-slate-700 leading-relaxed"><b class="text-slate-900">Our flagship:</b> Save the exams that fit you and your dates land here. Once you have, generate your Career Intelligence Report: it turns them into a week-by-week plan. <span class="font-semibold text-brand-700 underline">See the Career Intelligence Report</span></span></button>
 
                     <h3 data-nav="Saved careers" id="dash-saved-block" class="scroll-mt-32 text-xl font-bold text-slate-900">Saved Career Matches</h3>
                     <div id="dashboard-saved-list" class="bg-white border border-slate-200 p-6 rounded-2xl space-y-4">
                         <!-- Populated by JS -->
                     </div>
 
-                    <button type="button" onclick="reportHubOpen()" class="w-full text-left flex items-start gap-3 min-h-[44px] rounded-xl border-2 border-amber-400 bg-white px-3 py-2.5 hover:bg-slate-50 print:hidden"><i class=ic-file></i><span class="text-xs text-slate-700 leading-relaxed"><b class="text-slate-900">Our flagship:</b> Save the careers you like, then generate your Career Intelligence Report: it shows why each fits you, what it takes to get there, and what to do in your first 90 days. <span class="font-semibold text-brand-700 underline">See the Career Intelligence Report</span></span></button>
                     <h3 data-nav="Saved colleges" class="text-xl font-bold text-slate-900">Saved Colleges</h3>
                     <div id="dashboard-saved-colleges-list" class="bg-white border border-slate-200 p-6 rounded-2xl space-y-4">
                         <!-- Populated by JS -->
                     </div>
 
-                    <button type="button" onclick="reportHubOpen()" class="w-full text-left flex items-start gap-3 min-h-[44px] rounded-xl border-2 border-amber-400 bg-white px-3 py-2.5 hover:bg-slate-50 print:hidden"><i class=ic-file></i><span class="text-xs text-slate-700 leading-relaxed"><b class="text-slate-900">Our flagship:</b> Save the colleges you are considering. Your Career Intelligence Report lists the colleges and courses that fit your budget and marks, with the routes in. <span class="font-semibold text-brand-700 underline">See the Career Intelligence Report</span></span></button>
                     <h3 data-nav="Saved exams" class="text-xl font-bold text-slate-900">Saved Exams</h3>
                     <div id="dashboard-saved-exams-list" class="bg-white border border-slate-200 p-6 rounded-2xl space-y-4">
                         <!-- Populated by JS -->
                     </div>
-                    <button type="button" onclick="reportHubOpen()" class="w-full text-left flex items-start gap-3 min-h-[44px] rounded-xl border-2 border-amber-400 bg-white px-3 py-2.5 hover:bg-slate-50 print:hidden"><i class=ic-file></i><span class="text-xs text-slate-700 leading-relaxed"><b class="text-slate-900">Our flagship:</b> Save the exams you plan to take. Your Career Intelligence Report maps the exams, dates and eligibility to the career you are aiming for. <span class="font-semibold text-brand-700 underline">See the Career Intelligence Report</span></span></button>
 
                     <div id="dash-checklist-block" class="scroll-mt-32">
                         <div class="flex items-center justify-between">
@@ -1917,7 +1921,6 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     <div id="dashboard-checklist" class="bg-white border border-slate-200 p-6 rounded-2xl space-y-3 text-sm text-slate-700">
                         <!-- Populated by JS -->
                     </div>
-                    <button type="button" onclick="reportHubOpen()" class="w-full text-left flex items-start gap-3 min-h-[44px] rounded-xl border-2 border-amber-400 bg-white px-3 py-2.5 hover:bg-slate-50 print:hidden"><i class=ic-file></i><span class="text-xs text-slate-700 leading-relaxed"><b class="text-slate-900">Our flagship:</b> Finish these steps and save your careers, colleges and exams here. Then generate your Career Intelligence Report to see them as one clear plan. <span class="font-semibold text-brand-700 underline">See the Career Intelligence Report</span></span></button>
                 </div>
 
                 <div class="space-y-6">
