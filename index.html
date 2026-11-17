@@ -13153,7 +13153,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 (X.career5 ? '' : ipCard('How long, in total', '<p class="pp-sm">Most people start work in about <b>' + e(c.entryYears) + ' years</b> from the beginning of the route. Cost to enter is rated <b>' + e(c.costTier.toLowerCase()) + '</b>. Pay at the start is usually at the lower end of ' + e(c.salary) + ', rising with skill and experience.</p>', 'pp-note'));
         }
         function ipColleges(X, lite) {
-            const e = X.e, f = X.f, c = X.rec, cols = X.cols.slice(0, lite ? 3 : 4);
+            const e = X.e, f = X.f, c = X.rec, cols = X.cols.slice(0, lite ? (X.career5 ? 2 : 3) : 4);
             if (!cols.length) {
                 const certs = (c.certifications || []).slice(0, 4);
                 return (X.student ? '<p>We do not have a college list for this career in your area, so use the official course finder for your state and check what each college offers.</p>' : '') + ipH('Courses and certifications to consider') + (certs.length ? '<ul>' + certs.map(function (x) { return '<li>' + planCertHTML(x) + '</li>'; }).join('') + '</ul>' : '<p>Check official course pages for the role you want.</p>') +
@@ -13165,7 +13165,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 (!lite ? ipCard('Budget tip', '<p class="pp-sm">' + (X.A && FIT_BUDGET[X.A.budget] ? 'You told us your budget is ' + e(FIT_BUDGET[X.A.budget][0]) + '. ' : '') + 'Compare four years of tuition plus hostel, food, travel and a laptop. Look for scholarships and state schemes before you accept a seat.</p>', 'pp-note') : '');
         }
         function ipExams(X, lite) {
-            const e = X.e, ex = X.exams.slice(0, lite ? 3 : 4);
+            const e = X.e, ex = X.exams.slice(0, lite ? (X.career5 ? 2 : 3) : 4);
             if (!ex.length) return '<p>No national entrance exam is needed for most routes into this career. Entry is usually through a degree or diploma, a portfolio or skills test, and an interview.</p>' + ipCard('What to do instead', ipUl(['Check each college\'s own admission page for its test or merit rules.', 'Build proof of skill early: projects, internships or a portfolio.', 'Keep a record of marks and certificates ready for applications.']), 'pp-note');
             const mo = function (d) { const dt = d ? new Date(d + 'T00:00:00') : null; return dt && !isNaN(dt) ? e(dt.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })) : 'See official site'; };
             let h = ipRows(['Exam', 'Date', 'Registration', 'Fee (approx)', 'Format'], ex.map(function (x) { return ['<b>' + e(x.name) + '</b><br><span class="pp-sm pp-mut">' + e(x.body || '') + '</span>', mo(x.examDate), (x.regOpens && !isNaN(new Date(x.regOpens + 'T00:00:00')) && !isNaN(new Date(x.regCloses + 'T00:00:00'))) ? mo(x.regOpens) + ' to ' + mo(x.regCloses) : 'See official site', e(x.examFee || 'See official site'), e((x.mode || '') + (x.duration ? ', ' + x.duration : ''))]; }));
