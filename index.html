@@ -548,6 +548,10 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
 .ic-heart{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z%22/%3E%3C/svg%3E")}
 .ic-present{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M2 3h20M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3M7 21l5-5 5 5%22/%3E%3C/svg%3E")}
 .ic-pin{--ic:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z%22/%3E%3Ccircle cx=%2212%22 cy=%2210%22 r=%223%22/%3E%3C/svg%3E")}
+
+        #view-explorer.stream-open > *:not(#stream-panel) { display: none !important; }
+        #view-explorer:not(.stream-open) #stream-panel { display: none; }
+        .stream-card:focus-visible { outline: 3px solid #6366f1; outline-offset: 2px; }
 </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
@@ -975,6 +979,33 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         <option value="az">Sort: A → Z</option>
                     </select>
                 </div>
+            </div>
+
+            <!-- Browse by stream: two big doors into the career list -->
+            <div data-nav="Browse by stream" id="stream-browse" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button type="button" onclick="openStream('commerce')" class="stream-card text-left bg-white border-2 border-slate-200 hover:border-brand-500 rounded-2xl p-5 transition min-h-[44px]">
+                    <p class="text-[11px] font-bold text-brand-700 uppercase tracking-wide mb-1">Browse by stream</p>
+                    <h3 class="text-xl font-extrabold text-slate-900 mb-1">Careers in Commerce</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed mb-3">Finance, accounting, banking, business, marketing, trade, consulting and more. What can you actually become after Commerce?</p>
+                    <span class="text-xs font-bold text-brand-600"><span id="stream-count-commerce">0</span> careers →</span>
+                </button>
+                <button type="button" onclick="openStream('science')" class="stream-card text-left bg-white border-2 border-slate-200 hover:border-brand-500 rounded-2xl p-5 transition min-h-[44px]">
+                    <p class="text-[11px] font-bold text-brand-700 uppercase tracking-wide mb-1">Browse by stream</p>
+                    <h3 class="text-xl font-extrabold text-slate-900 mb-1">Careers in Science and other courses</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed mb-3">Engineering, medicine, technology, research, law, design, education, defence and more, for Science and every other course.</p>
+                    <span class="text-xs font-bold text-brand-600"><span id="stream-count-science">0</span> careers →</span>
+                </button>
+            </div>
+
+            <!-- A stream opened: its career families -->
+            <div id="stream-panel" class="space-y-6">
+                <button type="button" onclick="closeStream()" class="text-sm font-semibold text-brand-600 hover:underline min-h-[44px]">← All careers</button>
+                <div>
+                    <h2 id="stream-title" class="text-3xl font-extrabold text-slate-900"></h2>
+                    <p id="stream-intro" class="text-slate-600 text-sm mt-1 max-w-2xl"></p>
+                </div>
+                <div id="stream-families" class="flex flex-nowrap sm:flex-wrap gap-2 text-sm overflow-x-auto sm:overflow-visible pb-1 -mx-1 px-1"></div>
+                <div id="stream-body" class="space-y-10"></div>
             </div>
 
             <!-- Quiz match banner (shown only if the person completed Confused Mode) -->
@@ -9990,6 +10021,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (viewId === 'confusedMode' && !requireAuth('Sign in to take the career quiz — your answers and matches are saved to your account, so you can pick up where you left off on any device.', function () { switchView('confusedMode'); })) return;
             const prevEl = document.querySelector('.view-section:not(.hidden)');
             const prevView = prevEl ? prevEl.id.slice(5) : null;
+            if (viewId === 'explorer' && prevView !== 'careerDetail' && typeof STREAM_STATE !== 'undefined' && STREAM_STATE.key) { STREAM_STATE.key = null; document.getElementById('view-explorer').classList.remove('stream-open'); }
             if (prevView && DETAIL_PARENT[viewId] === prevView) listReturn = { view: prevView, y: window.scrollY };
             else if (DETAIL_PARENT[viewId] && prevView !== viewId) listReturn = null; // opened from somewhere else: nothing to return to
             const restoreY = (prevView && DETAIL_PARENT[prevView] === viewId && listReturn && listReturn.view === viewId) ? listReturn.y : null;
@@ -14342,6 +14374,137 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             renderPagedGrid(key, ...st.args);
         }
 
+
+        /* ============================================================
+           BROWSE BY STREAM: "Careers in Commerce" and "Careers in Science and other courses".
+           Each stream groups the existing careers into families. A career can sit in more than one family.
+           Careers that are not listed explicitly fall into the "More" family of their stream.
+           ============================================================ */
+        const STREAMS = {
+            commerce: {
+                title: 'Careers in Commerce',
+                intro: 'You chose Commerce. Here is what you can actually become. Pick a family, open a career, and see the path from Class 10 to your first job and beyond.',
+                families: [
+                    { n: 'Finance & Investment', d: 'Markets, funds, research and deals.', ids: ['investment-banker','financial-analyst','equity-research-analyst','fund-manager','wealth-manager-financial-planner','investment-analyst-pe-vc','stock-trader-dealer','quant-analyst','treasury-manager','investor-relations-manager'], more: ['Portfolio Analyst','Financial Planner','Credit Analyst'] },
+                    { n: 'Accounting, Audit & Tax', d: 'The professional qualifications: CA, CMA, CS.', ids: ['chartered-accountant','cost-management-accountant','tax-consultant','internal-auditor','forensic-accountant','company-secretary'], more: ['Financial Controller','GST Consultant'] },
+                    { n: 'Banking, Fintech & Payments', d: 'Banks, payment companies and lending.', ids: ['bank-probationary-officer','bank-clerk-po-ibps','payments-banking-operations','fintech-product-analyst','microfinance-professional','loan-officer-housing-finance','credit-rating-analyst'], more: ['Cross-border Payments Specialist','Digital Banking Analyst'] },
+                    { n: 'Insurance & Risk', d: 'Pricing, underwriting and managing risk.', ids: ['actuary','actuarial-data-analyst','insurance-underwriter','credit-risk-analyst','risk-manager-frm'], more: ['Claims Analyst','Reinsurance Analyst','InsurTech Product Specialist'] },
+                    { n: 'Business Analytics & Technology', d: 'Commerce plus data and AI. You do not need to be a programmer.', ids: ['data-analyst','business-analyst','data-scientist','sap-erp-consultant','product-manager','data-driven-hr-analyst'], more: ['Financial Data Analyst','FinTech Analyst'] },
+                    { n: 'Marketing, Sales & Digital Business', d: 'Brands, growth and selling.', ids: ['digital-marketing-manager','sales-manager','ecommerce-manager','growth-hacker','brand-manager','market-research-analyst','social-media-manager','seo-specialist','advertising-creative-director','public-relations-specialist'], more: [] },
+                    { n: 'Entrepreneurship & Business', d: 'Build a business instead of working in one.', ids: ['entrepreneur-startup-founder','social-entrepreneur'], more: ['D2C Brand Founder','Family Business Manager','Franchise Entrepreneur'] },
+                    { n: 'Consulting & Strategy', d: 'For people who enjoy solving problems.', ids: ['management-consultant','business-analyst','project-manager','market-research-analyst'], more: ['Strategy Analyst','Process Improvement Consultant'] },
+                    { n: 'Supply Chain, Operations & Procurement', d: 'An under-explored family for Commerce students.', ids: ['supply-chain-logistics-manager','procurement-manager','category-manager-retail','operations-manager','export-import-manager'], more: ['Demand Planner','Inventory Analyst','Strategic Sourcing Analyst'] },
+                    { n: 'International Business & Trade', d: 'Exports, imports and cross-border business.', ids: ['export-import-manager','supply-chain-logistics-manager','ifs-diplomat'], more: ['Trade Finance Specialist','Foreign Exchange Specialist','Customs / Trade Compliance Specialist'] },
+                    { n: 'ESG & Sustainability', d: 'A new-age business field.', ids: ['sustainability-esg-manager','carbon-credit-climate-analyst','csr-manager'], more: ['ESG Analyst','Green Finance Specialist','Impact Investment Analyst'] },
+                    { n: 'Economics, Policy & Research', d: 'For students who enjoy economics and current affairs.', ids: ['research-officer-economist','development-economist','public-policy-analyst','statistician'], more: [] },
+                    { n: 'Legal, Compliance & Governance', d: 'Where business meets law.', ids: ['company-secretary-governance','corporate-counsel','data-privacy-officer','tax-lawyer','company-lawyer-mna','lawyer-advocate'], more: [] },
+                    { n: 'People, HR & Training', d: 'Hiring, growing and managing people.', ids: ['hr-manager','talent-acquisition-recruiter','corporate-trainer'], more: [] },
+                    { n: 'Real Estate & Infrastructure', d: 'Often overlooked by career portals.', ids: ['real-estate-professional'], more: ['Real Estate Analyst','Property Valuer','Infrastructure Finance Analyst'] },
+                    { n: 'Government, Public Sector & Competitive Careers', d: 'Exam-based routes: RBI, SEBI, civil services and more.', ids: ['civil-services-officer','stock-exchange-regulator-officer','revenue-customs-income-tax-officer','ssc-cgl-government-officer','tax-assistant-inspector-ssc','state-pcs-officer','bank-probationary-officer'], more: ['NABARD','SIDBI','IRDAI','PFRDA'] }
+                ],
+                restCats: ['Finance', 'Business']
+            },
+            science: {
+                title: 'Careers in Science and other courses',
+                intro: 'Science, Arts, and every other course: engineering, medicine, research, technology, law, design, education and more. Pick a family and open a career to see its path.',
+                families: [
+                    { n: 'Engineering', d: 'Build and design things.', cats: ['Engineering'] },
+                    { n: 'Technology & Computing', d: 'Software, data, AI and security.', cats: ['Technology'] },
+                    { n: 'Medicine & Healthcare', d: 'Doctors, nurses, therapy and allied health.', cats: ['Healthcare'] },
+                    { n: 'Pure & Applied Science', d: 'Research, labs and discovery.', cats: ['Science'] },
+                    { n: 'Agriculture & Environment', d: 'Farming, food and the planet.', cats: ['Agriculture & Environment'] },
+                    { n: 'Law, Defence & Public Service', d: 'Courts, civil services, police and armed forces.', cats: ['Law & Public Service'] },
+                    { n: 'Education & Academia', d: 'Teaching, training and research careers.', cats: ['Education'] },
+                    { n: 'Media, Design & Creative', d: 'Writing, design, film and entertainment.', cats: ['Media', 'Creative', 'Arts & Entertainment'] },
+                    { n: 'Aviation, Hospitality & Services', d: 'Travel, hospitality and customer-facing work.', cats: ['Aviation & Hospitality', 'Personal Services & Wellness'] },
+                    { n: 'Skilled Trades, Sports & Fitness', d: 'Hands-on and physical careers.', cats: ['Skilled Trades', 'Sports & Fitness'] }
+                ]
+            }
+        };
+        const STREAM_STATE = { key: null, family: 'ALL' };
+        function streamFamilyCareers(key) {
+            const S = STREAMS[key], byId = new Map(careersData.map(c => [c.id, c]));
+            const used = new Set();
+            const fams = S.families.map(f => {
+                let list;
+                if (f.ids) list = f.ids.map(id => byId.get(id)).filter(Boolean);
+                else list = careersData.filter(c => f.cats.indexOf(c.category) >= 0);
+                list.forEach(c => used.add(c.id));
+                return { n: f.n, d: f.d, more: f.more || [], list: list };
+            });
+            if (S.restCats) {
+                const rest = careersData.filter(c => S.restCats.indexOf(c.category) >= 0 && !used.has(c.id));
+                if (rest.length) fams.push({ n: 'More careers in Commerce', d: 'Other business and finance careers.', more: [], list: rest });
+            }
+            return fams.filter(f => f.list.length);
+        }
+        function streamCareerIds(key) { const ids = new Set(); streamFamilyCareers(key).forEach(f => f.list.forEach(c => ids.add(c.id))); return ids; }
+        function updateStreamCounts() {
+            ['commerce', 'science'].forEach(k => {
+                const el = document.getElementById('stream-count-' + k);
+                if (el) el.textContent = streamCareerIds(k).size;
+            });
+        }
+        function openStream(key) { if (!STREAMS[key]) return; STREAM_STATE.key = key; STREAM_STATE.family = 'ALL'; renderStream(); window.scrollTo(0, 0); }
+        function closeStream() { STREAM_STATE.key = null; document.getElementById('view-explorer').classList.remove('stream-open'); window.scrollTo(0, 0); }
+        function pickStreamFamily(i) { STREAM_STATE.family = i; renderStream(); }
+        function renderStream() {
+            const sec = document.getElementById('view-explorer');
+            if (!STREAM_STATE.key) { sec.classList.remove('stream-open'); return; }
+            const S = STREAMS[STREAM_STATE.key], fams = streamFamilyCareers(STREAM_STATE.key);
+            sec.classList.add('stream-open');
+            document.getElementById('stream-title').textContent = S.title;
+            document.getElementById('stream-intro').textContent = S.intro;
+            const total = new Set(); fams.forEach(f => f.list.forEach(c => total.add(c.id)));
+            const pill = (active, label, i) => `<button type="button" onclick="pickStreamFamily(${i === 'ALL' ? "'ALL'" : i})" aria-pressed="${active}" class="cat-pill ${active ? 'active' : ''} shrink-0 whitespace-nowrap px-4 py-2 min-h-[40px] rounded-xl bg-white text-slate-700 border border-slate-200 text-sm font-semibold">${label}</button>`;
+            document.getElementById('stream-families').innerHTML = pill(STREAM_STATE.family === 'ALL', 'All families (' + total.size + ')', 'ALL') + fams.map((f, i) => pill(STREAM_STATE.family === i, f.n + ' (' + f.list.length + ')', i)).join('');
+            document.getElementById('stream-body').innerHTML = fams.map((f, i) => (STREAM_STATE.family !== 'ALL' && STREAM_STATE.family !== i) ? '' : `
+                <section aria-label="${f.n}">
+                    <div class="mb-4">
+                        <h3 class="text-xl font-extrabold text-slate-900">${f.n} <span class="text-sm font-semibold text-slate-500">· ${f.list.length} career${f.list.length === 1 ? '' : 's'}</span></h3>
+                        <p class="text-sm text-slate-600">${f.d}</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">${f.list.map(careerCardHTML).join('')}</div>
+                    ${f.more.length ? `<p class="text-xs text-slate-500 mt-3"><strong>Also in this family, being added:</strong> ${f.more.join(' · ')}</p>` : ''}
+                </section>`).join('');
+        }
+
+        /* "Career at a glance": the same 7 questions for every career, answered from the career's own data. */
+        const WORKPLACES = {
+            'Finance': 'Banks, NBFCs, investment firms, insurers, CA firms, corporates, regulators',
+            'Business': 'Corporates, startups, consulting firms, e-commerce and retail, your own venture',
+            'Technology': 'IT services, product companies, startups, banks and global tech teams',
+            'Engineering': 'Manufacturing, construction, energy, automotive, PSUs and core companies',
+            'Healthcare': 'Hospitals, clinics, diagnostic labs, pharma, public health and your own practice',
+            'Science': 'Research labs, ISRO / DRDO / CSIR, universities, pharma and industry R&D',
+            'Law & Public Service': 'Courts, law firms, government departments, defence and public bodies',
+            'Education': 'Schools, colleges, coaching and edtech companies, training firms',
+            'Media': 'Newsrooms, studios, agencies, platforms and freelance',
+            'Creative': 'Design studios, brands, agencies, product companies and freelance',
+            'Arts & Entertainment': 'Studios, production houses, platforms, events and freelance',
+            'Agriculture & Environment': 'Farms, agri-companies, government agencies, NGOs and research bodies',
+            'Skilled Trades': 'Workshops, factories, service companies and your own business',
+            'Aviation & Hospitality': 'Airlines, airports, hotels, resorts and travel companies',
+            'Sports & Fitness': 'Academies, gyms, sports bodies, teams and clubs',
+            'Personal Services & Wellness': 'Salons, spas, wellness brands and your own business'
+        };
+        function careerGlanceHTML(c) {
+            const r = c.roadmap || [];
+            const rows = [
+                ['What do they do?', c.overview],
+                ['Who is it suited for?', c.suitability],
+                ['What to study after Class 10 / 12', r[0] || 'See the roadmap below'],
+                ['Which degrees lead here?', r[1] || 'See the roadmap below'],
+                ['Skills to build', (c.skills || []).slice(0, 6).join(' · ') || 'See the skills section below'],
+                ['How does the career grow?', r.length > 2 ? r.slice(2).join(' → ') : 'See the roadmap below'],
+                ['Where can you work?', WORKPLACES[c.category] || c.mobility]
+            ];
+            return `<div class="bg-white border-2 border-brand-100 rounded-2xl p-5">
+                <h3 class="font-extrabold text-slate-900 text-lg mb-3">Career at a glance</h3>
+                <dl class="divide-y divide-slate-100 text-sm">${rows.map((x, i) => `<div class="py-2.5 first:pt-0 last:pb-0 md:grid md:grid-cols-[13rem_1fr] md:gap-4"><dt class="text-[11px] font-bold uppercase tracking-wide text-brand-700 mb-0.5 md:mb-0 md:pt-0.5">${i + 1}. ${x[0]}</dt><dd class="text-slate-700 leading-relaxed">${x[1]}</dd></div>`).join('')}</dl>
+            </div>`;
+        }
+
         function renderExplorerCareers() {
             renderCategoryPills();
             const query = (document.getElementById('career-search').value || '').toLowerCase();
@@ -14410,6 +14573,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 empty.classList.add('hidden');
                 renderPagedGrid('careers', grid, list, careerCardHTML, 'explorer-more', 'career');
             }
+            updateStreamCounts(); if (STREAM_STATE.key) renderStream();
         }
 
         function updateExplorerQuizBanner(storedAnswers) {
@@ -14540,6 +14704,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 </div>
                 <h2 class="text-3xl font-extrabold text-slate-900">${c.title}</h2>
                 <p class="text-slate-600 leading-relaxed">${c.overview}</p>
+                ${careerGlanceHTML(c)}
                 ${c.salaryVerified ? '' : verifyNoteHTML('Salaries here are approximate. Real pay depends on city, employer, skills and experience. Check current openings and pay ranges on the National Career Service portal.', c, 'career', 'Open NCS portal')}
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
