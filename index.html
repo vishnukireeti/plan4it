@@ -712,11 +712,11 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 <button data-nav="colleges" onclick="switchView('colleges')" class="nav-link hover:text-brand-600 transition">Colleges</button>
                 <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad')" class="nav-link hover:text-brand-600 transition">Govt & Money</button>
                 <button data-nav="internships" onclick="switchView('internships')" class="nav-link hover:text-brand-600 transition">Internships</button>
-                <button type="button" onclick="reportHubOpen()" class="inline-flex items-center gap-1.5 min-h-[36px] px-3 rounded-full bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 font-bold transition"><span aria-hidden="true"><i class=ic-file></i></span> Career Report</button>
+                <button type="button" data-nav="reports" onclick="switchView('reports')" class="nav-link inline-flex items-center gap-1.5 min-h-[36px] px-3 rounded-full bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 font-bold transition"><span aria-hidden="true"><i class=ic-file></i></span> Reports</button>
             </nav>
 
             <div class="flex items-center gap-1 sm:gap-3 shrink-0">
-                <button type="button" onclick="reportHubOpen()" aria-label="Full career report" title="Full career report" class="2xl:hidden min-h-[40px] px-2.5 sm:px-3 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 text-xs font-bold whitespace-nowrap"><span aria-hidden="true"><i class=ic-file></i></span><span class="hidden min-[420px]:inline"> Report</span></button>
+                <button type="button" onclick="switchView('reports')" aria-label="Reports" title="Reports" class="2xl:hidden min-h-[40px] px-2.5 sm:px-3 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 text-xs font-bold whitespace-nowrap"><span aria-hidden="true"><i class=ic-file></i></span><span class="hidden min-[420px]:inline"> Reports</span></button>
                 <button id="gs-btn" type="button" onclick="openGlobalSearch()" aria-label="Search careers, exams and colleges" title="Search (press /)" class="min-h-[40px] min-w-[40px] border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl px-2.5 sm:px-3 flex items-center justify-center gap-2 text-sm font-semibold transition"><svg class="w-5 h-5" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="M13.5 13.5L17 17" stroke-linecap="round"/></svg><span class="hidden">Search</span></button>
                 <button id="admin-header-btn" type="button" onclick="openAdmin()" class="hidden min-h-[40px] border border-amber-200 text-amber-800 bg-amber-50 hover:bg-amber-100 px-3 rounded-xl text-xs font-semibold transition">Admin</button>
                     <button id="auth-header-btn" type="button" onclick="openAuth()" aria-label="Sign up or log in" title="Create an account or log in" class="min-h-[40px] whitespace-nowrap border border-brand-200 text-brand-700 hover:bg-brand-50 px-2.5 sm:px-4 py-2 rounded-xl text-sm font-semibold transition">Sign up</button>
@@ -741,7 +741,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             <button data-nav="colleges" onclick="switchView('colleges');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Colleges</button>
             <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Govt & Money</button>
             <button data-nav="internships" onclick="switchView('internships');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Internships</button>
-            <button type="button" onclick="closeMobileMenu();reportHubOpen()" class="text-left min-h-[48px] px-5 flex items-center gap-2 font-bold text-amber-900 bg-amber-50 hover:bg-amber-100"><span aria-hidden="true"><i class=ic-file></i></span> Full Career Report (18 pages)</button>
+            <button type="button" onclick="closeMobileMenu();switchView('reports')" class="text-left min-h-[48px] px-5 flex items-center gap-2 font-bold text-amber-900 bg-amber-50 hover:bg-amber-100"><span aria-hidden="true"><i class=ic-file></i></span> Reports (free, ₹99, ₹299)</button>
             <div class="my-1 border-t border-slate-200"></div>
             <button data-nav="dashboard" onclick="switchView('dashboard');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">My Dashboard</button>
         </div>
@@ -1846,6 +1846,14 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 <p id="premium-pay-msg" class="text-xs text-slate-600 mt-2" role="status" aria-live="polite"></p>
             </div>
         </div>
+
+        <section id="view-reports" class="view-section hidden space-y-8">
+            <div>
+                <h2 class="text-3xl font-extrabold text-slate-900">Reports</h2>
+                <p class="text-slate-600 text-sm mt-1 max-w-2xl">Three reports, one place. Pick one, pay once if it is paid, and download it as a PDF. No subscription.</p>
+            </div>
+            <div id="reports-page" class="space-y-8"></div>
+        </section>
 
         <section id="view-internships" class="view-section hidden space-y-10">
             <div data-nav="Overview">
@@ -10053,6 +10061,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 if (saved) { wizardAnswers = Object.assign({}, saved); showWizardResults(); }
                 else restartWizard();
             }
+            if (viewId === 'reports') renderReportsPage();
             if (viewId === 'explorer') renderExplorerCareers();
             if (viewId === 'exams') renderExams();
             if (viewId === 'colleges') { applyFitToCollegeFilters(); renderColleges(); }
@@ -11305,6 +11314,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 if (r.error) return;
                 PREMIUM_ROWS = r.data || [];
                 try { renderReportPromos(); } catch (er) {}
+                try { if (!document.getElementById('view-reports').classList.contains('hidden')) renderReportsPage(); } catch (er) {}
             }, function () {});
         }
         // ---- Your reports: a copy of each full or career report is kept in the dashboard for 3 days, then removed by the server.
@@ -11326,7 +11336,10 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         }
         function reportCopyDays(iso) { return Math.max(0, Math.ceil((new Date(iso).getTime() - Date.now()) / 86400000)); }
         function renderDashReports() {
-            const el = document.getElementById('dash-reports'); if (!el) return;
+            ['dash-reports', 'reports-copies'].forEach(renderReportCopiesInto);
+        }
+        function renderReportCopiesInto(elId) {
+            const el = document.getElementById(elId); if (!el) return;
             if (typeof sb === 'undefined' || !sb || !authGetSession()) { el.innerHTML = ''; return; }
             sb.from('saved_reports').select('id,kind,title,created_at,expires_at').order('created_at', { ascending: false }).then(function (r) {
                 const rows = (r && !r.error && r.data || []).filter(function (x) { return new Date(x.expires_at).getTime() > Date.now(); });
@@ -13562,42 +13575,18 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
            Shown on the home page, dashboard, quiz results and in a pop-up from the header,
            so students always know it exists, what they must do to get it, and what each version holds.
            ============================================================ */
-        function reportMainAction() {
-            reportHubClose(); reportChooseOpen();
-        }
+        function reportMainAction() { switchView('reports'); }
         function reportPromoHTML(full, compact) {
-            const cmp = !!compact;
-            const e = escapeAuth, A = !!getStoredWizardAnswers(), launch = premiumLaunch(), unlocked = premiumUnlocked();
-            const steps = [
-                { n: 1, done: A, t: 'Take the 2-minute quiz', d: 'Make a free account so your answers are saved, then answer a few questions. Add your state to get college and exam picks.' },
-                { n: 2, done: false, t: 'Get your free 2-page report', d: 'Two pages: your career DNA, fit score, pay and route outline, and a first week to start on. No payment.', ok: A },
-                { n: 3, done: false, t: 'Get the full 18-page report', d: launch ? 'Free during our launch, then ₹' + PREMIUM_CFG.price + ' one-time. Download it as a PDF.' : '₹' + PREMIUM_CFG.price + ' one-time. Download it as a PDF.', ok: A }
-            ];
-            const primary = !A ? '<button type="button" onclick="reportMainAction()" class="min-h-[48px] px-6 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-base shadow">Get my report →</button>'
-                : '<button type="button" onclick="reportMainAction()" class="min-h-[48px] px-6 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-base shadow"><i class=ic-file></i> Get my report' + (unlocked ? (launch ? ' · free now' : '') : ' · ₹' + PREMIUM_CFG.price) + '</button>' +
-                  '<button type="button" onclick="reportHubClose();intelSnapshotRun()" class="min-h-[48px] px-5 rounded-xl border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-bold text-sm">Free 2-page report</button>';
-            const free = ['Your career DNA and what drives your fit score', 'Why your best match fits you, and one thing to watch', 'Pay for the first two stages, route outline and key skills', 'A first week to start on, and your top two compared'];
-            const contents = '<div class="mt-4 grid ' + (cmp ? '' : 'sm:grid-cols-2 ') + 'gap-4"><div class="rounded-xl border border-slate-200 bg-white p-4"><p class="text-xs font-bold uppercase tracking-wider text-slate-500">Free 2-page report</p><ul class="mt-2 text-sm text-slate-700 space-y-1">' + free.map(function (x) { return '<li class="flex gap-2"><span class="text-emerald-600">✓</span><span>' + e(x) + '</span></li>'; }).join('') + '</ul></div>' +
-                '<div class="rounded-xl border-2 border-amber-400 bg-white p-4"><p class="text-xs font-bold uppercase tracking-wider text-brand-700">Full report · 18 pages · ' + (launch ? 'free now, ₹' + PREMIUM_CFG.price + ' later' : '₹' + PREMIUM_CFG.price) + '</p>' + rptGroupsHTML() + '</div></div>';
-            return '<div class="rounded-2xl border-2 border-amber-400 bg-white p-5 md:p-6 text-left">' +
-                '<div class="flex flex-wrap items-center gap-2"><span class="text-[11px] font-bold uppercase tracking-wider bg-brand-600 text-white px-2.5 py-1 rounded-full">Plan4it flagship</span><span class="text-[11px] font-semibold text-slate-600">18 pages · one topic per page · PDF</span></div>' +
-                '<h2 class="mt-2 ' + (cmp ? 'text-xl' : 'text-xl md:text-2xl') + ' font-extrabold text-slate-900">Your Career Intelligence Report</h2>' +
-                '<p class="text-sm text-slate-700 mt-1">Not just a list of careers. It shows why a career fits you, what it takes to get there, what could go wrong, and exactly what to do in your first 90 days.</p>' +
-                '<ol class="mt-4 grid ' + (cmp ? 'gap-2' : 'sm:grid-cols-3 gap-3') + '">' + steps.map(function (s) { return '<li class="rounded-xl bg-white border border-slate-200 p-3"><div class="flex items-center gap-2"><span class="inline-flex w-6 h-6 items-center justify-center rounded-full text-xs font-bold ' + (s.done ? 'bg-emerald-100 text-emerald-700' : 'bg-brand-100 text-brand-800') + '">' + (s.done ? '✓' : s.n) + '</span><b class="text-sm text-slate-900">' + e(s.t) + '</b></div><p class="text-xs text-slate-600 mt-1.5">' + e(s.d) + '</p></li>'; }).join('') + '</ol>' +
-                '<div class="mt-4 ' + (cmp ? 'grid gap-2' : 'flex flex-wrap items-center gap-3') + '">' + primary + '</div>' +
-                (full ? contents : '<details class="mt-3"><summary class="text-sm font-semibold text-brand-700 cursor-pointer min-h-[40px] flex items-center">' + (cmp ? 'See what is inside the 18-page report, and how it helps you' : 'What is free, and what is inside the 18-page report') + '</summary>' + contents + '</details>') + '</div>';
+            return '<div class="rounded-2xl border-2 border-amber-400 bg-white p-4 md:p-5 text-left flex flex-wrap items-center justify-between gap-3">' +
+                '<div class="min-w-0"><p class="text-[11px] font-bold uppercase tracking-wider text-brand-700">Career reports</p>' +
+                '<p class="font-extrabold text-slate-900 text-lg mt-0.5">Free 2-page · ₹' + PREMIUM_CFG.careerPrice + ' single career · ₹' + PREMIUM_CFG.price + ' full 18-page</p>' +
+                '<p class="text-sm text-slate-600 mt-0.5">Pay once and download a PDF. See what each one holds and pick yours.</p></div>' +
+                '<button type="button" onclick="switchView(\'reports\')" class="min-h-[48px] px-6 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold shadow shrink-0">See reports →</button></div>';
         }
         // The flagship note on Careers, Pathways, Exams and Colleges. Same wording whether or not the quiz is taken; the actions differ.
         function reportNoteHTML(key, side) {
-            const taken = !!getStoredWizardAnswers();
-            const btn = 'min-h-[44px] px-3 rounded-lg text-xs font-bold ' + (side ? 'w-full ' : '');
-            const body = '<b class="text-slate-900">Our flagship: the Career Intelligence Report.</b> ' + (taken
-                ? 'It is generated from your quiz answers or from the items you saved to your dashboard. If your answers have changed, retake the quiz before you pay.'
-                : 'Take the quiz, or save careers, exams and colleges to your dashboard, to get yours. It is generated from your quiz answers or your saved items.');
-            const acts = '<button type="button" onclick="reportChooseOpen()" class="' + btn + 'bg-brand-600 hover:bg-brand-700 text-white">Get my report</button>' +
-                (taken ? '<button type="button" onclick="retakeQuiz();switchView(\'confusedMode\')" class="' + btn + 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50">Retake quiz</button>'
-                       : '<button type="button" onclick="switchView(\'confusedMode\')" class="' + btn + 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50">Take the quiz</button>');
-            return '<div class="w-full text-left rounded-xl border-2 border-amber-400 bg-white px-3 py-2.5 print:hidden"><div class="flex items-start gap-3"><i class=ic-file></i><p class="text-xs text-slate-700 leading-relaxed">' + body + '</p></div><div class="' + (side ? 'grid gap-2' : 'flex flex-wrap gap-2') + ' mt-2.5">' + acts + '</div></div>';
+            return '<div class="w-full text-left rounded-xl border-2 border-amber-400 bg-white px-3 py-2.5 print:hidden"><div class="flex items-start gap-3"><i class=ic-file></i><p class="text-xs text-slate-700 leading-relaxed"><b class="text-slate-900">Career reports.</b> Free 2 pages, ₹' + PREMIUM_CFG.careerPrice + ' for one career, ₹' + PREMIUM_CFG.price + ' for the full 18 pages.</p></div>' +
+                '<button type="button" onclick="switchView(\'reports\')" class="mt-2.5 min-h-[44px] px-3 rounded-lg text-xs font-bold bg-brand-600 hover:bg-brand-700 text-white ' + (side ? 'w-full' : '') + '">See reports</button></div>';
         }
         // "Get my report": quiz-based, retake the quiz, or build it from the items saved to the dashboard.
         function reportChooseSrc() {
@@ -13605,8 +13594,69 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (window.__rcSrc === 'quiz' || window.__rcSrc === 'saved') return window.__rcSrc;
             return taken ? 'quiz' : nc ? 'saved' : 'quiz';
         }
+
+        /* ============================================================
+           THE REPORTS PAGE: the one place to see, buy and download every report.
+           ============================================================ */
+        function reportsSetSrc(k) { window.__rcSrc = k; renderReportsPage(); }
+        function reportsFree() { const src = reportChooseSrc(); if (src === 'quiz' ? !getStoredWizardAnswers() : !getSavedCareers().length) return; trackEvent('report_choose_free'); intelSnapshotRun(src); }
+        function reportsFull() { const src = reportChooseSrc(); trackEvent('report_choose_full'); premiumPrintPlan(src); }
+        function reportsPickCareer() { showToast('Open any career and tap "Career report" on its page.'); switchView('explorer'); }
+        function renderReportsPage() {
+            const el = document.getElementById('reports-page'); if (!el) return;
+            const e = escapeAuth, taken = !!getStoredWizardAnswers(), nc = getSavedCareers().length, ne = getSavedExams().length, ncl = getSavedColleges().length;
+            const signed = !!(typeof authGetSession === 'function' && authGetSession());
+            const src = reportChooseSrc(), ready = src === 'quiz' ? taken : nc > 0;
+            const launch = premiumLaunch(), fullOwned = ready && premiumFullUnlocked(src), stale = ready && !fullOwned && premiumFullStale(src);
+            const plural = function (n, w) { return n + ' ' + w + (n === 1 ? '' : 's'); };
+            const li = function (arr) { return '<ul class="mt-3 space-y-1.5 text-sm text-slate-700 flex-1">' + arr.map(function (x) { return '<li class="flex gap-2"><span class="text-emerald-600 font-bold">✓</span><span>' + e(x) + '</span></li>'; }).join('') + '</ul>'; };
+            const btnP = 'mt-4 min-h-[48px] w-full px-4 rounded-xl text-sm font-bold ', blue = btnP + 'bg-brand-600 hover:bg-brand-700 text-white', outline = btnP + 'border-2 border-slate-300 text-slate-800 hover:bg-slate-50', green = btnP + 'bg-emerald-600 hover:bg-emerald-700 text-white';
+            const need = src === 'quiz' ? ['Take the quiz first', "switchView('confusedMode')"] : ['Save a career first', "switchView('explorer')"];
+            const card = function (tag, tagCls, price, pages, title, q, bullets, btn, note, ring) {
+                return '<div class="rounded-2xl border-2 ' + ring + ' bg-white p-4 sm:p-5 flex flex-col"><div class="flex items-center justify-between gap-2"><span class="text-[11px] font-extrabold tracking-wider ' + tagCls + ' px-2.5 py-1 rounded-full">' + tag + '</span><span class="text-xs font-semibold text-slate-600">' + pages + '</span></div>' +
+                    '<p class="font-extrabold text-slate-900 text-lg mt-3">' + title + '</p><p class="text-2xl font-extrabold text-slate-900 mt-1">' + price + '</p><p class="text-sm text-slate-600 mt-1 italic">' + q + '</p>' + li(bullets) + btn + (note ? '<p class="text-[11px] text-slate-500 mt-2">' + note + '</p>' : '') + '</div>';
+            };
+            const free = card('FREE', 'bg-emerald-600 text-white', 'Free', '2 pages', 'Free report', 'A quick look at your best match.', ['Your best career match and why it fits', 'Pay, route and key skills', 'A first week to start on'],
+                ready ? '<button type="button" onclick="reportsFree()" class="' + green + '">Get the free report</button>' : '<button type="button" onclick="' + need[1] + '" class="' + outline + '">' + need[0] + '</button>', signed ? '' : 'Sign in to get it.', 'border-emerald-500');
+            const fullBtn = !ready ? '<button type="button" onclick="' + need[1] + '" class="' + outline + '">' + need[0] + '</button>'
+                : fullOwned ? '<button type="button" onclick="reportsFull()" class="' + green + '">Download your report</button>'
+                : '<button type="button" onclick="reportsFull()" class="' + blue + '">' + (launch ? 'Get the full report · free now' : 'Buy the full report · ₹' + PREMIUM_CFG.price) + '</button>';
+            const fullNote = fullOwned ? 'You have bought this report. It matches your current ' + (src === 'quiz' ? 'quiz answers' : 'saved items') + '.' : stale ? 'Your ' + (src === 'quiz' ? 'answers' : 'saved items') + ' changed since you bought it, so a new report is ₹' + PREMIUM_CFG.price + '.' : 'Built from exactly the answers or items shown above. If you change them later, a new report costs ₹' + PREMIUM_CFG.price + '.';
+            const full = card('MOST COMPLETE', 'bg-brand-600 text-white', launch ? 'Free now' : '₹' + PREMIUM_CFG.price, '18 pages', 'Career Intelligence Report', 'Which career should I choose, and how do I get there?', ['Top 5 careers with fit scores', 'Colleges, exams and a year-by-year plan', 'What could go wrong, and a Plan B', '90-day action plan and a page for your parents'], fullBtn, fullNote, 'border-brand-600');
+            const one = card('ONE CAREER', 'bg-amber-500 text-white', '₹' + PREMIUM_CFG.careerPrice, '5 pages', 'Career report', 'Should I pursue this career?', ['What the job is really like, and a one-week trial', 'How well it fits you, and your best way in', 'Skills, pay, Plan B and a 90-day plan'],
+                '<button type="button" onclick="reportsPickCareer()" class="' + outline + '">Choose a career</button>', 'Bought separately for each career. Open any career and tap Career report.', 'border-amber-400');
+            const srcOpt = function (key, title, line, on) {
+                return '<div tabindex="0" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();reportsSetSrc(\'' + key + '\')}" onclick="reportsSetSrc(\'' + key + '\')" role="radio" aria-checked="' + on + '" class="cursor-pointer text-left rounded-xl p-3 border-2 transition flex gap-3 items-start ' + (on ? 'border-brand-600 bg-brand-50' : 'border-slate-200 bg-white hover:border-slate-300') + '"><span class="mt-0.5 inline-flex w-5 h-5 shrink-0 items-center justify-center rounded-full border-2 ' + (on ? 'border-brand-600' : 'border-slate-300') + '">' + (on ? '<span class="w-2.5 h-2.5 rounded-full bg-brand-600"></span>' : '') + '</span><span class="min-w-0"><span class="block font-bold text-slate-900 text-sm">' + title + '</span><span class="block text-xs text-slate-600 mt-0.5">' + line + '</span></span></div>';
+            };
+            const quizLine = taken ? 'Your quiz answers are saved.' + ' <button type="button" onclick="event.stopPropagation();retakeQuiz();switchView(\'confusedMode\')" class="underline font-semibold text-brand-700">Retake</button>' : 'Not taken yet (2 minutes).';
+            const savedLine = nc ? plural(nc, 'career') + ', ' + plural(ne, 'exam') + ', ' + plural(ncl, 'college') + ' saved.' : 'Nothing saved yet.';
+            const signNote = signed ? '' : '<div class="rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 flex flex-wrap items-center justify-between gap-3"><p class="text-sm text-slate-800"><b>Sign in</b> to get a report. Your purchases are saved to your account.</p><button type="button" onclick="openAuth()" class="min-h-[44px] px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm">Sign in or sign up</button></div>';
+            // what you already have
+            const mine = [];
+            if (fullOwned) mine.push(['Career Intelligence Report (18 pages)', 'Built from your ' + (src === 'quiz' ? 'quiz answers' : 'saved items'), 'reportsFull()', 'Download']);
+            (PREMIUM_ROWS || []).filter(function (x) { return x.kind === 'career'; }).forEach(function (x) {
+                const c = careersData.find(function (k) { return k.id === x.career_id; }); if (!c) return;
+                const me = x.scope === 'me' && premiumUnlockedFor('career-me', x.career_id);
+                if (x.scope === 'me' && !me) return;
+                if (mine.some(function (m) { return m[2].indexOf("'" + x.career_id + "'") > -1 && m[0] === c.title; })) return;
+                mine.push([c.title, me ? 'Your personal career report (5 pages)' : 'Career guide (5 pages)', "careerReportRun('" + e(x.career_id) + "','" + (me ? 'me' : 'general') + "')", 'Download']);
+            });
+            const mineHTML = mine.length ? '<ul class="space-y-2">' + mine.map(function (m) { return '<li class="flex items-center justify-between gap-3 flex-wrap p-3 rounded-xl border border-slate-200 bg-slate-50"><div class="min-w-0"><p class="font-bold text-slate-900 text-sm">' + e(m[0]) + '</p><p class="text-xs text-slate-600">' + e(m[1]) + '</p></div><button type="button" onclick="' + m[2] + '" class="min-h-[44px] px-4 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm">' + m[3] + '</button></li>'; }).join('') + '</ul>'
+                : '<p class="text-sm text-slate-600">' + (signed ? 'You have not bought a report yet. Anything you buy shows up here.' : 'Sign in to see the reports you have bought.') + '</p>';
+            el.innerHTML = signNote +
+                '<div data-nav="Pick a report" class="space-y-4"><div><p class="text-[11px] font-bold uppercase tracking-wider text-slate-500"><span class="inline-flex w-5 h-5 items-center justify-center rounded-full bg-slate-900 text-white mr-1.5">1</span>The free and 18-page reports are built from</p>' +
+                    '<div class="grid sm:grid-cols-2 gap-2.5 mt-2" role="radiogroup" aria-label="Build the report from">' + srcOpt('quiz', 'My quiz answers', quizLine, src === 'quiz') + srcOpt('saved', 'My saved items', savedLine, src === 'saved') + '</div></div>' +
+                    '<p class="text-[11px] font-bold uppercase tracking-wider text-slate-500 pt-2"><span class="inline-flex w-5 h-5 items-center justify-center rounded-full bg-slate-900 text-white mr-1.5">2</span>Choose a report</p>' +
+                    '<div class="grid md:grid-cols-3 gap-4">' + free + full + one + '</div>' +
+                    '<p class="text-xs text-slate-500">Reports are PDFs you can keep. Pay and cost figures are estimates; confirm exam dates and fees on official sites. Payments are handled by Razorpay. See <button type="button" class="underline" onclick="switchView(\'refund\')">Refunds &amp; Payments</button>.</p></div>' +
+                '<div data-nav="My reports" class="space-y-4"><h3 class="text-xl font-extrabold text-slate-900">My reports</h3>' +
+                    '<div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5"><p class="font-bold text-slate-900 text-sm mb-2">Bought</p>' + mineHTML + '</div>' +
+                    '<div id="reports-copies"></div></div>';
+            try { renderDashReports(); } catch (er) {}
+        }
         function reportChooseSet(src) { window.__rcSrc = src; reportChooseOpen(true); }
         function reportChooseOpen(keep) {
+            if (!window.__rcLegacy) { reportChooseClose(); reportHubClose(); switchView('reports'); return; }
             if (!keep) { window.__rcSrc = null; trackEvent('report_choose_open'); }
             const e = escapeAuth, taken = !!getStoredWizardAnswers(), nc = getSavedCareers().length, ne = getSavedExams().length, ncl = getSavedColleges().length;
             const src = reportChooseSrc(), ready = src === 'quiz' ? taken : nc > 0;
@@ -13675,6 +13725,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
         })();
         function reportHubOpen() {
+            if (!window.__rcLegacy) { switchView('reports'); return; }
             trackEvent('report_hub_open');
             window.__rcSrc = null;
             let m = document.getElementById('report-hub'); if (!m) { m = document.createElement('div'); m.id = 'report-hub'; document.body.appendChild(m); }
@@ -14786,7 +14837,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     <div class="flex items-center gap-3 flex-wrap">
                         <span class="text-sm font-bold text-emerald-600">${c.salary}</span> ${approxTag(c, 'salary')}
                         <button onclick="toggleSaveCareer('${c.id}')" aria-pressed="${saved}" class="inline-flex items-center gap-2 min-h-[44px] px-5 rounded-xl text-sm font-bold text-white shadow-sm transition ${saved ? 'bg-brand-700' : 'bg-brand-600 hover:bg-brand-700'}"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="${saved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.6"><path d="M5 3.5a1 1 0 011-1h8a1 1 0 011 1v13.2a.5.5 0 01-.79.41L10 13.5l-4.21 3.6a.5.5 0 01-.79-.4V3.5z"/></svg>${saved ? 'Saved to your dashboard' : 'Save to my dashboard'}</button>
-                        <button onclick="careerReportOpen('${c.id}')" class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-xl text-sm font-bold border-2 border-brand-600 text-brand-700 hover:bg-brand-50 transition"><i class=ic-file></i> Career report (PDF)${premiumLaunch() ? ' <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">Free now</span>' : ''}</button>
+                        <button onclick="careerReportOpen('${c.id}')" class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-xl text-sm font-bold border-2 border-brand-600 text-brand-700 hover:bg-brand-50 transition"><i class=ic-file></i> Career report · ${premiumLaunch() ? 'free now' : '₹' + PREMIUM_CFG.careerPrice}${premiumLaunch() ? ' <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">Free now</span>' : ''}</button>
                     </div>
                 </div>
                 <h2 class="text-3xl font-extrabold text-slate-900">${c.title}</h2>
