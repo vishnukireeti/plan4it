@@ -270,8 +270,7 @@
         @media (min-width: 480px) { .cf-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
         @media (min-width: 1024px) { .cf-panel { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
         .cf-toggle { display: inline-flex; }
-        @media (min-width: 1024px) { .cf-toggle { display: none; } .cf-panel.cf-closed { display: grid !important; } }
-        @media (max-width: 1023.98px) { .cf-panel.cf-closed { display: none; } }
+        .cf-panel.cf-closed { display: none; }
         /* Brief highlight on the results count after a filter change */
         @keyframes revealFlash { 0% { box-shadow: 0 0 0 3px rgba(var(--brand-600-rgb),  .65), 0 0 0 3px rgba(var(--brand-600-rgb),  .35); } 100% { box-shadow: 0 0 0 12px rgba(var(--brand-600-rgb),  0), 0 0 0 12px rgba(var(--brand-600-rgb),  0); } }
         .reveal-flash { animation: revealFlash 1s ease-out; border-radius: .5rem; }
@@ -552,6 +551,10 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         #view-explorer.stream-open > *:not(#stream-panel) { display: none !important; }
         #view-explorer:not(.stream-open) #stream-panel { display: none; }
         .stream-card:focus-visible { outline: 3px solid #6366f1; outline-offset: 2px; }
+.cd-sum { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; cursor: pointer; list-style: none; min-height: 48px; }
+        .cd-sum::-webkit-details-marker { display: none; }
+        .cd-sum::after { content: '+'; font-weight: 800; font-size: 20px; color: #64748b; margin-left: 4px; }
+        details[open] > .cd-sum::after { content: '\2212'; }
 </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
@@ -705,13 +708,13 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
 
             <nav class="hidden 2xl:flex 2xl:pl-5 flex-1 min-w-0 justify-center items-center gap-x-4 text-sm font-medium text-slate-600 whitespace-nowrap">
                 <button data-nav="confusedMode" onclick="switchView('confusedMode')" class="nav-link text-brand-600 font-semibold hover:text-brand-700 transition">Find my path</button>
-                <button data-nav="backupPlan" onclick="switchView('backupPlan')" class="nav-link hover:text-brand-600 transition">Safety Net</button>
                 <button data-nav="explorer" onclick="switchView('explorer')" class="nav-link hover:text-brand-600 transition">Careers</button>
-                <button data-nav="afterDegree" onclick="switchView('afterDegree')" class="nav-link hover:text-brand-600 transition">Pathways</button>
                 <button data-nav="exams" onclick="switchView('exams')" class="nav-link hover:text-brand-600 transition">Exams</button>
                 <button data-nav="colleges" onclick="switchView('colleges')" class="nav-link hover:text-brand-600 transition">Colleges</button>
-                <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad')" class="nav-link hover:text-brand-600 transition">Govt & Money</button>
+                <button data-nav="afterDegree" onclick="switchView('afterDegree')" class="nav-link hover:text-brand-600 transition">Other routes</button>
                 <button data-nav="internships" onclick="switchView('internships')" class="nav-link hover:text-brand-600 transition">Internships</button>
+                <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad')" class="nav-link hover:text-brand-600 transition">Govt jobs & funding</button>
+                <button data-nav="backupPlan" onclick="switchView('backupPlan')" class="nav-link hover:text-brand-600 transition">If Plan A fails</button>
                 <button type="button" data-nav="reports" onclick="switchView('reports')" class="nav-link inline-flex items-center gap-1.5 min-h-[36px] px-3 rounded-full bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 font-bold transition"><span aria-hidden="true"><i class=ic-file></i></span> Reports</button>
             </nav>
 
@@ -734,13 +737,13 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
     <nav id="mobile-menu-panel" class="hidden 2xl:hidden fixed top-16 left-0 right-0 z-50 bg-white border-b border-slate-200 shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto" aria-label="Main menu">
         <div class="flex flex-col py-2">
             <button data-nav="confusedMode" onclick="switchView('confusedMode');closeMobileMenu()" class="nav-link text-brand-600 font-semibold text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Find my path</button>
-            <button data-nav="backupPlan" onclick="switchView('backupPlan');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Safety Net</button>
             <button data-nav="explorer" onclick="switchView('explorer');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Careers</button>
-            <button data-nav="afterDegree" onclick="switchView('afterDegree');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Pathways</button>
             <button data-nav="exams" onclick="switchView('exams');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Exams</button>
             <button data-nav="colleges" onclick="switchView('colleges');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Colleges</button>
-            <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Govt & Money</button>
+            <button data-nav="afterDegree" onclick="switchView('afterDegree');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Other routes</button>
             <button data-nav="internships" onclick="switchView('internships');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Internships</button>
+            <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Govt jobs & funding</button>
+            <button data-nav="backupPlan" onclick="switchView('backupPlan');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">If Plan A fails</button>
             <button type="button" onclick="closeMobileMenu();switchView('reports')" class="text-left min-h-[48px] px-5 flex items-center gap-2 font-bold text-amber-900 bg-amber-50 hover:bg-amber-100"><span aria-hidden="true"><i class=ic-file></i></span> Reports (free, ₹99, ₹299)</button>
             <div class="my-1 border-t border-slate-200"></div>
             <button data-nav="dashboard" onclick="switchView('dashboard');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">My Dashboard</button>
@@ -761,7 +764,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 <p class="text-base md:text-lg text-slate-600 mb-7 leading-relaxed max-w-xl mx-auto">Answer a few quick questions and see the careers, exams and colleges that fit you.</p>
                 <div class="flex flex-col sm:flex-row justify-center items-center gap-3">
                     <button type="button" onclick="switchView('confusedMode')" class="w-full sm:w-auto min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white font-semibold px-7 py-3 rounded-xl text-base shadow-lg shadow-brand-200 transition">Take the 2-minute quiz</button>
-                    <button type="button" onclick="switchView('explorer')" class="w-full sm:w-auto min-h-[48px] bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-semibold px-7 py-3 rounded-xl text-base transition">Browse careers</button>
+                    <button type="button" onclick="switchView('explorer')" class="min-h-[48px] px-4 text-brand-700 hover:underline font-semibold text-base transition">Browse careers</button>
                 </div>
                 <div class="mt-6">
                     <p class="text-xs font-semibold text-slate-600 mb-2">Or start from where you are</p>
@@ -778,10 +781,10 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             </div>
 
             <!-- 2. Your path, step by step (rendered from TOOL_DIRECTORY, one step open at a time) -->
-            <div id="tool-directory-block" class="mt-10 text-left">
-                <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-4">
+            <details id="tool-directory-block" class="mt-8 text-left bg-white border border-slate-200 rounded-2xl">
+                <summary class="cd-sum"><span><span class="block font-bold text-slate-900 text-lg">See all tools, step by step</span><span class="block text-sm text-slate-600 font-normal">Everything Plan4it offers, in the order most students need it</span></span></summary>
+                <div class="p-5 pt-0"><div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-4">
                     <div>
-                        <h2 class="font-bold text-slate-900 text-lg">Your path, step by step</h2>
                         <p class="text-sm text-slate-600">Open a step to see its tools. Not sure where to begin? Start with step 1.</p>
                     </div>
                     <div class="sm:w-64">
@@ -791,7 +794,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 </div>
                 <div id="tool-directory-home" class="space-y-3"></div>
                 <p id="tool-directory-empty" class="hidden text-sm text-slate-600 text-center py-6">Nothing matches that. Try a shorter word, like "loan" or "exam".</p>
-            </div>
+                </div>
+            </details>
 
             <!-- 4. Good to know (folded away) -->
             <div class="mt-10 text-left space-y-3">
@@ -969,15 +973,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 </div>
                 <div class="flex flex-col sm:flex-row sm:items-center gap-3">
                     <input type="text" id="career-search" aria-label="Search careers" placeholder="Search careers, skills or courses" class="px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-brand-600 w-full md:w-72 focus:ring-2 focus:ring-brand-500" oninput="careerSearchInput()">
-                    <select id="career-sort" aria-label="Sort careers" onchange="renderExplorerCareers()" class="w-full sm:w-auto px-3 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-brand-600 bg-white focus:ring-2 focus:ring-brand-500">
-                        <option value="relevance">Sort: Relevance</option>
-                        <option value="salary-high">Sort: Salary (High → Low)</option>
-                        <option value="salary-low">Sort: Salary (Low → High)</option>
-                        <option value="demand">Sort: Demand</option>
-                        <option value="fastest">Sort: Fastest Entry First</option>
-                        <option value="quizMatch">Sort: Best Quiz Match</option>
-                        <option value="az">Sort: A → Z</option>
-                    </select>
+                    <button type="button" id="explorer-filters-btn" onclick="toggleExplorerFilters()" aria-expanded="false" aria-controls="explorer-filters" class="inline-flex items-center justify-center gap-2 min-h-[44px] px-4 rounded-xl border border-slate-300 text-sm font-semibold text-slate-700 hover:bg-slate-50">Filters <span id="explorer-filters-n" class="hidden text-[11px] font-bold bg-brand-600 text-white rounded-full px-2 py-0.5"></span></button>
                 </div>
             </div>
 
@@ -1029,7 +1025,17 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 <button onclick="switchView('confusedMode')" class="shrink-0 bg-white text-slate-900 font-semibold px-4 py-2 min-h-[44px] rounded-lg text-xs hover:bg-slate-100 transition whitespace-nowrap">Take the Quiz →</button>
             </div>
 
-            <!-- Industry Filter Pills + Saved toggle -->
+            <div id="explorer-filters" class="hidden bg-white border border-slate-200 rounded-2xl p-4 space-y-4">
+<div class="flex flex-wrap items-center gap-3"><span class="text-xs font-bold text-slate-500 uppercase tracking-wide">Sort</span><select id="career-sort" aria-label="Sort careers" onchange="renderExplorerCareers()" class="w-full sm:w-auto px-3 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-brand-600 bg-white focus:ring-2 focus:ring-brand-500">
+                        <option value="relevance">Sort: Relevance</option>
+                        <option value="salary-high">Sort: Salary (High → Low)</option>
+                        <option value="salary-low">Sort: Salary (Low → High)</option>
+                        <option value="demand">Sort: Demand</option>
+                        <option value="fastest">Sort: Fastest Entry First</option>
+                        <option value="quizMatch">Sort: Best Quiz Match</option>
+                        <option value="az">Sort: A → Z</option>
+                    </select></div>
+
             <div data-nav="Search and filters" class="flex flex-wrap items-center justify-between gap-3">
                 <div id="career-category-filters" class="flex flex-wrap gap-2 text-sm"><!-- Populated by JS --></div>
                 <label class="checkbox-wrapper flex items-center gap-2 text-xs font-semibold text-slate-600 cursor-pointer select-none">
@@ -1070,6 +1076,9 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 </select>
                 <button onclick="resetExplorerFilters()" class="col-span-2 sm:col-auto text-xs font-semibold text-slate-500 hover:text-brand-600 px-2 min-h-[44px]">Reset filters</button>
             </div>
+
+            
+</div>
 
             <p id="explorer-result-count" aria-live="polite" class="text-xs text-slate-500 font-medium"></p>
 
@@ -1202,30 +1211,6 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 <div data-report-note="exam" class="md:w-80 md:shrink-0 lg:hidden"></div>
             </div>
 
-            <!-- Prep Playbook -->
-            <div data-nav="Prep timeline" class="bg-white border border-slate-200 rounded-3xl p-6">
-                <h3 class="font-bold text-slate-900 text-lg mb-1">A Realistic Prep Timeline</h3>
-                <p class="text-slate-600 text-xs mb-5">Whatever exam you're targeting, this rhythm applies to almost all of them:</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
-                        <p class="text-brand-600 font-extrabold text-xs mb-1">12+ Months Out</p>
-                        <p class="text-xs text-slate-600">Build fundamentals (NCERT-level or equivalent) before touching advanced problem sets.</p>
-                    </div>
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
-                        <p class="text-brand-600 font-extrabold text-xs mb-1">6 Months Out</p>
-                        <p class="text-xs text-slate-600">Start full-length timed mocks weekly; track which topics cost you the most marks.</p>
-                    </div>
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
-                        <p class="text-brand-600 font-extrabold text-xs mb-1">1 Month Out</p>
-                        <p class="text-xs text-slate-600">Stop learning new topics — shift fully to revision and error-log review.</p>
-                    </div>
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
-                        <p class="text-brand-600 font-extrabold text-xs mb-1">Exam Week</p>
-                        <p class="text-xs text-slate-600">Light revision only, prioritize sleep — cramming new material this late rarely helps.</p>
-                    </div>
-                </div>
-            </div>
-
             <!-- Filters -->
             <div data-nav="Search and filters" class="grid grid-cols-2 sm:flex sm:flex-wrap gap-3">
                 <input type="text" id="exam-search" placeholder="Search exam name..." class="col-span-2 px-4 py-2.5 rounded-xl border border-slate-300 text-sm flex-grow min-w-[200px] focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-500" oninput="examSearchInput()">
@@ -1245,6 +1230,10 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     <option value="High">High</option>
                     <option value="Very High">Very High</option>
                     <option value="Extremely High">Extremely High</option>
+                </select>
+                <select id="exam-status-filter" aria-label="Registration status" onchange="renderExams()" class="w-full sm:w-auto min-h-[44px] px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:ring-2 focus:ring-brand-500">
+                    <option value="ALL">Any registration status</option>
+                    <option value="open">Registration open now</option>
                 </select>
                 <label class="checkbox-wrapper flex items-center gap-2 text-xs font-semibold text-slate-600 px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white cursor-pointer select-none">
                     <input type="checkbox" id="exam-saved-toggle" onchange="renderExams()" class="rounded border-slate-300 text-brand-600 focus:ring-2 focus:ring-brand-500">
@@ -1271,6 +1260,31 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 <p class="text-slate-600 text-sm mb-5">The anxiety around competitive exams is often worse than the reality.</p>
                 <div class="space-y-3" id="exam-faq-list"></div>
             </div>
+
+            <!-- Prep Playbook -->
+            <details data-nav="Prep timeline" class="bg-white border border-slate-200 rounded-2xl"><summary class="cd-sum"><span class="font-bold text-slate-900">How to plan your prep (timeline)</span></summary><div class="p-5 pt-0">
+                
+                <p class="text-slate-600 text-xs mb-5">Whatever exam you're targeting, this rhythm applies to almost all of them:</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                        <p class="text-brand-600 font-extrabold text-xs mb-1">12+ Months Out</p>
+                        <p class="text-xs text-slate-600">Build fundamentals (NCERT-level or equivalent) before touching advanced problem sets.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                        <p class="text-brand-600 font-extrabold text-xs mb-1">6 Months Out</p>
+                        <p class="text-xs text-slate-600">Start full-length timed mocks weekly; track which topics cost you the most marks.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                        <p class="text-brand-600 font-extrabold text-xs mb-1">1 Month Out</p>
+                        <p class="text-xs text-slate-600">Stop learning new topics — shift fully to revision and error-log review.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                        <p class="text-brand-600 font-extrabold text-xs mb-1">Exam Week</p>
+                        <p class="text-xs text-slate-600">Light revision only, prioritize sleep — cramming new material this late rarely helps.</p>
+                    </div>
+                </div>
+            </div></details>
+
         </section>
 
         <!-- ================= VIEW 6B: EXAM DETAIL PAGE ================= -->
@@ -1343,8 +1357,162 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 <p class="text-[11px] text-slate-500">Names were collected on 5 Oct 2026 from listing sites and directories, and from the colleges' own pages where available. Some listings are older, so a college may have changed its name or closed. Seats, cut-offs and fees change every year, so confirm everything with the college and the official portal.</p>
             </div>
 
-            <div data-nav="How to choose" data-cmode="degree" class="bg-white border border-slate-200 rounded-3xl p-6 space-y-5">
-                <h3 class="font-bold text-slate-900 text-lg mb-1">How to Actually Choose Between Colleges</h3>
+                        <div data-nav="Search and filters" data-cmode="degree" class="space-y-3">
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input type="search" id="college-search" aria-label="Search colleges" placeholder="Search by name, city, state or course..." class="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 text-sm min-h-[44px] focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-500" oninput="collegeSearchInput()">
+                    <select id="college-sort" aria-label="Sort colleges" onchange="this.dataset.touched=1;renderColleges()" class="sm:w-60 px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500">
+                        <option value="nirf">Sort: Top ranked</option>
+                        <option value="fees-low">Sort: Fees (low to high)</option>
+                        <option value="fees-high">Sort: Fees (high to low)</option>
+                        <option value="az">Sort: A to Z</option>
+                    </select>
+                </div>
+                <div class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2" role="group" aria-label="Where">
+                    <select id="college-state-filter" aria-label="Filter by state" onchange="collegeStateChanged()" class="sm:w-64 px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500"><option value="ALL">All states</option></select>
+                    <select id="college-district-filter" aria-label="Filter by district" onchange="collegeDistrictChanged()" disabled class="sm:w-64 px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500 disabled:bg-slate-50 disabled:text-slate-400"><option value="ALL">All districts</option></select>
+                    <label id="college-nearby-wrap" class="checkbox-wrapper hidden items-center gap-2 text-sm font-semibold text-slate-700 px-3 min-h-[44px] rounded-xl border border-slate-300 bg-white cursor-pointer select-none">
+                        <input type="checkbox" id="college-nearby" onchange="renderColleges()" class="rounded border-slate-300 text-brand-600 focus:ring-2 focus:ring-brand-500">
+                        <span class="py-1.5">Also show nearby districts <span class="font-normal text-slate-500 whitespace-nowrap">(within about 100 km)</span></span>
+                    </label>
+                </div>
+                <div id="college-field-chips" role="group" aria-label="Field" class="cf-chips hide-scrollbar"></div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button type="button" id="college-filters-toggle" onclick="toggleCollegeFilters()" aria-expanded="false" aria-controls="college-more-filters" class="cf-toggle min-h-[40px] px-4 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:border-brand-400 items-center gap-2">More filters<span id="college-filters-count" class="hidden min-w-[1.25rem] h-5 px-1 rounded-full bg-brand-600 text-white text-[11px] font-bold items-center justify-center"></span></button>
+                    <div id="college-active-chips" class="flex flex-wrap items-center gap-2"></div>
+                </div>
+                <div id="college-more-filters" class="cf-panel cf-closed bg-slate-50 border border-slate-200 rounded-2xl p-3">
+                    <select id="college-level-filter" aria-label="Filter by level" onchange="renderColleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500">
+                        <option value="ALL">All levels</option>
+                        <option value="DIP">Diploma and polytechnic (after Class 10)</option>
+                        <option value="UG">Undergraduate (after Class 12)</option>
+                        <option value="PG">Postgraduate (after graduation)</option>
+                    </select>
+                    <select id="college-own-filter" aria-label="Filter by ownership" onchange="renderColleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500">
+                        <option value="ALL">Government or private</option>
+                        <option value="gov">Government</option>
+                        <option value="aided">Government-aided</option>
+                        <option value="pvt">Private</option>
+                        <option value="unk">Not stated</option>
+                    </select>
+                    <select id="college-kind-filter" aria-label="Filter by type of institution" onchange="renderColleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500">
+                        <option value="ALL">Any type of institution</option>
+                        <option value="U">Universities</option>
+                        <option value="C">Colleges</option>
+                        <option value="S">Standalone institutes (polytechnics, nursing, B.Ed and others)</option>
+                    </select>
+                    <select id="college-tier-filter" aria-label="Filter by how much information we have" onchange="renderColleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500">
+                        <option value="ALL">Any amount of detail</option>
+                        <option value="1">Detailed profiles</option>
+                        <option value="2">Verified listings</option>
+                        <option value="3">Basic profiles</option>
+                    </select>
+                    <select id="college-exam-filter" aria-label="Filter by entrance exam" onchange="renderColleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500"><option value="ALL">Any entrance exam</option></select>
+                    <select id="college-fees-filter" aria-label="Filter by yearly fees" onchange="renderColleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500">
+                        <option value="ALL">Any yearly fees</option>
+                        <option value="1">Under ₹1L a year</option>
+                        <option value="2">Under ₹2L a year</option>
+                        <option value="5">Under ₹5L a year</option>
+                        <option value="over5">₹5L a year and above</option>
+                    </select>
+                    <select id="college-stream-filter" aria-hidden="true" tabindex="-1" onchange="renderColleges()" class="hidden"><option value="ALL">All fields</option></select>
+                    <label class="checkbox-wrapper flex items-center gap-2 text-sm font-semibold text-slate-700 px-3 min-h-[44px] rounded-xl border border-slate-300 bg-white cursor-pointer select-none">
+                        <input type="checkbox" id="college-saved-toggle" onchange="renderColleges()" class="rounded border-slate-300 text-brand-600 focus:ring-2 focus:ring-brand-500">
+                        Saved only
+                    </label>
+                </div>
+                <p class="text-[11px] text-slate-500">"Top ranked" puts NIRF-ranked colleges first, then the colleges we know most about. A rank is one signal, so also check courses, fees and placements.</p>
+            </div>
+
+            <!-- Integrated programmes (school + JEE/NEET coaching) -->
+            <details data-nav="Integrated programmes" data-cmode="after10" id="integrated-panel" class="bg-white border border-slate-200 rounded-2xl p-5 group">
+                <summary class="flex items-center justify-between gap-3 font-bold text-slate-900 min-h-[44px]">
+                    <span>Integrated programmes: school + JEE/NEET coaching together <span class="block text-xs font-normal text-slate-500">For Class 10 students thinking about Science with entrance coaching built in. Read this before you pay anything.</span></span>
+                    <span class="chev text-slate-400 shrink-0" aria-hidden="true">▾</span>
+                </summary>
+                <div class="mt-4 space-y-5 text-sm text-slate-700 leading-relaxed">
+                    <div>
+                        <h4 class="font-bold text-slate-900 mb-1">What this means</h4>
+                        <p>An integrated programme puts Class 11–12 and JEE or NEET preparation into one timetable, so you are not juggling school and a separate coaching batch. Providers run it in different ways, and the difference matters.</p>
+                        <ul class="list-disc pl-5 mt-2 space-y-1">
+                            <li><strong>School-integrated:</strong> a real school and the coaching share one timetable, and you attend school.</li>
+                            <li><strong>Coaching-led ("dummy school"):</strong> you are enrolled at a school mostly on paper and spend the day at coaching. The Education Ministry's 2024 model guidelines say coaching should not run during school hours, to avoid this. They are guidelines for states to adopt, so what happens near you depends on your state.</li>
+                            <li><strong>Non-integrated (evening or after-school coaching):</strong> you study boards at your own school and attend coaching separately for JEE or NEET. Several providers offer both versions, so check which one you are signing up for.</li>
+                            <li><strong>Mostly for Science:</strong> most integrated programmes are built for JEE or NEET. For Commerce, you can register for CA Foundation right after Class 10 and prepare alongside Class 11–12. See "Where can I study after Class 10?" for Commerce, Humanities and other routes.</li>
+                            <li><strong>Length:</strong> most programmes start after Class 10 and run two years. Some also offer three- or four-year versions that start in Class 10 or Class 9.</li>
+                            <li><strong>Age rule:</strong> the same guidelines say coaching centres should not enrol students under 16, or before they have finished Class 10. Scholarship tests often happen earlier, so check what your state and the provider actually allow.</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-slate-900 mb-1">Main providers (in alphabetical order)</h4>
+                        <p class="text-xs text-slate-500 mb-3">ALLEN, BASE and Deeksha were read on their own websites on 5 Oct 2026 and show how to apply and where they run. The others are short summaries so far. Fees and test dates change every year and differ by centre, so they are not shown. Ask for the current fee sheet in writing. Plan4it does not rank or recommend any institute.</p>
+                        <div id="integrated-list"></div>
+                        <p class="text-xs text-slate-500 mt-3">Also common in Andhra Pradesh and Telangana: large junior-college chains (for example Sri Chaitanya and Narayana) that run Class 11–12 with JEE/NEET coaching built in. I have not checked their programme details yet, so look at their official sites.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+                            <h4 class="font-bold text-emerald-800 mb-1">It may suit you if</h4>
+                            <ul class="list-disc pl-5 space-y-1 text-emerald-900">
+                                <li>You genuinely enjoy Physics and Maths, or Biology, and like solving problems.</li>
+                                <li>You are fine with long days, regular tests and a competitive batch.</li>
+                                <li>Your family can comfortably afford the full cost, including hostel, food and books.</li>
+                                <li>You like having a fixed structure instead of planning your own study.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                            <h4 class="font-bold text-amber-800 mb-1">Think twice if</h4>
+                            <ul class="list-disc pl-5 space-y-1 text-amber-900">
+                                <li>You are choosing it mainly because friends or relatives did.</li>
+                                <li>You are not sure you want Science at all.</li>
+                                <li>The fees would be a real strain on your family.</li>
+                                <li>You already feel worn out. Two intense years is a long time.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-slate-900 mb-1">Ask before you pay</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>Will I attend a real school? How are board marks and attendance handled?</li>
+                            <li>What is the total cost in writing: tuition, hostel, food, tests and books? What is refundable, and when?</li>
+                            <li>Can I pay in instalments instead of the whole course upfront? A multi-year fee paid in advance is hard to get back if a centre closes.</li>
+                            <li>How big are the batches? How are batches decided, and can I move up or down?</li>
+                            <li>Is there a counsellor, and is there a weekly rest day?</li>
+                            <li>What share of enrolled students, not just the toppers, qualify? The 2024 guidelines say centres should not make misleading promises or guarantee ranks.</li>
+                            <li>Can I visit and talk to current students and parents?</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-brand-50 border border-brand-200 rounded-xl p-4 text-brand-900">
+                        <p><strong>Keep your options open.</strong> Many more students apply for JEE and NEET than there are seats, so having a backup plan is sensible, not negative. Class 12 marks also still matter for many other routes. Choosing an integrated programme does not lock you in, and you can change direction later. See <button type="button" onclick="goToTool('backupPlan','backup-generator-block')" class="font-semibold underline">Backup plan</button> for other routes.</p>
+                        <p class="mt-2">If it ever feels like too much, talk to a parent, a teacher or the school counsellor. Tele-MANAS (14416) is a free government mental-health helpline.</p>
+                    </div>
+
+                    <p class="text-[11px] text-slate-500">Source for the rules above: Ministry of Education, Guidelines for Regulation of Coaching Centres, 16 Jan 2024 (see the <a href="https://eparlib.sansad.in/bitstream/123456789/2980286/1/AU48_BF3Oei.pdf" target="_blank" rel="noopener noreferrer" class="text-brand-600 font-semibold hover:underline">Parliament reply ↗</a>). Always confirm on the provider's official website.</p>
+                </div>
+            </details>
+
+            <!-- NIRF 2025 rankings -->
+
+
+            <!-- Search and filters -->
+            <div data-cmode="degree" id="college-dir-banner" aria-live="polite"></div>
+            <div data-cmode="degree" id="college-fit-banner"></div>
+            <p data-cmode="degree" id="colleges-result-count" aria-live="polite" class="text-xs text-slate-500 font-medium"></p>
+            <div data-nav="All colleges" data-cmode="degree" id="colleges-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Populated by JS -->
+            </div>
+            <div data-cmode="degree" id="colleges-more" class="hidden text-center"></div>
+            <div data-cmode="degree" id="colleges-empty-state" class="hidden text-center py-16">
+                <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl" aria-hidden="true"><i class=ic-school></i></div>
+                <p class="text-slate-700 font-semibold">No colleges match your filters</p>
+                <p class="text-slate-500 text-sm mt-1">Try removing a filter or searching a different word.</p>
+                <button type="button" onclick="resetCollegeFilters()" class="mt-4 min-h-[40px] px-4 border border-brand-200 text-brand-700 hover:bg-brand-50 rounded-xl text-sm font-semibold transition">Clear all filters</button>
+            </div>
+
+            <!-- Myths & Realities -->
+            <details data-nav="How to choose" data-cmode="degree" class="bg-white border border-slate-200 rounded-2xl"><summary class="cd-sum"><span class="font-bold text-slate-900">How to choose between colleges</span><span class="text-xs text-slate-500">6 things that matter</span></summary><div class="p-5 pt-0 space-y-5">
                 <div class="bg-amber-50 border border-amber-200 rounded-xl p-4">
                     <p class="text-sm font-bold text-amber-900">Step zero: is the course recognised?</p>
                     <p class="text-sm text-amber-900 mt-1">Before anything else, check that the college and course are approved by the right body: UGC for universities, AICTE for engineering and management, NMC for medicine, BCI for law, PCI for pharmacy, COA for architecture. A good name or a nice campus does not make up for a course that is not recognised. The regulator's own website lists approved institutions.</p>
@@ -1437,79 +1605,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     </ul>
                 </details>
                 <p class="text-[11px] text-slate-500">Fees and placement figures in Plan4it are marked when they are approximate. Always confirm them with the college.</p>
-            </div>
+            </div></details>
 
-            <!-- Integrated programmes (school + JEE/NEET coaching) -->
-            <details data-nav="Integrated programmes" data-cmode="after10" id="integrated-panel" class="bg-white border border-slate-200 rounded-2xl p-5 group">
-                <summary class="flex items-center justify-between gap-3 font-bold text-slate-900 min-h-[44px]">
-                    <span>Integrated programmes: school + JEE/NEET coaching together <span class="block text-xs font-normal text-slate-500">For Class 10 students thinking about Science with entrance coaching built in. Read this before you pay anything.</span></span>
-                    <span class="chev text-slate-400 shrink-0" aria-hidden="true">▾</span>
-                </summary>
-                <div class="mt-4 space-y-5 text-sm text-slate-700 leading-relaxed">
-                    <div>
-                        <h4 class="font-bold text-slate-900 mb-1">What this means</h4>
-                        <p>An integrated programme puts Class 11–12 and JEE or NEET preparation into one timetable, so you are not juggling school and a separate coaching batch. Providers run it in different ways, and the difference matters.</p>
-                        <ul class="list-disc pl-5 mt-2 space-y-1">
-                            <li><strong>School-integrated:</strong> a real school and the coaching share one timetable, and you attend school.</li>
-                            <li><strong>Coaching-led ("dummy school"):</strong> you are enrolled at a school mostly on paper and spend the day at coaching. The Education Ministry's 2024 model guidelines say coaching should not run during school hours, to avoid this. They are guidelines for states to adopt, so what happens near you depends on your state.</li>
-                            <li><strong>Non-integrated (evening or after-school coaching):</strong> you study boards at your own school and attend coaching separately for JEE or NEET. Several providers offer both versions, so check which one you are signing up for.</li>
-                            <li><strong>Mostly for Science:</strong> most integrated programmes are built for JEE or NEET. For Commerce, you can register for CA Foundation right after Class 10 and prepare alongside Class 11–12. See "Where can I study after Class 10?" for Commerce, Humanities and other routes.</li>
-                            <li><strong>Length:</strong> most programmes start after Class 10 and run two years. Some also offer three- or four-year versions that start in Class 10 or Class 9.</li>
-                            <li><strong>Age rule:</strong> the same guidelines say coaching centres should not enrol students under 16, or before they have finished Class 10. Scholarship tests often happen earlier, so check what your state and the provider actually allow.</li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h4 class="font-bold text-slate-900 mb-1">Main providers (in alphabetical order)</h4>
-                        <p class="text-xs text-slate-500 mb-3">ALLEN, BASE and Deeksha were read on their own websites on 5 Oct 2026 and show how to apply and where they run. The others are short summaries so far. Fees and test dates change every year and differ by centre, so they are not shown. Ask for the current fee sheet in writing. Plan4it does not rank or recommend any institute.</p>
-                        <div id="integrated-list"></div>
-                        <p class="text-xs text-slate-500 mt-3">Also common in Andhra Pradesh and Telangana: large junior-college chains (for example Sri Chaitanya and Narayana) that run Class 11–12 with JEE/NEET coaching built in. I have not checked their programme details yet, so look at their official sites.</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
-                            <h4 class="font-bold text-emerald-800 mb-1">It may suit you if</h4>
-                            <ul class="list-disc pl-5 space-y-1 text-emerald-900">
-                                <li>You genuinely enjoy Physics and Maths, or Biology, and like solving problems.</li>
-                                <li>You are fine with long days, regular tests and a competitive batch.</li>
-                                <li>Your family can comfortably afford the full cost, including hostel, food and books.</li>
-                                <li>You like having a fixed structure instead of planning your own study.</li>
-                            </ul>
-                        </div>
-                        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4">
-                            <h4 class="font-bold text-amber-800 mb-1">Think twice if</h4>
-                            <ul class="list-disc pl-5 space-y-1 text-amber-900">
-                                <li>You are choosing it mainly because friends or relatives did.</li>
-                                <li>You are not sure you want Science at all.</li>
-                                <li>The fees would be a real strain on your family.</li>
-                                <li>You already feel worn out. Two intense years is a long time.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h4 class="font-bold text-slate-900 mb-1">Ask before you pay</h4>
-                        <ul class="list-disc pl-5 space-y-1">
-                            <li>Will I attend a real school? How are board marks and attendance handled?</li>
-                            <li>What is the total cost in writing: tuition, hostel, food, tests and books? What is refundable, and when?</li>
-                            <li>Can I pay in instalments instead of the whole course upfront? A multi-year fee paid in advance is hard to get back if a centre closes.</li>
-                            <li>How big are the batches? How are batches decided, and can I move up or down?</li>
-                            <li>Is there a counsellor, and is there a weekly rest day?</li>
-                            <li>What share of enrolled students, not just the toppers, qualify? The 2024 guidelines say centres should not make misleading promises or guarantee ranks.</li>
-                            <li>Can I visit and talk to current students and parents?</li>
-                        </ul>
-                    </div>
-
-                    <div class="bg-brand-50 border border-brand-200 rounded-xl p-4 text-brand-900">
-                        <p><strong>Keep your options open.</strong> Many more students apply for JEE and NEET than there are seats, so having a backup plan is sensible, not negative. Class 12 marks also still matter for many other routes. Choosing an integrated programme does not lock you in, and you can change direction later. See <button type="button" onclick="goToTool('backupPlan','backup-generator-block')" class="font-semibold underline">Backup plan</button> for other routes.</p>
-                        <p class="mt-2">If it ever feels like too much, talk to a parent, a teacher or the school counsellor. Tele-MANAS (14416) is a free government mental-health helpline.</p>
-                    </div>
-
-                    <p class="text-[11px] text-slate-500">Source for the rules above: Ministry of Education, Guidelines for Regulation of Coaching Centres, 16 Jan 2024 (see the <a href="https://eparlib.sansad.in/bitstream/123456789/2980286/1/AU48_BF3Oei.pdf" target="_blank" rel="noopener noreferrer" class="text-brand-600 font-semibold hover:underline">Parliament reply ↗</a>). Always confirm on the provider's official website.</p>
-                </div>
-            </details>
-
-            <!-- NIRF 2025 rankings -->
             <details data-nav="NIRF 2025 rankings" data-cmode="degree" id="nirf-panel" class="bg-white border border-slate-200 rounded-2xl p-5 group">
                 <summary class="flex items-center justify-between gap-3 font-bold text-slate-900 min-h-[44px]">
                     <span>NIRF 2025 rankings by category <span class="block text-xs font-normal text-slate-500">Official government rankings for every ranked institute, not just the colleges below.</span></span>
@@ -1528,88 +1625,6 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 </div>
             </details>
 
-            <!-- Search and filters -->
-            <div data-nav="Search and filters" data-cmode="degree" class="space-y-3">
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <input type="search" id="college-search" aria-label="Search colleges" placeholder="Search by name, city, state or course..." class="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 text-sm min-h-[44px] focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-500" oninput="collegeSearchInput()">
-                    <select id="college-sort" aria-label="Sort colleges" onchange="this.dataset.touched=1;renderColleges()" class="sm:w-60 px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500">
-                        <option value="nirf">Sort: Top ranked</option>
-                        <option value="fees-low">Sort: Fees (low to high)</option>
-                        <option value="fees-high">Sort: Fees (high to low)</option>
-                        <option value="az">Sort: A to Z</option>
-                    </select>
-                </div>
-                <div class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2" role="group" aria-label="Where">
-                    <select id="college-state-filter" aria-label="Filter by state" onchange="collegeStateChanged()" class="sm:w-64 px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500"><option value="ALL">All states</option></select>
-                    <select id="college-district-filter" aria-label="Filter by district" onchange="collegeDistrictChanged()" disabled class="sm:w-64 px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500 disabled:bg-slate-50 disabled:text-slate-400"><option value="ALL">All districts</option></select>
-                    <label id="college-nearby-wrap" class="checkbox-wrapper hidden items-center gap-2 text-sm font-semibold text-slate-700 px-3 min-h-[44px] rounded-xl border border-slate-300 bg-white cursor-pointer select-none">
-                        <input type="checkbox" id="college-nearby" onchange="renderColleges()" class="rounded border-slate-300 text-brand-600 focus:ring-2 focus:ring-brand-500">
-                        <span class="py-1.5">Also show nearby districts <span class="font-normal text-slate-500 whitespace-nowrap">(within about 100 km)</span></span>
-                    </label>
-                </div>
-                <div id="college-field-chips" role="group" aria-label="Field" class="cf-chips hide-scrollbar"></div>
-                <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" id="college-filters-toggle" onclick="toggleCollegeFilters()" aria-expanded="false" aria-controls="college-more-filters" class="cf-toggle min-h-[40px] px-4 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:border-brand-400 items-center gap-2">More filters<span id="college-filters-count" class="hidden min-w-[1.25rem] h-5 px-1 rounded-full bg-brand-600 text-white text-[11px] font-bold items-center justify-center"></span></button>
-                    <div id="college-active-chips" class="flex flex-wrap items-center gap-2"></div>
-                </div>
-                <div id="college-more-filters" class="cf-panel cf-closed bg-slate-50 border border-slate-200 rounded-2xl p-3">
-                    <select id="college-level-filter" aria-label="Filter by level" onchange="renderColleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500">
-                        <option value="ALL">All levels</option>
-                        <option value="DIP">Diploma and polytechnic (after Class 10)</option>
-                        <option value="UG">Undergraduate (after Class 12)</option>
-                        <option value="PG">Postgraduate (after graduation)</option>
-                    </select>
-                    <select id="college-own-filter" aria-label="Filter by ownership" onchange="renderColleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500">
-                        <option value="ALL">Government or private</option>
-                        <option value="gov">Government</option>
-                        <option value="aided">Government-aided</option>
-                        <option value="pvt">Private</option>
-                        <option value="unk">Not stated</option>
-                    </select>
-                    <select id="college-kind-filter" aria-label="Filter by type of institution" onchange="renderColleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500">
-                        <option value="ALL">Any type of institution</option>
-                        <option value="U">Universities</option>
-                        <option value="C">Colleges</option>
-                        <option value="S">Standalone institutes (polytechnics, nursing, B.Ed and others)</option>
-                    </select>
-                    <select id="college-tier-filter" aria-label="Filter by how much information we have" onchange="renderColleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500">
-                        <option value="ALL">Any amount of detail</option>
-                        <option value="1">Detailed profiles</option>
-                        <option value="2">Verified listings</option>
-                        <option value="3">Basic profiles</option>
-                    </select>
-                    <select id="college-exam-filter" aria-label="Filter by entrance exam" onchange="renderColleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500"><option value="ALL">Any entrance exam</option></select>
-                    <select id="college-fees-filter" aria-label="Filter by yearly fees" onchange="renderColleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500">
-                        <option value="ALL">Any yearly fees</option>
-                        <option value="1">Under ₹1L a year</option>
-                        <option value="2">Under ₹2L a year</option>
-                        <option value="5">Under ₹5L a year</option>
-                        <option value="over5">₹5L a year and above</option>
-                    </select>
-                    <select id="college-stream-filter" aria-hidden="true" tabindex="-1" onchange="renderColleges()" class="hidden"><option value="ALL">All fields</option></select>
-                    <label class="checkbox-wrapper flex items-center gap-2 text-sm font-semibold text-slate-700 px-3 min-h-[44px] rounded-xl border border-slate-300 bg-white cursor-pointer select-none">
-                        <input type="checkbox" id="college-saved-toggle" onchange="renderColleges()" class="rounded border-slate-300 text-brand-600 focus:ring-2 focus:ring-brand-500">
-                        Saved only
-                    </label>
-                </div>
-                <p class="text-[11px] text-slate-500">"Top ranked" puts NIRF-ranked colleges first, then the colleges we know most about. A rank is one signal, so also check courses, fees and placements.</p>
-            </div>
-
-            <div data-cmode="degree" id="college-dir-banner" aria-live="polite"></div>
-            <div data-cmode="degree" id="college-fit-banner"></div>
-            <p data-cmode="degree" id="colleges-result-count" aria-live="polite" class="text-xs text-slate-500 font-medium"></p>
-            <div data-nav="All colleges" data-cmode="degree" id="colleges-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Populated by JS -->
-            </div>
-            <div data-cmode="degree" id="colleges-more" class="hidden text-center"></div>
-            <div data-cmode="degree" id="colleges-empty-state" class="hidden text-center py-16">
-                <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl" aria-hidden="true"><i class=ic-school></i></div>
-                <p class="text-slate-700 font-semibold">No colleges match your filters</p>
-                <p class="text-slate-500 text-sm mt-1">Try removing a filter or searching a different word.</p>
-                <button type="button" onclick="resetCollegeFilters()" class="mt-4 min-h-[40px] px-4 border border-brand-200 text-brand-700 hover:bg-brand-50 rounded-xl text-sm font-semibold transition">Clear all filters</button>
-            </div>
-
-            <!-- Myths & Realities -->
             <div data-nav="Myths and realities" data-cmode="degree" class="bg-white border border-slate-200 p-8 rounded-3xl shadow-sm">
                 <h3 class="text-xl font-bold text-slate-900 mb-1">College Myths & Realities</h3>
                 <p class="text-slate-600 text-sm mb-5">Some of the most repeated "advice" about college choice doesn't hold up well.</p>
@@ -1637,8 +1652,14 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             </div>
 
 
+            <div data-nav="What do you need?" id="gm-chooser" role="group" aria-label="What do you need help with?" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button type="button" data-gm-btn="jobs" onclick="govPick('jobs')" aria-pressed="false" class="gm-opt text-left bg-white border-2 border-slate-200 hover:border-brand-500 rounded-2xl p-4 transition min-h-[44px]"><span class="block font-extrabold text-slate-900">Government jobs</span><span class="block text-xs text-slate-600 mt-1">Which exam suits me, age limits, prep plans, what each job is like</span></button>
+                <button type="button" data-gm-btn="money" onclick="govPick('money')" aria-pressed="false" class="gm-opt text-left bg-white border-2 border-slate-200 hover:border-brand-500 rounded-2xl p-4 transition min-h-[44px]"><span class="block font-extrabold text-slate-900">Scholarships, loans and costs</span><span class="block text-xs text-slate-600 mt-1">Find scholarships, plan an education loan, see the real cost of college</span></button>
+                <button type="button" data-gm-btn="quota" onclick="govPick('quota')" aria-pressed="false" class="gm-opt text-left bg-white border-2 border-slate-200 hover:border-brand-500 rounded-2xl p-4 transition min-h-[44px]"><span class="block font-extrabold text-slate-900">Category and quota</span><span class="block text-xs text-slate-600 mt-1">How reservation works, in plain words</span></button>
+            </div>
+
             <!-- Government jobs toolkit -->
-            <div data-nav="Government jobs toolkit" id="govt-toolkit-block" class="scroll-mt-32 bg-white border border-slate-200 p-6 md:p-8 rounded-3xl space-y-4 shadow-sm">
+            <div data-gm="jobs" data-nav="Government jobs toolkit" id="govt-toolkit-block" class="hidden scroll-mt-32 bg-white border border-slate-200 p-6 md:p-8 rounded-3xl space-y-4 shadow-sm">
                 <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full">Government jobs toolkit</span>
                 <h3 class="text-2xl font-extrabold text-slate-900">Which government exam is right for you?</h3>
                 <p class="text-slate-600 text-sm">Find the exams you can apply for, check your age limit and attempts, see what each job is really like, get a month-by-month prep plan, and learn what your category gets you.</p>
@@ -1648,7 +1669,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             </div>
 
             <!-- Govt Section -->
-            <div data-nav="Government careers" id="govt-careers-block" class="scroll-mt-32 bg-white border border-slate-200 p-8 rounded-3xl space-y-4 shadow-sm">
+            <div data-gm="jobs" data-nav="Government careers" id="govt-careers-block" class="hidden scroll-mt-32 bg-white border border-slate-200 p-8 rounded-3xl space-y-4 shadow-sm">
                 <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full">Public Sector & UPSC Section</span>
                 <h3 class="text-2xl font-bold text-slate-900">Government Career Options in India</h3>
                 <p class="text-slate-600 text-sm leading-relaxed">Government roles provide unparalleled job security and social prestige, balanced against rigorous competition and multi-tier exam cycles (UPSC, SSC CGL, RBI Grade B, Banking PO).</p>
@@ -1681,7 +1702,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             </div>
 
             <!-- Funding Your Education Section -->
-            <div data-nav="Funding your education" class="bg-white border border-slate-200 p-8 rounded-3xl space-y-6 shadow-sm">
+            <div data-gm="money" data-nav="Funding your education" class="hidden bg-white border border-slate-200 p-8 rounded-3xl space-y-6 shadow-sm">
                 <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full"><i class=ic-wallet></i> Money Matters</span>
                 <h3 class="text-2xl font-bold text-slate-900">Funding Your Education in India</h3>
                 <p class="text-slate-600 text-sm leading-relaxed">Money is one of the biggest reasons students drop out or settle for a lesser option — not lack of merit. These tools help you find scholarships, understand loans, and see the real total cost before you commit.</p>
@@ -1789,7 +1810,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             </div>
 
             <!-- Reservation & Quota Explainer -->
-            <div data-nav="Category and quota" id="reservation-quota-block" class="scroll-mt-32 bg-white border border-slate-200 p-8 rounded-3xl space-y-5 shadow-sm">
+            <div data-gm="quota" data-nav="Category and quota" id="reservation-quota-block" class="hidden scroll-mt-32 bg-white border border-slate-200 p-8 rounded-3xl space-y-5 shadow-sm">
                 <span class="bg-brand-100 text-brand-800 text-xs font-bold px-3 py-1 rounded-full"><i class=ic-scale></i> Reservation & Quota Explainer</span>
                 <h3 class="text-2xl font-bold text-slate-900">Understand Your Category & Quota</h3>
                 <p class="text-slate-600 text-sm leading-relaxed">A huge number of otherwise-eligible students lose seats simply from misunderstanding how their category, domicile, and quota interact. Pick your category and exam to see how it typically works.</p>
@@ -1861,15 +1882,42 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 <p class="text-slate-600 text-sm mt-1">Real experience while you are still in college, even if you have none today.</p>
             </div>
 
+            <!-- Year-by-year ladder -->
+            <div data-nav="How to get your first internship" id="intern-ladder-block" class="scroll-mt-32 bg-white border border-slate-200 p-6 md:p-8 rounded-3xl space-y-4 shadow-sm">
+                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">No experience? Start here</span>
+                <h3 class="text-2xl font-extrabold text-slate-900">How to get your first internship, year by year</h3>
+                <p class="text-slate-600 text-sm">Companies hire final-year students because they are easy to place. You can still start early. This is the order that works.</p>
+                <div id="intern-ladder" class="grid md:grid-cols-2 gap-3"></div>
+                <div class="grid md:grid-cols-2 gap-3 text-sm">
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900">What to put on a first resume</p>
+                        <ul class="list-disc pl-5 text-slate-700 mt-1 space-y-1"><li>2 or 3 projects with a link (GitHub, Drive, Behance or a short write-up)</li><li>Certificates you finished, not ones you started</li><li>Clubs, events, volunteering, and any leadership</li><li>One page, no photo, no long objective paragraph</li></ul></div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900">How to reach out</p>
+                        <ul class="list-disc pl-5 text-slate-700 mt-1 space-y-1"><li>Write 3 lines: who you are, one thing you built, what you are asking for</li><li>Send it to the person who would manage you, not general HR</li><li>Apply to small companies and startups first; they say yes more often</li><li>Follow up once after a week, then move on</li></ul></div>
+                </div>
+                <div class="verify-note flex items-start gap-2 text-xs bg-red-50 border border-red-200 text-red-900 rounded-xl px-3 py-2"><span aria-hidden="true"><i class=ic-alert></i></span><p><b>Never pay a company to give you an internship</b> or a "registration fee" for a job offer. Real employers do not charge interns. If someone asks, report it on the portal and walk away.</p></div>
+            </div>
+
+            <!-- Portals -->
+            <div data-nav="Internship portals" id="intern-portals-block" class="scroll-mt-32 space-y-4">
+                <div>
+                    <h3 class="text-2xl font-extrabold text-slate-900">Where to find internships</h3>
+                    <p class="text-slate-600 text-sm mt-1">Official and well-known portals, grouped by what they are good for. Each link opens the portal in a new tab.</p>
+                </div>
+                <div id="intern-portals" class="space-y-6"></div>
+                <div class="verify-note flex items-start gap-2 text-xs bg-amber-50 border border-amber-200 text-amber-900 rounded-xl px-3 py-2"><span aria-hidden="true"><i class=ic-alert></i></span><p>Portals change their rules and web addresses from time to time, and government schemes open and close by season. Check the current eligibility on each portal before you apply.</p></div>
+            </div>
+
             <!-- Plan4it Learnership Program -->
-            <div data-nav="Plan4it Learnership Program · Coming soon!" id="p4-intern-block" class="scroll-mt-32 bg-brand-50 border border-brand-200 p-6 md:p-8 rounded-3xl space-y-5 shadow-sm">
+            <div data-nav="Learnership program (coming soon)" id="p4-intern-block" class="scroll-mt-32 bg-brand-50 border border-brand-200 p-5 rounded-3xl space-y-3 shadow-sm">
                 <div class="flex flex-wrap items-center gap-2">
                     <span class="bg-brand-600 text-white text-xs font-bold px-3 py-1 rounded-full">Plan4it Learnership Program</span>
                     <span class="bg-amber-100 text-amber-800 border border-amber-300 text-xs font-extrabold px-2.5 py-0.5 rounded-full">Coming soon!</span>
                     <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full">Paid programme</span>
                 </div>
-                <h3 class="text-2xl md:text-3xl font-extrabold text-slate-900">Do a real industry project while you study, and get it reviewed and certified</h3>
+                <h3 class="text-xl font-extrabold text-slate-900">Do a real industry project while you study, and get it reviewed and certified</h3>
                 <p class="text-slate-700 text-sm md:text-base max-w-3xl">Most companies only take interns in their final year, and ask for experience you cannot get without an internship. The Plan4it Learnership Program closes that gap. Choose a track and a duration from 1 to 6 months, and you get one industry-standard project sized to that time. A mentor reviews your work at every milestone, and when you finish you get a Plan4it certificate and a project you can put on your resume, LinkedIn and portfolio.</p>
+                <details class="group"><summary class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-xl bg-brand-600 text-white text-sm font-bold cursor-pointer list-none">See the programme and join the waitlist</summary>
+                <div class="space-y-5 pt-4">
                 <div class="grid sm:grid-cols-3 gap-3 text-sm">
                     <div class="bg-white border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900"><i class=ic-wrench></i> Industry-standard project</p><p class="text-slate-600 mt-1">A real-world brief using the tools companies use today, sized to the duration you pick.</p></div>
                     <div class="bg-white border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900"><i class=ic-present></i> Reviewed at every milestone</p><p class="text-slate-600 mt-1">A mentor reviews each milestone and tells you what to fix before a recruiter sees it.</p></div>
@@ -1907,32 +1955,10 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     </form>
                 </div>
                 <p class="text-xs text-slate-500">The Plan4it certificate shows what you completed with us. It is not a degree or a government-recognised qualification, and it does not guarantee a job. The Learnership Program is a paid feature; you will see the price before you pay anything.</p>
+            
+                </div></details>
             </div>
 
-            <!-- Year-by-year ladder -->
-            <div data-nav="How to get your first internship" id="intern-ladder-block" class="scroll-mt-32 bg-white border border-slate-200 p-6 md:p-8 rounded-3xl space-y-4 shadow-sm">
-                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">No experience? Start here</span>
-                <h3 class="text-2xl font-extrabold text-slate-900">How to get your first internship, year by year</h3>
-                <p class="text-slate-600 text-sm">Companies hire final-year students because they are easy to place. You can still start early. This is the order that works.</p>
-                <div id="intern-ladder" class="grid md:grid-cols-2 gap-3"></div>
-                <div class="grid md:grid-cols-2 gap-3 text-sm">
-                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900">What to put on a first resume</p>
-                        <ul class="list-disc pl-5 text-slate-700 mt-1 space-y-1"><li>2 or 3 projects with a link (GitHub, Drive, Behance or a short write-up)</li><li>Certificates you finished, not ones you started</li><li>Clubs, events, volunteering, and any leadership</li><li>One page, no photo, no long objective paragraph</li></ul></div>
-                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900">How to reach out</p>
-                        <ul class="list-disc pl-5 text-slate-700 mt-1 space-y-1"><li>Write 3 lines: who you are, one thing you built, what you are asking for</li><li>Send it to the person who would manage you, not general HR</li><li>Apply to small companies and startups first; they say yes more often</li><li>Follow up once after a week, then move on</li></ul></div>
-                </div>
-                <div class="verify-note flex items-start gap-2 text-xs bg-red-50 border border-red-200 text-red-900 rounded-xl px-3 py-2"><span aria-hidden="true"><i class=ic-alert></i></span><p><b>Never pay a company to give you an internship</b> or a "registration fee" for a job offer. Real employers do not charge interns. If someone asks, report it on the portal and walk away.</p></div>
-            </div>
-
-            <!-- Portals -->
-            <div data-nav="Internship portals" id="intern-portals-block" class="scroll-mt-32 space-y-4">
-                <div>
-                    <h3 class="text-2xl font-extrabold text-slate-900">Where to find internships</h3>
-                    <p class="text-slate-600 text-sm mt-1">Official and well-known portals, grouped by what they are good for. Each link opens the portal in a new tab.</p>
-                </div>
-                <div id="intern-portals" class="space-y-6"></div>
-                <div class="verify-note flex items-start gap-2 text-xs bg-amber-50 border border-amber-200 text-amber-900 rounded-xl px-3 py-2"><span aria-hidden="true"><i class=ic-alert></i></span><p>Portals change their rules and web addresses from time to time, and government schemes open and close by season. Check the current eligibility on each portal before you apply.</p></div>
-            </div>
         </section>
 
 
@@ -8628,7 +8654,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
            email itself, so a visitor who forces this screen open sees nothing.
            ============================================================ */
         const AD = { data: null, loading: false, err: null, metric: 'visitors', opener: null, at: null };
-        const AD_PAGES = { home: 'Home', explorer: 'Career explorer', confusedMode: 'Find my path (quiz)', dashboard: 'My dashboard', careerDetail: 'Career pages', afterDegree: 'Pathways', colleges: 'Colleges', backupPlan: 'Safety net', exams: 'Exam hub', govAndAbroad: 'Govt and money', internships: 'Internships', collegeDetail: 'College pages', examDetail: 'Exam pages', privacy: 'Privacy page' };
+        const AD_PAGES = { home: 'Home', explorer: 'Career explorer', confusedMode: 'Find my path (quiz)', dashboard: 'My dashboard', careerDetail: 'Career pages', afterDegree: 'Other routes', colleges: 'Colleges', backupPlan: 'Safety net', exams: 'Exam hub', govAndAbroad: 'Govt and money', internships: 'Internships', collegeDetail: 'College pages', examDetail: 'Exam pages', privacy: 'Privacy page' };
         const AD_ACTIONS = { app_opened: 'App opened', quiz_completed: 'Quiz completed', career_saved: 'Career saved', career_report_open: 'Career report opened', career_report_general: 'Career report (explore)', career_report_me: 'Career report (made for me)', careers_compared: 'Careers compared', backup_plan_generated: 'Safety-net plan made', report_hub_open: 'Report hub opened' };
         const AD_QUIZ = { stage: 'Stage', state: 'State', cls: 'Class or status', help: 'Looking for', clarity: 'Career clarity', constraint: 'Biggest constraint', degree: 'Degree', situation: 'Situation', mode: 'Goal', after: 'After school', interests: 'Interests', values: 'What matters most', workStyles: 'Work style' };
         const AD_COL = { sky: '#38bdf8', amber: '#fbbf24', green: '#34d399', violet: '#a78bfa', rose: '#fb7185' };
@@ -9945,7 +9971,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         function internshipPick(id) {
             const sel = document.getElementById('p4-wait-track'); if (sel) sel.value = id;
             internshipDurPlan();
-            const f = document.getElementById('p4-wait-form'); if (f) f.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const f = document.getElementById('p4-wait-form'); if (f) { const d = f.closest('details'); if (d) d.open = true; f.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
         }
         function internshipJoin(ev) {
             if (ev) ev.preventDefault();
@@ -11379,7 +11405,19 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const d = document.getElementById('premium-modal-desc'); if (d) d.innerHTML = career ? 'One-time payment of <b class="text-slate-900">₹' + PREMIUM_CFG.careerPrice + '</b> for this career report, as a PDF you keep. It is separate from the full report.' + (me ? '<span class="block mt-2 text-xs text-slate-600">It is built from your quiz answers as they are now. If you change them, a new personal report needs a new payment.</span>' : '') : 'One-time payment of <b class="text-slate-900">₹<span class="premium-price">' + PREMIUM_CFG.price + '</span></b> for the report built from your ' + (REPORT_SRC === 'saved' ? 'saved items' : 'quiz answers') + ' as they are now.' + '<span class="block mt-2 text-xs text-slate-600">If you change your ' + (REPORT_SRC === 'saved' ? 'saved careers, exams or colleges' : 'quiz answers') + ' later, a new report needs a new payment, so finish your quiz or saved items first. Save the PDF as soon as it opens.</span>' + (premiumFullStale(REPORT_SRC) ? '<span class="block mt-2 text-xs font-semibold text-amber-700">Your ' + (REPORT_SRC === 'saved' ? 'saved items' : 'quiz answers') + ' changed since your last purchase, so this is a new report.</span>' : '');
             const l = document.getElementById('premium-modal-list'); if (l) { l.className = 'mt-3'; l.innerHTML = '<p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">' + (career ? 'What is inside (5 pages)' : 'What is inside (18 pages)') + '</p>' + rptInsideHTML(career ? RPT_GUIDE5.concat(me ? ['Your fit and what could go wrong for you, from your quiz'] : []) : RPT_FULL18, career ? '' : 'sm:columns-2 gap-x-4 [&>li]:break-inside-avoid'); }
             const sn = document.getElementById('premium-snapshot-btn'); if (sn) { const ok = career || (REPORT_SRC === 'saved' ? getSavedCareers().length > 0 : !!getStoredWizardAnswers()); sn.classList.toggle('hidden', !ok); sn.setAttribute('onclick', career ? "careerSnapshotRun('" + id + "','" + (me ? 'me' : 'general') + "')" : 'intelSnapshotRun(REPORT_SRC)'); }
+            const sn2 = document.getElementById('premium-snapshot-btn'); if (sn2) sn2.textContent = career ? 'Get a free 1-page snapshot instead' : 'Get the free 2-page report instead';
+            if (career && l) {
+                const hasQ = !!getStoredWizardAnswers(), opt = function (k, t, d, on) { return '<button type="button" onclick="premiumScopeSet(\'' + k + '\')" role="radio" aria-checked="' + on + '" class="text-left rounded-xl p-3 border-2 flex gap-2 items-start ' + (on ? 'border-brand-600 bg-brand-50' : 'border-slate-200 bg-white hover:border-slate-300') + '"><span class="mt-0.5 inline-flex w-4 h-4 shrink-0 items-center justify-center rounded-full border-2 ' + (on ? 'border-brand-600' : 'border-slate-300') + '">' + (on ? '<span class="w-2 h-2 rounded-full bg-brand-600"></span>' : '') + '</span><span><span class="block font-bold text-slate-900 text-sm">' + t + '</span><span class="block text-xs text-slate-600">' + d + '</span></span></button>'; };
+                l.innerHTML = '<div class="grid sm:grid-cols-2 gap-2 mb-3" role="radiogroup" aria-label="Which version">' + opt('me', 'Made for me', hasQ ? 'Uses your quiz answers' : 'Needs the 2-minute quiz', me) + opt('general', 'General guide', 'No quiz needed', !me) + '</div>' + l.innerHTML;
+            }
             const b = document.getElementById('premium-pay-btn'); if (b) b.innerHTML = 'Pay ₹' + (career ? PREMIUM_CFG.careerPrice : PREMIUM_CFG.price);
+        }
+        function premiumScopeSet(scope) {
+            const id = PREMIUM_PENDING.id; if (!id) return;
+            if (scope === 'me' && !getStoredWizardAnswers()) { premiumCloseUnlock(); showToast('Take the 2-minute quiz first, then come back for your personal report.'); switchView('confusedMode'); return; }
+            const kind = scope === 'me' ? 'career-me' : 'career';
+            if (premiumUnlockedFor(kind, id)) { premiumCloseUnlock(); careerReportRun(id, scope); return; }
+            PREMIUM_PENDING = { kind: kind, id: id, src: REPORT_SRC }; premiumModalSet(kind, id);
         }
         let PREMIUM_PENDING = { kind: 'full', id: null, src: 'quiz' };
         function premiumOpenUnlock(kind, id) {
@@ -11828,6 +11866,21 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             renderExplorerCareers();
         }
 
+
+        function toggleExplorerFilters(force) {
+            const p = document.getElementById('explorer-filters'), b = document.getElementById('explorer-filters-btn');
+            if (!p) return; const open = force === undefined ? p.classList.contains('hidden') : !!force;
+            p.classList.toggle('hidden', !open); if (b) b.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+        function explorerFilterCount() {
+            let n = 0; const v = function (id) { const e = document.getElementById(id); return e ? e.value : 'ALL'; };
+            if (typeof activeCategory !== 'undefined' && activeCategory !== 'ALL') n++;
+            ['career-difficulty-filter', 'career-workstyle-filter', 'career-cost-filter', 'career-timeline-filter'].forEach(function (i) { if (v(i) !== 'ALL') n++; });
+            const so = document.getElementById('saved-only-toggle'); if (so && so.checked) n++;
+            const sr = document.getElementById('career-sort'); if (sr && sr.value !== 'relevance') n++;
+            const bdg = document.getElementById('explorer-filters-n'); if (bdg) { bdg.textContent = n; bdg.classList.toggle('hidden', !n); }
+            return n;
+        }
         function resetExplorerFilters() {
             activeCategory = 'ALL';
             document.getElementById('career-search').value = '';
@@ -11859,10 +11912,9 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                             <span class="text-xs font-bold text-emerald-600 whitespace-nowrap">${c.salary}</span> ${approxTag(c, 'salary')}
                         </div>
                         <h3 class="text-lg font-bold text-slate-900 mb-2">${c.title}</h3>
-                        <p class="text-slate-600 text-sm mb-4 leading-relaxed">${c.overview}</p>
+                        <p class="text-slate-600 text-sm mb-3 leading-relaxed line-clamp-2">${c.overview}</p>
                     </div>
-                    <div class="border-t border-slate-100 pt-4 mt-2">
-                        <p class="text-xs text-slate-500 mb-3"><strong>Suitable For:</strong> ${c.suitability}</p>
+                    <div class="border-t border-slate-100 pt-3 mt-1">
                         <div class="flex items-center gap-2 text-[11px] font-semibold text-slate-500 mb-3 flex-wrap">
                             <span class="bg-slate-50 border border-slate-200 px-2 py-1 rounded-md">⏱ Entry: ~${c.entryYears} yrs</span>
                             <span class="bg-slate-50 border border-slate-200 px-2 py-1 rounded-md"><i class=ic-chart></i> ${c.difficulty}</span>
@@ -11870,7 +11922,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         </div>
                         <div class="flex items-center justify-between text-xs font-semibold text-slate-700">
                             <span>Demand: <span class="text-brand-600">${c.demand}</span></span>
-                            <span class="text-brand-600 py-2.5 -my-2.5">View Full Roadmap →</span>
+                            <span class="text-brand-600 py-2.5 -my-2.5">View details →</span>
                         </div>
                     </div>
                 </div>`;
@@ -13484,7 +13536,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
            learning links, Plan B and the 90-day plan.
            ============================================================ */
         const RPT_FULL18 = ['Your career profile', 'Your career DNA', 'Your top 5 career matches', 'Why these careers fit you', 'Career fit score', 'Career comparison matrix', 'Your recommended career', 'What you need to consider', 'Education pathway', 'College and course options', 'Entrance and eligibility roadmap', 'Skills gap', 'Salary and opportunity outlook', 'Career reality check', 'Plan B and adjacent careers', 'Your 90-day action plan', 'Your 1 to 3 year roadmap', 'Parent discussion guide'];
-        const RPT_GUIDE5 = ['At a glance: the job, a typical week and pay growth', 'Why it can be great, and the downsides', 'How to get there: routes, exams and colleges', 'Skills, pay at each stage and the reality check', 'Plan B careers and your first 90 days'];
+        const RPT_GUIDE5 = ['At a glance: the job, how well it fits you and the trade-offs', 'Why it can be great, a day in the work and a one-week trial', 'How to get there: three ways in, exams and colleges', 'Skills gap, pay at each stage and the reality check', 'Plan B careers, your first 90 days and a day-90 decision'];
         function rptPriceText(kind) { const p = kind === 'full' ? PREMIUM_CFG.price : PREMIUM_CFG.careerPrice; return premiumLaunch() ? 'free during our launch, then ₹' + p : '₹' + p + ' one-time'; }
         // The 18 pages in seven groups, each with what it does for the reader.
         const RPT_FULL18_GROUPS = [
@@ -13905,21 +13957,9 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         }
         function careerReportChoose(id) {
             const c = careersData.find(function (x) { return x.id === id; }); if (!c) return;
-            const has = !!getStoredWizardAnswers(), e = escapeAuth;
-            let m = document.getElementById('cr-choice'); if (!m) { m = document.createElement('div'); m.id = 'cr-choice'; document.body.appendChild(m); }
-            m.className = 'fixed inset-0 z-[70] flex items-center justify-center bg-slate-900/60 p-4';
-            m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-label', 'Choose your report');
-            m.onclick = function (ev) { if (ev.target === m) careerReportChoiceClose(); };
-            m.innerHTML = '<div class="bg-white rounded-2xl max-w-xl w-full p-5 sm:p-6 shadow-xl max-h-[calc(100vh-2rem)] overflow-y-auto overscroll-contain">' +
-                '<div class="flex items-start justify-between gap-3"><div><p class="text-[11px] font-bold uppercase tracking-wider text-brand-700">Report for ' + e(c.title) + '</p><h2 class="text-xl font-bold text-slate-900 mt-1">How would you like your report?</h2></div><button type="button" onclick="careerReportChoiceClose()" aria-label="Close" class="min-h-[44px] min-w-[44px] text-slate-500 hover:text-slate-900 text-xl">✕</button></div>' +
-                '<div class="grid sm:grid-cols-2 gap-3 mt-4">' +
-                '<div class="border border-slate-200 rounded-xl p-4 flex flex-col"><p class="font-bold text-slate-900"><i class=ic-search></i> Explore this career</p><p class="text-xs text-slate-600 mt-1 flex-grow">Just curious? No quiz needed. What the job is, pay at each stage, skills, how to get in, exams, colleges and a first 90 days. 5 pages.</p><button type="button" onclick="careerReportRun(\'' + e(id) + '\',\'general\')" class="mt-3 min-h-[44px] bg-white border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-bold rounded-xl text-sm">Get the career guide' + (premiumLaunch() ? ' · free now' : ' · ₹' + PREMIUM_CFG.careerPrice) + '</button></div>' +
-                '<div class="border-2 border-brand-600 rounded-xl p-4 flex flex-col bg-brand-50"><p class="font-bold text-slate-900"><i class=ic-target></i> Made for me</p><p class="text-xs text-slate-600 mt-1 flex-grow">' + (has ? 'Uses your quiz answers: your fit and why, what could go wrong for you, colleges and exams for your state, and your first 90 days. 5 pages.' : 'Takes 2 minutes. Answer a few questions and we write the report around you: fit, risks, colleges and exams for your state, and a parent guide.') + '</p>' +
-                (has ? '<button type="button" onclick="careerReportRun(\'' + e(id) + '\',\'me\')" class="mt-3 min-h-[44px] bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm">Get my report' + (premiumLaunch() ? ' · free now' : premiumUnlockedFor('career-me', id) ? '' : ' · ₹' + PREMIUM_CFG.careerPrice) + '</button>' : '<button type="button" onclick="careerReportChoiceClose();switchView(\'confusedMode\')" class="mt-3 min-h-[44px] bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm">Take the quiz first</button>') + '</div></div>' +
-                '<details class="mt-3 border border-slate-200 rounded-xl p-3"><summary class="text-xs font-bold text-slate-800 cursor-pointer min-h-[32px] flex items-center">What is inside the 5 pages</summary><div class="mt-2">' + rptInsideHTML(RPT_GUIDE5) + '</div></details>' +
-                (premiumUnlockedFor(has ? 'career-me' : 'career', id) ? '' : '<div class="mt-3 border-t border-slate-100 pt-3 flex items-center justify-between gap-3 flex-wrap"><p class="text-xs text-slate-600"><b>Not ready to pay?</b> A free 1-page snapshot has the job, pay band and skills.</p><button type="button" onclick="careerSnapshotRun(\'' + e(id) + '\',\'' + (has ? 'me' : 'general') + '\')" class="min-h-[44px] px-4 border-2 border-brand-600 text-brand-700 hover:bg-brand-50 font-bold rounded-xl text-sm">Free snapshot</button></div>') +
-                '<p class="text-[11px] text-slate-500 mt-3">Both are PDFs you can keep. Pay and cost figures are estimates; confirm exam dates and fees on official sites.</p></div>';
-            const b = m.querySelector('button[onclick^="careerReportRun"]'); if (b) b.focus();
+            const has = !!getStoredWizardAnswers(), scope = has ? 'me' : 'general';
+            if (premiumUnlockedFor(has ? 'career-me' : 'career', id)) { careerReportRun(id, scope); return; }
+            premiumOpenUnlock(has ? 'career-me' : 'career', id);
         }
         function careerReportChoiceClose() { const m = document.getElementById('cr-choice'); if (m) { m.className = 'hidden'; m.innerHTML = ''; } }
         function careerReportOpen(id) { careerReportChoose(id); }
@@ -14711,7 +14751,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 empty.classList.add('hidden');
                 renderPagedGrid('careers', grid, list, careerCardHTML, 'explorer-more', 'career');
             }
-            updateStreamCounts(); if (STREAM_STATE.key) renderStream();
+            updateStreamCounts(); if (STREAM_STATE.key) renderStream(); explorerFilterCount();
         }
 
         function updateExplorerQuizBanner(storedAnswers) {
@@ -14831,17 +14871,15 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const missingAdvanced = (c.skillDetails || []).filter(s => s.level === 'Advanced' && !checkedSkills.includes(s.name)).map(s => s.name);
 
             content.innerHTML = `
-                ${shareBarHTML('career', c.id)}
                 <div class="flex items-center justify-between flex-wrap gap-2">
                     <span class="text-xs font-semibold bg-brand-50 text-brand-700 px-3 py-1 rounded-full">${c.category}</span>
                     <div class="flex items-center gap-3 flex-wrap">
                         <span class="text-sm font-bold text-emerald-600">${c.salary}</span> ${approxTag(c, 'salary')}
-                        <button onclick="toggleSaveCareer('${c.id}')" aria-pressed="${saved}" class="inline-flex items-center gap-2 min-h-[44px] px-5 rounded-xl text-sm font-bold text-white shadow-sm transition ${saved ? 'bg-brand-700' : 'bg-brand-600 hover:bg-brand-700'}"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="${saved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.6"><path d="M5 3.5a1 1 0 011-1h8a1 1 0 011 1v13.2a.5.5 0 01-.79.41L10 13.5l-4.21 3.6a.5.5 0 01-.79-.4V3.5z"/></svg>${saved ? 'Saved to your dashboard' : 'Save to my dashboard'}</button>
-                        <button onclick="careerReportOpen('${c.id}')" class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-xl text-sm font-bold border-2 border-brand-600 text-brand-700 hover:bg-brand-50 transition"><i class=ic-file></i> Career report · ${premiumLaunch() ? 'free now' : '₹' + PREMIUM_CFG.careerPrice}${premiumLaunch() ? ' <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">Free now</span>' : ''}</button>
+                        <button onclick="toggleSaveCareer('${c.id}')" aria-pressed="${saved}" class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-xl text-sm font-bold border-2 transition ${saved ? 'border-emerald-600 text-emerald-700 bg-emerald-50' : 'border-slate-300 text-slate-800 hover:bg-slate-50'}"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="${saved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.6"><path d="M5 3.5a1 1 0 011-1h8a1 1 0 011 1v13.2a.5.5 0 01-.79.41L10 13.5l-4.21 3.6a.5.5 0 01-.79-.4V3.5z"/></svg>${saved ? 'Saved' : 'Save'}</button>
+                        <button onclick="careerReportOpen('${c.id}')" class="inline-flex items-center gap-2 min-h-[44px] px-5 rounded-xl text-sm font-bold bg-brand-600 hover:bg-brand-700 text-white shadow-sm transition"><i class=ic-file></i> Career report · ${premiumLaunch() ? 'free now' : '₹' + PREMIUM_CFG.careerPrice}${premiumLaunch() ? ' <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">Free now</span>' : ''}</button>
                     </div>
                 </div>
                 <h2 class="text-3xl font-extrabold text-slate-900">${c.title}</h2>
-                <p class="text-slate-600 leading-relaxed">${c.overview}</p>
                 ${careerGlanceHTML(c)}
                 ${c.salaryVerified ? '' : verifyNoteHTML('Salaries here are approximate. Real pay depends on city, employer, skills and experience. Check current openings and pay ranges on the National Career Service portal.', c, 'career', 'Open NCS portal')}
 
@@ -14863,8 +14901,9 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     </div>
                 </div>
 
-                <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-3">
-                    <h3 class="font-bold text-slate-900 text-lg">Visual Roadmap</h3>
+                <details open class="cd-sec bg-slate-50 border border-slate-200 rounded-2xl">
+                  <summary class="cd-sum"><span class="font-bold text-slate-900 text-lg">Visual roadmap</span><span class="text-xs text-slate-500">${c.roadmap.length} steps</span></summary>
+                  <div class="p-5 pt-0 space-y-3">
                     ${roadmapYouAreHereNote(roadmapStageInfo(getStoredWizardAnswers()))}
                     <div class="space-y-2">
                         ${(() => { const stage = roadmapStageInfo(getStoredWizardAnswers()); return c.roadmap.map((step, idx) => {
@@ -14881,13 +14920,12 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         }).join(''); })()}
                     </div>
                     <button type="button" onclick="goToTool('backupPlan', 'pathways-block')" class="text-xs font-semibold text-brand-600 hover:underline pt-1">See alternate routes into this field (lateral entry, open university, bridge courses) →</button>
-                </div>
+                  </div>
+                </details>
 
-                <div>
-                    <div class="flex items-center justify-between mb-1">
-                        <h3 class="font-bold text-slate-900 text-lg">Skills You'll Actually Need</h3>
-                        <span id="readiness-badge-${c.id}" class="text-xs font-bold px-2.5 py-1 rounded-full ${readinessColorClass}">${readinessPct}% ready</span>
-                    </div>
+                <details class="cd-sec bg-white border border-slate-200 rounded-2xl">
+                  <summary class="cd-sum"><span class="font-bold text-slate-900 text-lg">Skills you'll need</span><span id="readiness-badge-${c.id}" class="text-xs font-bold px-2.5 py-1 rounded-full ${readinessColorClass}">${readinessPct}% ready</span></summary>
+                  <div class="p-5 pt-0">
                     <p class="text-xs text-slate-500 mb-4">Tick what you already have — this is saved in your browser and gives you an honest starting point, not a score to game.</p>
 
                     <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mb-5">
@@ -14930,7 +14968,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                             ${c.certifications.map(cert => `<span class="text-xs bg-brand-50 border border-brand-100 text-brand-700 px-3 py-1.5 rounded-full font-medium"><i class=ic-cap></i> ${cert}</span>`).join('')}
                         </div>
                     </div>
-                </div>
+                  </div>
+                </details>
 
                 ${relatedExamObjs.length ? `
                 <div>
@@ -14939,6 +14978,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         ${relatedExamObjs.map(e => `<button onclick="openExamDetail('${e.id}')" class="text-xs bg-brand-50 border border-brand-100 text-brand-700 px-3 py-1.5 rounded-full font-semibold hover:bg-brand-100 transition">${e.name} →</button>`).join('')}
                     </div>
                 </div>` : ''}
+                ${shareBarHTML('career', c.id)}
             `;
 
             const relatedGrid = document.getElementById('related-careers-grid');
@@ -15212,13 +15252,10 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         <span class="text-xs bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded font-semibold">${e.stream}</span>
                     </div>
                     <h3 class="font-bold text-slate-900 text-lg leading-snug break-words">${e.name}</h3>
-                    <p class="text-xs text-slate-500"><strong>Conducting Body:</strong> ${e.body}</p>
-                    <p class="text-xs text-slate-500"><strong>Eligibility:</strong> ${e.eligibility}</p>
-                    <p class="text-xs text-slate-500"><strong>Leads to:</strong> ${e.courses}</p>
+                    <p class="text-xs text-slate-500 line-clamp-2"><strong>Leads to:</strong> ${e.courses}</p>
                     <div class="bg-amber-50 border border-amber-100 rounded-lg px-3 py-2 text-xs text-amber-800 font-semibold space-y-0.5">
                         <p><i class=ic-edit></i> ${examRegLine(e, false)}</p>
                         <p><i class=ic-calendar></i> ${examDateLine(e, false)}</p>
-                        <p class="pt-0.5">${examStatusChip(e)}${verifyLinkHTML(e, 'date', 'Verify dates')}</p>
                     </div>
                     <div class="pt-2 mt-auto border-t border-slate-100 flex flex-wrap justify-between items-center gap-x-3 gap-y-1 text-xs">
                         <span class="text-slate-500 min-w-0">Fee: ${e.feeUnknown ? 'check official site' : examFeeText(e).split('(')[0].trim() + ' ' + approxTag(e, 'fee')}</span>
@@ -15248,6 +15285,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             document.getElementById('exam-filter').value = 'ALL';
             document.getElementById('exam-difficulty-filter').value = 'ALL';
             document.getElementById('exam-saved-toggle').checked = false;
+            { const st = document.getElementById('exam-status-filter'); if (st) st.value = 'ALL'; }
             renderExams();
         }
 
@@ -15256,6 +15294,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const streamFilter = document.getElementById('exam-filter').value;
             const difficultyFilter = document.getElementById('exam-difficulty-filter').value;
             const savedOnly = document.getElementById('exam-saved-toggle').checked;
+            const statusSel = document.getElementById('exam-status-filter'), statusFilter = statusSel ? statusSel.value : 'ALL';
             const savedIds = getSavedExams();
 
             const fit = fitActive() ? getFit() : null;
@@ -15269,7 +15308,9 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 const matchesStream = streamFilter === 'ALL' || e.stream === streamFilter;
                 const matchesDifficulty = difficultyFilter === 'ALL' || e.difficulty === difficultyFilter;
                 const matchesSaved = !savedOnly || savedIds.includes(e.id);
-                return matchesQuery && matchesStream && matchesDifficulty && matchesSaved;
+                let matchesStatus = true;
+                if (statusFilter === 'open') { const d = daysUntil(e.regCloses); matchesStatus = !e.datesUnknown && !isNaN(d) && d > 0 && new Date(e.regOpens) <= new Date() ; }
+                return matchesQuery && matchesStream && matchesDifficulty && matchesSaved && matchesStatus;
             }).slice().sort((a, b) => {
                 if (order) return order.get(a.id) - order.get(b.id); // searching: best match first
                 if (fit && efs.get(a.id) !== efs.get(b.id)) return efs.get(b.id) - efs.get(a.id); // tailored: what suits the student first
@@ -17473,7 +17514,14 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             refreshPageNav();
         }
 
+        function govPick(key) {
+            const v = document.getElementById('view-govAndAbroad'); if (!v) return;
+            v.querySelectorAll('[data-gm]').forEach(function (el) { el.classList.toggle('hidden', el.getAttribute('data-gm') !== key); });
+            v.querySelectorAll('[data-gm-btn]').forEach(function (b) { const on = b.getAttribute('data-gm-btn') === key; b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.classList.toggle('border-brand-600', on); b.classList.toggle('bg-brand-50', on); });
+            if (typeof refreshPageNav === 'function') refreshPageNav();
+        }
         function jumpToBlock(id) {
+            const tg = document.getElementById(id), gm = tg && tg.closest('[data-gm]'); if (gm) govPick(gm.getAttribute('data-gm'));
             const target0 = document.getElementById(id);
             const cm0 = target0 && target0.closest('[data-cmode]');
             if (cm0) setCollegesMode(cm0.getAttribute('data-cmode'));
@@ -17736,7 +17784,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             { id: 'switch', title: 'Already working?', blurb: 'Change fields without starting from zero.' },
             { id: 'track', title: 'Keep track of it all', blurb: 'Your saved items, checklist, and profile.' }
         ];
-        const VIEW_NAMES = { confusedMode: 'Find my path', explorer: 'Careers', afterDegree: 'Pathways', exams: 'Exams', colleges: 'Colleges', govAndAbroad: 'Govt & Money', internships: 'Internships', backupPlan: 'Safety Net', dashboard: 'My Dashboard' };
+        const VIEW_NAMES = { confusedMode: 'Find my path', explorer: 'Careers', afterDegree: 'Other routes', exams: 'Exams', colleges: 'Colleges', govAndAbroad: 'Govt jobs & funding', internships: 'Internships', backupPlan: 'If Plan A fails', dashboard: 'My Dashboard' };
         const TOOL_DIRECTORY = [
             { group: 'decide', view: 'confusedMode', block: '', label: 'Career quiz', title: 'Career quiz', desc: 'Answer a few quick questions to get matched careers, then check how your family\'s expectations line up with your own interest.', kw: 'confused find my path direction wizard interest match parents family stuck' },
             { group: 'decide', view: 'explorer', block: '', label: 'Careers', title: 'Career explorer', desc: 'Browse and filter every career by category, with salary, demand, skills, and a roadmap for each.', kw: 'careers browse salary skills roadmap' },
