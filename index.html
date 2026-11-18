@@ -154,6 +154,13 @@
         input:-webkit-autofill { -webkit-box-shadow: 0 0 0 40px #fff inset; -webkit-text-fill-color: #0f172a; }
         input[type="range"] { -webkit-text-fill-color: initial; }
 
+        /* Quiz action bar: inline on laptops, pinned to the bottom of the screen on phones */
+        .qz-actions { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin-top: 1.25rem; }
+        .qz-actions .qz-go { flex: 0 0 auto; min-width: 12rem; }
+        @media (max-width: 767px) {
+            .qz-actions { position: sticky; bottom: 0; z-index: 5; margin: 1.25rem -1.5rem -1.5rem; padding: .75rem 1.5rem calc(.75rem + env(safe-area-inset-bottom, 0px)); border-top: 1px solid rgba(148,163,184,.25); border-radius: 0 0 1.5rem 1.5rem; }
+            .qz-actions .qz-go { flex: 1 1 auto; min-width: 0; }
+        }
         /* ===== UI polish: readable small text, stronger muted text, modal motion ===== */
         .text-\[10px\], .text-\[9px\] { font-size: 11px; line-height: 1.35; }
         html:not(.dark) .text-slate-400:not(:hover) { color: #64748b; }
@@ -697,35 +704,33 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
     <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200">
         <div class="max-w-7xl 2xl:max-w-[1440px] mx-auto px-3 min-[360px]:px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
             <div class="flex items-center gap-1 shrink-0">
-                <button id="mobile-menu-btn" type="button" onclick="toggleMobileMenu()" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu-panel" class="2xl:hidden -ml-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl hover:bg-slate-100 transition">
+                <button id="mobile-menu-btn" type="button" onclick="toggleMobileMenu()" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu-panel" class="xl:hidden -ml-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl hover:bg-slate-100 transition">
                     <svg class="w-6 h-6" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
                 </button>
-                <div class="flex items-center gap-2 cursor-pointer" onclick="switchView('home')">
+                <div class="flex items-center gap-1.5 min-[360px]:gap-2 cursor-pointer" onclick="switchView('home')">
                     <img src="/assets/logo-mark-96.png" alt="" width="36" height="36" class="w-9 h-9 rounded-lg shrink-0 bg-black" aria-hidden="true">
-                    <span class="font-display font-bold text-lg text-slate-900">Plan4it</span>
+                    <span class="font-display font-bold text-lg max-[359px]:text-base text-slate-900">Plan4it</span>
                 </div>
             </div>
 
-            <nav class="hidden 2xl:flex 2xl:pl-5 flex-1 min-w-0 justify-center items-center gap-x-4 text-sm font-medium text-slate-600 whitespace-nowrap">
-                <button data-nav="confusedMode" onclick="switchView('confusedMode')" class="nav-link text-brand-600 font-semibold hover:text-brand-700 transition">Find my path</button>
-                <button data-nav="explorer" onclick="switchView('explorer')" class="nav-link hover:text-brand-600 transition">Careers</button>
-                <button data-nav="exams" onclick="switchView('exams')" class="nav-link hover:text-brand-600 transition">Exams</button>
-                <button data-nav="colleges" onclick="switchView('colleges')" class="nav-link hover:text-brand-600 transition">Colleges</button>
-                <button data-nav="afterDegree" onclick="switchView('afterDegree')" class="nav-link hover:text-brand-600 transition">Other routes</button>
-                <button data-nav="internships" onclick="switchView('internships')" class="nav-link hover:text-brand-600 transition">Internships</button>
-                <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad')" class="nav-link hover:text-brand-600 transition">Govt jobs & funding</button>
-                <button data-nav="backupPlan" onclick="switchView('backupPlan')" class="nav-link hover:text-brand-600 transition">If Plan A fails</button>
-                <button type="button" data-nav="reports" onclick="switchView('reports')" class="nav-link inline-flex items-center gap-1.5 min-h-[36px] px-3 rounded-full bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 font-bold transition"><span aria-hidden="true"><i class=ic-file></i></span> Reports</button>
+<nav class="hidden xl:flex xl:pl-5 flex-1 min-w-0 justify-center items-center gap-x-4 2xl:gap-x-6 text-sm font-medium text-slate-600 whitespace-nowrap" aria-label="Main">
+                <button data-nav="explorer" onclick="switchView('explorer')" class="nav-link inline-flex items-center min-h-[40px] px-1 hover:text-brand-600 transition">Explore Careers</button>
+                <button data-nav="confusedMode" onclick="homeGo('nav_quiz','confusedMode')" class="nav-link inline-flex items-center min-h-[40px] px-1 hover:text-brand-600 transition">Career Quiz</button>
+                <div class="relative" data-dd><button type="button" aria-haspopup="true" aria-expanded="false" onclick="toggleNavDD(this)" class="inline-flex items-center gap-1 min-h-[40px] px-1 hover:text-brand-600 transition">Colleges &amp; Courses<svg class="w-3.5 h-3.5" width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg></button><div role="menu" class="hidden absolute left-0 top-full mt-1 w-60 bg-white border border-slate-200 rounded-xl shadow-xl py-1.5 z-50" onclick="closeNavDD()"><button type="button" role="menuitem" data-nav="colleges" onclick="switchView('colleges')" class="nav-link block w-full text-left min-h-[44px] px-4 text-sm font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700">Colleges</button><button type="button" role="menuitem" data-nav="exams" onclick="switchView('exams')" class="nav-link block w-full text-left min-h-[44px] px-4 text-sm font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700">Entrance exams</button><button type="button" role="menuitem" data-nav="afterDegree" onclick="switchView('afterDegree')" class="nav-link block w-full text-left min-h-[44px] px-4 text-sm font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700">Courses and other routes</button></div></div>
+                <div class="relative" data-dd><button type="button" aria-haspopup="true" aria-expanded="false" onclick="toggleNavDD(this)" class="inline-flex items-center gap-1 min-h-[40px] px-1 hover:text-brand-600 transition">Career Tools<svg class="w-3.5 h-3.5" width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg></button><div role="menu" class="hidden absolute left-0 top-full mt-1 w-60 bg-white border border-slate-200 rounded-xl shadow-xl py-1.5 z-50" onclick="closeNavDD()"><button type="button" role="menuitem" data-nav="internships" onclick="switchView('internships')" class="nav-link block w-full text-left min-h-[44px] px-4 text-sm font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700">Internships</button><button type="button" role="menuitem" data-nav="govAndAbroad" onclick="switchView('govAndAbroad')" class="nav-link block w-full text-left min-h-[44px] px-4 text-sm font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700">Govt jobs &amp; funding</button><button type="button" role="menuitem" data-nav="backupPlan" onclick="switchView('backupPlan')" class="nav-link block w-full text-left min-h-[44px] px-4 text-sm font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700">If Plan A fails</button><button type="button" role="menuitem" data-nav="dashboard" onclick="switchView('dashboard')" class="nav-link block w-full text-left min-h-[44px] px-4 text-sm font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700">Saved items and checklist</button></div></div>
+                <button type="button" onclick="goToTool('home','home-how')" class="nav-link inline-flex items-center min-h-[40px] px-1 hover:text-brand-600 transition">How It Works</button>
+                <button type="button" data-nav="reports" onclick="switchView('reports')" class="nav-link inline-flex items-center gap-1.5 min-h-[36px] px-3 rounded-full bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 font-bold transition"><i class=ic-file></i> Reports</button>
             </nav>
 
             <div class="flex items-center gap-1 sm:gap-3 shrink-0">
-                <button type="button" onclick="switchView('reports')" aria-label="Reports" title="Reports" class="2xl:hidden min-h-[40px] px-2.5 sm:px-3 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 text-xs font-bold whitespace-nowrap"><span aria-hidden="true"><i class=ic-file></i></span><span class="hidden min-[420px]:inline"> Reports</span></button>
+                <button type="button" onclick="switchView('reports')" aria-label="Reports" title="Reports" class="hidden sm:inline-flex items-center xl:hidden min-h-[40px] px-2.5 sm:px-3 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 text-xs font-bold whitespace-nowrap"><span aria-hidden="true"><i class=ic-file></i></span><span class="hidden min-[420px]:inline"> Reports</span></button>
                 <button id="gs-btn" type="button" onclick="openGlobalSearch()" aria-label="Search careers, exams and colleges" title="Search (press /)" class="min-h-[40px] min-w-[40px] border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl px-2.5 sm:px-3 flex items-center justify-center gap-2 text-sm font-semibold transition"><svg class="w-5 h-5" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="M13.5 13.5L17 17" stroke-linecap="round"/></svg><span class="hidden">Search</span></button>
                 <button id="admin-header-btn" type="button" onclick="openAdmin()" class="hidden min-h-[40px] border border-amber-200 text-amber-800 bg-amber-50 hover:bg-amber-100 px-3 rounded-xl text-xs font-semibold transition">Admin</button>
-                    <button id="auth-header-btn" type="button" onclick="openAuth()" aria-label="Sign up or log in" title="Create an account or log in" class="min-h-[40px] whitespace-nowrap border border-brand-200 text-brand-700 hover:bg-brand-50 px-2.5 sm:px-4 py-2 rounded-xl text-sm font-semibold transition">Sign up</button>
-                <button onclick="switchView('dashboard')" aria-label="My Dashboard" title="My Dashboard" class="relative whitespace-nowrap bg-slate-900 hover:bg-slate-800 text-white min-h-[40px] min-w-[40px] px-2.5 sm:px-4 py-2 rounded-xl text-sm font-semibold transition shadow-sm flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5 sm:hidden" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2.5" y="2.5" width="6.5" height="6.5" rx="1.3"/><rect x="11" y="2.5" width="6.5" height="6.5" rx="1.3"/><rect x="2.5" y="11" width="6.5" height="6.5" rx="1.3"/><rect x="11" y="11" width="6.5" height="6.5" rx="1.3"/></svg>
-                    <span class="hidden sm:inline">My Dashboard</span>
+                    <button id="auth-header-btn" type="button" onclick="openAuth()" aria-label="Sign up or log in" title="Create an account or log in" class="min-h-[40px] whitespace-nowrap border border-brand-200 text-brand-700 hover:bg-brand-50 px-2 min-[360px]:px-2.5 sm:px-4 py-2 rounded-xl text-sm font-semibold transition">Sign up</button>
+                <button type="button" onclick="homeGo('nav_find_career','confusedMode')" class="hidden md:inline-flex items-center whitespace-nowrap min-h-[40px] px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold transition">Find My Career</button>
+                <button onclick="switchView('dashboard')" aria-label="My Dashboard" title="My Dashboard" class="relative whitespace-nowrap bg-slate-900 hover:bg-slate-800 text-white min-h-[40px] min-w-[40px] px-2 min-[360px]:px-2.5 sm:px-4 py-2 rounded-xl text-sm font-semibold transition shadow-sm flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5 sm:hidden xl:block 2xl:hidden" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2.5" y="2.5" width="6.5" height="6.5" rx="1.3"/><rect x="11" y="2.5" width="6.5" height="6.5" rx="1.3"/><rect x="2.5" y="11" width="6.5" height="6.5" rx="1.3"/><rect x="11" y="11" width="6.5" height="6.5" rx="1.3"/></svg>
+                    <span class="hidden sm:inline xl:hidden 2xl:inline">My Dashboard</span>
                     <span id="saved-count-badge" class="hidden absolute -top-2 -right-2 bg-brand-600 text-white text-[10px] font-bold w-5 h-5 rounded-full items-center justify-center">0</span>
                 </button>
             </div>
@@ -733,20 +738,24 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
     </header>
 
     <!-- MOBILE MENU (hamburger, phone only; desktop nav in header is untouched) -->
-    <div id="mobile-menu-overlay" class="hidden 2xl:hidden fixed inset-0 bg-black/30 z-40" onclick="closeMobileMenu()"></div>
-    <nav id="mobile-menu-panel" class="hidden 2xl:hidden fixed top-16 left-0 right-0 z-50 bg-white border-b border-slate-200 shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto" aria-label="Main menu">
+    <div id="mobile-menu-overlay" class="hidden xl:hidden fixed inset-0 bg-black/30 z-40" onclick="closeMobileMenu()"></div>
+    <nav id="mobile-menu-panel" class="hidden xl:hidden fixed top-16 left-0 right-0 z-50 bg-white border-b border-slate-200 shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto" aria-label="Main menu">
         <div class="flex flex-col py-2">
-            <button data-nav="confusedMode" onclick="switchView('confusedMode');closeMobileMenu()" class="nav-link text-brand-600 font-semibold text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Find my path</button>
-            <button data-nav="explorer" onclick="switchView('explorer');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Careers</button>
-            <button data-nav="exams" onclick="switchView('exams');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Exams</button>
-            <button data-nav="colleges" onclick="switchView('colleges');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Colleges</button>
-            <button data-nav="afterDegree" onclick="switchView('afterDegree');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Other routes</button>
-            <button data-nav="internships" onclick="switchView('internships');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Internships</button>
-            <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">Govt jobs & funding</button>
-            <button data-nav="backupPlan" onclick="switchView('backupPlan');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">If Plan A fails</button>
-            <button type="button" onclick="closeMobileMenu();switchView('reports')" class="text-left min-h-[48px] px-5 flex items-center gap-2 font-bold text-amber-900 bg-amber-50 hover:bg-amber-100"><span aria-hidden="true"><i class=ic-file></i></span> Reports (free, ₹99, ₹299)</button>
+            <div class="px-4 pb-2"><button type="button" onclick="closeMobileMenu();homeGo('menu_find_career','confusedMode')" class="w-full min-h-[48px] rounded-xl bg-brand-600 text-white font-bold">Find My Career</button></div>
+            <button data-nav="explorer" onclick="switchView('explorer');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50 ">Explore Careers</button>
+            <button data-nav="confusedMode" onclick="homeGo('menu_quiz','confusedMode');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50 ">Career Quiz</button>
+            <p class="px-5 pt-3 pb-1 text-[11px] font-bold uppercase tracking-wider text-slate-500">Colleges &amp; Courses</p>
+            <button data-nav="colleges" onclick="switchView('colleges');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50 ">Colleges</button>
+            <button data-nav="exams" onclick="switchView('exams');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50 ">Entrance exams</button>
+            <button data-nav="afterDegree" onclick="switchView('afterDegree');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50 ">Courses and other routes</button>
+            <p class="px-5 pt-3 pb-1 text-[11px] font-bold uppercase tracking-wider text-slate-500">Career Tools</p>
+            <button data-nav="internships" onclick="switchView('internships');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50 ">Internships</button>
+            <button data-nav="govAndAbroad" onclick="switchView('govAndAbroad');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50 ">Govt jobs &amp; funding</button>
+            <button data-nav="backupPlan" onclick="switchView('backupPlan');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50 ">If Plan A fails</button>
             <div class="my-1 border-t border-slate-200"></div>
-            <button data-nav="dashboard" onclick="switchView('dashboard');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">My Dashboard</button>
+            <button type="button" onclick="closeMobileMenu();goToTool('home','home-how')" class="text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">How It Works</button>
+            <button type="button" data-nav="reports" onclick="closeMobileMenu();switchView('reports')" class="nav-link text-left min-h-[48px] px-5 flex items-center gap-2 font-bold text-amber-900 bg-amber-50 hover:bg-amber-100"><span aria-hidden="true"><i class=ic-file></i></span> Reports</button>
+            <button data-nav="dashboard" onclick="switchView('dashboard');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50 ">My Dashboard</button>
         </div>
     </nav>
 
@@ -756,63 +765,231 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         <nav id="page-nav-m" class="page-nav-m hide-scrollbar bg-white/95 backdrop-blur-md border-b border-slate-200" aria-label="On this page"></nav>
 
         <!-- ================= VIEW 1: HOMEPAGE HERO ================= -->
-        <section id="view-home" class="view-section py-8 md:py-12 max-w-3xl mx-auto">
-            <!-- 1. Hero: one question, one main button, shortcuts by stage -->
-            <div class="text-center">
-                <p class="text-xs sm:text-sm text-brand-700 font-semibold mb-3 tracking-wide">Built for every student and family across India</p>
-                <h1 class="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight mb-4">Not sure what to do next?<br>Let's map it out.</h1>
-                <p class="text-base md:text-lg text-slate-600 mb-7 leading-relaxed max-w-xl mx-auto">Answer a few quick questions and see the careers, exams and colleges that fit you.</p>
-                <div class="flex flex-col sm:flex-row justify-center items-center gap-3">
-                    <button type="button" onclick="switchView('confusedMode')" class="w-full sm:w-auto min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white font-semibold px-7 py-3 rounded-xl text-base shadow-lg shadow-brand-200 transition">Take the 2-minute quiz</button>
-                    <button type="button" onclick="switchView('explorer')" class="min-h-[48px] px-4 text-brand-700 hover:underline font-semibold text-base transition">Browse careers</button>
-                </div>
-                <div class="mt-6">
-                    <p class="text-xs font-semibold text-slate-600 mb-2">Or start from where you are</p>
-                    <div class="flex flex-wrap justify-center gap-2">
-                        <button type="button" onclick="goToPathwayBranch('Class 10')" class="min-h-[44px] px-4 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:border-brand-400 transition">I'm in Class 10</button>
-                        <button type="button" onclick="goToPathwayBranch('Class 12')" class="min-h-[44px] px-4 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:border-brand-400 transition">I'm in Class 11–12</button>
-                        <button type="button" onclick="goToTool('afterDegree', 'branching-engine-block')" class="min-h-[44px] px-4 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:border-brand-400 transition">I'm in college</button>
-                        <button type="button" onclick="switchView('backupPlan')" class="min-h-[44px] px-4 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:border-brand-400 transition">I missed a cutoff or exam</button>
-                        <button type="button" onclick="goToTool('afterDegree', 'career-switch-block')" class="min-h-[44px] px-4 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:border-brand-400 transition">I'm already working</button>
+        <section id="view-home" class="view-section pb-4">
+            <style>
+                @keyframes hp-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+                @keyframes hp-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+                .hp-bar { transform-origin: left; animation: hp-grow .9s cubic-bezier(.2,.7,.2,1) .35s both; }
+                .hp-rise { animation: hp-rise .6s ease-out both; }
+                .hp-float { animation: hp-rise .7s ease-out .5s both; }
+                .hp-step-line::before { content: ""; position: absolute; left: 1.4rem; top: 3rem; bottom: -1rem; width: 2px; background: #e2e8f0; }
+                @media (min-width: 1024px) { .hp-step-line::before { left: calc(50% + 1.9rem); right: calc(-50% + 1.9rem); top: 1.4rem; bottom: auto; width: auto; height: 2px; } }
+                #view-home .hp-report { background: linear-gradient(135deg,#0b1730 0%,#0f2547 100%); border: 1px solid #1e3a5f; color: #f8fafc; }
+                #view-home .hp-report .hp-mut { color: #cbd5e1; }
+                #view-home .hp-report .hp-dim { color: #94a3b8; }
+                #view-home .hp-report .hp-amber { background: #fbbf24; color: #111827; }
+                #view-home .hp-report .hp-amber:hover { background: #fcd34d; }
+                #view-home .hp-report .hp-ghost { border: 2px solid #64748b; color: #f8fafc; background: transparent; }
+                #view-home .hp-report .hp-ghost:hover { border-color: #f8fafc; }
+                @media (prefers-reduced-motion: reduce) { .hp-bar, .hp-rise, .hp-float { animation: none !important; } }
+            </style>
+
+            <!-- 1. HERO -->
+            <div class="grid lg:grid-cols-12 gap-10 lg:gap-8 items-center pt-2 md:pt-8">
+                <div class="lg:col-span-6 text-left">
+                    <p class="inline-flex items-center gap-2 text-xs sm:text-sm text-brand-700 font-semibold bg-brand-50 border border-brand-100 rounded-full px-3 py-1 mb-4">Career guidance built for India</p>
+                    <h1 class="font-display text-4xl md:text-5xl xl:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.08] mb-5 text-balance">Your Future Deserves More Than Guesswork.</h1>
+                    <p class="text-base md:text-lg text-slate-600 mb-7 leading-relaxed max-w-xl">Discover careers that match your interests, strengths, and goals. Compare opportunities, understand the skills you need, and build a personalized roadmap for your future.</p>
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                        <button type="button" onclick="homeGo('hero_primary','confusedMode')" class="min-h-[52px] bg-brand-600 hover:bg-brand-700 text-white font-bold px-7 py-3 rounded-xl text-base shadow-lg shadow-brand-200 transition">Discover My Career Path</button>
+                        <button type="button" onclick="homeGo('hero_explore','explorer')" class="min-h-[52px] px-7 py-3 rounded-xl text-base font-bold text-brand-700 bg-white border-2 border-brand-200 hover:border-brand-400 hover:bg-brand-50 transition">Explore Careers</button>
+                    </div>
+                    <ul class="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-700 font-medium">
+                        <li class="flex items-center gap-1.5"><span class="text-emerald-600 font-bold" aria-hidden="true">✓</span> Free to get started</li>
+                        <li class="flex items-center gap-1.5"><span class="text-emerald-600 font-bold" aria-hidden="true">✓</span> Personalized career insights</li>
+                        <li class="flex items-center gap-1.5"><span class="text-emerald-600 font-bold" aria-hidden="true">✓</span> Built for Indian students</li>
+                    </ul>
+                    <div class="mt-7">
+                        <p class="text-xs font-semibold text-slate-600 mb-2">Or start from where you are</p>
+                        <div class="flex flex-wrap gap-2">
+                            <button type="button" onclick="goToPathwayBranch('Class 10')" class="min-h-[44px] px-4 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:border-brand-400 transition">I'm in Class 10</button>
+                            <button type="button" onclick="goToPathwayBranch('Class 12')" class="min-h-[44px] px-4 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:border-brand-400 transition">I'm in Class 12</button>
+                            <button type="button" onclick="goToTool('afterDegree', 'branching-engine-block')" class="min-h-[44px] px-4 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:border-brand-400 transition">I'm in college</button>
+                            <button type="button" onclick="switchView('backupPlan')" class="min-h-[44px] px-4 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:border-brand-400 transition">I missed a cutoff</button>
+                            <button type="button" onclick="goToTool('afterDegree', 'career-switch-block')" class="min-h-[44px] px-4 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:border-brand-400 transition">I want to switch careers</button>
+                        </div>
                     </div>
                 </div>
-                <div id="report-promo-home" class="mt-8 text-left"></div>
-                <p class="text-xs text-slate-600 mt-5">Covers <span id="stat-careers">0</span> careers, <span id="stat-exams">0</span> exams, <span id="stat-colleges">0</span> colleges and <span id="stat-scholarships">0</span> scholarships. Your saved items stay on your device, or sync to your account if you sign in.</p>
+
+                <!-- Illustrative dashboard preview -->
+                <div class="lg:col-span-6" aria-label="Illustrative preview of a Plan4it career dashboard">
+                    <div class="relative max-w-xl mx-auto lg:ml-auto">
+                        <div class="absolute -inset-4 bg-gradient-to-br from-brand-500/15 via-transparent to-amber-400/15 rounded-[2rem] -z-10" aria-hidden="true"></div>
+                        <div class="bg-white border border-slate-200 rounded-3xl shadow-xl p-4 sm:p-5 hp-rise">
+                            <div class="flex items-center justify-between gap-2 mb-3">
+                                <p class="font-bold text-slate-900 text-sm">Your career dashboard</p>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-50 border border-amber-200 rounded-full px-2 py-0.5">Illustrative preview</span>
+                            </div>
+                            <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-2">Career match cards</p>
+                            <div class="space-y-2.5">
+                                <div class="border border-slate-200 rounded-xl p-3"><div class="flex justify-between text-sm font-semibold text-slate-900"><span>Data Analyst</span><span class="text-brand-700 text-xs">Strong fit (example)</span></div><div class="h-2 bg-slate-100 rounded-full mt-2 overflow-hidden"><div class="hp-bar h-2 bg-brand-600 rounded-full" style="width:86%"></div></div></div>
+                                <div class="border border-slate-200 rounded-xl p-3"><div class="flex justify-between text-sm font-semibold text-slate-900"><span>Software Engineer</span><span class="text-brand-700 text-xs">Good fit (example)</span></div><div class="h-2 bg-slate-100 rounded-full mt-2 overflow-hidden"><div class="hp-bar h-2 bg-brand-500 rounded-full" style="width:72%"></div></div></div>
+                                <div class="border border-slate-200 rounded-xl p-3"><div class="flex justify-between text-sm font-semibold text-slate-900"><span>UX Designer</span><span class="text-slate-500 text-xs">Worth exploring (example)</span></div><div class="h-2 bg-slate-100 rounded-full mt-2 overflow-hidden"><div class="hp-bar h-2 bg-brand-300 rounded-full" style="width:55%"></div></div></div>
+                            </div>
+                            <div class="grid sm:grid-cols-2 gap-3 mt-4">
+                                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3">
+                                    <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-2">Skill roadmap</p>
+                                    <ol class="space-y-1.5 text-xs text-slate-700">
+                                        <li class="flex items-center gap-2"><span class="w-4 h-4 rounded-full bg-emerald-500 text-white text-[9px] flex items-center justify-center" aria-hidden="true">✓</span>Excel and basic statistics</li>
+                                        <li class="flex items-center gap-2"><span class="w-4 h-4 rounded-full bg-brand-600 text-white text-[9px] flex items-center justify-center" aria-hidden="true">2</span>SQL for databases</li>
+                                        <li class="flex items-center gap-2"><span class="w-4 h-4 rounded-full border-2 border-slate-300" aria-hidden="true"></span>A portfolio project</li>
+                                    </ol>
+                                </div>
+                                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3">
+                                    <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-2">Progress</p>
+                                    <div class="h-2 bg-slate-200 rounded-full overflow-hidden"><div class="hp-bar h-2 bg-emerald-500 rounded-full" style="width:40%"></div></div>
+                                    <p class="text-xs text-slate-600 mt-2">2 of 5 milestones done</p>
+                                    <p class="text-[11px] text-slate-500 mt-1">Next: finish your first SQL project</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-3 text-center">Example data only. Your own matches come from your quiz answers.</p>
+                    </div>
+                </div>
+            </div>
+            <p class="text-xs text-slate-600 mt-8 text-center">Covers <span id="stat-careers">0</span> careers, <span id="stat-exams">0</span> exams, <span id="stat-colleges">0</span> colleges and <span id="stat-scholarships">0</span> scholarships.</p>
+
+            <!-- 2. HOW IT WORKS -->
+            <div id="home-how" data-nav="How it works" class="mt-16 md:mt-20">
+                <div class="text-center max-w-2xl mx-auto mb-8">
+                    <p class="text-xs font-bold uppercase tracking-wider text-brand-700">How Plan4it works</p>
+                    <h2 class="font-display text-2xl md:text-4xl font-extrabold text-slate-900 mt-1 text-balance">From “what do I do?” to a plan you can follow</h2>
+                    <p class="text-slate-600 mt-2">Discover, understand, compare, plan, achieve.</p>
+                </div>
+                <ol class="grid lg:grid-cols-5 gap-4 lg:gap-3">
+                    <li class="relative hp-step-line"><div class="relative bg-white border border-slate-200 rounded-2xl p-5 h-full shadow-sm"><span class="w-11 h-11 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center mb-3" aria-hidden="true">1</span><h3 class="font-bold text-slate-900">Discover Yourself</h3><p class="text-sm text-slate-600 mt-1">Take an intelligent career assessment.</p></div></li>
+                    <li class="relative hp-step-line"><div class="relative bg-white border border-slate-200 rounded-2xl p-5 h-full shadow-sm"><span class="w-11 h-11 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center mb-3" aria-hidden="true">2</span><h3 class="font-bold text-slate-900">Explore Your Matches</h3><p class="text-sm text-slate-600 mt-1">Understand which careers align with your profile.</p></div></li>
+                    <li class="relative hp-step-line"><div class="relative bg-white border border-slate-200 rounded-2xl p-5 h-full shadow-sm"><span class="w-11 h-11 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center mb-3" aria-hidden="true">3</span><h3 class="font-bold text-slate-900">Compare Opportunities</h3><p class="text-sm text-slate-600 mt-1">Evaluate skills, education, costs, and career prospects.</p></div></li>
+                    <li class="relative hp-step-line"><div class="relative bg-white border border-slate-200 rounded-2xl p-5 h-full shadow-sm"><span class="w-11 h-11 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center mb-3" aria-hidden="true">4</span><h3 class="font-bold text-slate-900">Build Your Roadmap</h3><p class="text-sm text-slate-600 mt-1">Receive a structured plan to achieve your goals.</p></div></li>
+                    <li class="relative"><div class="relative bg-white border border-slate-200 rounded-2xl p-5 h-full shadow-sm"><span class="w-11 h-11 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center mb-3" aria-hidden="true">5</span><h3 class="font-bold text-slate-900">Track Your Progress</h3><p class="text-sm text-slate-600 mt-1">Follow milestones and develop career-ready skills. Save careers, exams and colleges to your dashboard and tick off your checklist.</p></div></li>
+                </ol>
             </div>
 
-            <!-- 2. Your path, step by step (rendered from TOOL_DIRECTORY, one step open at a time) -->
-            <details id="tool-directory-block" class="mt-8 text-left bg-white border border-slate-200 rounded-2xl">
-                <summary class="cd-sum"><span><span class="block font-bold text-slate-900 text-lg">See all tools, step by step</span><span class="block text-sm text-slate-600 font-normal">Everything Plan4it offers, in the order most students need it</span></span></summary>
-                <div class="p-5 pt-0"><div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-4">
-                    <div>
-                        <p class="text-sm text-slate-600">Open a step to see its tools. Not sure where to begin? Start with step 1.</p>
+            <!-- 3. CAREER DISCOVERY PREVIEW (live data) -->
+            <div id="home-careers" data-nav="Careers" class="mt-16 md:mt-20">
+                <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
+                    <div class="max-w-2xl">
+                        <p class="text-xs font-bold uppercase tracking-wider text-brand-700">Career discovery</p>
+                        <h2 class="font-display text-2xl md:text-4xl font-extrabold text-slate-900 mt-1 text-balance">See what is out there</h2>
+                        <p class="text-slate-600 mt-2">A few careers from our library. Filter by industry or interest, then open one for its full roadmap.</p>
                     </div>
-                    <div class="sm:w-64">
-                        <label for="tool-search" class="sr-only">Search tools</label>
-                        <input id="tool-search" type="search" oninput="filterToolDirectory()" placeholder="Find a tool, like &quot;scholarship&quot;" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm min-h-[44px] focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-500">
+                    <div class="flex flex-col sm:flex-row gap-3 md:shrink-0">
+                        <div><label for="home-ind" class="block text-xs font-semibold text-slate-600 mb-1">Industry</label><select id="home-ind" onchange="renderHomeCareers()" class="w-full sm:w-48 px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:outline-none focus:ring-2 focus:ring-brand-500"></select></div>
+                        <div><label for="home-int" class="block text-xs font-semibold text-slate-600 mb-1">Interest</label><select id="home-int" onchange="renderHomeCareers()" class="w-full sm:w-48 px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:outline-none focus:ring-2 focus:ring-brand-500"></select></div>
                     </div>
                 </div>
-                <div id="tool-directory-home" class="space-y-3"></div>
-                <p id="tool-directory-empty" class="hidden text-sm text-slate-600 text-center py-6">Nothing matches that. Try a shorter word, like "loan" or "exam".</p>
-                </div>
-            </details>
+                <div id="home-career-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5" aria-live="polite"></div>
+                <div class="text-center mt-6"><button type="button" onclick="homeGo('careers_browse_all','explorer')" class="min-h-[48px] px-6 rounded-xl border-2 border-brand-200 text-brand-700 font-bold hover:bg-brand-50 transition">Browse all careers</button></div>
+            </div>
 
-            <!-- 4. Good to know (folded away) -->
-            <div class="mt-10 text-left space-y-3">
-                <h2 class="font-bold text-slate-900 text-lg">Good to know</h2>
-                <details class="bg-white border border-slate-200 rounded-xl px-5 py-4">
-                    <summary class="flex items-center justify-between font-semibold text-slate-800 text-sm min-h-[44px]"><span>How Plan4it works</span><svg class="chev w-4 h-4 text-slate-500 transition-transform shrink-0 ml-3" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg></summary>
-                    <ol class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
-                        <li class="bg-slate-50 border border-slate-200 rounded-xl p-4"><p class="font-semibold text-slate-900 text-sm">1. Tell us your stage</p><p class="text-xs text-slate-600 mt-1">Class 10, Class 11–12, undergraduate, graduate or working professional. Everything after this fits your stage.</p></li>
-                        <li class="bg-slate-50 border border-slate-200 rounded-xl p-4"><p class="font-semibold text-slate-900 text-sm">2. Take the 2-minute quiz</p><p class="text-xs text-slate-600 mt-1">Your interests, how you like to work, what matters most and your state. You can retake it any time.</p></li>
-                        <li class="bg-slate-50 border border-slate-200 rounded-xl p-4"><p class="font-semibold text-slate-900 text-sm">3. See your matches</p><p class="text-xs text-slate-600 mt-1">Your best careers with fit scores, plus colleges, exams and next steps for you, in plain language.</p></li>
-                        <li class="bg-slate-50 border border-slate-200 rounded-xl p-4"><p class="font-semibold text-slate-900 text-sm">4. Save and get your report</p><p class="text-xs text-slate-600 mt-1">Save careers, exams and colleges to your dashboard, then get your Career Intelligence Report: a free 2-page version or the full 18 pages.</p></li>
-                    </ol>
+            <!-- 4. CAREER INTELLIGENCE REPORT -->
+            <div id="home-report" data-nav="Report" class="hp-report mt-16 md:mt-20 rounded-3xl p-6 md:p-10 lg:p-12">
+                <div class="grid lg:grid-cols-2 gap-10 items-center">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-amber-300">Career Intelligence Report</p>
+                        <h2 class="font-display text-2xl md:text-4xl font-extrabold mt-1 leading-tight text-balance">Don't Just Discover a Career. Know Exactly How to Get There.</h2>
+                        <ul class="hp-mut mt-5 grid sm:grid-cols-2 gap-x-5 gap-y-2 text-sm">
+                            <li class="flex gap-2"><span class="text-emerald-400 font-bold" aria-hidden="true">✓</span>Personalized career recommendations</li>
+                            <li class="flex gap-2"><span class="text-emerald-400 font-bold" aria-hidden="true">✓</span>Strength and skill gap analysis</li>
+                            <li class="flex gap-2"><span class="text-emerald-400 font-bold" aria-hidden="true">✓</span>Technical and soft skills in detail</li>
+                            <li class="flex gap-2"><span class="text-emerald-400 font-bold" aria-hidden="true">✓</span>Education and college pathways</li>
+                            <li class="flex gap-2"><span class="text-emerald-400 font-bold" aria-hidden="true">✓</span>Salary and career growth insights</li>
+                            <li class="flex gap-2"><span class="text-emerald-400 font-bold" aria-hidden="true">✓</span>Industry trends</li>
+                            <li class="flex gap-2"><span class="text-emerald-400 font-bold" aria-hidden="true">✓</span>Learning resources</li>
+                            <li class="flex gap-2"><span class="text-emerald-400 font-bold" aria-hidden="true">✓</span>Internship guidance</li>
+                            <li class="flex gap-2"><span class="text-emerald-400 font-bold" aria-hidden="true">✓</span>90-day action roadmap</li>
+                            <li class="flex gap-2"><span class="text-emerald-400 font-bold" aria-hidden="true">✓</span>Alternative career pathways</li>
+                        </ul>
+                        <p id="home-report-price" class="hp-mut mt-5 text-sm font-semibold"></p>
+                        <div class="mt-5 flex flex-col sm:flex-row gap-3">
+                            <button type="button" onclick="homeGo('report_explore','reports')" class="hp-amber min-h-[52px] px-7 py-3 rounded-xl font-extrabold transition">Explore Career Intelligence Report</button>
+                            <button type="button" onclick="homeGo('report_sample','reports')" class="hp-ghost min-h-[52px] px-7 py-3 rounded-xl font-bold transition">Preview what's inside</button>
+                        </div>
+                    </div>
+                    <div aria-label="Illustrative layout of three report pages">
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="bg-white text-slate-900 rounded-xl p-3 shadow-lg"><p class="text-[9px] font-bold uppercase tracking-wider text-brand-700">Page 1</p><p class="text-[11px] font-extrabold leading-tight mt-1">Your career snapshot</p><div class="mt-2 space-y-1.5" aria-hidden="true"><div class="h-1.5 bg-slate-200 rounded"></div><div class="h-1.5 bg-slate-200 rounded w-4/5"></div><div class="h-1.5 bg-slate-200 rounded w-3/5"></div><div class="h-10 bg-brand-50 border border-brand-100 rounded mt-2"></div></div></div>
+                            <div class="bg-white text-slate-900 rounded-xl p-3 shadow-lg mt-4"><p class="text-[9px] font-bold uppercase tracking-wider text-brand-700">Page 5</p><p class="text-[11px] font-extrabold leading-tight mt-1">Five-part suitability check</p><div class="mt-2 space-y-1.5" aria-hidden="true"><div class="h-1.5 bg-brand-500 rounded w-4/5"></div><div class="h-1.5 bg-brand-400 rounded w-3/5"></div><div class="h-1.5 bg-brand-300 rounded w-2/3"></div><div class="h-1.5 bg-brand-200 rounded w-1/2"></div></div></div>
+                            <div class="bg-white text-slate-900 rounded-xl p-3 shadow-lg"><p class="text-[9px] font-bold uppercase tracking-wider text-brand-700">Page 16</p><p class="text-[11px] font-extrabold leading-tight mt-1">Your first 90 days</p><div class="mt-2 space-y-1.5" aria-hidden="true"><div class="flex gap-1.5 items-center"><div class="w-2 h-2 rounded-full bg-emerald-500"></div><div class="h-1.5 bg-slate-200 rounded flex-1"></div></div><div class="flex gap-1.5 items-center"><div class="w-2 h-2 rounded-full bg-emerald-500"></div><div class="h-1.5 bg-slate-200 rounded flex-1"></div></div><div class="flex gap-1.5 items-center"><div class="w-2 h-2 rounded-full border border-slate-400"></div><div class="h-1.5 bg-slate-200 rounded flex-1"></div></div></div></div>
+                        </div>
+                        <p class="hp-dim text-[11px] mt-3">Illustrative layout. The real report is built from your own quiz answers.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. COMPARISON -->
+            <div id="home-compare" data-nav="Compare" class="mt-16 md:mt-20">
+                <div class="text-center max-w-2xl mx-auto mb-8">
+                    <p class="text-xs font-bold uppercase tracking-wider text-brand-700">Compare careers</p>
+                    <h2 class="font-display text-2xl md:text-4xl font-extrabold text-slate-900 mt-1 text-balance">Choose with the facts side by side</h2>
+                    <p class="text-slate-600 mt-2">Example: Data Analyst, Software Engineer and Product Manager. Figures come from our career library.</p>
+                </div>
+                <div id="home-compare-grid" class="grid md:grid-cols-3 gap-5"></div>
+                <p class="text-xs text-slate-500 mt-3 text-center">Salary figures are estimates of typical ranges in India and not a promise of pay. Confirm with current job listings.</p>
+                <div class="text-center mt-5"><button type="button" onclick="homeCompare()" class="min-h-[52px] px-7 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold shadow transition">Compare Career Paths</button></div>
+            </div>
+
+            <!-- 6. TOOLS -->
+            <div id="home-tools" data-nav="Tools" class="mt-16 md:mt-20">
+                <div class="text-center max-w-2xl mx-auto mb-8">
+                    <p class="text-xs font-bold uppercase tracking-wider text-brand-700">Career tools</p>
+                    <h2 class="font-display text-2xl md:text-4xl font-extrabold text-slate-900 mt-1 text-balance">Everything for the next step</h2>
+                </div>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm"><h3 class="font-bold text-slate-900 mb-3">Career Discovery</h3><ul class="space-y-1">
+                        <li><button type="button" onclick="homeGo('tool_quiz','confusedMode')" class="w-full text-left min-h-[44px] px-2 rounded-lg text-sm font-semibold text-brand-700 hover:bg-brand-50">Career quiz</button></li>
+                        <li><button type="button" onclick="switchView('explorer')" class="w-full text-left min-h-[44px] px-2 rounded-lg text-sm font-semibold text-brand-700 hover:bg-brand-50">Career explorer</button></li>
+                        <li><button type="button" onclick="homeCompare()" class="w-full text-left min-h-[44px] px-2 rounded-lg text-sm font-semibold text-brand-700 hover:bg-brand-50">Career comparison</button></li></ul></div>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm"><h3 class="font-bold text-slate-900 mb-3">Academic Planning</h3><ul class="space-y-1">
+                        <li><button type="button" onclick="goToTool('colleges','after10-panel')" class="w-full text-left min-h-[44px] px-2 rounded-lg text-sm font-semibold text-brand-700 hover:bg-brand-50">Courses after Class 10</button></li>
+                        <li><button type="button" onclick="switchView('colleges')" class="w-full text-left min-h-[44px] px-2 rounded-lg text-sm font-semibold text-brand-700 hover:bg-brand-50">Colleges</button></li>
+                        <li><button type="button" onclick="switchView('exams')" class="w-full text-left min-h-[44px] px-2 rounded-lg text-sm font-semibold text-brand-700 hover:bg-brand-50">Entrance exams</button></li></ul></div>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm"><h3 class="font-bold text-slate-900 mb-3">Career Development</h3><ul class="space-y-1">
+                        <li><button type="button" onclick="switchView('explorer')" class="w-full text-left min-h-[44px] px-2 rounded-lg text-sm font-semibold text-brand-700 hover:bg-brand-50">Skills and roadmaps</button></li>
+                        <li><button type="button" onclick="switchView('internships')" class="w-full text-left min-h-[44px] px-2 rounded-lg text-sm font-semibold text-brand-700 hover:bg-brand-50">Internships <span class="text-[11px] font-bold text-amber-800 bg-amber-50 border border-amber-200 rounded-full px-1.5 ml-1">Learnership coming soon</span></button></li>
+                        <li><button type="button" onclick="goToTool('afterDegree','branching-engine-block')" class="w-full text-left min-h-[44px] px-2 rounded-lg text-sm font-semibold text-brand-700 hover:bg-brand-50">What can I do after this?</button></li></ul></div>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm"><h3 class="font-bold text-slate-900 mb-3">Opportunities</h3><ul class="space-y-1">
+                        <li><button type="button" onclick="goToTool('govAndAbroad','scholarship-matcher-block')" class="w-full text-left min-h-[44px] px-2 rounded-lg text-sm font-semibold text-brand-700 hover:bg-brand-50">Scholarships</button></li>
+                        <li><button type="button" onclick="goToTool('govAndAbroad','govt-careers-block')" class="w-full text-left min-h-[44px] px-2 rounded-lg text-sm font-semibold text-brand-700 hover:bg-brand-50">Government careers</button></li>
+                        <li><button type="button" onclick="goToTool('backupPlan','pathways-block')" class="w-full text-left min-h-[44px] px-2 rounded-lg text-sm font-semibold text-brand-700 hover:bg-brand-50">Alternative pathways</button></li></ul></div>
+                </div>
+                <!-- The full directory, one step open at a time -->
+                <details id="tool-directory-block" class="mt-6 text-left bg-white border border-slate-200 rounded-2xl">
+                    <summary class="cd-sum"><span><span class="block font-bold text-slate-900 text-lg">See all tools, step by step</span><span class="block text-sm text-slate-600 font-normal">Everything Plan4it offers, in the order most students need it.</span></span></summary>
+                    <div class="p-5 pt-0"><div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-4">
+                        <p class="text-sm text-slate-600">Open a step to see its tools. Not sure where to begin? Start with step 1.</p>
+                        <div class="sm:w-64"><label for="tool-search" class="sr-only">Search tools</label><input id="tool-search" type="search" oninput="filterToolDirectory()" placeholder="Find a tool, like &quot;scholarship&quot;" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm min-h-[44px] focus:outline-none focus:ring-2 focus:ring-brand-500"></div>
+                    </div>
+                    <div id="tool-directory-home" class="space-y-3"></div>
+                    <p id="tool-directory-empty" class="hidden text-sm text-slate-600 text-center py-6">Nothing matches that. Try a shorter word, like "loan" or "exam".</p></div>
                 </details>
-                <details class="bg-white border border-slate-200 rounded-xl px-5 py-4">
-                    <summary class="flex items-center justify-between font-semibold text-slate-800 text-sm min-h-[44px]"><span>Common questions</span><svg class="chev w-4 h-4 text-slate-500 transition-transform shrink-0 ml-3" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg></summary>
-                    <div id="faq-list" class="space-y-3 mt-3"></div>
-                </details>
+            </div>
+
+            <!-- 7. TRUST -->
+            <div id="home-trust" data-nav="Trust" class="mt-16 md:mt-20">
+                <div class="text-center max-w-2xl mx-auto mb-8">
+                    <p class="text-xs font-bold uppercase tracking-wider text-brand-700">Trust and transparency</p>
+                    <h2 class="font-display text-2xl md:text-4xl font-extrabold text-slate-900 mt-1 text-balance">How Plan4it reaches its answers</h2>
+                </div>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <div class="bg-white border border-slate-200 rounded-2xl p-5"><h3 class="font-bold text-slate-900 text-sm">How matches are made</h3><p class="text-sm text-slate-600 mt-2">Your quiz answers are scored against each career's interests, work style, demand and entry requirements. It is guidance for a conversation, not a verdict.</p></div>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-5"><h3 class="font-bold text-slate-900 text-sm">Where information comes from</h3><p class="text-sm text-slate-600 mt-2">Exam and college details come from official notices and institution websites, and the college directory uses Ministry of Education listings. Fees, dates and cutoffs change, so always confirm them on the official site.</p></div>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-5"><h3 class="font-bold text-slate-900 text-sm">Your data</h3><p class="text-sm text-slate-600 mt-2">You can browse without an account. Quiz answers and saved items are stored in your free account, and report copies are deleted after 3 days. Read the <button type="button" onclick="switchView('privacy')" class="underline text-brand-700 font-semibold">privacy policy</button>.</p></div>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-5"><h3 class="font-bold text-slate-900 text-sm">What we do not claim</h3><p class="text-sm text-slate-600 mt-2">No guaranteed jobs, admissions or salaries. Pay figures are estimates. See <button type="button" onclick="switchView('refund')" class="underline text-brand-700 font-semibold">refunds and payments</button> for how paid reports work.</p></div>
+                </div>
+            </div>
+
+            <!-- 8. FINAL CTA -->
+            <div class="mt-16 md:mt-20 rounded-3xl bg-gradient-to-br from-brand-600 to-brand-800 text-white text-center p-8 md:p-14">
+                <h2 class="font-display text-2xl md:text-4xl font-extrabold text-balance">Your Career Journey Starts With One Decision.</h2>
+                <p class="mt-3 text-brand-50 max-w-xl mx-auto">Explore your possibilities and take the first step toward a career that fits you.</p>
+                <button type="button" onclick="homeGo('final_cta','confusedMode')" class="mt-6 min-h-[52px] px-8 py-3 rounded-xl bg-white text-brand-800 font-extrabold hover:bg-brand-50 transition shadow-lg">Start My Free Career Discovery</button>
+            </div>
+
+            <!-- FAQ -->
+            <div class="mt-12 max-w-3xl mx-auto text-left space-y-3">
+                <h2 class="font-bold text-slate-900 text-lg">Common questions</h2>
+                <div id="faq-list" class="space-y-3"></div>
             </div>
         </section>
 
@@ -2391,16 +2568,17 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-white border-t border-slate-200 mt-16 py-8 text-center text-sm text-slate-500">
-        <p>Plan4it India Platform &bull; Built to provide transparent career trees, entrance exam guidance, and skill roadmaps.</p>
-        <p class="text-xs text-slate-400 mt-2">Fees, cutoffs, dates, and eligibility change every year. Always confirm on the official website before you apply or pay.</p>
-        <p class="mt-3">
-            <button type="button" onclick="switchView('about')" class="text-xs text-slate-400 underline hover:text-brand-600 min-h-[44px] px-3">About</button>
-            <button type="button" onclick="switchView('privacy')" class="text-xs text-slate-400 underline hover:text-brand-600 min-h-[44px] px-3">Privacy Policy</button>
-            <button type="button" onclick="switchView('copyright')" class="text-xs text-slate-400 underline hover:text-brand-600 min-h-[44px] px-3">Copyright &amp; Terms</button>
-            <button type="button" onclick="switchView('refund')" class="text-xs text-slate-400 underline hover:text-brand-600 min-h-[44px] px-3">Refunds &amp; Payments</button>
-        </p>
-        <p class="text-xs text-slate-400 mt-2 px-4">&copy; 2026 Plan4it. All rights reserved. The content, data and reports on this site may not be copied, scraped or republished without written permission.</p>
+    <footer class="bg-white border-t border-slate-200 mt-16 py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="col-span-2 md:col-span-1"><div class="flex items-center gap-2"><img src="/assets/logo-mark-96.png" alt="" width="32" height="32" loading="lazy" class="w-8 h-8 rounded-lg bg-black"><span class="font-display font-bold text-lg text-slate-900">Plan4it</span></div><p class="text-sm text-slate-600 mt-3 max-w-xs">Career and education guidance for students and families across India.</p></div>
+                <nav aria-label="Explore"><p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Explore</p><ul><li><button type="button" onclick="switchView('explorer')" class="text-sm text-slate-600 hover:text-brand-700 hover:underline min-h-[44px] text-left">Explore Careers</button></li><li><button type="button" onclick="homeGo('footer_quiz','confusedMode')" class="text-sm text-slate-600 hover:text-brand-700 hover:underline min-h-[44px] text-left">Career Quiz</button></li><li><button type="button" onclick="switchView('colleges')" class="text-sm text-slate-600 hover:text-brand-700 hover:underline min-h-[44px] text-left">Colleges</button></li><li><button type="button" onclick="switchView('exams')" class="text-sm text-slate-600 hover:text-brand-700 hover:underline min-h-[44px] text-left">Exams</button></li></ul></nav>
+                <nav aria-label="Company"><p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Plan4it</p><ul><li><button type="button" onclick="switchView('about')" class="text-sm text-slate-600 hover:text-brand-700 hover:underline min-h-[44px] text-left">About Plan4it</button></li><li><a href="mailto:hello@plan4it.co" class="inline-flex items-center text-sm text-slate-600 hover:text-brand-700 hover:underline min-h-[44px]">Contact: hello@plan4it.co</a></li><li><button type="button" onclick="switchView('reports')" class="text-sm text-slate-600 hover:text-brand-700 hover:underline min-h-[44px] text-left">Reports</button></li></ul></nav>
+                <nav aria-label="Legal"><p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Legal</p><ul><li><button type="button" onclick="switchView('privacy')" class="text-sm text-slate-600 hover:text-brand-700 hover:underline min-h-[44px] text-left">Privacy Policy</button></li><li><button type="button" onclick="switchView('copyright')" class="text-sm text-slate-600 hover:text-brand-700 hover:underline min-h-[44px] text-left">Terms &amp; Copyright</button></li><li><button type="button" onclick="switchView('refund')" class="text-sm text-slate-600 hover:text-brand-700 hover:underline min-h-[44px] text-left">Refunds &amp; Payments</button></li></ul></nav>
+            </div>
+            <p class="text-xs text-slate-500 mt-8 pt-6 border-t border-slate-100">Fees, cutoffs, dates, and eligibility change every year. Always confirm on the official website before you apply or pay. Plan4it gives guidance only and does not guarantee admission, jobs or pay.</p>
+            <p class="text-xs text-slate-500 mt-2">&copy; 2026 Plan4it. All rights reserved. The content, data and reports on this site may not be copied, scraped or republished without written permission.</p>
+        </div>
     </footer>
 
     <!-- JAVASCRIPT APPLICATION LOGIC -->
@@ -10084,7 +10262,9 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             // should reset it.
             if (viewId === 'confusedMode') {
                 const saved = getStoredWizardAnswers();
+                const draft = saved ? null : loadQuizDraft();
                 if (saved) { wizardAnswers = Object.assign({}, saved); showWizardResults(); }
+                else if (draft) { wizardAnswers = Object.assign({}, draft.a); showWizardStep(draft.n); try { showToast('Picked up where you left off'); } catch (er) {} }
                 else restartWizard();
             }
             if (viewId === 'reports') renderReportsPage();
@@ -10113,12 +10293,96 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         /* ============================================================
            HOME
            ============================================================ */
+
+
+        function closeNavDD() { document.querySelectorAll('[data-dd]').forEach(function (d) { const b = d.querySelector('button'), m = d.querySelector('[role=menu]'); m.classList.add('hidden'); b.setAttribute('aria-expanded', 'false'); }); }
+        function toggleNavDD(btn) {
+            const d = btn.closest('[data-dd]'), m = d.querySelector('[role=menu]'), open = m.classList.contains('hidden');
+            closeNavDD();
+            if (open) { m.classList.remove('hidden'); btn.setAttribute('aria-expanded', 'true'); const f = m.querySelector('button'); if (f) f.focus(); }
+        }
+        document.addEventListener('click', function (ev) { if (!ev.target.closest || !ev.target.closest('[data-dd]')) closeNavDD(); });
+        document.addEventListener('keydown', function (ev) {
+            if (ev.key === 'Escape') { const o = document.querySelector('[data-dd] [role=menu]:not(.hidden)'); if (o) { const b = o.parentNode.querySelector('button'); closeNavDD(); b.focus(); } }
+            if ((ev.key === 'ArrowDown' || ev.key === 'ArrowUp') && ev.target.closest && ev.target.closest('[data-dd] [role=menu]')) {
+                ev.preventDefault(); const items = Array.from(ev.target.closest('[role=menu]').querySelectorAll('button')), n = items.indexOf(ev.target) + (ev.key === 'ArrowDown' ? 1 : -1); (items[(n + items.length) % items.length]).focus();
+            }
+        });
+        /* ---------- Home page helpers ---------- */
+        function homeTrack(name, meta) { try { trackEvent(name, meta); } catch (er) {} try { if (typeof gtag === 'function') gtag('event', name, meta || {}); } catch (er) {} }
+        function homeGo(name, view) {
+            homeTrack('home_cta_' + name);
+            if (view === 'confusedMode') homeTrack('quiz_start_from_home');
+            switchView(view);
+        }
+        const HOME_FEATURED = ['data-analyst', 'software-engineer', 'product-manager', 'financial-analyst', 'ux-ui-designer', 'digital-marketing-manager'];
+        const HOME_COMPARE = ['data-analyst', 'software-engineer', 'product-manager'];
+        function homeFirstSentence(t, max) {
+            t = String(t || '').replace(/\s+/g, ' ').trim();
+            const m = t.match(/^.*?[.!?](\s|$)/); let o = m ? m[0].trim() : t;
+            if (o.length > max) o = o.slice(0, max - 1).replace(/\s+\S*$/, '') + '…';
+            return o;
+        }
+        function homeClip(t, max) { t = String(t || ''); return t.length > max ? t.slice(0, max - 1).replace(/\s+\S*$/, '') + '…' : t; }
+        function renderHomeCareers() {
+            const grid = document.getElementById('home-career-grid'); if (!grid) return;
+            const e = escapeAuth, indSel = document.getElementById('home-ind'), intSel = document.getElementById('home-int');
+            if (!indSel.options.length) {
+                const cats = Array.from(new Set(careersData.map(function (c) { return c.category; }))).sort();
+                const ints = Array.from(new Set([].concat.apply([], careersData.map(function (c) { return c.interestTags || []; })))).sort();
+                indSel.innerHTML = '<option value="">Featured careers</option>' + cats.map(function (x) { return '<option value="' + e(x) + '">' + e(x) + '</option>'; }).join('');
+                intSel.innerHTML = '<option value="">Any interest</option>' + ints.map(function (x) { return '<option value="' + e(x) + '">' + e(x) + '</option>'; }).join('');
+            }
+            const ind = indSel.value, it = intSel.value;
+            let list;
+            if (!ind && !it) list = HOME_FEATURED.map(function (id) { return careersData.find(function (c) { return c.id === id; }); }).filter(Boolean);
+            else list = careersData.filter(function (c) { return (!ind || c.category === ind) && (!it || (c.interestTags || []).indexOf(it) >= 0); }).sort(function (a, b) { return (b.demandScore || 0) - (a.demandScore || 0); }).slice(0, 6);
+            if (!list.length) { grid.innerHTML = '<p class="sm:col-span-2 lg:col-span-3 text-center text-sm text-slate-600 py-8">No careers match both filters. Try one at a time.</p>'; return; }
+            grid.innerHTML = list.map(function (c) {
+                const edu = (c.roadmap && c.roadmap[1]) || (c.roadmap && c.roadmap[0]) || '';
+                return '<article class="card-interactive bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col gap-3">' +
+                    '<span class="self-start text-xs bg-brand-50 text-brand-700 px-2.5 py-0.5 rounded font-semibold">' + e(c.category) + '</span>' +
+                    '<h3 class="font-bold text-slate-900 text-lg leading-snug">' + e(c.title) + '</h3>' +
+                    '<p class="text-sm text-slate-600">' + e(homeFirstSentence(c.overview, 150)) + '</p>' +
+                    '<div><p class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Key skills</p><div class="flex flex-wrap gap-1.5">' + (c.skills || []).slice(0, 4).map(function (x) { return '<span class="text-[11px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-medium">' + e(x) + '</span>'; }).join('') + '</div></div>' +
+                    (edu ? '<p class="text-xs text-slate-600"><b class="text-slate-800">Education path:</b> ' + e(homeClip(edu, 90)) + '</p>' : '') +
+                    '<button type="button" onclick="homeTrack(\'home_career_open\',{id:\'' + c.id + '\'});openCareerDetail(\'' + c.id + '\')" class="mt-auto self-start min-h-[44px] px-4 rounded-xl border-2 border-brand-200 text-brand-700 text-sm font-bold hover:bg-brand-50 transition">Explore Career</button></article>';
+            }).join('');
+        }
+        function renderHomeCompare() {
+            const grid = document.getElementById('home-compare-grid'); if (!grid) return;
+            const e = escapeAuth;
+            const row = function (l, v) { return '<div><dt class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">' + l + '</dt><dd class="text-sm text-slate-800 mt-0.5">' + e(v) + '</dd></div>'; };
+            grid.innerHTML = HOME_COMPARE.map(function (id) { return careersData.find(function (c) { return c.id === id; }); }).filter(Boolean).map(function (c) {
+                const tech = (c.skillDetails || []).filter(function (s) { return s.type === 'Technical'; }).map(function (s) { return s.name; });
+                const rm = c.roadmap || [];
+                return '<article class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm"><h3 class="font-bold text-slate-900 text-lg leading-snug pb-3 mb-3 border-b border-slate-100">' + e(c.title) + '</h3><dl class="space-y-3">' +
+                    row('Typical qualification', homeClip(rm[1] || rm[0] || '', 90)) +
+                    row('Technical skills', (tech.length ? tech : c.skills || []).slice(0, 4).join(', ')) +
+                    row('Education pathway', homeClip(rm.slice(0, 3).join(' → '), 120)) +
+                    row('Getting started', 'About ' + c.entryYears + ' years to enter · ' + String(c.costTier || '').toLowerCase() + ' cost') +
+                    row('Estimated salary range', c.salary) +
+                    row('Typical work', homeFirstSentence(c.overview, 130)) +
+                    row('Growth', 'Demand: ' + c.demand + '. ' + (c.mobility || '')) +
+                    '</dl></article>';
+            }).join('');
+        }
+        function homeCompare() {
+            homeTrack('home_cta_compare');
+            const ids = HOME_COMPARE.filter(function (id) { return careersData.some(function (c) { return c.id === id; }); });
+            setCompareIds(ids); switchView('explorer'); openCompareModal();
+        }
+        function renderHomeReportPrice() {
+            const el = document.getElementById('home-report-price'); if (!el) return;
+            el.textContent = (premiumLaunch() ? 'Free during our launch, then ' : '') + 'Free 2-page report · ₹' + PREMIUM_CFG.careerPrice + ' for one career (5 pages) · ₹' + PREMIUM_CFG.price + ' for the full 18-page report. Pay once, download a PDF.';
+        }
         function renderHome() {
             document.getElementById('stat-careers').textContent = careersData.length + '+';
             document.getElementById('stat-exams').textContent = examsData.length + '+';
             document.getElementById('stat-colleges').textContent = DIR.index ? Math.floor((DIR.index.total + collegesData.length) / 1000) + ',000+' : collegesData.length + '+';
             document.getElementById('stat-scholarships').textContent = SCHOLARSHIPS_DATA.length + '+';
 
+            renderHomeCareers(); renderHomeCompare(); renderHomeReportPrice();
             const faqList = document.getElementById('faq-list');
             faqList.innerHTML = faqData.map((f, idx) => `
                 <details class="bg-slate-50 border border-slate-200 rounded-xl px-5 py-4">
@@ -10433,7 +10697,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             wizCur = n;
             if (n === WIZARD_PRACTICAL) { markSit(); document.getElementById('wizard-q9').classList.remove('hidden'); }
             else { renderQuizStep(n); document.getElementById('wizard-qs').classList.remove('hidden'); }
-            updateWizardProgress(n); refreshPageNav();
+            updateWizardProgress(n); refreshPageNav(); saveQuizDraft();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         function wizardAdvance(from) {
@@ -10463,7 +10727,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const base = 'w-full text-left p-4 rounded-xl border transition min-h-[56px] ';
             const pr = quizPair(q);
             let h = '<p class="text-lg font-medium text-slate-700 mb-1">' + n + '. ' + e(q.title) + '</p><p class="text-xs text-slate-600 mb-5">' + e(q.sub) + (q.multi ? ' <span class="font-semibold">Selected: <span id="wiz-count-' + n + '">' + sel.length + '</span> of up to ' + q.multi + '.</span>' : '') + '</p>';
-            h += '<div class="space-y-2.5" role="' + (q.multi ? 'group' : 'radiogroup') + '" aria-label="' + e(q.title) + '">' + quizOpts(q).map(function (o) {
+            const qOpts = quizOpts(q), twoCol = qOpts.length >= 4 && qOpts.every(function (o) { return String(o[1] || '').length <= 60; });
+            h += '<div class="' + (twoCol ? 'grid grid-cols-1 md:grid-cols-2 gap-2.5' : 'space-y-2.5') + '" role="' + (q.multi ? 'group' : 'radiogroup') + '" aria-label="' + e(q.title) + '">' + qOpts.map(function (o) {
                 const on = sel.indexOf(o[0]) > -1;
                 return '<button type="button" data-qv="' + o[0] + '" aria-pressed="' + on + '" onclick="quizPick(' + n + ', \'' + o[0] + '\')" class="' + base + (on ? 'border-brand-600 bg-brand-50' : 'border-slate-200 hover:border-brand-600 hover:bg-brand-50/50') + '"><span class="flex items-start gap-3"><span aria-hidden="true" class="mt-0.5 w-5 h-5 shrink-0 border-2 ' + (q.multi ? 'rounded-md' : 'rounded-full') + ' flex items-center justify-center text-[11px] font-bold ' + (on ? 'border-brand-600 bg-brand-600 text-white' : 'border-slate-300 text-transparent') + '">✓</span><span class="font-semibold text-slate-800">' + e(o[1]) + '</span></span></button>';
             }).join('') + '</div>';
@@ -10480,8 +10745,9 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     '<input id="wiz-note" type="text" maxlength="120" value="' + e(wizardAnswers.careerNote || '') + '" placeholder="' + (sw ? 'For example: data analyst, product manager, teaching' : 'For example: doctor, game designer, civil services') + '" class="w-full min-h-[48px] px-4 border border-slate-300 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-brand-500" onkeydown="if(event.key===\'Enter\')wizardClarityDone()">' +
                     '<button type="button" onclick="wizardClarityDone()" class="w-full min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition">Continue</button></div>';
             }
-            if (q.multi) h += '<button type="button" id="wiz-multi-go-' + n + '" onclick="wizardMultiDone(' + n + ')" ' + (sel.length ? '' : 'disabled ') + 'class="mt-4 w-full min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition disabled:opacity-50 disabled:cursor-not-allowed">Continue</button>';
-            if (n > 1) h += '<button type="button" onclick="showWizardStep(' + (n - 1) + ')" class="mt-3 min-h-[44px] text-sm font-semibold text-slate-600 hover:text-slate-900">← Back</button>';
+            const qBack = n > 1 ? '<button type="button" onclick="showWizardStep(' + (n - 1) + ')" class="min-h-[48px] px-4 rounded-xl border border-slate-300 text-sm font-semibold text-slate-700 hover:bg-slate-50">← Back</button>' : '<span></span>';
+            const qGo = q.multi ? '<button type="button" id="wiz-multi-go-' + n + '" onclick="wizardMultiDone(' + n + ')" ' + (sel.length ? '' : 'disabled ') + 'class="qz-go min-h-[48px] px-6 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition disabled:opacity-50 disabled:cursor-not-allowed">Continue</button>' : '';
+            if (n > 1 || q.multi) h += '<div class="qz-actions bg-white">' + qBack + qGo + '</div>';
             box.innerHTML = h;
         }
         // After the stage changes, drop answers that no longer fit (e.g. "switch field" for a Class 12 student).
@@ -10502,7 +10768,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     if (i > -1) sel.splice(i, 1);
                     else { if (sel.length >= q.multi) { showToast('You can pick up to ' + q.multi + '. Tap one to unselect it first.'); return; } sel.push(v); }
                 }
-                wizardAnswers[q.key] = sel; deriveWizard(); renderQuizStep(n);
+                wizardAnswers[q.key] = sel; deriveWizard(); renderQuizStep(n); saveQuizDraft();
                 const b = document.querySelector('#wizard-qs [data-qv="' + v + '"]'); if (b) b.focus();
                 refreshPageNav();
                 return;
@@ -10542,7 +10808,12 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             Open: ['keeping options open', 'keeping options open']
         };
 
-        function restartWizard() {
+        const QZ_DRAFT_KEY = 'marg_quiz_draft';
+        function saveQuizDraft() { try { if (wizCur && wizCur !== WIZARD_DONE && Object.keys(wizardAnswers || {}).length) localStorage.setItem(QZ_DRAFT_KEY, JSON.stringify({ a: wizardAnswers, n: wizCur, t: Date.now() })); } catch (er) {} }
+        function clearQuizDraft() { try { localStorage.removeItem(QZ_DRAFT_KEY); } catch (er) {} }
+        function loadQuizDraft() { try { const d = JSON.parse(localStorage.getItem(QZ_DRAFT_KEY)); if (d && d.a && Object.keys(d.a).length && Date.now() - d.t < 14 * 864e5) return d; } catch (er) {} return null; }
+        function restartWizard(keepDraft) {
+            if (!keepDraft) clearQuizDraft();
             wizardAnswers = {};
             document.getElementById('family-expectation').value = '';
             document.getElementById('family-reflection-result').classList.add('hidden');
@@ -10950,6 +11221,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         // to save to in practice -- it still falls back to local storage defensively, the
         // same way every other saved-data getter/setter in this file does.
         function saveWizardAnswers(answers) {
+            clearQuizDraft();
             if (authGetSession()) { if (cloudData) { cloudData.wizardAnswers = answers; scheduleCloudSave(); } return; }
             try { localStorage.setItem(STORAGE_KEYS.wizardAnswers, JSON.stringify(answers)); } catch (e) {}
         }
@@ -12001,7 +12273,13 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 <p class="text-[11px] font-bold uppercase tracking-wide text-slate-500 pt-1">${r.label}</p>
                 ${list.map(c => `<div>${r.cell(c)}</div>`).join('')}
             </div>`).join('');
-            return `<div class="overflow-x-auto">${header}${body}</div>`;
+            // Phones: one stacked card per career (every row kept), instead of a table you scroll sideways.
+            const cards = list.map(c => `<article class="border border-slate-200 rounded-2xl p-4">
+                <div class="flex items-start justify-between gap-3 pb-3 mb-1 border-b border-slate-100"><div class="min-w-0"><p class="font-bold text-slate-900 text-base leading-snug">${c.title}</p><p class="text-[11px] text-slate-500">${c.category}</p></div>
+                <button onclick="removeFromCompare('${c.id}')" aria-label="Remove ${escapeAuth(c.title)} from compare" class="shrink-0 min-h-[44px] min-w-[44px] -mr-2 -mt-2 text-slate-400 hover:text-rose-600 text-xl leading-none">&times;</button></div>
+                ${rows.map(r => `<div class="py-2.5 border-b border-slate-100 last:border-0"><p class="text-[11px] font-bold uppercase tracking-wide text-slate-500 mb-1">${r.label}</p>${r.cell(c)}</div>`).join('')}
+            </article>`).join('');
+            return `<div class="md:hidden space-y-4">${cards}</div><div class="hidden md:block overflow-x-auto">${header}${body}</div>`;
         }
 
         /* ============================================================
@@ -18129,7 +18407,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             initDataDrivenFilters();
             initExamFilters();
             renderDashboard();
-            restartWizard();
+            restartWizard(true);
         }
 
         /* ============================================================
