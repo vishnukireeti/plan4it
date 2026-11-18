@@ -13213,7 +13213,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             else if (cls === 'ug' || cls === 'grad' || cls === 'pg') routes = [['Add skills and a project to your degree', '6 to 18 months', 'Portfolio, internships', 'Low', 'Your degree is related or flexible'], ['Certification or diploma after the degree', '3 to 12 months', 'Provider enrolment', 'Low to medium', 'You need a credential employers recognise'], ['Master\'s or postgraduate programme', '1 to 2 years', 'Entrance exam or merit', 'Medium to high', 'The field needs a higher qualification'], ['Direct entry-level job or internship', '0 to 6 months', 'Applications and interviews', 'Free', 'You already have the skills']];
             else routes = [['Degree route (the usual way)', '3 to 5 years', 'Entrance exam or merit', c.costTier + ' cost', 'You want the standard, widely accepted qualification'], ['Diploma, ITI or short course', '1 to 3 years', 'Merit or simple test', 'Low to medium', 'You want to start earning sooner'], ['Skills-first route with a portfolio', '1 to 2 years of effort', 'Proof of work and interview', 'Low', 'The field values skills over degrees'], ['Government or institute seats', '3 to 5 years', 'National or state entrance exams', 'Low', 'You can handle exam preparation and want low fees']];
             const steps = '<div class="cr-steps">' + road.map(function (x, i) { return '<div class="cr-step"><b>' + (i + 1) + '</b><span>' + e(x) + '</span></div>'; }).join('') + '</div>';
-            return steps + ipH('Ways in, side by side') + ipRows(['Route', 'Time', 'How you get in', 'Cost', 'Best if'], routes.map(function (r, ri) { const tag = !X.career5 ? '' : ri === 0 ? 'Recommended' : (/^low/i.test(r[3] || '') && !routes.slice(1, ri).some(function (q) { return /^low/i.test(q[3] || ''); })) ? 'Lower-cost' : 'Alternative'; return r.map(function (x, i) { return i === 0 ? '<b>' + e(x) + '</b>' + (tag ? '<br><span class="cr-chip">' + tag + '</span>' : '') : e(x); }); })) +
+            return steps + ipH('Ways in, side by side') + ipRows(['Route', 'Time', 'How you get in', 'Cost', 'Best if'], routes.map(function (r, ri) { const tag = !(X.career5 || X.f18) ? '' : ri === 0 ? 'Recommended' : (/^low/i.test(r[3] || '') && !routes.slice(1, ri).some(function (q) { return /^low/i.test(q[3] || ''); })) ? 'Lower-cost' : 'Alternative'; return r.map(function (x, i) { return i === 0 ? '<b>' + e(x) + '</b>' + (tag ? '<br><span class="cr-chip">' + tag + '</span>' : '') : e(x); }); })) +
                 (X.gen || X.seg === 'general' || X.career5 ? '' : ipCard('Before you choose a route: ask these', ipUl(['Which route can my family afford for the full length, including living costs?', 'Which route do I have the marks or skills for today, not in theory?', 'Does a shorter route still lead to the roles I want?', 'Who can I speak to who took this route?']), '')) +
                 (X.career5 ? '' : ipCard('How long, in total', '<p class="pp-sm">Most people start work in about <b>' + e(c.entryYears) + ' years</b> from the beginning of the route. Cost to enter is rated <b>' + e(c.costTier.toLowerCase()) + '</b>. Pay at the start is usually at the lower end of ' + e(c.salary) + ', rising with skill and experience.</p>', 'pp-note'));
         }
@@ -13286,7 +13286,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const e = X.e, c = X.rec, sd = c.skillDetails || [], f1 = sd[0] ? sd[0].name : 'the first core skill', ex = X.exams[0], yp = X.yp, q = yp && yp[0] ? yp[0][1] : [];
             const rows = [['1 to 2', q[0] || (ex ? 'Check the dates for ' + ex.name + ' and register' : 'Pick the first skill and set a weekly study time'), 'It is done and written in your calendar'], ['1 to 4', 'Study or practise for 45 minutes a day: ' + f1, 'You have 20 or more days logged'], ['3 to 6', q[1] || 'Finish one beginner course in ' + f1, 'You have notes and one small exercise'], ['5 to 8', 'Talk to 3 people who do this job and ask what a normal week looks like', 'You have written notes from 3 conversations'], ['7 to 10', q[2] || 'Build one small project that looks like real work in this field', 'You can show it to someone'], ['9 to 12', ex ? 'Take a timed practice test for ' + ex.name + ' and review mistakes' : 'Apply for one internship, trial or small paid task', 'You know your weak areas'], ['11 to 13', 'Shortlist your next steps (courses, colleges or roles) and write your Plan B', 'A one-page sheet you can discuss with family']];
             const TM = ['1 to 2 hrs', '45 min a day', '3 hrs a week', '2 hrs', '4 hrs a week', '3 hrs', '2 hrs'];
-            return (X.career5 ? ipRows(['Weeks', 'Do this', 'Time', 'Done when'], rows.map(function (r, i) { return [e(r[0]), e(r[1]), e(TM[i] || ''), e(r[2])]; })) : ipRows(['Weeks', 'Do this', 'Done when'], rows.map(function (r) { return r.map(e); }))) +
+            return ((X.career5 || X.f18) ? ipRows(['Weeks', 'Do this', 'Time', 'Done when'], rows.map(function (r, i) { return [e(r[0]), e(r[1]), e(TM[i] || ''), e(r[2])]; })) : ipRows(['Weeks', 'Do this', 'Done when'], rows.map(function (r) { return r.map(e); }))) +
                 (X.career5 ? '' : '<div class="pp-cols3">' + ['Days 1 to 30', 'Days 31 to 60', 'Days 61 to 90'].map(function (t, i) { const items = yp && yp[0] && i === 0 ? yp[0][1].slice(0, 3) : i === 0 ? ['Set up your study time', 'Learn the first skill', 'Talk to someone in the field'] : i === 1 ? ['Finish a beginner course', 'Build a small project', 'Do a mock test or trial task'] : ['Show your work to a professional', 'Shortlist courses or roles', 'Write your Plan B']; return '<div class="pp-card pp-slim"><b>' + t + '</b>' + ipUl(items) + '</div>'; }).join('') + '</div>' +
                 ppMeter('Your habit target', 100, '28 days in a row', '#16a34a') + '<p class="pp-sm pp-mut">Tick each day on a wall calendar. Short, daily practice beats long weekend sessions.</p>');
         }
@@ -13312,6 +13312,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const A = getStoredWizardAnswers(); if (!A) return null;
             const X = ipCtx(A, null, false), e = X.e, rec = X.rec, top = X.top, pct = X.pct, pool = X.pool;
             if (!rec) return null;
+            X.f18 = true;
             const vis = CAT_VIS[rec.category] || ['<i class=ic-star></i>', '#0c4a6e', '#0284c7'];
             const kind = 'Career Intelligence Report · ' + (A.__saved ? 'built from your saved items' : PLAN_SEG_LABEL[X.seg] + ' edition'), right = 'Prepared for <b>' + e(X.name) + '</b><br>' + e(X.today);
             const lab = function (k) { return quizLabel(k, A, k === 'cls'); };
@@ -13344,7 +13345,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             // 5 fit score
             const bd = intelBreakdown(rec, A);
             P.push(['Career fit score', 'What drives the ' + pct(rec) + '% for ' + rec.title + ', and how to read it.', '<div class="ip-score"><div class="ip-ring"><b>' + pct(rec) + '%</b><span>' + e(fitInfo(pct(rec)).text) + '</span></div><div style="flex:1">' + bd.map(function (r) { return ppMeter(r[0], r[1], r[1] + '%', r[1] >= 70 ? '#16a34a' : r[1] >= 45 ? '#d97706' : '#dc2626'); }).join('') + '</div></div>' +
-                ipH('What the four parts mean') + ipRows(['Part', 'Your result', 'What it means'], [['Your interests', bd[0][1] + '%', 'How closely the career\'s field matches the interests you picked.'], ['Your work style', bd[1][1] + '%', 'Whether the day-to-day work matches how you like to work.'], ['What matters most', bd[2][1] + '%', 'How well the route fits your top priority (cost, speed or depth).'], ['Practical fit', bd[3][1] + '%', 'Entry difficulty set against your marks or readiness.']].map(function (r) { return r.map(e); })) +
+                ipFitBreakdown(X) + ipH('What the four parts mean') + ipRows(['Part', 'Your result', 'What it means'], [['Your interests', bd[0][1] + '%', 'How closely the career\'s field matches the interests you picked.'], ['Your work style', bd[1][1] + '%', 'Whether the day-to-day work matches how you like to work.'], ['What matters most', bd[2][1] + '%', 'How well the route fits your top priority (cost, speed or depth).'], ['Practical fit', bd[3][1] + '%', 'Entry difficulty set against your marks or readiness.']].map(function (r) { return r.map(e); })) +
                 '<div class="pp-cols"><div>' + ipCard('Score bands', ipRows(['Score', 'Meaning'], [['85%+', 'Strong fit: lead with this'], ['70 to 84%', 'Good fit: look closely'], ['55 to 69%', 'Possible: check the downsides'], ['Below 55%', 'Weak fit for your answers']])) + '</div><div>' + ipCard('What the score is not', ipUl(['Not a prediction that you will succeed.', 'It does not know your talent or effort.', 'It changes if you retake the quiz.', 'Treat close scores as equal.']), 'pp-note') + '</div></div><p class="pp-sm pp-mut">Method: rule-based. Plan4it compares your answers with each career\'s data. Nothing is hidden.</p>']);
             // 6 matrix
             const demN = function (c) { return PP_LEVEL[c.demand] || 2; }, difN = function (c) { return PP_LEVEL[c.difficulty] || 2; }, costN = function (c) { return PP_LEVEL[c.costTier] || 2; };
@@ -13354,12 +13355,15 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             P.push(['Career comparison matrix', 'Green is easier or better for most people, amber is middling, red needs thought.', '<table class="pp-t ci-mx"><tr><th></th>' + top.map(function (c) { return '<th>' + e(c.title) + '</th>'; }).join('') + '</tr>' + mx.map(function (r) { return '<tr><th>' + e(r[0]) + '</th>' + top.map(function (c) { const v = r[1](c); return '<td class="' + v[1] + '">' + e(v[0]) + '</td>'; }).join('') + '</tr>'; }).join('') + '</table>' +
                 '<div class="pp-cols3">' + ipCard('Best fit', '<p class="pp-sm"><b>' + e(top[0].title) + '</b> has the highest match with your answers.</p>') + ipCard('Fastest to start', '<p class="pp-sm"><b>' + e(fastest.title) + '</b> takes about ' + e(fastest.entryYears) + ' years.</p>') + ipCard('Highest pay ceiling', '<p class="pp-sm"><b>' + e(richest.title) + '</b>: up to about ₹' + e(richest.salaryMax) + ' lakh a year (estimate).</p>') + '</div>' + ipH('Pay ranges at a glance (₹ lakh a year, estimated band)') +
                 top.map(function (c) { return '<div class="cr-hb"><span class="cr-hbl">' + e(c.title) + '</span><span class="cr-hbt"><i style="margin-left:' + (Number(c.salaryMin) / mxmax * 100) + '%;width:' + Math.max(3, (Number(c.salaryMax) - Number(c.salaryMin)) / mxmax * 100) + '%"></i></span><span class="cr-hbv">' + e(c.salaryMin + ' to ' + c.salaryMax) + '</span></div>'; }).join('') + '<p class="pp-sm pp-mut">Pay bands are estimates from Plan4it career data. Where a range is wide, the top is reached by a smaller share of people. Lowest cost route among these: ' + e(cheapest.title) + '.</p>']);
+            const fb = top.map(function (c) { return ipFitCalc(X, c); });
+            const fbTable = ipH('Fit breakdown for each career') + ipRows([''].concat(top.map(function (c) { return c.title; })), fb[0].map(function (r, ri) { return [r[0]].concat(fb.map(function (rs) { return rs[ri][1] === null ? 'not rated' : rs[ri][1] + '/100'; })); }).map(function (r) { return r.map(e); })) + '<p class="pp-sm pp-mut">Skill readiness shows "not rated" until you tick the skills you already have on each career page. Scores are guidance from your answers, not a prediction.</p>';
+            if (!A.__saved) P[P.length - 1][2] += fbTable;
             // 7 recommended
-            P.push([rec.title + ': your recommended career', 'What the job is, and what a week looks like.', ipHero(rec, vis, '<div class="cr-fit"><b>' + pct(rec) + '%</b><span>your match</span></div>') + ipMeters(rec) + ipJob(X)]);
+            P.push([rec.title + ': your recommended career', 'What the job is, and what a week looks like.', ipHero(rec, vis, '<div class="cr-fit"><b>' + pct(rec) + '%</b><span>your match</span></div>') + ipMeters(rec) + ipJob(X) + ipScene(X)]);
             // 8 why / why not
-            P.push(['Why this career, and what you need to consider', 'An honest two-sided view, based on your answers.', ipWhyNot(X)]);
+            P.push(['Why this career, and what you need to consider', 'An honest two-sided view, based on your answers.', ipWhyNot(X) + ipTrial(X)]);
             // 9 education
-            P.push(['Education pathway', 'The usual route into ' + rec.title + ', and other ways in.', ipRoute(X)]);
+            P.push(['Education pathway', 'The usual route into ' + rec.title + ', and other ways in.', ipRoute(X) + ipEntryLevels(X)]);
             // 10 colleges
             P.push([X.student ? 'College and course options' + (X.f && X.f.state && X.f.state !== 'any' ? ' in ' + X.f.state : '') : 'Courses and certifications', X.student ? 'Programmes that fit your budget and marks.' : 'Ways to build the credentials this career asks for.', ipColleges(X, false)]);
             // 11 exams
@@ -13367,13 +13371,13 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             // 12 skills
             P.push(['Skills gap', 'What you need, where you stand, and how to close it.', ipSkills(X, false)]);
             // 13 salary
-            P.push(['Salary and opportunity outlook', 'Pay by stage, who hires, and what moves pay up. Pay figures are estimates.', ipPay(X, false)]);
+            P.push(['Salary and opportunity outlook', 'Pay by stage, who hires, and what moves pay up. Pay figures are estimates.', ipPay(X, false) + ipPayReality(X)]);
             // 14 reality
             P.push(['Career reality check', 'The honest picture, so there are no surprises.', ipReality(X, false)]);
             // 15 plan B
             P.push(['Plan B and adjacent careers', 'Close alternatives that use similar skills, so a missed cut-off or a changed mind is not a dead end.', ipPlanB(X, false)]);
             // 16 90 days
-            P.push(['Your 90-day action plan', 'Week by week. Tick items off as you go.', ipDays(X)]);
+            P.push(['Your 90-day action plan', 'Week by week. Tick items off as you go.', ipDays(X) + ipCheckpoint(X)]);
             // 17 1 to 3 year
             P.push(['Your 1 to 3 year roadmap', 'From where you are today to a first role in ' + rec.title + '.', ipYears(X)]);
             // 18 parents
@@ -13466,8 +13470,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             'Sports & Fitness': ['Plan and run a 4-week training plan', 'Day 1: pick a goal with a friend. Day 2: write the plan. Day 3-4: run week 1. Day 5: review results and change the plan.'],
             'Personal Services & Wellness': ['Offer a simple service to two people', 'Day 1: choose the service. Day 2: prepare. Day 3: do it for two people. Day 4: ask for feedback. Day 5: note what you would do differently.']
         };
-        function ipFitBreakdown(X) {
-            const c = X.rec, A = X.A, e = X.e; if (!A || A.__saved || X.gen) return '';
+        function ipFitCalc(X, c) {
+            const A = X.A;
             const catInt = QZ_CAT_TO_INT[c.category] || c.category, ints = (A.interests3 && A.interests3.length) ? A.interests3 : (A.interest && A.interest !== 'Undecided' ? [A.interest] : []);
             const named = (A.mentioned || []).indexOf(c.id) > -1;
             let interest = named ? 95 : 30; ints.forEach(function (it, i) { if (catInt === it) interest = Math.max(interest, [92, 75, 62][i] || 55); else if ((c.interestTags || []).indexOf(it) > -1) interest = Math.max(interest, [72, 58, 48][i] || 45); });
@@ -13480,6 +13484,12 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (vals.indexOf('freedom') > -1 && /demanding|irregular/.test(wl)) life -= 25; if (vals.indexOf('stable') > -1 && (c.demandScore || 0) >= 4) life += 10; if (vals.indexOf('earn') > -1 && (c.salaryMax || 0) >= 25) life += 10;
             life = Math.max(15, Math.min(95, life));
             const rows = [['Interest alignment', interest, 'How closely the work matches what you said interests you', '#7c3aed'], ['Working-style alignment', style, 'Whether the day-to-day work matches how you like to work', '#0284c7'], ['Skill readiness today', skill, have + ' of ' + sd.length + ' core skills ticked in Plan4it. Tick yours on the career page', '#16a34a'], ['Financial feasibility', money, bud ? 'Cost to enter is rated ' + ct.toLowerCase() + ', against your budget of ' + FIT_BUDGET[bud][0] : 'You did not give a budget, so this is a neutral estimate', '#d97706'], ['Lifestyle alignment', life, 'Route length and work-life balance against what you said matters', '#0d9488']];
+            return rows;
+        }
+        function ipFitBreakdown(X) {
+            const c = X.rec, A = X.A, e = X.e; if (!A || A.__saved || X.gen) return '';
+            const rows = ipFitCalc(X, c);
+            const skill = rows[2][1];
             const rated = rows.filter(function (r) { return r[1] !== null; }), avg = Math.round(rated.reduce(function (t, r) { return t + r[1]; }, 0) / rated.length), hi = rated.slice().sort(function (a, b) { return b[1] - a[1]; })[0], lo = rated.slice().sort(function (a, b) { return a[1] - b[1]; })[0];
             const verdict = avg >= 70 ? 'A strong candidate for you. Test it with a trial before committing.' : avg >= 55 ? 'Possible, with conditions. The lowest score above is what to work on or check.' : 'Think carefully. Several things may not match, so compare it with your Plan B.';
             return ipH('Your fit breakdown') + '<div class="pp-cols"><div>' + rows.slice(0, 3).map(function (r) { return ppMeter(r[0], r[1] === null ? 0 : r[1], r[1] === null ? 'not rated yet' : r[1] + '/100', r[3]); }).join('') + '</div><div>' + rows.slice(3).map(function (r) { return ppMeter(r[0], r[1], r[1] + '/100', r[3]); }).join('') + '<div class="pp-sm pp-mut">' + e(rows[2][2]) + (skill === null ? ' (not counted in the summary)' : '') + '. ' + e(rows[3][2]) + '.</div></div></div>' +
@@ -13541,11 +13551,11 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         // The 18 pages in seven groups, each with what it does for the reader.
         const RPT_FULL18_GROUPS = [
             ['Pages 1-2', 'Who you are', 'Your career profile and career DNA', 'Puts your answers into plain words, so you see your own strengths and what you really want from work.'],
-            ['Pages 3-7', 'Your best matches', 'Top 5 careers, why they fit, fit score, side-by-side comparison, your recommended career', 'Shows which careers suit you most and why, next to each other, so you choose with facts instead of guessing.'],
-            ['Pages 8 and 14', 'The honest check', 'What you need to consider, and a career reality check', 'Tells you the downsides before you spend years or money on a path.'],
+            ['Pages 3-7', 'Your best matches', 'Top 5 careers, why they fit, fit score with a five-part breakdown, side-by-side comparison, your recommended career and a day in the work', 'Shows which careers suit you most and why, next to each other, so you choose with facts instead of guessing.'],
+            ['Pages 8 and 14', 'The honest check', 'What you need to consider, a one-week career trial, and a career reality check', 'Tells you the downsides, and lets you test the work for a week, before you spend years or money on a path.'],
             ['Pages 9-11', 'How to get there', 'Education pathway, college and course options, entrance and eligibility roadmap', 'Which course, which exams and which colleges, with the eligibility rules, in the order you need them.'],
             ['Pages 12-13', 'Skills and money', 'Skills gap, salary and opportunity outlook', 'What to learn first, and what you can earn at each stage.'],
-            ['Pages 15-17', 'Backup and action', 'Plan B careers, 90-day action plan, 1 to 3 year roadmap', 'A backup if plans change, and exactly what to do next week, next quarter and next year.'],
+            ['Pages 15-17', 'Backup and action', 'Plan B careers, 90-day action plan with a day-90 decision, 1 to 3 year roadmap', 'A backup if plans change, and exactly what to do next week, next quarter and next year.'],
             ['Page 18', 'Talk to your parents', 'Parent discussion guide', 'Costs, risks and questions, ready to talk through at home.']
         ];
         function rptGroupsHTML() {
