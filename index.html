@@ -11603,7 +11603,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 if (picks.length) h += premiumSec('<i class=ic-school></i>', 'Colleges for you in ' + (fx.state === 'any' ? 'India' : fx.state), ut == null ? 'Three picks matched to your interest, fees and location. Add your marks in the quiz to see which are a stretch, a good match or safe.' : 'Dream = a stretch, Target = a good match for your marks, Safe = likely to get in.',
                     '<ul class="grid md:grid-cols-3 gap-2">' + picks.map(function (r) {
                         const b = band(r.c), bc = b === 'Dream' ? 'bg-violet-100 text-violet-800' : b === 'Safe' ? 'bg-emerald-100 text-emerald-800' : 'bg-brand-100 text-brand-800';
-                        return '<li class="border border-slate-200 rounded-xl p-3"><span class="text-[11px] font-bold px-2 py-0.5 rounded ' + bc + '">' + b + '</span><button type="button" onclick="openCollegeDetail(\'' + r.c.id + '\')" class="block mt-1.5 font-semibold text-slate-900 hover:text-brand-700 text-left text-sm">' + e(r.c.name.replace(/\s*\(.*?\)\s*/g, ' ').trim()) + '</button><p class="text-xs text-slate-500">' + e(r.c.location || r.c.district || '') + '</p></li>';
+                        return '<li data-open-college="' + r.c.id + '" class="cursor-pointer border border-slate-200 rounded-xl p-3"><span class="text-[11px] font-bold px-2 py-0.5 rounded ' + bc + '">' + b + '</span><button type="button" onclick="openCollegeDetail(\'' + r.c.id + '\')" class="block mt-1.5 font-semibold text-slate-900 hover:text-brand-700 text-left text-sm">' + e(r.c.name.replace(/\s*\(.*?\)\s*/g, ' ').trim()) + '</button><p class="text-xs text-slate-500">' + e(r.c.location || r.c.district || '') + '</p></li>';
                     }).join('') + '</ul><button type="button" onclick="setFitOff(false);switchView(\'colleges\')" class="mt-2 min-h-[44px] text-sm font-semibold text-brand-700 hover:underline">See more colleges for me \u2192</button>');
             } else if (A.cls === 'working') {
                 const certs = []; top3.forEach(function (c) { (c.certifications || []).forEach(function (x) { if (certs.indexOf(x) < 0) certs.push(x); }); });
@@ -11797,7 +11797,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 const c = r.c;
                 const fit = fitInfo(Math.min(97, Math.max(45, Math.round((r.score / 120) * 100))));
                 const name = c.name.replace(/\s*\(.*?\)\s*/g, ' ').trim();
-                if (ri >= 2) return '<div class="p-4 bg-white border border-slate-200 rounded-xl flex items-start justify-between gap-3"><div class="min-w-0"><div class="flex items-center gap-2 mb-1"><span class="text-xs font-bold px-2.5 py-0.5 rounded ' + fit.cls + '">' + fit.text + '</span><span class="text-xs text-slate-500">Match #' + (ri + 1) + '</span></div><h4 class="font-bold text-slate-900">' + e(name) + '</h4><p class="text-xs text-slate-600">' + e(c.location || '') + (c.nirf ? ' · NIRF #' + c.nirf : '') + '</p></div><button type="button" onclick="openCollegeDetail(\'' + c.id + '\')" class="shrink-0 text-brand-700 text-sm font-semibold hover:underline min-h-[44px]">Full details →</button></div>';
+                if (ri >= 2) return '<div data-open-college="' + c.id + '" role="link" tabindex="0" class="cursor-pointer p-4 bg-white border border-slate-200 rounded-xl flex items-start justify-between gap-3"><div class="min-w-0"><div class="flex items-center gap-2 mb-1"><span class="text-xs font-bold px-2.5 py-0.5 rounded ' + fit.cls + '">' + fit.text + '</span><span class="text-xs text-slate-500">Match #' + (ri + 1) + '</span></div><h4 class="font-bold text-slate-900">' + e(name) + '</h4><p class="text-xs text-slate-600">' + e(c.location || '') + (c.nirf ? ' · NIRF #' + c.nirf : '') + '</p></div><button type="button" onclick="openCollegeDetail(\'' + c.id + '\')" class="shrink-0 text-brand-700 text-sm font-semibold hover:underline min-h-[44px]">Full details →</button></div>';
                 const stands = c.dir
                     ? [dirFacts(c), c.courseRows.length ? dirSeats(c).toLocaleString('en-IN') + ' approved seats a year' : '', c.uni ? 'Affiliated to ' + c.uni : '']
                     : [c.fees ? c.fees + (/\//.test(c.fees) ? '' : ' / yr') : '', c.relatedExam ? 'Entry via ' + c.relatedExam : '', c.placementNote && !/mock|illustrative/i.test(c.placementNote) ? c.placementNote.split('.')[0] : ''];
@@ -15409,7 +15409,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const regLabel = examDateText(e.regCloses);
             const yearRound = isNaN(regDaysLeft);
             return `
-                <div class="card-interactive bg-white border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col gap-3 relative">
+                <div data-open-exam="${e.id}" role="link" tabindex="0" class="card-interactive bg-white border border-slate-200 p-6 rounded-2xl shadow-sm cursor-pointer flex flex-col gap-3 relative">
                     <button onclick="toggleSaveExam('${e.id}')" aria-label="${saved ? 'Remove from saved' : 'Save exam'}" class="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center ${saved ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-400 hover:text-brand-600'} transition">
                         <svg class="w-4 h-4" viewBox="0 0 20 20" fill="${saved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5"><path d="M5 3.5a1 1 0 011-1h8a1 1 0 011 1v13.2a.5.5 0 01-.79.41L10 13.5l-4.21 3.6a.5.5 0 01-.79-.4V3.5z"/></svg>
                     </button>
@@ -15430,6 +15430,20 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 </div>`;
         }
 
+
+        /* Whole exam / college cards open their detail page; real buttons, links and form fields inside a card keep their own behaviour. */
+        (function () {
+            function go(ev) {
+                const t = ev.target; if (!t || !t.closest) return;
+                if (t.closest('a, button, input, select, textarea, label, summary')) return;
+                const card = t.closest('[data-open-exam], [data-open-college]'); if (!card) return;
+                if (window.getSelection && String(window.getSelection()).length > 0) return;
+                if (card.hasAttribute('data-open-exam')) openExamDetail(card.getAttribute('data-open-exam'));
+                else openCollegeDetail(card.getAttribute('data-open-college'));
+            }
+            document.addEventListener('click', go);
+            document.addEventListener('keydown', function (ev) { if ((ev.key === 'Enter' || ev.key === ' ') && ev.target && ev.target.matches && ev.target.matches('[data-open-exam], [data-open-college]')) { ev.preventDefault(); go(ev); } });
+        })();
         function initExamFilters() {
             const sel = document.getElementById('exam-filter'), dsel = document.getElementById('exam-difficulty-filter');
             if (sel) {
@@ -15812,7 +15826,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (c.dir) return dirCardHTML(c);
             const saved = getSavedColleges().includes(c.id);
             return `
-                <div class="card-interactive bg-white border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col gap-3 relative">
+                <div data-open-college="${c.id}" role="link" tabindex="0" class="card-interactive bg-white border border-slate-200 p-6 rounded-2xl shadow-sm cursor-pointer flex flex-col gap-3 relative">
                     <button onclick="toggleSaveCollege('${c.id}')" aria-label="${saved ? 'Remove from saved' : 'Save college'}" class="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center ${saved ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-400 hover:text-brand-600'} transition">
                         <svg class="w-4 h-4" viewBox="0 0 20 20" fill="${saved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5"><path d="M5 3.5a1 1 0 011-1h8a1 1 0 011 1v13.2a.5.5 0 01-.79.41L10 13.5l-4.21 3.6a.5.5 0 01-.79-.4V3.5z"/></svg>
                     </button>
@@ -15858,7 +15872,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         function dirSeats(c) { return c.courseRows.reduce(function (s, x) { return s + (x[2] || 0); }, 0); }
         function dirCardHTML(c) {
             const e = escapeAuth, saved = getSavedColleges().includes(c.id), seats = dirSeats(c);
-            return '<div class="card-interactive bg-white border border-slate-200 p-6 rounded-2xl shadow-sm space-y-3 relative">' +
+            return '<div data-open-college="' + c.id + '" role="link" tabindex="0" class="card-interactive bg-white border border-slate-200 p-6 rounded-2xl shadow-sm space-y-3 relative cursor-pointer">' +
                 '<button onclick="toggleSaveCollege(\'' + c.id + '\')" aria-label="' + (saved ? 'Remove from saved' : 'Save college') + '" class="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center ' + (saved ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-400 hover:text-brand-600') + ' transition">' +
                 '<svg class="w-4 h-4" viewBox="0 0 20 20" fill="' + (saved ? 'currentColor' : 'none') + '" stroke="currentColor" stroke-width="1.5"><path d="M5 3.5a1 1 0 011-1h8a1 1 0 011 1v13.2a.5.5 0 01-.79.41L10 13.5l-4.21 3.6a.5.5 0 01-.79-.4V3.5z"/></svg></button>' +
                 '<div class="flex flex-wrap items-center gap-1.5 pr-10 min-h-[32px]">' + dirTierBadge(c) + '</div>' +
