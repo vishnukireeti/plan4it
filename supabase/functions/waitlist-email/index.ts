@@ -34,20 +34,20 @@ Deno.serve(async (req: Request) => {
     await db.from("learnership_waitlist").update({ email_error: "email service not set up" }).eq("id", row.id);
     return json({ sent: false, reason: "not configured" });
   }
-  const from = Deno.env.get("WAITLIST_FROM") || "Plan4it <hello@plan4it.co>";
+  const from = Deno.env.get("WAITLIST_FROM") || "Plan4it.co <hello@plan4it.co>";
   const first = esc(String(row.name || "").trim().split(/\s+/)[0] || "there");
   const html = `<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#0f172a;max-width:520px">
 <p>Hi ${first},</p>
-<p>Thank you for joining the Plan4it Learnership waitlist.</p>
+<p>Thank you for joining the Plan4it.co Learnership waitlist.</p>
 <p>We will update you with the information soon via email.</p>
-<p>Thanks,<br>Plan4it</p>
+<p>Thanks,<br>Plan4it.co</p>
 <p style="font-size:12px;color:#64748b">Joining the waitlist is free and does not commit you to anything. You are receiving this because this email address was used to join the waitlist at plan4it.co.</p></div>`;
-  const text = `Hi ${String(row.name || "").trim().split(/\s+/)[0] || "there"},\n\nThank you for joining the Plan4it Learnership waitlist.\n\nWe will update you with the information soon via email.\n\nThanks,\nPlan4it\n\nJoining the waitlist is free and does not commit you to anything.`;
+  const text = `Hi ${String(row.name || "").trim().split(/\s+/)[0] || "there"},\n\nThank you for joining the Plan4it.co Learnership waitlist.\n\nWe will update you with the information soon via email.\n\nThanks,\nPlan4it.co\n\nJoining the waitlist is free and does not commit you to anything.`;
   try {
     const r = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ from, to: [row.email], subject: "Thanks for joining the Plan4it waitlist", html, text }),
+      body: JSON.stringify({ from, to: [row.email], subject: "Thanks for joining the Plan4it.co waitlist", html, text }),
     });
     if (!r.ok) {
       const msg = (await r.text()).slice(0, 300);

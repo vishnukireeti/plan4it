@@ -20,7 +20,7 @@ the --color-brand-600 value in scripts/build-tailwind.mjs.
 from PIL import Image, ImageDraw, ImageFont
 
 # ---- EDIT THESE WHEN RENAMING OR RECOLOURING --------------------------
-APP_NAME = "Plan4it"
+APP_NAME = "Plan4it.co"
 APP_TAGLINE = "Plan it. Do it. Done."
 APP_DOMAIN_DISPLAY = "margai.netlify.app"   # shown as plain text on the OG image — still the
                                    # old domain; update once a custom domain is registered

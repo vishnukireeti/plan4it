@@ -1,4 +1,4 @@
-# Plan4it — Handoff / Continuity Brief
+# Plan4it.co — Handoff / Continuity Brief
 
 Paste this entire document as your first message in a new chat. It gives
 Claude everything needed to continue exactly where this session left off —
@@ -8,7 +8,7 @@ no other setup needed.
 
 ## What this project is
 
-**Plan4it** (renamed from "MARG-AI" 2026-11-02, see `docs/RENAME_CHECKLIST.md`)
+**Plan4it.co** (renamed from "MARG-AI" 2026-11-02, see `docs/RENAME_CHECKLIST.md`)
 is a free, single-file HTML career-guidance web app for Class 10–12 students
 in India (and their families). It helps them figure out careers, exams,
 colleges and scholarships that fit their situation.

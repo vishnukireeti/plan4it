@@ -75,7 +75,7 @@ limitation, not a known bug — see below.
 - [x] Real Supabase Auth (email/password + Google code path) replacing
       the old localStorage-only demo accounts; saved careers/colleges/
       exams/checklist/profile now sync to an account when signed in
-- [x] Renamed "MARG-AI" → "Plan4it" (2026-11-02): all in-app text, README,
+- [x] Renamed "MARG-AI" → "Plan4it.co" (2026-11-02): all in-app text, README,
       docs, and favicons/OG image regenerated. Custom domain `plan4it.co`
       registered and connected via Netlify DNS (2026-11-04), now the live
       primary URL. GitHub repo, Netlify site, and Supabase project all

@@ -1,6 +1,6 @@
-# Plan4it
+# Plan4it.co
 
-> Renamed from "MARG-AI" to "Plan4it" on 2026-11-02. Custom domain
+> Renamed from "MARG-AI" to "Plan4it.co" on 2026-11-02. Custom domain
 > `plan4it.co` connected 2026-11-04 and is now the live primary URL.
 > GitHub repo, Netlify site, and Supabase project names all renamed too
 > (2026-11-04) — nothing named "marg"/"MargAI" left anywhere. GA4/Sentry
