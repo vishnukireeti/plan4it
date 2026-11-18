@@ -13214,17 +13214,17 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (X.seg === 'working' || cls === 'working') routes = [['Learn on your own and build proof', '6 to 18 months', 'A portfolio or projects, then interviews', 'Low (₹0 to ₹60,000 for courses)', 'You can study alongside your job'], ['Certification or short programme', '3 to 12 months', 'Provider enrolment', 'Low to medium', 'You need a recognised credential'], ['Move within your company', '3 to 12 months', 'Manager and HR conversation', 'Free', 'Your employer has a related team'], ['Part-time or weekend degree/diploma', '1 to 3 years', 'Admission test or direct entry', 'Medium', 'The role asks for a formal qualification']];
             else if (cls === 'ug' || cls === 'grad' || cls === 'pg') routes = [['Add skills and a project to your degree', '6 to 18 months', 'Portfolio, internships', 'Low', 'Your degree is related or flexible'], ['Certification or diploma after the degree', '3 to 12 months', 'Provider enrolment', 'Low to medium', 'You need a credential employers recognise'], ['Master\'s or postgraduate programme', '1 to 2 years', 'Entrance exam or merit', 'Medium to high', 'The field needs a higher qualification'], ['Direct entry-level job or internship', '0 to 6 months', 'Applications and interviews', 'Free', 'You already have the skills']];
             else routes = [['Degree route (the usual way)', '3 to 5 years', 'Entrance exam or merit', c.costTier + ' cost', 'You want the standard, widely accepted qualification'], ['Diploma, ITI or short course', '1 to 3 years', 'Merit or simple test', 'Low to medium', 'You want to start earning sooner'], ['Skills-first route with a portfolio', '1 to 2 years of effort', 'Proof of work and interview', 'Low', 'The field values skills over degrees'], ['Government or institute seats', '3 to 5 years', 'National or state entrance exams', 'Low', 'You can handle exam preparation and want low fees']];
-            const steps = '<div class="cr-steps">' + road.map(function (x, i) { return '<div class="cr-step"><b>' + (i + 1) + '</b><span>' + e(x) + '</span></div>'; }).join('') + '</div>';
-            return steps + ipH('Ways in, side by side') + ipRows(['Route', 'Time', 'How you get in', 'Cost', 'Best if'], routes.map(function (r, ri) { const tag = !(X.career5 || X.f18) ? '' : ri === 0 ? 'Recommended' : (/^low/i.test(r[3] || '') && !routes.slice(1, ri).some(function (q) { return /^low/i.test(q[3] || ''); })) ? 'Lower-cost' : 'Alternative'; return r.map(function (x, i) { return i === 0 ? '<b>' + e(x) + '</b>' + (tag ? '<br><span class="cr-chip">' + tag + '</span>' : '') : e(x); }); })) +
+            const steps = '<div class="cr-steps">' + ipStageSteps(X, road).map(function (x, i) { return '<div class="cr-step"><b>' + (i + 1) + '</b><span>' + e(x.t) + (x.tag ? ' <i class="cr-chip">' + e(x.tag) + '</i>' : '') + '</span></div>'; }).join('') + '</div>';
+            return steps + ipH('Ways in, side by side') + ipRows(['Route', 'Time', 'How you get in', 'Cost', 'Best if'], (X.career5 ? routes.slice(0, 3) : routes).map(function (r, ri) { const tag = !(X.career5 || X.f18) ? '' : ri === 0 ? 'Recommended' : (/^low/i.test(r[3] || '') && !routes.slice(1, ri).some(function (q) { return /^low/i.test(q[3] || ''); })) ? 'Lower-cost' : 'Alternative'; return r.map(function (x, i) { return i === 0 ? '<b>' + e(x) + '</b>' + (tag ? '<br><span class="cr-chip">' + tag + '</span>' : '') : e(x); }); })) +
                 (X.gen || X.seg === 'general' || X.career5 ? '' : ipCard('Before you choose a route: ask these', ipUl(['Which route can my family afford for the full length, including living costs?', 'Which route do I have the marks or skills for today, not in theory?', 'Does a shorter route still lead to the roles I want?', 'Who can I speak to who took this route?']), '')) +
-                (X.career5 ? '' : ipCard('How long, in total', '<p class="pp-sm">Most people start work in about <b>' + e(c.entryYears) + ' years</b> from the beginning of the route. Cost to enter is rated <b>' + e(c.costTier.toLowerCase()) + '</b>. Pay at the start is usually at the lower end of ' + e(c.salary) + ', rising with skill and experience.</p>', 'pp-note'));
+                (X.career5 ? '' : ipCard('How long, in total', '<p class="pp-sm">' + e(ipTimeline(X)) + ' Cost to enter is rated <b>' + e(c.costTier.toLowerCase()) + '</b>. Pay at the start is usually at the lower end of ' + e(c.salary) + ', rising with skill and experience.</p>', 'pp-note'));
         }
         function ipColleges(X, lite) {
             const e = X.e, f = X.f, c = X.rec, cols = X.cols.slice(0, lite ? (X.career5 ? 2 : 3) : 4);
             if (!cols.length) {
                 const certs = (c.certifications || []).slice(0, 4);
                 return (X.student ? '<p>We do not have a college list for this career in your area, so use the official course finder for your state and check what each college offers.</p>' : '') + ipH('Courses and certifications to consider') + (certs.length ? '<ul>' + certs.map(function (x) { return '<li>' + planCertHTML(x) + '</li>'; }).join('') + '</ul>' : '<p>Check official course pages for the role you want.</p>') +
-                    ipCard('How to choose a course', ipUl(['Check that the course is recognised by an official body or valued by employers in this field.', 'Look for live projects, mentoring and a certificate you can show.', 'Compare total cost, not just the headline fee.', 'Ask past students what they did after finishing.']), 'pp-note');
+                    ipCard('How to choose a course', ipUl(['Check that the course is recognised by an official body or valued by employers in this field.', 'Look for live projects, mentoring and a certificate you can show.'].concat(lite ? [] : ['Compare total cost, not just the headline fee.', 'Ask past students what they did after finishing.'])), 'pp-note');
             }
             return ipRows(['College', 'Where', 'Fee (a year)', 'How to get in', 'Why look'], cols.map(function (col) { return ['<b>' + e(String(col.name).replace(/\s*\(.*?\)\s*/g, ' ').trim()) + '</b>', e(col.location || ''), e(col.fees || (col.feesLakh ? '₹' + col.feesLakh + 'L' : 'Check the college site')), e(String(col.admissionProcess || col.admission || 'See the college website').slice(0, 70)), e(X.colsNote ? (col.nirf ? 'NIRF rank ' + col.nirf : 'Confirm the course') : ((col.pros || [])[0] || (col.nirf ? 'NIRF rank ' + col.nirf : 'Offers a course for this career')))]; })) +
                 '<p class="pp-sm pp-mut">Fees and admission routes come from Plan4it\'s college data and change every year. Placement figures in our data are illustrative, so we do not quote them. ' + e(X.colsNote || '') + '</p>' +
@@ -13277,11 +13277,23 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 ipH('Myths and facts') + ipRows(['Myth', 'Fact'], [['"A degree from a famous college guarantees a job."', 'Employers hire for skill and proof of work. A good college helps with contacts and learning, but does not replace either.'], ['"The highest pay figure is what most people earn."', 'Pay bands are wide. Most people start near the lower end and rise with skill; the top of the band is reached by a smaller share.'], ['"If I choose wrong, I am stuck."', 'Skills carry over. A Plan B that shares most skills makes a change affordable (see the Plan B page).'], ['"AI will make this career disappear."', 'AI changes routine tasks in most fields. Judgement, communication and responsibility remain human work, but the entry bar keeps rising, so keep learning.']].map(function (r) { return r.map(e); })) +
                 (!lite ? '<div class="pp-cols"><div>' + ipCard('Common mistakes', ipUl(['Choosing only for the pay figure without checking the day-to-day work', 'Collecting certificates instead of building one thing you can show', 'Applying late: entrance and admission windows close months ahead', c.entryYears >= 4 ? 'Not planning the cost of a long route: check fees and loans first' : 'Skipping the basics and jumping to advanced tools'])) + '</div><div>' + ipCard('What it is really like', ipRealLike(X)) + '</div></div>' : '');
         }
+        function ipPlanBCards(X) {
+            const k = ipStageKey(X), D = [['If you miss a cut-off', ['Apply to the best option you can afford and keep building proof of skill.', 'Retake the exam if more attempts are allowed.', 'Keep your Plan B warm with one related skill.']], ['If you find you dislike it', ['Move to the Plan B above; many skills carry over.', 'Talk to two people already in that field.']], ['If money gets tight', ['Look for scholarships and state schemes.', 'Take a related entry-level job while you upskill.']]];
+            const V = {
+                c10: [['If marks fall short for your stream', ['Check the cut-offs for your second-choice stream early in Class 11.', 'Keep a diploma, polytechnic or ITI route as a safe backup.', 'Improve the subject that matters most with a weekly plan.']], ['If you dislike the stream', ['Ask your school early in Class 11 whether a change is possible.', 'Many courses accept students from other streams, so check before you panic.', 'Talk to two people who studied it.']], ['If money gets tight', ['Look at government schools and state scholarships.', 'Compare the lower-cost routes on the pathway page.']]],
+                c1112: D,
+                ug: [['If you do not get an internship or offer', ['Build two projects and apply off-campus, not only through campus drives.', 'Ask seniors for referrals and short project work.', 'Keep a master\'s or certification route as a backup.']], ['If you find you dislike the field', ['Move to a Plan B above; many skills carry over.', 'Use electives, a minor or a bridge course to adjust before you graduate.']], ['If money gets tight', ['Look for paid internships and scholarships.', 'Take small freelance or part-time work in the field.']]],
+                grad: [['If offers are slow', ['Do contract, freelance or internship work to build proof while you apply.', 'Ask for feedback after each interview and fix one thing each week.', 'Add one certification a recruiter asks for.']], ['If you find you dislike the field', ['Move to a Plan B above; many skills carry over.', 'Use the one-week trial before you spend on another course.']], ['If money gets tight', ['Take a related entry-level or bridge job while you upskill.', 'Look at paid training and apprenticeships.']]],
+                pg: [['If you do not get the programme you want', ['Apply to your next-best programme and also to a related one.', 'Use the gap to add skills and exposure, then reapply.', 'Keep a work route open as a backup.']], ['If you find you dislike the field', ['Move to a Plan B above; many skills carry over.', 'Check whether your programme allows a different specialisation or electives.']], ['If money gets tight', ['Look for scholarships, assistantships and fee waivers.', 'Compare the fees with the likely first salary before borrowing.']]],
+                working: [['If the switch takes longer than planned', ['Keep your current job and income while you build proof.', 'Look for a bridge role in your company or a related team.', 'Extend the timeline instead of dropping the plan.']], ['If the new work disappoints', ['Move to a Plan B above, or back to a role that uses your existing strengths.', 'Repeat the one-week trial before another course.']], ['If money gets tight', ['Pause the paid course and keep the free parts going.', 'Protect your savings runway before any pay cut.']]]
+            }[k] || D;
+            return '<div class="pp-cols3">' + V.map(function (v) { return '<div class="pp-card pp-slim"><b>' + X.e(v[0]) + '</b>' + ipUl(v[1]) + '</div>'; }).join('') + '</div>';
+        }
         function ipPlanB(X, lite) {
             const e = X.e, c = X.rec, P = X.planB, A = X.A;
             const mine = (c.skills || []).slice(0, 5), has = function (x, s) { return (x.skills || []).some(function (k) { return String(k).toLowerCase().indexOf(String(s).toLowerCase().split(' ')[0]) > -1; }); };
             return ipRows(['Career', A ? 'Fit' : 'Field', 'Pay (estimate)', 'Starts in', 'Why it is close'], P.map(function (r) { const p = X.pool.find(function (x) { return x.id === r.c.id; }); return ['<b>' + e(r.c.title) + '</b>', A && p ? X.pct(p) + '%' : e(r.c.category), e(r.c.salary), '~' + e(r.c.entryYears) + ' yr', r.shared && r.shared.length ? 'Shares: ' + e(r.shared.slice(0, 3).join(', ')) : 'Same field, similar work']; })) +
-                '<div class="pp-cols3"><div class="pp-card pp-slim"><b>If you miss a cut-off</b>' + ipUl(['Apply to the best option you can afford and keep building proof of skill.', 'Retake the exam if more attempts are allowed.', 'Keep your Plan B warm with one related skill.']) + '</div><div class="pp-card pp-slim"><b>If you find you dislike it</b>' + ipUl(['Move to the Plan B above; many skills carry over.', 'Talk to two people already in that field.']) + '</div><div class="pp-card pp-slim"><b>If money gets tight</b>' + ipUl(['Look for scholarships and state schemes.', 'Take a related entry-level job while you upskill.']) + '</div></div>' +
+                ipPlanBCards(X) +
                 (!lite && mine.length ? ipH('How much your skills carry over') + ipRows(['Skill you build for ' + e(c.title)].concat(P.map(function (r) { return e(r.c.title); })), mine.map(function (s) { return [e(s)].concat(P.map(function (r) { return has(r.c, s) ? '●' : '○'; })); })) + '<p class="pp-sm pp-mut">● the career lists a similar skill · ○ not listed. Based on the skill lists in our data.</p>' : '');
         }
         function ipDays(X) {
@@ -13316,9 +13328,9 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (!rec) return null;
             X.f18 = true;
             const vis = CAT_VIS[rec.category] || ['<i class=ic-star></i>', '#0c4a6e', '#0284c7'];
-            const kind = 'Career Intelligence Report · ' + (A.__saved ? 'built from your saved items' : PLAN_SEG_LABEL[X.seg] + ' edition'), right = 'Prepared for <b>' + e(X.name) + '</b><br>' + e(X.today);
+            const kind = 'Career Intelligence Report · ' + (A.__saved ? 'built from your saved items' : ipStageName(X) + ' edition'), right = 'Prepared for <b>' + e(X.name) + '</b><br>' + e(X.today);
             const lab = function (k) { return quizLabel(k, A, k === 'cls'); };
-            let rows = [['Stage', lab('cls')], ['Interests', A.interests3 && A.interests3.length ? A.interests3.join(', ') : 'Still exploring'], ['Work style', IP_STYLE_TXT[A.workStyle] || A.workStyle], ['Matters most', (WIZARD_PRIORITY_LABELS[A.constraint] || [''])[0]], ['Help needed with', lab('help')], ['Where', [A.district && A.state && A.state !== 'any' ? A.district : '', A.state ? (A.state === 'any' ? 'Any state' : A.state) : '', FIT_BUDGET[A.budget] ? FIT_BUDGET[A.budget][0] : '', FIT_LEVEL[A.level] ? FIT_LEVEL[A.level][0] : ''].filter(Boolean).join(' · ')], ['Careers you mentioned', A.careerNote || '']].filter(function (r) { return r[1]; });
+            let rows = [['Stage', lab('cls')], ['Interests', A.interests3 && A.interests3.length ? A.interests3.join(', ') : 'Still exploring'], ['Work style', IP_STYLE_TXT[A.workStyle] || A.workStyle], ['Matters most', (WIZARD_PRIORITY_LABELS[A.constraint] || [''])[0]], ['Help needed with', lab('help')], ['Where', [A.district && A.state && A.state !== 'any' ? A.district : '', A.state ? (A.state === 'any' ? 'Any state' : A.state) : '', FIT_BUDGET[A.budget] ? FIT_BUDGET[A.budget][0] : '', (['working', 'pg'].indexOf(ipStageKey(X)) < 0 && FIT_LEVEL[A.level]) ? FIT_LEVEL[A.level][0] : ''].filter(Boolean).join(' · ')]].concat(ipStageFacts(X), [['Careers you mentioned', A.careerNote || '']]).filter(function (r) { return r[1]; });
             if (A.__saved) { const nm = function (ids, arr) { return ids.map(function (id) { const x = arr.find(function (y) { return y.id === id; }); return x ? x.title || x.name : ''; }).filter(Boolean).join(', '); }; rows = [['Built from', 'Your saved items'], ['Saved careers', nm(getSavedCareers(), careersData)], ['Saved exams', getSavedExams().length + ' saved'], ['Saved colleges', getSavedColleges().length + ' saved'], ['Where', A.state && A.state !== 'any' ? A.state : '']].filter(function (r) { return r[1] && r[1] !== '0 saved'; }); }
             const saved = getSavedCareers().map(function (id) { return careersData.find(function (x) { return x.id === id; }); }).filter(Boolean);
             const risky = top.slice(1).map(function (c) { return { c: c, g: intelGap(c, A) }; }).filter(function (r) { return r.g.length; }).sort(function (x, y) { return y.g.length - x.g.length; })[0];
@@ -13338,7 +13350,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             P.push(['Your career DNA', 'The mix of work styles and strengths in your best 20 matches, weighted by fit.',
                 '<div class="pp-cols"><div style="flex:1.2">' + dna.slice(0, 6).map(function (k) { return ppMeter(IP_STYLE_TXT[k] ? k : k, wsum[k] / tw * 100, Math.round(wsum[k] / tw * 100) + '%', dnaCol[k] || '#0284c7'); }).join('') + '<p class="pp-sm pp-mut">Shares add up across your 20 best careers.</p></div><div>' + ipCard('Fields you keep matching with', '<div>' + ints.map(function (x) { return '<span class="cr-chip">' + e(x) + '</span>'; }).join('') + '</div>' + (common.length ? '<p class="pp-sm"><b>What your matches share:</b> ' + e(common.join('; ')) + '.</p>' : '')) + '</div></div>' +
                 ipH(A.__saved ? 'What your saved items say' : 'What you told us, and what it means') + '<div class="pp-cols3">' + ipCard('Your interests', '<p class="pp-sm">' + e(A.__saved ? 'Your saved careers are mostly in ' + A.interests3.join(', ').toLowerCase() + ', so careers in these fields score highest.' : (A.interests3 || []).length ? 'You picked ' + A.interests3.join(', ').toLowerCase() + '. Careers in these fields score highest.' : 'You are still exploring, so we weighed work style and priorities more.') + '</p>') + ipCard('Your work style', '<p class="pp-sm">' + e(A.__saved ? 'Most of your saved careers involve ' + (IP_STYLE_TXT[A.workStyle] || A.workStyle) + '. We favour careers where that is most of the day.' : A.workStyle ? 'You prefer ' + (IP_STYLE_TXT[A.workStyle] || A.workStyle) + '. We favour careers where that is most of the day.' : 'You did not pick a clear style, so we kept a mix.') + '</p>') + ipCard('What matters most', '<p class="pp-sm">' + e(A.__saved ? 'A saved-items report has no priority question, so we kept a balance. Take the quiz to add yours.' : A.constraint ? 'You said ' + (WIZARD_PRIORITY_LABELS[A.constraint] || ['your priority'])[0] + ' matters most. We used it to favour routes that fit.' : 'No single priority was chosen.') + '</p>') + '</div>' +
-                ipH('How to read your DNA') + ipUl(['A high share for one style does not rule out the others; it shows where your best days are likely spent.', 'A smaller share is your edge: a creative person with a logical streak, for example, is rare and useful.', 'Careers that need a style you scored low in are not closed to you, but they will take more effort.'])]);
+                ipH('How to read your DNA') + ipUl(['A high share for one style does not rule out the others; it shows where your best days are likely spent.', 'A smaller share is your edge: a creative person with a logical streak, for example, is rare and useful.', 'Careers that need a style you scored low in are not closed to you, but they will take more effort.']) + ipStageCard(X)]);
             // 3 top5
             const t5 = top.map(function (c, i) { const v = CAT_VIS[c.category] || vis; return '<div class="ci-t5" style="border-top:4px solid ' + v[2] + '"><div class="ci-t5i">' + v[0] + '</div><div class="ci-t5n">' + (i + 1) + '. ' + e(c.title) + '</div><div class="ci-t5f" style="color:' + v[1] + '">' + pct(c) + '%</div><div class="pp-sm pp-mut">' + e(c.category) + '</div><div class="pp-sm"><b>' + e(c.salary) + '</b></div><div class="pp-sm pp-mut">Demand: ' + e(c.demand) + '</div></div>'; }).join('');
             P.push(['Your top 5 career matches', 'Ranked by how well each career fits your answers.', '<div class="ci-top5">' + t5 + '</div>' + ipH('Match strength') + top.map(function (c) { return ppMeter(c.title, pct(c), pct(c) + '% · ' + fitInfo(pct(c)).text, pct(c) >= 85 ? '#16a34a' : pct(c) >= 70 ? '#65a30d' : '#d97706'); }).join('') + ipH('What each one is, in one line') + ipRows(['Career', 'What you actually do', 'Where it starts'], top.map(function (c) { const rd = c.roadmap || []; return ['<b>' + e(c.title) + '</b>', e(c.overview || ''), e(rd.length ? rd[rd.length - 1] : 'Entry-level role')]; })) + '<p class="pp-sm pp-mut">Fit comes from your answers only. It shows how well a career matches what you told us.</p>']);
@@ -13373,7 +13385,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             // 12 skills
             P.push(['Skills gap', 'What you need, where you stand, and how to close it.', ipSkills(X, false)]);
             // 13 salary
-            P.push(['Salary and opportunity outlook', 'Pay by stage, who hires, and what moves pay up. Pay figures are estimates.', ipPay(X, false) + ipPayReality(X)]);
+            P.push(['Salary and opportunity outlook', 'Pay by stage, who hires, and what moves pay up. Pay figures are estimates.', ipPay(X, false) + ipPayReality(X) + ipNextGen(X)]);
             // 14 reality
             P.push(['Career reality check', 'The honest picture, so there are no surprises.', ipReality(X, false)]);
             // 15 plan B
@@ -13383,52 +13395,193 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             // 17 1 to 3 year
             P.push(['Your 1 to 3 year roadmap', 'From where you are today to a first role in ' + rec.title + '.', ipYears(X)]);
             // 18 parents
-            P.push(['Parent discussion guide', 'Use this page to talk it through together.', ipParents(X)]);
+            { const adult = ['grad', 'pg', 'working'].indexOf(ipStageKey(X)) > -1; P.push([adult ? 'Family and mentor discussion guide' : 'Parent discussion guide', adult ? 'Use this page to talk it through with your family, partner or a mentor.' : 'Use this page to talk it through together.', ipParents(X)]); }
             return P.map(function (p, i) { return ipPage(i + 1, P.length, p[0], p[1], p[2], kind, right); }).join('');
         }
         /* ---- the 5-page career report (general, or made for the user) ---- */
-        // A short block that changes with the reader's stage (Class 10, 11-12, undergraduate, graduate, working).
-        function ipStageCard(X) {
-            const e = X.e, c = X.rec, A = X.A; if (!A || X.gen) return '';
-            const sd = c.skillDetails || [], s1 = sd[0] ? sd[0].name : 'the first core skill', s2 = sd[1] ? sd[1].name : 'a second skill';
-            const cert = (c.certifications || [])[0], ex = X.exams[0], road = c.roadmap || [];
-            let t = '', items = [];
-            if (X.seg === 'c10') {
-                t = 'For you as a Class 10 student: choosing the stream';
-                items = ['Your big decision now is the stream or route after Class 10. For ' + c.title + ', the usual path starts like this: ' + (road[0] || 'Class 11 and 12 in a stream that suits your best subjects') + '.',
-                    'Ask your school or a counsellor which stream keeps ' + c.title + ' open. If you are unsure, pick the stream that keeps the most doors open for the subjects you do best in.',
-                    'The route takes about ' + c.entryYears + ' years to a first role, so there is time. You do not need to lock in everything at 15.',
-                    'Before Class 11 starts, try one small activity linked to ' + s1 + ' to test whether you enjoy it.',
-                    'Keep a diploma or ITI route in mind as a backup if marks fall short.'];
-            } else if (X.seg === 'c1112') {
-                t = 'For you as a Class 11 or 12 student: this year and the next';
-                items = ['You have two jobs: do well in your boards, and prepare for the entrance route. ' + (ex ? 'The exam most linked to this career for you is ' + ex.name + '. Put its registration date in your calendar now.' : 'Find the entrance exam for your course and note its registration date.'),
-                    'Pick your course from the roadmap: ' + (road[1] || road[0] || 'a degree in a related field') + '.',
-                    'Keep a second course in a related field, so one missed cut-off does not cost you a year.',
-                    'Use holidays to try ' + s1 + ' once. It tells you early whether the work suits you.'];
-            } else if (X.seg === 'ug') {
-                t = 'For you as an undergraduate: use your remaining degree years';
-                items = ['Choose electives and your final-year project around ' + c.title + ' wherever the course allows.',
-                    'Aim for one internship or live project before your final year, in work linked to ' + s1 + '.',
-                    cert ? 'Earn ' + cert + ' before your final year. Employers read it as proof.' : 'Earn one recognised certification before your final year.',
-                    'Join a club, hackathon or competition that uses ' + s2 + '.',
-                    'If your degree is in a different field, add a short bridge course in ' + s1 + '. Employers care more about proof of skill than the degree name.'];
-            } else if (X.seg === 'grad') {
-                t = 'For you as a graduate: getting your first role';
-                items = ['Build two small pieces of work in ' + s1 + ' that you can show a recruiter. A link beats a claim.',
-                    cert ? 'Earn ' + cert + ' to close the gap between your degree and this career.' : 'Add one recognised certification that this career asks for.',
-                    'Apply directly to companies and for internships. Do not wait for campus drives.',
-                    'Practise one interview a week with a friend. Use the skills page to prepare your answers.',
-                    'Consider a master’s degree only if this field needs it. About ' + c.entryYears + ' years is the usual total route.'];
-            } else if (X.seg === 'working') {
-                t = 'For you as a working professional: moving into this career';
-                const rw = A.runway === '0-3' ? 'You have under three months of savings, so learn alongside your job first and do not leave it yet.' : A.runway === '3-6' ? 'You have three to six months of savings, so a part-time course alongside work is safer than a full break.' : A.runway ? 'You have six months or more saved, so a short full-time course is an option if you need one.' : '';
-                items = [rw, 'List what you already do that carries over into ' + c.title + '. Lead with it on your CV.',
-                    'Look for a bridge role next to your current one, in your company or industry, before making the full jump.',
-                    'Build one real piece of work in ' + s1 + ' in the next 60 days, so you have proof.',
-                    'Entry pay is usually at the lower end of ' + c.salary + '. Compare it with your current pay and your monthly costs before you decide.'].filter(Boolean);
+        /* ============================================================
+           STAGE LAYER: makes every report read as written for this reader (Class 10, 11-12, undergraduate,
+           graduate, postgraduate, working). Everything is rule-based from the quiz answers; nothing is invented.
+           ============================================================ */
+        function ipStageKey(X) {
+            const A = X && X.A; if (!A || X.gen || A.__saved) return '';
+            const c = String(A.cls || ''); if (c === '9' || c === '10') return 'c10'; if (c === '11' || c === '12') return 'c1112';
+            if (c === 'ug' || c === 'grad' || c === 'pg' || c === 'working') return c;
+            return X.seg === 'c10' ? 'c10' : X.seg === 'c1112' ? 'c1112' : X.seg === 'working' ? 'working' : X.seg === 'ug' ? 'ug' : X.seg === 'grad' ? 'grad' : '';
+        }
+        function ipStageName(X) {
+            const k = ipStageKey(X), A = X.A || {};
+            if (k === 'pg') return 'Postgraduate'; if (k === 'c1112') return 'Class ' + (A.cls === '11' ? '11' : '12') + ' student';
+            return PLAN_SEG_LABEL[X.seg] || 'Student';
+        }
+        const IP_INT_LAB = { maths: 'maths and logic', science: 'science', tech: 'technology and computers', business: 'business and money', people: 'people and society', words: 'writing and languages', art: 'art and design', bio: 'biology and health', civics: 'history and public affairs' };
+        const IP_INT_STREAM = { maths: { pcm: 3, comm: 2, arts: 0 }, science: { pcm: 2, pcb: 2, pcmb: 2 }, tech: { pcm: 3, comm: 0 }, business: { comm: 3, com: 2, arts: 0 }, people: { arts: 3, pcb: 1, com: 1 }, words: { arts: 3, com: 1 }, art: { arts: 3, voc: 2 }, bio: { pcb: 3, pcmb: 3 }, civics: { arts: 3, com: 1 } };
+        const IP_STREAM_INFO = { pcm: ['Science with Maths (PCM)', 'Physics, Chemistry, Maths. Keeps engineering, technology, architecture, data and most science degrees open.'], pcb: ['Science with Biology (PCB)', 'Physics, Chemistry, Biology. Keeps medicine, pharmacy, nursing, life-science and allied health open.'], pcmb: ['Science with Maths and Biology (PCMB)', 'All four science subjects. Keeps the widest set of science doors open, but is a heavier load.'], comm: ['Commerce with Maths', 'Accountancy, Business Studies, Economics and Maths. Keeps finance, business, economics, data and CA open.'], com: ['Commerce without Maths', 'Accountancy, Business Studies, Economics. Keeps CA, B.Com, business and management open.'], arts: ['Arts or Humanities', 'History, Political Science, Psychology, Languages and more. Keeps law, design, media, civil services, psychology and teaching open.'], voc: ['Vocational or diploma route', 'Hands-on training with an earlier start to work. Good if you learn by doing.'] };
+        const IP_CAT_STREAM = { Technology: ['pcm', 'comm'], Engineering: ['pcm', 'pcmb'], Science: ['pcm', 'pcb'], Healthcare: ['pcb', 'pcmb'], Finance: ['comm', 'com'], Business: ['comm', 'com'], 'Law & Public Service': ['arts', 'com'], Education: ['arts', 'pcm'], Media: ['arts', 'com'], Creative: ['arts', 'voc'], 'Arts & Entertainment': ['arts', 'voc'], 'Agriculture & Environment': ['pcb', 'pcm'], 'Skilled Trades': ['voc', 'pcm'], 'Aviation & Hospitality': ['pcm', 'arts'], 'Personal Services & Wellness': ['pcb', 'arts'], 'Sports & Fitness': ['pcb', 'arts'] };
+        function ipStreamChoice(X) {
+            const A = X.A, c = X.rec, en = [].concat(A.interests || []).filter(function (x) { return IP_INT_LAB[x]; }), st = [].concat(A.strong || []).filter(function (x) { return IP_INT_LAB[x]; });
+            const sc = { pcm: 0, pcb: 0, pcmb: 0, comm: 0, com: 0, arts: 0, voc: 0 };
+            en.forEach(function (k) { const m = IP_INT_STREAM[k] || {}; Object.keys(m).forEach(function (s) { sc[s] += m[s] * 2; }); });
+            st.forEach(function (k) { const m = IP_INT_STREAM[k] || {}; Object.keys(m).forEach(function (s) { sc[s] += m[s]; }); });
+            const cs = IP_CAT_STREAM[c.category] || []; cs.forEach(function (s, i) { sc[s] += i === 0 ? 4 : 2; });
+            if (A.maths === 'drop') { sc.pcm -= 8; sc.pcmb -= 6; sc.comm -= 4; sc.com += 2; sc.arts += 1; } else if (A.maths === 'more') { sc.pcm += 2; sc.comm += 1; }
+            if (A.bio === 'no') { sc.pcb -= 8; sc.pcmb -= 6; } else if (A.bio === 'enjoy') { sc.pcb += 2; sc.pcmb += 1; }
+            const order = Object.keys(sc).sort(function (a, b) { return sc[b] - sc[a]; });
+            return { first: order[0], second: order[1], en: en, st: st, sc: sc, careerStreams: cs };
+        }
+        function ipLikings(X) {
+            const A = X.A, c = X.rec, e = X.e, L = function (arr) { return arr.map(function (k) { return IP_INT_LAB[k]; }).join(', '); }, r = ipStreamChoice(X), S = IP_STREAM_INFO;
+            const both = r.en.filter(function (k) { return r.st.indexOf(k) > -1; }), onlyEn = r.en.filter(function (k) { return r.st.indexOf(k) < 0; }), onlySt = r.st.filter(function (k) { return r.en.indexOf(k) < 0; });
+            const lines = [];
+            if (both.length) lines.push('You both enjoy and score well in ' + L(both) + '. That is your strongest signal: build your path around it.');
+            if (onlyEn.length) lines.push('You enjoy ' + L(onlyEn) + ' but score lower there today. That is fixable: marks follow practice, and interest is the harder thing to find.');
+            if (onlySt.length) lines.push('You score well in ' + L(onlySt) + ' but do not enjoy it much. Use it as a strength, but do not pick your whole path only because of marks.');
+            if (!r.en.length) lines.push('You have not found a favourite subject yet. That is normal at 15. Use the trials below to find out by doing.');
+            const warn = [];
+            if (A.maths === 'drop' && (r.careerStreams[0] === 'pcm' || /Engineering|Technology|Finance/.test(c.category))) warn.push('You said you want to drop Maths, but ' + c.title + ' usually needs it. Either keep Maths, or compare the Plan B careers on page 15 that need less.');
+            if (A.bio === 'no' && r.careerStreams[0] === 'pcb') warn.push('You said Biology is not for you, but ' + c.title + ' usually starts from Biology. Look at the Plan B careers instead.');
+            const goal = r.first, alt = r.second;
+            const fits = r.careerStreams.indexOf(goal) > -1;
+            const t1 = 'Stream that fits your likings best: ' + S[goal][0], t2 = S[goal][1];
+            const routes = [].concat(A.routes || []), opt = [];
+            if (routes.indexOf('diploma') > -1) opt.push('a diploma or polytechnic after Class 10 (earlier start, then lateral entry into a degree)');
+            if (routes.indexOf('iti') > -1) opt.push('an ITI or skilled trade (the fastest route to work)');
+            if (routes.indexOf('coaching') > -1) opt.push('school with integrated coaching (only if you can handle the load and the fees)');
+            const actMap = { build: 'Build one working model or small project in the next month.', research: 'Pick one topic you enjoy and write a one-page explainer on it.', create: 'Design one poster, short video or page about something you care about.', biz: 'Run one small thing with a budget, like a class event or a tiny sale, and write what you learned.', people: 'Interview two adults about their work and ask what a normal day looks like.' };
+            const worry = { wrong: 'Your worry is picking the wrong stream. Many courses accept students from other streams, and the trials on this page let you test before you commit.', marks: 'Your worry is marks. Check each route\'s cut-offs early, and keep a diploma or a related course as a safe second option.', parents: 'Your worry is that you and your parents disagree. Share page 18 with them: it lays out cost, jobs and risks in plain words.', cost: 'Your worry is cost. Look at government schools and colleges, state scholarships and the lower-cost routes on the pathway page first.', friends: 'Your worry is that friends choose differently. Pick for your own likings and marks; you will still meet friends outside class.' }[A.worry] || '';
+            const dec = { parents: 'Your parents are leading this choice. Show them this page so the reasons are on the table, then decide together.', decided: 'Your stream is already decided. The pathway and trials still show how to make the most of it.' }[A.decider] || '';
+            const items = lines.concat(['The path that fits you: Class 11 and 12 in ' + S[goal][0] + (fits ? ', which is also the usual start for ' + c.title : ', then a course for ' + c.title + ' (check that it accepts your stream: some do)') + '. Second choice: ' + S[alt][0] + '.', 'Subjects and doors: ' + S[goal][1]]).concat(warn);
+            if (opt.length) items.push('You said you are open to ' + opt.join(', ') + '. Keep one as a backup, not as your only plan.');
+            items.push(actMap[A.activity] || 'Try one small activity linked to ' + c.title + ' before Class 11 starts.');
+            if (worry) items.push(worry); if (dec) items.push(dec);
+            return items.filter(Boolean);
+        }
+        // What this stage means for the reader now, in their own situation.
+        function ipStageItems(X) {
+            const A = X.A, c = X.rec, sd = c.skillDetails || [], s1 = sd[0] ? sd[0].name : 'the first core skill', s2 = sd[1] ? sd[1].name : 'a second skill';
+            const cert = (c.certifications || [])[0], ex = X.exams[0], road = c.roadmap || [], k = ipStageKey(X), Q = function (key) { return quizLabel(key, A, true); }, out = [];
+            if (k === 'c10') return ipLikings(X);
+            if (k === 'c1112') {
+                out.push('You have two jobs: do well in the boards, and prepare for the entrance route. ' + (ex ? 'The exam most linked to ' + c.title + ' for you is ' + ex.name + '. Put its registration date in your calendar now.' : 'Find the entrance exam for your course and note its registration date.'));
+                const stream = A.stream, cs = IP_CAT_STREAM[c.category] || [];
+                if (stream && cs.length && cs.indexOf(stream) < 0) out.push('You are in ' + Q('stream') + ', but ' + c.title + ' usually starts from ' + (IP_STREAM_INFO[cs[0]] || [''])[0] + '. Check which courses accept your stream before you apply: some do, many do not.');
+                else if (stream) out.push('Your stream (' + Q('stream') + ') matches the usual start for ' + c.title + '. Plan your course from the pathway page.');
+                const es = { serious: 'You are preparing seriously for entrance exams. Keep one full mock a week and review mistakes.', registered: 'You are registered but barely preparing. Block a fixed daily slot now: the gap closes quickly if you start this week.', none: 'You are not taking entrance exams. Then choose colleges that admit on Class 12 marks, and shortlist them early.', dontknow: 'You are unsure which exams apply. The exam page of this report lists the ones linked to ' + c.title + '.' }[A.examStatus]; if (es) out.push(es);
+                const pb = { drop: 'If plan A fails you would take a drop year. Decide the rule now: how many marks or ranks would make you retry, and how you will use the year.', nextbest: 'If plan A fails you would take the next-best college. Fix a safe college now and apply to it alongside your dream list.', different: 'If plan A fails you would switch course. Keep a related course ready from the Plan B page.', none: 'You have not planned for plan A failing. Spend 30 minutes now choosing a safe college and a related course.' }[A.planB]; if (pb) out.push(pb);
+                const pay = { savings: 'Family savings will fund the degree, so compare total costs, not only tuition.', loan: 'An education loan is fine for you. Compare the cost of the degree with the first salary before you take one.', scholarship: 'You need a scholarship. Start applications early and keep a lower-fee college as a safe choice.', earn: 'You must earn while you study. Look at colleges with flexible timings, and at paid internships from year 2.' }[A.pay]; if (pay) out.push(pay);
+                out.push('Use one holiday to try ' + s1 + ' once. It tells you early whether the work suits you.');
+                return out;
             }
-            return items.length ? ipCard(e(t), ipUl(items), 'pp-note') : '';
+            if (k === 'ug') {
+                const yr = A.ugYear, ys = { '1': 'You are in your first year: explore, learn ' + s1 + ' on the side, and join one club or project.', '2': 'You are in your second year: aim for a first small project and a summer internship in the next 12 months.', '3': 'You are in your third year: this is the key year for an internship, one certification and a portfolio piece.', final: 'You are in your final year: finish a project, apply for roles now, and keep one backup application route.' }[yr];
+                if (ys) out.push(ys);
+                if (A.degree) out.push('Your degree is ' + Q('degree').replace(/\.$/, '') + '. ' + (/btech|bsc|bca|med|design|law/.test(A.degree) ? 'It is a recognised starting point for many routes into ' + c.title + ', but check which skills it does not cover and fill them.' : 'Employers read proof of skill more than the degree name: add a short course and one project in ' + s1 + '.'));
+                const how = { love: 'You love your degree: use electives and the final project to point it at ' + c.title + '.', okay: 'Your degree is "okay": a project or internship outside class will show you whether ' + c.title + ' excites you more.', wrong: 'You feel it is the wrong course but will finish it. That is workable: finish well and add ' + s1 + ' on the side so your next step is not tied to the degree.', out: 'You want out of your degree. Before you decide, talk to your college and a counsellor about options and the cost of leaving, and test ' + c.title + ' with a one-week trial first.' }[A.ugHow]; if (how) out.push(how);
+                const pf = [].concat(A.proof || []).filter(function (x) { return x !== 'none'; }), pl = { internship: 'an internship', projects: 'projects', certs: 'certifications', competitions: 'competitions or hackathons' };
+                const have = pf.map(function (x) { return pl[x]; }).filter(Boolean), miss = ['internship', 'projects', 'certs'].filter(function (x) { return pf.indexOf(x) < 0; }).map(function (x) { return pl[x]; });
+                out.push(have.length ? 'You can already show ' + have.join(' and ') + '. Next, add ' + (miss[0] || 'a harder project') + (cert && miss[0] === 'certifications' ? ' (for example ' + cert + ')' : '') + '.' : 'You have nothing to show yet. That is the first target: one small project in ' + s1 + ' in the next 60 days.');
+                const af = { job: 'You want a job after graduating: build proof now and apply off-campus too, because campus drives are limited.', msIndia: 'You want a master\'s in India: plan the entrance exam (see the exams page) and keep your marks up.', msAbroad: 'You want a master\'s abroad: start the exam and application timeline a year ahead and plan the funding early.', govt: 'You want government exams: choose one exam family, build a daily routine and keep a private-sector backup.', biz: 'You want your own venture: validate one small idea with real customers before spending money.', dontknow: 'You do not know what to do after graduating yet: use the one-week trial and the Plan B page to compare two paths.' }[A.after]; if (af) out.push(af);
+                if (A.placements === 'none' || A.placements === 'few') out.push('Campus placements are ' + (A.placements === 'none' ? 'almost non-existent' : 'limited') + ' at your college, so plan an off-campus route: portfolio, referrals and direct applications.');
+                return out;
+            }
+            if (k === 'grad') {
+                const sn = { u6: 'You graduated under six months ago: the first 90 days matter. Start applying while you build proof.', '6-12': 'It has been 6 to 12 months since you graduated: apply steadily and show work you did after graduating, so the gap is not a question mark.', '1-2': 'It has been 1 to 2 years since you graduated: your plan needs a visible project and a clear reason for the field you are choosing.', '2+': 'It has been over two years since you graduated: lead with what you have done since, and consider a short bridge programme to reset your story.' }[A.since]; if (sn) out.push(sn);
+                out.push('Build two small pieces of work in ' + s1 + ' that you can show a recruiter. A link beats a claim.');
+                if (cert) out.push('Earn ' + cert + ' to close the gap between your degree and this career.');
+                const cg = { '8+': 'Your CGPA is strong, so lead with it in applications.', '7-8': 'Your CGPA is solid; proof of skill will matter more than the number.', '6-7': 'Your CGPA is modest. Projects and certifications can carry more weight than marks.', u6: 'Your CGPA is under 6, which filters you out of some drives. Target employers and routes that test skills, not marks.' }[A.cgpa]; if (cg) out.push(cg + (A.backlogs === 'yes' ? ' Clear your active backlogs first: many employers check this.' : ''));
+                const af = { job: 'You want a job: apply directly and for internships. Do not wait for campus drives.', msIndia: 'You want a master\'s in India: pick the entrance exam and the date, and prepare in parallel with a short skill project.', msAbroad: 'You want a master\'s abroad: start the exam, funding and application timeline a year ahead.', govt: 'You want government exams: pick one exam family and a daily routine, and keep a backup job route.', biz: 'You want your own venture: test one idea with real customers before you spend money.', dontknow: 'You do not know what to do next: try the one-week trial, then decide between work and a master\'s.' }[A.after]; if (af) out.push(af);
+                if (A.earnWhen === 'atgrad') out.push('You need to earn right away, so choose a bridge role or contract work while you build toward ' + c.title + '.');
+                return out;
+            }
+            if (k === 'pg') {
+                const why = { deeper: 'You want to go deeper into your field: pick a programme with strong faculty and project work.', change: 'You want to change fields: choose a programme with a bridge year or no strict background rule, and expect to start from fundamentals.', pay: 'You are going for better pay: compare the fees with the likely first salary before you commit.', required: 'Your goal requires a postgraduate degree: check the exact accepted programmes and any entrance exam.', time: 'You are doing it to buy time: use the time on purpose, with one skill and one project each term.' }[A.pgWhy]; if (why) out.push(why);
+                const lead = { industry: 'It should lead to an industry role: pick a programme with internships and real projects, and build your portfolio through it.', research: 'It should lead to research or a PhD: build research output early, and talk to supervisors.', teaching: 'It should lead to teaching: check the NET or state eligibility rules and get teaching exposure.', govt: 'It should lead to government work: check the exam and age rules for each service.', abroad: 'It should lead to work abroad: look at language tests, visa rules and recognised qualifications early.' }[A.pgLead]; if (lead) out.push(lead);
+                const sp = { decided: 'You have picked a specialisation: confirm that ' + c.title + ' fits it and check the electives.', two: 'You are choosing between two or three specialisations: compare them against ' + c.title + ' and the skills on the skills page.', none: 'You have not picked a specialisation: use the comparison page and one-week trial to shortlist two.' }[A.pgSpec]; if (sp) out.push(sp);
+                const ms = { exposure: 'What is missing is industry exposure: aim for one internship or live project this year.', research: 'What is missing is research output: aim for a paper, poster or project report.', network: 'What is missing is a network: speak to three people in the field each month.', skills: 'What is missing is specific skills: build ' + s1 + ' first.' }[A.pgMissing]; if (ms) out.push(ms);
+                if (A.pgCost) out.push('Your fee budget is ' + Q('pgCost') + ' a year' + (A.loan === 'yes' ? ' and you would take a loan. Check the repayment against the first salary.' : '. Compare scholarships and assistantships before you accept a seat.'));
+                if (A.exp) out.push({ none: 'You have no work experience yet, so internships matter more than usual.', u2: 'You have under two years of experience: use it to make your application stand out.', '2+': 'You have two or more years of experience: it counts as an advantage for programmes and roles.' }[A.exp]);
+                return out.filter(Boolean);
+            }
+            if (k === 'working') {
+                const wm = { pay: 'You are moving for pay: check the entry pay for ' + c.title + ' (' + c.salary + ' band, usually at the lower end at first) against your current pay.', stalled: 'Your growth has stalled: ask whether a move inside your field or company could restart it before you change careers.', dislike: 'You dislike your current work: a one-week trial of ' + c.title + ' will tell you whether the new work is better, not just different.', risk: 'Your industry feels risky: pick a target with high demand and skills that transfer, and keep your current income until you are ready.', return: 'You are returning after a break: lead with your past experience, and add one recent course or project to show current skills.' }[A.whyMove]; if (wm) out.push(wm);
+                const kp = { data: 'analysing data and numbers', manage: 'managing people', customers: 'talking to customers', build: 'building or fixing things', write: 'writing and communicating', plan: 'planning and organising', design: 'design' }, ks = [].concat(A.keep || []).map(function (x) { return kp[x]; }).filter(Boolean); if (ks.length) out.push('You said you would keep ' + ks.join(' and ') + '. Lead with these on your CV: they carry over into ' + c.title + '.');
+                const rw = A.runway === '0-3' ? 'You have under three months of savings, so learn alongside your job first and do not leave it yet.' : A.runway === '3-6' ? 'You have three to six months of savings, so a part-time course alongside work is safer than a full break.' : A.runway ? 'You have six months or more saved, so a short full-time programme is possible, but still keep a bridge role in mind.' : ''; if (rw) out.push(rw);
+                if (A.hours) out.push('You can study about ' + Q('hours') + ' a week, so plan one skill at a time: ' + s1 + ' first.');
+                const pc = { none: 'You cannot absorb a pay cut, so a bridge role or an internal move is safer than a direct jump.', '20': 'You can absorb up to a 20% pay cut, which gives you more entry-level options.', more: 'You can absorb a larger pay cut for a short time, so a direct jump is possible.' }[A.paycut]; if (pc) out.push(pc);
+                const wr = { upskill: 'You prefer to upskill while in your job: a part-time plan, with one finished project in 60 days.', internal: 'You prefer to move internally: talk to your manager and HR about a related team, and build proof first.', parttime: 'You prefer a part-time course: choose one with a recognised certificate and real projects.', fulltime: 'You prefer a full-time break to study: set a time limit and a job-search date before you start.' }[A.wroute]; if (wr) out.push(wr);
+                return out;
+            }
+            return out;
+        }
+        function ipStageFacts(X) {
+            const A = X.A, k = ipStageKey(X), Q = function (key) { return quizLabel(key, A, true); }, r = [];
+            const add = function (l, v) { if (v) r.push([l, v]); };
+            if (k === 'c10') { const L = function (arr) { return [].concat(arr || []).filter(function (x) { return IP_INT_LAB[x]; }).map(function (x) { return IP_INT_LAB[x]; }).join(', '); }; add('You enjoy', L(A.interests)); add('You score well in', L(A.strong)); add('Maths and Biology', [Q('maths'), Q('bio')].filter(Boolean).join(' · ')); add('Biggest worry', Q('worry')); }
+            else if (k === 'c1112') { add('Stream', Q('stream')); add('Entrance exams', Q('examStatus')); add('Money', Q('pay')); }
+            else if (k === 'ug') { add('Degree', [Q('degree'), A.ugYear ? (A.ugYear === 'final' ? 'final year' : 'year ' + A.ugYear) : ''].filter(Boolean).join(' · ')); add('After graduating', Q('after')); add('Proof so far', Q('proof')); }
+            else if (k === 'grad') { add('Degree', Q('degree')); add('Since graduating', Q('since')); add('Next step', Q('after')); }
+            else if (k === 'pg') { add('Why a PG degree', Q('pgWhy')); add('Where it should lead', Q('pgLead')); add('Experience', Q('exp')); }
+            else if (k === 'working') { add('Current work', [Q('industry'), A.years ? A.years + ' years' : ''].filter(Boolean).join(' · ')); add('Why move', Q('whyMove')); add('Time and savings', [Q('hours') ? Q('hours') + ' a week' : '', A.runway ? A.runway + ' months saved' : ''].filter(Boolean).join(' · ')); }
+            return r;
+        }
+        function ipStageTitle(X) {
+            const k = ipStageKey(X); return { c10: 'For you as a Class 10 student: your likings, and the path they point to', c1112: 'For you as a Class ' + (X.A && X.A.cls === '11' ? '11' : '12') + ' student: this year and the next', ug: 'For you as an undergraduate: use the years you have left', grad: 'For you as a recent graduate: your first role', pg: 'For you as a postgraduate: making the degree count', working: 'For you as a working professional: moving without a leap' }[k] || '';
+        }
+        function ipStageCard(X) {
+            const k = ipStageKey(X); if (!k) return '';
+            let items = ipStageItems(X).filter(Boolean); if (!items.length) return '';
+            if (X.career5) items = items.slice(0, 5);
+            return ipCard(X.e(ipStageTitle(X)), ipUl(items), 'pp-note');
+        }
+        // From today: how long it takes, for this reader.
+        function ipTimeline(X) {
+            const c = X.rec, A = X.A, y = Number(c.entryYears) || 3, k = ipStageKey(X), yr = A && A.ugYear;
+            const to = function (n) { return n <= 1 ? 'about 1 year' : 'about ' + (Math.round(n * 2) / 2) + ' years'; };
+            if (k === 'c10') return 'From today: about ' + (y + 2) + ' years to a first role (2 years of Class 11 and 12, then about ' + y + ' for the course and first role).';
+            if (k === 'c1112') return 'From today: about ' + y + ' years to a first role, starting with the entrance exam and admission this year.';
+            if (k === 'ug') { const left = { '1': 3, '2': 2, '3': 1, final: 0.5 }[yr]; return left ? 'From today: about ' + (left <= 0.5 ? 'a few months' : left + (left === 1 ? ' year' : ' years')) + ' of degree left, then 3 to 12 months to a first role if you build proof alongside.' : 'From today: your degree years plus 3 to 12 months to a first role, if you build proof alongside.'; }
+            if (k === 'grad') return 'From today: about 6 to 18 months to a first role if you build proof now' + (y >= 4 ? ' (longer if this field needs a master\'s).' : '.');
+            if (k === 'pg') return 'From today: your programme (about 1 to 2 years) plus 3 to 9 months to a first role, and sooner if you build proof during it.';
+            if (k === 'working') return 'From today: about 6 to 18 months alongside your job, and longer if the role needs a formal degree.';
+            return 'Most people start work in about ' + y + ' years from the beginning of the route.';
+        }
+        function ipStageSteps(X, road) {
+            const k = ipStageKey(X); if (!k || !road.length) return road.map(function (s) { return { t: s }; });
+            const sch = /^class\s*1[0-2]\b/i, isDeg = function (s) { return /b\.?\s?tech|b\.?\s?e\b|bachelor|b\.?\s?sc|b\.?\s?com|\bba\b|bba|bca|llb|mbbs|b\.?\s?pharm|b\.?\s?des|degree|diploma/i.test(s); };
+            const out = road.map(function (s, i) { return { t: s }; });
+            if (k === 'c10') out.unshift({ t: 'Now: choose your stream after Class 10', tag: 'You are here' });
+            else if (k === 'ug') { if (sch.test(road[0])) out[0].tag = 'Done'; const d = road.findIndex(function (s, i) { return i > 0 && isDeg(s); }); if (d > -1) out[d].tag = 'In progress'; }
+            else if (k === 'grad' || k === 'pg') { if (sch.test(road[0])) out[0].tag = 'Done'; const d = road.findIndex(function (s, i) { return i > 0 && isDeg(s); }); if (d > -1) out[d].tag = k === 'pg' ? 'Done (bachelor\'s)' : 'Done'; }
+            else if (k === 'working') { const keep = road.filter(function (s, i) { return !(i === 0 && sch.test(s)); }); const res = [{ t: 'Your current work and qualifications (your starting point)', tag: 'You are here' }].concat(keep.slice(isDeg(keep[0] || '') ? 1 : 0).map(function (s) { return { t: s }; })); return res; }
+            return out;
+        }
+        /* The next 10 years: how AI and change affect this career (rule-based, by field; estimates, not forecasts). */
+        const IP_NEXTGEN = {
+            Technology: ['AI writes routine code and tests, so the entry-level bar rises.', 'Problem framing, system design, security and judging AI output stay human work.', 'Learn to build with AI tools, plus cloud, data and security basics.'],
+            Engineering: ['AI speeds up design, simulation and paperwork.', 'Safety judgement, site work, standards and responsibility stay with the engineer.', 'Add data skills, simulation and automation tools to your core discipline.'],
+            Science: ['AI helps with data analysis and literature search.', 'Asking good questions, designing experiments and checking results stay human.', 'Learn data analysis and coding next to your subject.'],
+            Healthcare: ['AI helps with scans, records and routine checks.', 'Patient trust, bedside judgement and procedures stay human.', 'Learn digital health tools and keep up with clinical guidelines.'],
+            Finance: ['AI automates reconciliation, reports and basic analysis.', 'Judgement, ethics, client trust and regulation knowledge stay human.', 'Add data analysis, automation and regulation updates to your finance base.'],
+            Business: ['AI drafts reports, forecasts and routine communication.', 'Leading people, negotiation and decisions under uncertainty stay human.', 'Learn analytics, AI-assisted workflows and clear communication.'],
+            'Law & Public Service': ['AI speeds up research, drafting and document review.', 'Argument, judgement, ethics and public trust stay human.', 'Learn legal-tech tools and keep strong writing and speaking skills.'],
+            Education: ['AI helps with content, practice questions and marking.', 'Motivating learners, mentoring and classroom judgement stay human.', 'Learn to use AI tools for teaching, and strengthen subject depth.'],
+            Media: ['AI generates drafts, images and edits quickly.', 'Original reporting, taste, voice and trust stay human.', 'Learn AI-assisted production tools and build a recognisable voice.'],
+            Creative: ['AI makes routine visuals cheap.', 'Concept, taste, client understanding and originality stay human.', 'Learn AI-assisted tools and build a portfolio that shows your own thinking.'],
+            'Arts & Entertainment': ['AI can generate content in many formats.', 'Live performance, personal style and audience connection stay human.', 'Learn digital distribution and AI tools, and build your own audience.'],
+            'Agriculture & Environment': ['Sensors, drones and AI improve yield and monitoring.', 'Field knowledge, policy and community work stay human.', 'Learn data, remote sensing and sustainability reporting.'],
+            'Skilled Trades': ['Automation and diagnostics tools change how work is done.', 'Hands-on skill, safety and on-site problem solving stay human.', 'Learn digital diagnostic tools and keep certifications up to date.'],
+            'Aviation & Hospitality': ['AI improves scheduling, bookings and service tools.', 'Safety, hospitality and customer care stay human.', 'Learn digital systems, languages and service skills.'],
+            'Personal Services & Wellness': ['AI helps with bookings, plans and tracking.', 'Personal care, trust and hands-on skill stay human.', 'Learn client-management tools and keep your certifications current.'],
+            'Sports & Fitness': ['Wearables and AI analyse training and performance.', 'Coaching, motivation and reading an athlete stay human.', 'Learn performance analytics and sports science basics.']
+        };
+        function ipNextGen(X, lite) {
+            const e = X.e, c = X.rec, g = IP_NEXTGEN[c.category] || IP_NEXTGEN.Business, dem = String(c.demand || '').toLowerCase();
+            const out = { 'very high': 'Demand is rated very high today, and new roles are appearing, so entering early helps.', high: 'Demand is rated high today. Expect the skills asked for to keep shifting.', moderate: 'Demand is rated moderate today. Standing out with proof of skill matters more.', low: 'Demand is rated low today. Consider a Plan B and keep your skills broad.' }[dem] || 'Check current openings before you commit.';
+            const rising = X.pool.filter(function (x) { return x.id !== c.id && x.category === c.category && /very high|high/i.test(x.demand || ''); }).slice(0, 3).map(function (x) { return x.title; });
+            const aiSkill = (c.skillDetails || []).some(function (s) { return /\bai\b|generative|machine learning/i.test(s.name); });
+            if (lite) return ipCard('Looking ahead: the next 10 years', '<p class="pp-sm">' + e(g[0]) + ' <b>Stay ahead:</b> ' + e(g[2]) + '</p>', 'pp-note');
+            return ipH('Looking ahead: the next 10 years') + '<div class="pp-cols"><div>' + ipCard('What AI and change are likely to do', '<p class="pp-sm">' + e(g[0]) + '</p><p class="pp-sm"><b>What stays human:</b> ' + e(g[1]) + '</p>', '') + '</div><div>' + ipCard('How to stay ahead', '<p class="pp-sm">' + e(g[2]) + (aiSkill ? '' : ' Add one AI tool to your workflow in the next 90 days.') + '</p><p class="pp-sm">' + e(out) + '</p>', 'pp-note') + '</div></div>' +
+                (rising.length ? '<p class="pp-sm">Related roles with high demand today: <b>' + rising.map(e).join(', ') + '</b>. These are signals from our data, not forecasts.</p>' : '') + '<p class="pp-sm pp-mut">This is a guide from field patterns, not a prediction for any one job. Review it every year.</p>';
         }
 
         /* ============================================================
@@ -13533,10 +13686,10 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const P = [];
             P.push([rec.title + ': at a glance', gen ? 'What it is, what it pays, and whether it could suit you.' : 'What it is, and how it fits you.',
                 ipHero(rec, vis, fit) + ipFitBreakdown(X) + ipMeters(rec) + ipJob(X) + ipParentCard(X)]);
-            P.push(['Why it can be great, and the downsides', 'An honest two-sided view' + (A ? ', based on your answers.' : '.'), ipWhyNot(X) + ipScene(X) + ipTrial(X)]);
-            P.push(['How to get there', gen ? 'Routes, exams and colleges.' : 'Routes, exams and colleges, for a ' + PLAN_SEG_LABEL[X.seg].toLowerCase() + '.', ipRoute(X) + ipEntryLevels(X) + ipH('Exams that lead here') + ipExams(X, true) + (X.student ? ipH('Colleges to look at') + ipColleges(X, true) : '')]);
+            P.push(['Why it can be great, and the downsides', 'An honest two-sided view' + (A ? ', based on your answers.' : '.'), ipWhyNot(X) + ipScene(X) + ipTrial(X) + ipNextGen(X, true)]);
+            P.push(['How to get there', gen ? 'Routes, exams and colleges.' : 'Routes, exams and colleges, for ' + (/^[aeiou]/i.test(ipStageName(X)) ? 'an ' : 'a ') + ipStageName(X).toLowerCase() + '.', ipRoute(X) + ipEntryLevels(X) + ipH('Exams that lead here') + ipExams(X, true) + (X.student ? ipH('Colleges to look at') + ipColleges(X, true) : '')]);
             P.push(['Skills, pay and the reality', 'What to learn, what you can earn, and what people do not tell you.', ipSkills(X, true) + ipH('Pay and who hires') + ipPay(X, true) + ipPayReality(X)]);
-            P.push(['Plan B and your first 90 days', gen ? 'Close alternatives and what to do next.' : 'Close alternatives, and what to do next as a ' + PLAN_SEG_LABEL[X.seg].toLowerCase() + '.', ipStageCard(X) + ipPlanB(X, true) + ipH('Your first 90 days') + ipDays(X) + ipCheckpoint(X) + '<p class="pp-sm pp-mut">Pay, demand and cost figures are estimates and not a guarantee. Confirm exam dates, fees and eligibility on official websites. Report generated ' + e(X.today) + ' at plan4it.co.</p>']);
+            P.push(['Plan B and your first 90 days', gen ? 'Close alternatives and what to do next.' : 'Close alternatives, and what to do next as ' + (/^[aeiou]/i.test(ipStageName(X)) ? 'an ' : 'a ') + ipStageName(X).toLowerCase() + '.', ipStageCard(X) + ipPlanB(X, true) + ipH('Your first 90 days') + ipDays(X) + ipCheckpoint(X) + '<p class="pp-sm pp-mut">Pay, demand and cost figures are estimates and not a guarantee. Confirm exam dates, fees and eligibility on official websites. Report generated ' + e(X.today) + ' at plan4it.co.</p>']);
             return P.map(function (p, i) { return ipPage(i + 1, P.length, p[0], p[1], p[2], kind, right); }).join('');
         }
 
@@ -13588,7 +13741,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const X = ipCtx(A, null, false), e = X.e, rec = X.rec, top = X.top, pct = X.pct, pool = X.pool;
             if (!rec) return null;
             const vis = CAT_VIS[rec.category] || ['<i class=ic-star></i>', '#0c4a6e', '#0284c7'];
-            const kind = 'Free 2-page report · ' + PLAN_SEG_LABEL[X.seg], right = 'Prepared for <b>' + e(X.name) + '</b><br>' + e(X.today);
+            const kind = 'Free 2-page report · ' + ipStageName(X), right = 'Prepared for <b>' + e(X.name) + '</b><br>' + e(X.today);
             const sd = (rec.skillDetails || []).slice(0, 3), s1 = sd[0] ? sd[0].name : 'the first core skill';
             const col = { Logic: '#0284c7', People: '#0d9488', 'Hands-on': '#d97706', Creative: '#db2777', Research: '#7c3aed', Leadership: '#dc2626' };
             const wsum = {}; let tw = 0;
