@@ -155,6 +155,16 @@
         input:-webkit-autofill { -webkit-box-shadow: 0 0 0 40px #fff inset; -webkit-text-fill-color: #0f172a; }
         input[type="range"] { -webkit-text-fill-color: initial; }
 
+        /* Header fit levels, set by fitHeader(): 1 = icons only, 2 = links folded into the menu, 3 = optional buttons moved into the menu */
+        body.hdr-l1 #site-header [data-hlabel] { display: none !important; }
+        body.hdr-l1 #site-header [data-hicon] { display: block !important; }
+        body.hdr-l2 #site-header nav[aria-label=Main] { display: none !important; }
+        body.hdr-l2 #mobile-menu-btn { display: flex !important; }
+        body.hdr-l2 #mobile-menu-panel:not(.hidden), body.hdr-l2 #mobile-menu-overlay:not(.hidden) { display: block !important; }
+        body.hdr-l3 #site-header [data-hopt] { display: none !important; }
+        body.hdr-l4 #admin-header-btn { display: none !important; }
+        body.hdr-l5 #site-header [data-wordmark] { display: none !important; }
+        #hdr-left, #hdr-right { flex-shrink: 0; }
         /* Quiz action bar: inline on laptops, pinned to the bottom of the screen on phones */
         .qz-actions { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin-top: 1.25rem; }
         .qz-actions .qz-go { flex: 0 0 auto; min-width: 12rem; }
@@ -702,15 +712,15 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
     <div id="toast-container" class="fixed bottom-5 right-5 z-[100] space-y-2" role="status" aria-live="polite"></div>
 
     <!-- NAVIGATION BAR -->
-    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200">
-        <div class="max-w-7xl 2xl:max-w-[1440px] mx-auto px-3 min-[360px]:px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-            <div class="flex items-center gap-0 min-[360px]:gap-1 shrink-0">
+    <header id="site-header" class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200">
+        <div id="hdr-row" class="max-w-7xl 2xl:max-w-[1440px] mx-auto px-3 min-[360px]:px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            <div id="hdr-left" class="flex items-center gap-0 min-[360px]:gap-1 shrink-0">
                 <button id="mobile-menu-btn" type="button" onclick="toggleMobileMenu()" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu-panel" class="xl:hidden -ml-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl hover:bg-slate-100 transition">
                     <svg class="w-6 h-6" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
                 </button>
                 <div class="flex items-center gap-1.5 min-[360px]:gap-2 cursor-pointer" onclick="switchView('home')">
                     <img src="/assets/logo-mark-96.png" alt="" width="36" height="36" class="w-9 h-9 max-[359px]:w-8 max-[359px]:h-8 rounded-lg shrink-0 bg-black" aria-hidden="true">
-                    <span class="font-display font-bold text-lg max-[359px]:text-sm max-[359px]:tracking-tight text-slate-900">Plan4it.co</span>
+                    <span data-wordmark class="font-display font-bold text-lg max-[359px]:text-sm max-[359px]:tracking-tight text-slate-900">Plan4it.co</span>
                 </div>
             </div>
 
@@ -722,15 +732,15 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 <button type="button" onclick="goToTool('home','home-how')" class="nav-link inline-flex items-center min-h-[40px] px-1 hover:text-brand-600 transition">How It Works</button>
             </nav>
 
-            <div class="flex items-center gap-0.5 min-[360px]:gap-1 sm:gap-3 xl:gap-2 2xl:gap-3 shrink-0">
-                <button type="button" onclick="switchView('reports')" aria-label="Reports" title="Reports" class="hidden sm:inline-flex items-center gap-1 min-h-[40px] px-2.5 sm:px-3 rounded-xl xl:rounded-full bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 text-xs xl:text-sm font-bold whitespace-nowrap"><span aria-hidden="true"><i class=ic-file></i></span><span class="hidden min-[420px]:inline"> Reports</span></button>
+            <div id="hdr-right" class="flex items-center gap-0.5 min-[360px]:gap-1 sm:gap-3 xl:gap-2 2xl:gap-3 shrink-0">
+                <button type="button" onclick="switchView('reports')" data-hopt aria-label="Reports" title="Reports" class="hidden sm:inline-flex items-center gap-1 min-h-[40px] px-2.5 sm:px-3 rounded-xl xl:rounded-full bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 text-xs xl:text-sm font-bold whitespace-nowrap"><span aria-hidden="true"><i class=ic-file></i></span><span data-hlabel class="hidden min-[420px]:inline"> Reports</span></button>
                 <button id="gs-btn" type="button" onclick="openGlobalSearch()" aria-label="Search careers, exams and colleges" title="Search (press /)" class="min-h-[40px] min-w-[40px] max-[359px]:min-w-[36px] border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl px-2.5 max-[359px]:px-2 sm:px-3 flex items-center justify-center gap-2 text-sm font-semibold transition"><svg class="w-5 h-5" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="M13.5 13.5L17 17" stroke-linecap="round"/></svg><span class="hidden">Search</span></button>
                 <button id="admin-header-btn" type="button" onclick="openAdmin()" class="hidden min-h-[40px] border border-amber-200 text-amber-800 bg-amber-50 hover:bg-amber-100 px-3 rounded-xl text-xs font-semibold transition">Admin</button>
                     <button id="auth-header-btn" type="button" onclick="openAuth()" aria-label="Sign up or log in" title="Create an account or log in" class="min-h-[40px] whitespace-nowrap border border-brand-200 text-brand-700 hover:bg-brand-50 px-2 min-[360px]:px-2.5 sm:px-4 py-2 rounded-xl text-sm font-semibold transition">Sign up</button>
-                <button type="button" onclick="homeGo('nav_find_career','confusedMode')" class="hidden md:inline-flex items-center whitespace-nowrap min-h-[40px] px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold transition">Find My Career</button>
+                <button type="button" data-hopt onclick="homeGo('nav_find_career','confusedMode')" class="hidden md:inline-flex items-center whitespace-nowrap min-h-[40px] px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold transition">Find My Career</button>
                 <button onclick="switchView('dashboard')" aria-label="My Dashboard" title="My Dashboard" class="relative whitespace-nowrap bg-slate-900 hover:bg-slate-800 text-white min-h-[40px] min-w-[40px] px-2 min-[360px]:px-2.5 sm:px-4 py-2 rounded-xl text-sm font-semibold transition shadow-sm flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5 sm:hidden xl:block 2xl:hidden" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2.5" y="2.5" width="6.5" height="6.5" rx="1.3"/><rect x="11" y="2.5" width="6.5" height="6.5" rx="1.3"/><rect x="2.5" y="11" width="6.5" height="6.5" rx="1.3"/><rect x="11" y="11" width="6.5" height="6.5" rx="1.3"/></svg>
-                    <span class="hidden sm:inline xl:hidden 2xl:inline">My Dashboard</span>
+                    <svg data-hicon class="w-5 h-5 sm:hidden xl:block 2xl:hidden" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2.5" y="2.5" width="6.5" height="6.5" rx="1.3"/><rect x="11" y="2.5" width="6.5" height="6.5" rx="1.3"/><rect x="2.5" y="11" width="6.5" height="6.5" rx="1.3"/><rect x="11" y="11" width="6.5" height="6.5" rx="1.3"/></svg>
+                    <span data-hlabel class="hidden sm:inline xl:hidden 2xl:inline">My Dashboard</span>
                     <span id="saved-count-badge" class="hidden absolute -top-2 -right-2 bg-brand-600 text-white text-[10px] font-bold w-5 h-5 rounded-full items-center justify-center">0</span>
                 </button>
             </div>
@@ -754,6 +764,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             <button data-nav="backupPlan" onclick="switchView('backupPlan');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50 ">If Plan A fails</button>
             <div class="my-1 border-t border-slate-200"></div>
             <button type="button" onclick="closeMobileMenu();goToTool('home','home-how')" class="text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50">How It Works</button>
+            <button id="admin-menu-item" type="button" onclick="closeMobileMenu();openAdmin()" class="hidden text-left min-h-[48px] px-5 flex items-center font-semibold text-amber-800 hover:bg-amber-50">Admin tools</button>
             <button type="button" data-nav="reports" onclick="closeMobileMenu();switchView('reports')" class="nav-link text-left min-h-[48px] px-5 flex items-center gap-2 font-bold text-amber-900 bg-amber-50 hover:bg-amber-100"><span aria-hidden="true"><i class=ic-file></i></span> Reports</button>
             <button data-nav="dashboard" onclick="switchView('dashboard');closeMobileMenu()" class="nav-link text-left min-h-[48px] px-5 flex items-center hover:bg-slate-50 ">My Dashboard</button>
         </div>
@@ -8808,6 +8819,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         function adminSyncUI() {
             const b = document.getElementById('admin-header-btn');
             if (b) b.classList.toggle('hidden', !adminOwnerOk);
+            const mi = document.getElementById('admin-menu-item'); if (mi) mi.classList.toggle('hidden', !adminOwnerOk);
+            try { fitHeader(); } catch (er) {}
         }
         function openAdminTools() {
             if (!adminOwnerOk) return;
@@ -10295,6 +10308,43 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
            ============================================================ */
 
 
+
+        /* Header that fits itself: start from the full layout, then step down (icons only -> links in the menu ->
+           optional buttons in the menu) until nothing overlaps. Works whatever the font, screen width, account name
+           or admin button, so it never depends on guessed breakpoints. */
+        const HDR_LEVELS = ['hdr-l1', 'hdr-l2', 'hdr-l3', 'hdr-l4', 'hdr-l5'];
+        function hdrFits() {
+            const row = document.getElementById('hdr-row'), L = document.getElementById('hdr-left'), R = document.getElementById('hdr-right');
+            if (!row || !L || !R) return true;
+            if (row.scrollWidth > row.clientWidth + 1) return false;
+            const vw = document.documentElement.clientWidth, rr = R.getBoundingClientRect(), lr = L.getBoundingClientRect();
+            if (rr.right > vw + 0.5 || rr.left < lr.right + 4) return false;
+            const nav = row.querySelector('nav[aria-label=Main]');
+            if (nav && nav.getClientRects().length) {
+                if (nav.scrollWidth > nav.clientWidth + 1) return false;
+                const kids = Array.prototype.filter.call(nav.children, function (k) { return k.getClientRects().length; });
+                if (kids.length) {
+                    const a = kids[0].getBoundingClientRect(), z = kids[kids.length - 1].getBoundingClientRect();
+                    if (a.left < lr.right + 12 || z.right > rr.left - 12) return false;
+                }
+            }
+            return true;
+        }
+        function fitHeader() {
+            const b = document.body; if (!b) return;
+            HDR_LEVELS.forEach(function (c) { b.classList.remove(c); });
+            for (let i = 0; i < HDR_LEVELS.length && !hdrFits(); i++) b.classList.add(HDR_LEVELS[i]);
+            if (!b.classList.contains('hdr-l2') && window.innerWidth >= 1280 && typeof closeMobileMenu === 'function') { const p = document.getElementById('mobile-menu-panel'); if (p && !p.classList.contains('hidden')) closeMobileMenu(); }
+        }
+        (function () {
+            let raf = 0; const go = function () { cancelAnimationFrame(raf); raf = requestAnimationFrame(fitHeader); };
+            window.addEventListener('resize', go);
+            window.addEventListener('load', go);
+            if (document.fonts && document.fonts.ready) document.fonts.ready.then(go);
+            document.addEventListener('DOMContentLoaded', go);
+            try { new ResizeObserver(go).observe(document.getElementById('hdr-right')); } catch (er) {}
+            go();
+        })();
         function closeNavDD() { document.querySelectorAll('[data-dd]').forEach(function (d) { const b = d.querySelector('button'), m = d.querySelector('[role=menu]'); m.classList.add('hidden'); b.setAttribute('aria-expanded', 'false'); }); }
         function toggleNavDD(btn) {
             const d = btn.closest('[data-dd]'), m = d.querySelector('[role=menu]'), open = m.classList.contains('hidden');
@@ -12594,10 +12644,11 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (s) {
                 const name = authDisplayName(s) || s.user.email || 'Account';
                 const first = name.split(' ')[0];
-                btn.innerHTML = '<span class="inline-flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-brand-600 text-white text-xs font-bold inline-flex items-center justify-center">' + escapeAuth(first.charAt(0).toUpperCase()) + '</span><span class="hidden sm:inline max-w-[90px] truncate">' + escapeAuth(first) + '</span></span>';
+                btn.innerHTML = '<span class="inline-flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-brand-600 text-white text-xs font-bold inline-flex items-center justify-center">' + escapeAuth(first.charAt(0).toUpperCase()) + '</span><span data-hlabel class="hidden sm:inline max-w-[90px] truncate">' + escapeAuth(first) + '</span></span>';
+                try { fitHeader(); } catch (er) {}
                 btn.setAttribute('aria-label', 'Account menu for ' + first);
                 btn.setAttribute('title', 'Your account');
-            } else { btn.textContent = 'Sign up'; btn.setAttribute('aria-label', 'Sign up or log in'); btn.setAttribute('title', 'Create an account or log in'); }
+            } else { btn.textContent = 'Sign up'; btn.setAttribute('aria-label', 'Sign up or log in'); btn.setAttribute('title', 'Create an account or log in'); try { fitHeader(); } catch (er) {} }
         }
         function escapeAuth(t) { return String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
