@@ -221,7 +221,7 @@
             .pp-tag.g { background: #dcfce7; color: #166534; } .pp-tag.a { background: #fef3c7; color: #92400e; }
             .pp-facts { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 9.5px; color: #475569; margin: 3px 0; }
             .pp-cols { display: flex; gap: 14px; } .pp-cols > * { flex: 1; min-width: 0; } .pp-cols3 { display: flex; gap: 8px; } .pp-cols3 > * { flex: 1; min-width: 0; }
-            .pp-t { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 9.5px; } .pp-t th { background: #f1f5f9; text-align: left; } .pp-t td, .pp-t th { border: 1px solid #cbd5e1; padding: 3px 6px; vertical-align: top; }
+            .pp-t { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 9.5px; } .pp-t th { background: #f1f5f9; text-align: left; } .pp-t td, .pp-t th { border: 1px solid #cbd5e1; padding: 3px 6px; vertical-align: top; overflow-wrap: anywhere; }
             .pp-t tr { page-break-inside: avoid; } .pp-kv th { width: 22%; }
             .pp-box { display: inline-block; width: 10px; height: 10px; border: 1.5px solid #334155; border-radius: 2px; margin-right: 6px; vertical-align: -1px; } .pp-box.on { background: #334155; }
             .pp-mast { display: flex; justify-content: space-between; align-items: center; padding-bottom: 6px; margin-bottom: 8px; border-bottom: 2px solid #0284c7; } .pp-wm { font-size: 19px; font-weight: 800; letter-spacing: -.3px; color: #0c4a6e; line-height: 1; }
@@ -13461,20 +13461,34 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         }
         // scale each page so it fills the sheet; measured with the print rules applied off-screen
         (function () { try { const ua = navigator.userAgent || ''; if (/Chrome|Chromium|Edg\//.test(ua) && !/iPhone|iPad|iPod|CriOS|EdgiOS/.test(ua)) document.documentElement.classList.add('pp-vh'); } catch (er) {} })();
+        // Web fonts load lazily. If the pages were measured before the real Inter / heading fonts arrived, the wider real text
+        // would spill into the footer. So once the fonts are in, measure again.
+        let PP_FONT_WAIT = null;
+        function ppRefit() { const sh = document.getElementById('plan-print-sheet'); if (sh && sh.querySelector('.ip') && document.body.classList.contains('viewing-report')) ppFitPages(sh); }
+        function ppWatchFonts() {
+            if (!document.fonts || !document.fonts.load) return;
+            const specs = ['400 10px Inter', '500 10px Inter', '600 10px Inter', '700 10px Inter', '800 10px Inter', '500 10px "Space Grotesk"', '600 10px "Space Grotesk"', '700 10px "Space Grotesk"'];
+            const p = Promise.all(specs.map(function (f) { return document.fonts.load(f, 'Aa0\u20B9').catch(function () {}); })).then(function () { return document.fonts.ready; });
+            PP_FONT_WAIT = p; p.then(function () { if (PP_FONT_WAIT === p) ppRefit(); }).catch(function () {});
+        }
         function ppFitPages(sheet) {
             try {
                 let css = '';
                 Array.prototype.forEach.call(document.styleSheets, function (ss) { try { Array.prototype.forEach.call(ss.cssRules, function (r) { if (r.type === 4 && /print/.test(r.conditionText || r.media.mediaText)) Array.prototype.forEach.call(r.cssRules, function (x) { if (x.selectorText && /plan-print-sheet|\.pp-|\.cr-|\.ci-|\.ip/.test(x.selectorText)) css += x.cssText + '\n'; }); }); } catch (er) {} });
                 const st = document.createElement('style'); st.id = 'pp-measure'; st.textContent = css; document.head.appendChild(st);
                 const old = sheet.style.cssText; sheet.style.cssText = 'display:block;position:fixed;left:-10000px;top:0;width:176mm;visibility:hidden;font-family:Inter,Arial,sans-serif;font-size:10.5px;line-height:1.45';
+                // Measure on a clean slate: if a report is already on screen, its screen layout (210mm x 268mm pages) must not leak into the measurement.
+                const wasViewing = document.body.classList.contains('viewing-report'); document.body.classList.remove('viewing-report');
                 document.body.classList.add('printing-plan');
                 Array.prototype.forEach.call(sheet.querySelectorAll('.ip'), function (pg) {
-                    pg.style.height = '232mm'; const c = pg.querySelector('.ipc'), lim = pg.clientHeight - 30; if (!c || !lim) return;
+                    pg.style.setProperty('height', '232mm', 'important'); pg.style.setProperty('width', '176mm', 'important'); pg.style.setProperty('zoom', '1', 'important');
+                    const c = pg.querySelector('.ipc'), lim = pg.clientHeight - 30 - 8; if (!c || !lim) return;
                     const fits = function (z) { c.style.zoom = z; return c.scrollHeight * 1 <= lim + 1 && c.getBoundingClientRect().height <= lim; };
                     let lo = 0.5, hi = 1.5; for (let k = 0; k < 12; k++) { const m = (lo + hi) / 2; if (fits(m)) lo = m; else hi = m; }
-                    c.style.zoom = lo.toFixed(3); pg.style.height = '';
+                    c.style.zoom = lo.toFixed(3); pg.style.removeProperty('height'); pg.style.removeProperty('width'); pg.style.removeProperty('zoom');
                 });
                 sheet.style.cssText = old; st.remove();
+                if (wasViewing) document.body.classList.add('viewing-report');
             } catch (er) { console.error(er); }
         }
         function ipCtx(A, focusId, gen) {
@@ -14489,7 +14503,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const sheet = document.getElementById('plan-print-sheet'); if (!sheet) return;
             sheet.innerHTML = html; ppFitPages(sheet);
             try { localStorage.setItem('marg_report_done', '1'); } catch (er) {}
-            rvStyles();
+            rvStyles(); ppWatchFonts();
             const bar = document.getElementById('report-view-bar');
             document.getElementById('report-view-title').textContent = title || 'Your report';
             RV_FIT = Math.max(0.3, Math.min(1, (window.innerWidth - 16) / 794)); RV_ZOOM = RV_FIT; rvApplyZoom();
