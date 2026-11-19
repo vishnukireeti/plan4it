@@ -718,7 +718,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 <button id="mobile-menu-btn" type="button" onclick="toggleMobileMenu()" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu-panel" class="xl:hidden -ml-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl hover:bg-slate-100 transition">
                     <svg class="w-6 h-6" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
                 </button>
-                <div class="flex items-center gap-1.5 min-[360px]:gap-2 cursor-pointer" onclick="switchView('home')">
+                <div class="flex items-center gap-1.5 min-[360px]:gap-2 cursor-pointer" role="link" tabindex="0" aria-label="Plan4it.co home" onclick="switchView('home')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();switchView('home')}">
                     <img src="/assets/logo-mark-96.png" alt="" width="36" height="36" class="w-9 h-9 max-[359px]:w-8 max-[359px]:h-8 rounded-lg shrink-0 bg-black" aria-hidden="true">
                     <span data-wordmark class="font-display font-bold text-lg max-[359px]:text-sm max-[359px]:tracking-tight text-slate-900">Plan4it.co</span>
                 </div>
@@ -10239,6 +10239,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMobileMenu(); });
 
         function switchView(viewId, skipHash) {
+            // Any navigation closes the phone menu and header dropdowns, so they never sit over the page that was just opened.
+            try { closeMobileMenu(); if (typeof closeNavDD === 'function') closeNavDD(); } catch (er) {}
             // The quiz is a "use it" tool, not reference material -- gate it here, in the
             // one place every entry point (nav links, home/explorer CTAs, recovery-guide
             // links, browser back/forward, and a direct #confusedMode link) already funnels
@@ -10288,7 +10290,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (viewId === 'backupPlan') backupPrefillFromFit();
             if (viewId === 'afterDegree') loadBranchTree(currentBranchKey || 'B.Com');
             try { renderReportPromos(); } catch (er) {}
-            if (viewId === 'dashboard') renderDashboard();
+            if (viewId === 'dashboard') { try { renderDashboard(); } catch (er) { console.error(er); } }
             if (viewId === 'govAndAbroad') { renderScholarshipMatches(); calculateHiddenCosts(); renderReservationInfo(); }
             if (viewId === 'internships') renderInternships();
             if (viewId !== prevView) trackEvent('view_' + viewId);
