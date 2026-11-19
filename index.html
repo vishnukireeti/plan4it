@@ -7871,6 +7871,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     groups: [
                         {
                             name: "Into data and tech",
+                            skills: "SQL, Excel, Power BI or Tableau, basic Python and statistics",
                             note: "Numbers and business sense are exactly what these teams look for.",
                             paths: [
                                 { label: "Data Analyst / Business Intelligence", careerId: "data-analyst" },
@@ -7881,6 +7882,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         },
                         {
                             name: "Into product, marketing and growth",
+                            skills: "Analytics, SEO and ads basics, writing, user research, A/B testing",
                             note: "Commerce students understand customers, pricing and markets.",
                             paths: [
                                 { label: "Product Manager", careerId: "product-manager" },
@@ -7891,6 +7893,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         },
                         {
                             name: "Into law, policy and media",
+                            skills: "Research and writing, data handling, reading laws and reports",
                             note: "Finance literacy is rare and valued in these fields.",
                             paths: [
                                 { label: "Tax Lawyer (after LLB)", careerId: "tax-lawyer" },
@@ -7961,6 +7964,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     groups: [
                         {
                             name: "Into data and tech",
+                            skills: "SQL, Excel, Power BI or Tableau, basic Python and statistics",
                             note: "Companies need people who can connect technology to business problems.",
                             paths: [
                                 { label: "Data Analyst / Business Intelligence", careerId: "data-analyst" },
@@ -7971,6 +7975,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         },
                         {
                             name: "Into finance and markets",
+                            skills: "Financial modelling in Excel, valuation basics, market research, CFA or NISM-style certifications",
                             note: "BBA (Finance) electives and certifications open these doors.",
                             paths: [
                                 { label: "Equity Research Analyst", careerId: "equity-research-analyst" },
@@ -7981,6 +7986,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         },
                         {
                             name: "Into design, research and people analytics",
+                            skills: "User research, Figma basics, survey and data analysis, storytelling",
                             note: "Understanding users and teams is a business skill too.",
                             paths: [
                                 { label: "UX Researcher", careerId: "ux-researcher" },
@@ -8052,6 +8058,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     groups: [
                         {
                             name: "Into business and product",
+                            skills: "Product thinking, SQL, documentation, stakeholder communication, Agile",
                             note: "Tech-literate people are in demand in product and strategy roles.",
                             paths: [
                                 { label: "Product Manager", careerId: "product-manager" },
@@ -8062,6 +8069,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         },
                         {
                             name: "Into finance and fintech",
+                            skills: "Excel and SQL, accounting and payments basics, API and data concepts",
                             note: "Banks and fintech firms hire people who understand both money and systems.",
                             paths: [
                                 { label: "Fintech Product Analyst", careerId: "fintech-product-analyst" },
@@ -8072,6 +8080,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         },
                         {
                             name: "Into design, marketing and media",
+                            skills: "Figma, content and SEO, analytics, a public portfolio",
                             note: "Creative and growth roles are increasingly built on tools and data.",
                             paths: [
                                 { label: "UI/UX Designer", careerId: "ux-ui-designer" },
@@ -8497,6 +8506,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         ];
 
         const pathwaysFaqData = [
+            { q: "Is my degree enough to get a job, or do I need skills too?", a: "Skills matter more than they used to. Earlier, graduating in the right domain often got you hired. Now employers look at what you can show: tools you know, projects you built and internships you did. The degree is still important, and some careers need a specific one (such as medicine, law, CA or teaching), but for most roles you need both. Pick the skills your target career asks for, build something small with them, and add it to your resume." },
             { q: "I'm taking B.Com, BBA or BCA. Am I limited to the 'obvious' careers?", a: "No. A B.Com student can become a data analyst or product manager, a BBA student can move into analytics or fintech, and a BCA student can end up in business, design or marketing. The degree gets you started; the skills, projects and internships you add decide where you finish. Open B.Com, BBA or BCA above and look for the 'does not mean only' section to see real crossover careers." },
             { q: "I picked the \"wrong\" stream in Class 10/12 — is it too late to switch?", a: "No. Commerce and Humanities students regularly move into tech or data roles via BCA, certifications, or CUET-based degree options. Science students can just as easily move into design, business, or civil services. The stream affects which door is easiest to open first, not which doors are permanently locked." },
             { q: "Everyone around me is doing engineering or medicine — should I too?", a: "Popularity isn't the same as fit. Engineering and medicine are excellent if the day-to-day work genuinely interests you — but they're long, expensive commitments to make just because they're the default. Use the branches above or the Confused Mode quiz to check what a typical week actually looks like in a few options first." },
@@ -15713,6 +15723,13 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 </div>
             `;
 
+            if (key !== 'Class 10') {
+                container.insertAdjacentHTML('afterbegin', `
+                    <div class="mb-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm leading-relaxed">
+                        <p class="font-bold text-amber-800 mb-1">Hiring today is skills-first</p>
+                        <p class="text-slate-600">A few years ago a degree in the right subject was often enough to get hired. Today most employers look at what you can actually do: the skills you can show, your projects and your internships. The degree still matters, and some careers need a specific one (medicine, law, CA, teaching). For everything else, the paths below are starting points. Pair them with skills you can prove.</p>
+                    </div>`);
+            }
             if (data.crossover) {
                 const x = data.crossover;
                 container.insertAdjacentHTML('beforeend', `
@@ -15724,6 +15741,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                                 <div class="bg-white rounded-xl border border-emerald-100 p-4">
                                     <h5 class="font-bold text-emerald-800 text-sm mb-1">${g.name}</h5>
                                     <p class="text-[11px] text-slate-500 italic mb-2">${g.note}</p>
+                                    ${g.skills ? `<p class="text-[11px] font-semibold text-emerald-800 mb-2">Skills to build: <span class="font-normal text-slate-600">${g.skills}</span></p>` : ''}
                                     <ul class="space-y-2 text-sm text-slate-700">
                                         ${g.paths.map(p => `<li class="flex items-start space-x-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-600 mt-1.5 shrink-0"></span>${p.careerId ? `<button onclick="openCareerDetail('${p.careerId}')" class="text-left text-brand-700 hover:underline font-medium">${p.label} →</button>` : `<span>${p.label}</span>`}</li>`).join('')}
                                     </ul>
