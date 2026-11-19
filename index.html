@@ -12395,6 +12395,13 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const inp = document.getElementById(id.replace(/-err$/, '')); if (inp) inp.setAttribute('aria-invalid', msg ? 'true' : 'false');
         }
         function authClearErrs() { ['auth-name-err', 'auth-email-err', 'auth-password-err', 'auth-consent-err', 'auth-signup-err', 'auth-signup-ok', 'auth-login-ok', 'auth-login-err', 'auth-google-err'].forEach(function (id) { authErr(id, ''); }); }
+        // Catches obvious typos in common email domains (gmial.com, gamil.com, yahooo.com ...) and returns the corrected address, or ''.
+        function authEmailSuggestion(email) {
+            const at = email.lastIndexOf('@'); if (at < 1) return '';
+            const local = email.slice(0, at), dom = email.slice(at + 1).toLowerCase();
+            const fixed = { 'gmial.com': 'gmail.com', 'gmai.com': 'gmail.com', 'gamil.com': 'gmail.com', 'gmail.co': 'gmail.com', 'gmail.con': 'gmail.com', 'gmail.cm': 'gmail.com', 'gmaill.com': 'gmail.com', 'gmal.com': 'gmail.com', 'gnail.com': 'gmail.com', 'gmail.om': 'gmail.com', 'gmail.in': 'gmail.com', 'googlemail.co': 'googlemail.com', 'yahooo.com': 'yahoo.com', 'yaho.com': 'yahoo.com', 'yahho.com': 'yahoo.com', 'yahoo.con': 'yahoo.com', 'yahoo.co': 'yahoo.com', 'yhoo.com': 'yahoo.com', 'hotmial.com': 'hotmail.com', 'hotmal.com': 'hotmail.com', 'hotmail.con': 'hotmail.com', 'outlok.com': 'outlook.com', 'outlook.con': 'outlook.com', 'outloo.com': 'outlook.com', 'iclod.com': 'icloud.com', 'icloud.con': 'icloud.com', 'rediffmial.com': 'rediffmail.com', 'rediffmail.con': 'rediffmail.com' };
+            return fixed[dom] ? local + '@' + fixed[dom] : '';
+        }
         function authValidEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
         function authBusy(formId, submitId, busy) {
             const btn = document.getElementById(submitId);
@@ -12520,6 +12527,16 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (password.length < 8) { authErr('auth-password-err', 'Use at least 8 characters.'); bad = bad || 'auth-password'; }
             if (!document.getElementById('auth-consent').checked) { authErr('auth-consent-err', 'Please confirm this to continue.'); bad = bad || 'auth-consent'; }
             if (bad) { document.getElementById(bad).focus(); return; }
+            const sug = authEmailSuggestion(email);
+            if (sug && authState.typoOk !== email) {
+                // Warn once; if the person submits the same address again, accept it as typed.
+                authState.typoOk = email;
+                const er = document.getElementById('auth-email-err');
+                er.innerHTML = 'Did you mean <button type="button" id="auth-typo-fix" class="underline font-semibold"></button>? Tap it to use that address, or press Create account again to keep what you typed.';
+                document.getElementById('auth-typo-fix').textContent = sug;
+                document.getElementById('auth-typo-fix').onclick = function () { document.getElementById('auth-email').value = sug; authState.typoOk = null; authClearErrs(); document.getElementById('auth-password').focus(); };
+                er.classList.remove('hidden'); document.getElementById('auth-email').focus(); return;
+            }
             authBusy('auth-form-signup', 'auth-signup-submit', true);
             sb.auth.signUp({ email: email, password: password, options: { data: { full_name: name } } }).then(function (res) {
                 authBusy('auth-form-signup', 'auth-signup-submit', false);
