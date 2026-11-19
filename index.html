@@ -601,6 +601,15 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         </div>
     </div>
 
+    <div id="degree-info-modal" class="hidden fixed inset-0 z-[90] items-end sm:items-center justify-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="degree-info-title">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeDegreeInfo()"></div>
+        <div class="relative bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-lg max-h-[88vh] overflow-y-auto p-6 sm:p-8">
+            <button type="button" onclick="closeDegreeInfo()" aria-label="Close" class="absolute top-3 right-3 w-10 h-10 rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-800 text-xl leading-none">&times;</button>
+            <h2 id="degree-info-title" class="font-display text-xl font-bold text-slate-900 mb-4 pr-10"></h2>
+            <div id="degree-info-body" class="space-y-4 text-sm text-slate-700 leading-relaxed"></div>
+        </div>
+    </div>
+
     <div id="auth-modal" class="hidden fixed inset-0 z-[90] items-end sm:items-center justify-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="auth-title">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="dismissAuth()"></div>
         <div id="auth-card" class="auth-card relative bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-md max-h-[94vh] overflow-y-auto p-6 sm:p-8">
@@ -8516,7 +8525,6 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
 
         const pathwaysFaqData = [
             { q: "Is a degree enough to get a job?", a: "A degree is a gate pass: it tells employers you are ready to start working, but it rarely gets you hired by itself. In most fields today, hiring decisions rest on skills you can show, such as projects, internships, certifications and how you perform in interviews. That is why people from any stream can enter business, tech, data, marketing or design roles. The main exceptions are regulated professions like medicine, law, CA, architecture and teaching, which need a specific qualification or licence." },
-            { q: "Is my degree enough to get a job, or do I need skills too?", a: "Skills matter more than they used to. Earlier, graduating in the right domain often got you hired. Now employers look at what you can show: tools you know, projects you built and internships you did. The degree is still important, and some careers need a specific one (such as medicine, law, CA or teaching), but for most roles you need both. Pick the skills your target career asks for, build something small with them, and add it to your resume." },
             { q: "I'm taking B.Com, BBA or BCA. Am I limited to the 'obvious' careers?", a: "No. A B.Com student can become a data analyst or product manager, a BBA student can move into analytics or fintech, and a BCA student can end up in business, design or marketing. The degree gets you started; the skills, projects and internships you add decide where you finish. Open B.Com, BBA or BCA above and look for the 'does not mean only' section to see real crossover careers." },
             { q: "I picked the \"wrong\" stream in Class 10/12 — is it too late to switch?", a: "No. Commerce and Humanities students regularly move into tech or data roles via BCA, certifications, or CUET-based degree options. Science students can just as easily move into design, business, or civil services. The stream affects which door is easiest to open first, not which doors are permanently locked." },
             { q: "Everyone around me is doing engineering or medicine — should I too?", a: "Popularity isn't the same as fit. Engineering and medicine are excellent if the day-to-day work genuinely interests you — but they're long, expensive commitments to make just because they're the default. Use the branches above or the Confused Mode quiz to check what a typical week actually looks like in a few options first." },
@@ -15662,6 +15670,32 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
            BRANCHING ENGINE
            ============================================================ */
         let currentBranchKey = 'B.Com';
+        // "More info" pop-up content for the degrees under "What can I do after this?".
+        const DEGREE_INFO = {
+            'B.Com': { name: 'B.Com (Bachelor of Commerce)', duration: '3 years (4 years for Honours)', focus: 'Financial systems, accounting standards, taxation, corporate law and economics. Ideal for students aiming for corporate finance or professional certifications (CA, CS, CMA, CFA).', subjects: 'Financial & Cost Accounting, Direct & Indirect Taxation (GST), Auditing, Business Law, Micro/Macro Economics.', spec: 'Accounting & Finance, Banking & Insurance, Taxation, Financial Markets, International Business, Corporate Secretaryship.' },
+            'BBA': { name: 'BBA (Bachelor of Business Administration)', duration: '3 years (4 years for Honours)', focus: 'Practical business operations, leadership, organizational behavior and management fundamentals. Built as a direct launchpad for corporate management roles, entrepreneurship, or an MBA.', subjects: 'Principles of Management, Marketing Management, Organizational Behavior, Financial Management, Business Analytics, Operations.', spec: 'Finance, Marketing, Human Resource Management (HRM), Business Analytics, International Business, Digital Marketing, Entrepreneurship.' },
+            'BA': { name: 'BA (Bachelor of Arts)', duration: '3 years (4 years for Honours)', focus: 'Critical thinking, human society, communication, governance and cultural studies. Offers wide interdisciplinary flexibility and serves as a primary foundation for Civil Services (UPSC), law, media and public policy.', subjects: 'Varies by major: political theory, social structures, behavioral science, literary analysis or economic policy.', spec: 'Psychology, Economics, Political Science, Journalism & Mass Communication, English Literature, Sociology, History, Liberal Arts.' },
+            'B.Sc': { name: 'B.Sc (Bachelor of Science)', duration: '3 years (4 years for Honours / Research)', focus: 'Theoretical foundations, empirical research and laboratory-based experimentation across pure and applied sciences.', subjects: 'Calculus & Statistics, Experimental Lab Work, Scientific Computing, Research Methodology, plus discipline-specific theory.', spec: 'Computer Science, Data Science & AI, Biotechnology, Microbiology, Physics, Chemistry, Mathematics, Agriculture, Forensic Science.' },
+            'B.Tech': { name: 'B.Tech / B.E. (Bachelor of Technology / Engineering)', duration: '4 years', focus: 'Applied mathematics, engineering principles, system design and hands-on technical problem-solving. B.E. leans slightly more toward theoretical fundamentals, while B.Tech emphasizes practical application, though both hold identical industry value in India.', subjects: 'Engineering Mathematics, Engineering Mechanics, Basic Electronics, Programming Fundamentals, Workshop/Lab Practice, Capstone Projects.', spec: 'Computer Science & Engineering (CSE), AI & Machine Learning, Electronics & Communication (ECE), Mechanical, Civil, Electrical, Aerospace, Biotechnology.' },
+            'B.Des': { name: 'B.Des (Bachelor of Design)', duration: '4 years', focus: 'Human-centered problem solving, visual storytelling, prototyping and aesthetics. Blends creativity with functional engineering and user psychology through studio-based learning.', subjects: 'Design Thinking, Sketching & Visual Representation, Color & Typography, Materials & Prototyping, Ergonomics, User Research.', spec: 'UI/UX & Interaction Design, Product / Industrial Design, Fashion Design, Communication / Graphic Design, Interior & Spatial Design, Animation & Film Design.' },
+            'BCA': { name: 'BCA (Bachelor of Computer Applications)', duration: '3 years (4 years for Honours)', focus: 'Software development, application programming and IT infrastructure, without the heavy hardware/physics load of an engineering degree.', subjects: 'Data Structures & Algorithms, Database Management Systems (DBMS), Operating Systems, Computer Networks, Object-Oriented Programming (Java/Python/C++).', spec: 'Cloud Computing, Cybersecurity, Data Science & Big Data, Full-Stack Web Development, Artificial Intelligence, Mobile App Development.' }
+        };
+        let degreeInfoOpener = null;
+        function openDegreeInfo(key) {
+            const d = DEGREE_INFO[key]; if (!d) return;
+            degreeInfoOpener = document.activeElement;
+            document.getElementById('degree-info-title').textContent = d.name;
+            const row = (label, text) => '<div><h3 class="text-[11px] font-bold uppercase tracking-wide text-brand-700 mb-1">' + label + '</h3><p>' + escapeAuth(text) + '</p></div>';
+            document.getElementById('degree-info-body').innerHTML = row('Duration', d.duration) + row('Focus', d.focus) + row('Core subjects', d.subjects) + row('Common specializations', d.spec) +
+                (/^3 years/.test(d.duration) ? '<p class="text-xs text-slate-500 border-t border-slate-100 pt-3">Under NEP 2020, most universities offer 3-year degrees with an optional 4-year Honours / Research track. Exact subjects and specializations vary by college, so check the course page of the one you are considering.</p>' : '<p class="text-xs text-slate-500 border-t border-slate-100 pt-3">Exact subjects and specializations vary by college, so check the course page of the one you are considering.</p>');
+            const m = document.getElementById('degree-info-modal'); m.classList.remove('hidden'); m.classList.add('flex');
+            const x = m.querySelector('button'); if (x) x.focus();
+        }
+        function closeDegreeInfo() {
+            const m = document.getElementById('degree-info-modal'); m.classList.add('hidden'); m.classList.remove('flex');
+            if (degreeInfoOpener && degreeInfoOpener.focus) { try { degreeInfoOpener.focus(); } catch (e) {} } degreeInfoOpener = null;
+        }
+        document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && !document.getElementById('degree-info-modal').classList.contains('hidden')) closeDegreeInfo(); });
         const BRANCH_LABELS = { 'Class 10': 'Class 10th stream selection' };
         function renderBranchButtons(activeKey) {
             const key = activeKey || currentBranchKey;
@@ -15699,7 +15733,10 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const data = branchData[key];
             const container = document.getElementById('branch-results-container');
             container.innerHTML = `
-                <h3 class="text-xl font-bold text-slate-900 mb-2">${data.title}</h3>
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-2 mb-2">
+                    <h3 class="text-xl font-bold text-slate-900">${data.title}</h3>
+                    ${DEGREE_INFO[key] ? `<button type="button" onclick="openDegreeInfo('${key}')" class="inline-flex items-center gap-1.5 min-h-[36px] px-3 rounded-full border border-brand-300 text-brand-700 text-xs font-bold hover:bg-brand-50 focus:outline-none focus:ring-2 focus:ring-brand-500"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>More info</button>` : ''}
+                </div>
                 <p class="text-sm text-slate-600 mb-6 leading-relaxed">${data.subtitle}</p>
                 <div class="grid grid-cols-1 ${data.branches.length >= 4 ? 'md:grid-cols-2 lg:grid-cols-3' : 'md:grid-cols-3'} gap-4">
                     ${data.branches.map(b => `
@@ -15733,13 +15770,6 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 </div>
             `;
 
-            if (key !== 'Class 10') {
-                container.insertAdjacentHTML('afterbegin', `
-                    <div class="mb-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm leading-relaxed">
-                        <p class="font-bold text-amber-800 mb-1">Hiring today is skills-first</p>
-                        <p class="text-slate-600">A few years ago a degree in the right subject was often enough to get hired. Today most employers look at what you can actually do: the skills you can show, your projects and your internships. The degree still matters, and some careers need a specific one (medicine, law, CA, teaching). For everything else, the paths below are starting points. Pair them with skills you can prove.</p>
-                    </div>`);
-            }
             if (data.crossover) {
                 const x = data.crossover;
                 container.insertAdjacentHTML('beforeend', `
