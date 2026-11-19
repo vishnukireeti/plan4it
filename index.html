@@ -195,8 +195,7 @@
         @media screen {
             body.viewing-report { overflow: hidden; }
             body.viewing-report #plan-print-sheet { display: block !important; position: fixed; top: calc(52px + env(safe-area-inset-top, 0px)); left: 0; right: 0; bottom: 0; overflow: auto; -webkit-overflow-scrolling: touch; background: #cbd5e1; z-index: 96; padding: 14px 0 48px; }
-            body.viewing-report #plan-print-sheet .ip { zoom: var(--rv-zoom, 1); width: 210mm; height: 268mm !important; padding: 10mm; box-sizing: border-box; background: #fff; box-shadow: 0 6px 24px rgba(15,23,42,.25); margin: 0 auto 16px; overflow: hidden; position: relative; }
-            body.viewing-report #plan-print-sheet .ipf { left: 10mm; right: 10mm; bottom: 10mm; }
+            body.viewing-report #plan-print-sheet .ip { zoom: var(--rv-zoom, 1); background: #fff; box-shadow: 0 6px 24px rgba(15,23,42,.25); margin: 0 auto 16px; }
         }
         @media print {
             #report-view-bar { display: none !important; }
@@ -226,19 +225,20 @@
             .pp-box { display: inline-block; width: 10px; height: 10px; border: 1.5px solid #334155; border-radius: 2px; margin-right: 6px; vertical-align: -1px; } .pp-box.on { background: #334155; }
             .pp-mast { display: flex; justify-content: space-between; align-items: center; padding-bottom: 6px; margin-bottom: 8px; border-bottom: 2px solid #0284c7; } .pp-wm { font-size: 19px; font-weight: 800; letter-spacing: -.3px; color: #0c4a6e; line-height: 1; }
             .cr-banner { display: flex; align-items: center; gap: 14px; color: #fff; border-radius: 10px; padding: 10px 14px; } .cr-banner * { color: #fff !important; } .cr-ico { font-size: 44px; line-height: 1; background: rgba(255,255,255,.18); border-radius: 14px; padding: 10px; } .cr-cat { font-size: 9.5px; text-transform: uppercase; letter-spacing: 1.2px; opacity: .9; } .cr-name { font-size: 21px; font-weight: 800; line-height: 1.15; margin: 2px 0 4px; } .cr-sub { font-size: 10px; opacity: .95; } .cr-fit { margin-left: auto; text-align: center; background: rgba(255,255,255,.2); border-radius: 10px; padding: 8px 12px; } .cr-fit b { display: block; font-size: 22px; } .cr-fit span { font-size: 9px; }
-            .cr-grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px; } .cr-mt { margin-top: 8px; } .cr-m { flex: 1; min-width: 0; } .cr-ml { display: flex; justify-content: space-between; gap: 6px; font-size: 9.5px; color: #334155; } .cr-ml b { color: #0f172a; text-align: right; } .cr-track { height: 8px; background: #e2e8f0; border-radius: 99px; margin-top: 3px; overflow: hidden; } .cr-track i { display: block; height: 100%; border-radius: 99px; }
+            .cr-grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px; } .cr-mt { margin-top: 8px; } .cr-m { flex: 1; min-width: 0; margin: 0 0 9px; } .pp-cols > div > .cr-m:first-child { margin-top: 10px; } .cr-ml { display: flex; justify-content: space-between; gap: 6px; font-size: 9.5px; color: #334155; } .cr-ml b { color: #0f172a; text-align: right; } .cr-track { height: 8px; background: #e2e8f0; border-radius: 99px; margin-top: 3px; overflow: hidden; } .cr-track i { display: block; height: 100%; border-radius: 99px; }
             .cr-chart { display: flex; align-items: flex-end; gap: 12px; padding: 4px 6px; border-bottom: 1px solid #94a3b8; } .cr-col { flex: 1; text-align: center; } .cr-colb { background: linear-gradient(#38bdf8, #0369a1); border-radius: 5px 5px 0 0; } .cr-colv { font-size: 9.5px; font-weight: 700; margin-bottom: 2px; } .cr-coll { font-size: 8.5px; color: #475569; position: absolute; } .cr-chart { padding-bottom: 2px; margin-bottom: 14px; position: relative; } .cr-col { position: relative; } .cr-coll { left: 0; right: 0; bottom: -14px; }
             .cr-good > div, .cr-bad > div { display: flex; gap: 7px; align-items: flex-start; padding: 4px 8px; margin: 3px 0; border-radius: 6px; font-size: 10px; } .cr-good > div { background: #ecfdf5; border-left: 3px solid #16a34a; } .cr-bad > div { background: #fff1f2; border-left: 3px solid #e11d48; } .cr-good span, .cr-bad span { font-weight: 800; } .cr-good span { color: #16a34a; } .cr-bad span { color: #e11d48; }
             .cr-chip { display: inline-block; background: #e0f2fe; color: #075985; font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 99px; margin: 4px 4px 0 0; }
             .cr-steps { display: flex; flex-wrap: wrap; gap: 6px; } .cr-step { display: flex; align-items: center; gap: 6px; flex: 1 1 30%; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 5px 8px; font-size: 9.5px; } .cr-step b { background: #0284c7; color: #fff; border-radius: 99px; min-width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; }
             .cr-hb { display: flex; align-items: center; gap: 8px; margin: 3px 0; font-size: 9.5px; } .cr-hbl { width: 28%; font-weight: 700; } .cr-hbt { flex: 1; height: 9px; background: #e2e8f0; border-radius: 99px; overflow: hidden; } .cr-hbt i { display: block; height: 100%; background: linear-gradient(90deg,#38bdf8,#0369a1); border-radius: 99px; } .cr-hbv { width: 16%; text-align: right; color: #475569; }
             .cr-dots i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #cbd5e1; margin-right: 2px; } .cr-dots i.on { background: #0284c7; }
-            @page { size: A4; margin: 10mm; }
+            @page { size: A4; margin: 0; }
             /* A report page never taller than the paper's printable area (phones use other paper sizes and margins), so no blank overflow pages.
                Chromium: 100vh is the printable height. Other browsers (iOS Safari, Firefox): a fixed height that fits Letter and A4 with large margins. */
-            .ip { height: 236mm; position: relative; overflow: hidden; page-break-after: always; break-after: page; break-inside: avoid; page-break-inside: avoid; width: 100%; box-sizing: border-box; } .ip:last-child { page-break-after: auto; break-after: auto; }
-            html.pp-vh .ip { height: calc(100vh - 3mm); }
-            .ipc { padding-bottom: 8mm; transform-origin: top left; } .ipf { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; gap: 8px; font-size: 8px; color: #64748b; border-top: 1px solid #cbd5e1; padding-top: 3px; }
+            /* Every report page is a true A4 sheet (210 x 297 mm), identical on screen, in print and in the PDF. Content box 182 x 263 mm, footer zone below it. */
+            .ip { width: 210mm; height: 297mm; position: relative; overflow: hidden; background: #fff; box-sizing: border-box; page-break-after: always; break-after: page; break-inside: avoid; page-break-inside: avoid; } .ip:last-child { page-break-after: auto; break-after: auto; }
+            .ipc { position: absolute; left: 14mm; top: 12mm; width: 182mm; transform-origin: top left; box-sizing: border-box; }
+            .ipf { position: absolute; left: 14mm; right: 14mm; bottom: 10mm; display: flex; justify-content: space-between; gap: 8px; font-size: 8px; line-height: 1.3; color: #64748b; border-top: 1px solid #cbd5e1; padding-top: 3px; background: #fff; }
             .ip-ttl { display: flex; align-items: center; gap: 10px; margin: 8px 0 8px; } .ip-n { font-size: 26px; font-weight: 800; color: #0284c7; line-height: 1; } .ip-t { font-size: 16px; font-weight: 800; color: #0f172a; line-height: 1.2; }
             .ip-h3 { font-size: 11.5px; font-weight: 800; color: #0c4a6e; margin: 9px 0 4px; border-bottom: 2px solid #e0f2fe; padding-bottom: 2px; }
             .ip-wk { display: flex; align-items: flex-end; gap: 8px; height: 112px; } .ip-wkc { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; text-align: center; font-size: 9px; gap: 2px; } .ip-wkb { width: 70%; border-radius: 4px 4px 0 0; }
@@ -13476,16 +13476,20 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 let css = '';
                 Array.prototype.forEach.call(document.styleSheets, function (ss) { try { Array.prototype.forEach.call(ss.cssRules, function (r) { if (r.type === 4 && /print/.test(r.conditionText || r.media.mediaText)) Array.prototype.forEach.call(r.cssRules, function (x) { if (x.selectorText && /plan-print-sheet|\.pp-|\.cr-|\.ci-|\.ip/.test(x.selectorText)) css += x.cssText + '\n'; }); }); } catch (er) {} });
                 const st = document.createElement('style'); st.id = 'pp-measure'; st.textContent = css; document.head.appendChild(st);
-                const old = sheet.style.cssText; sheet.style.cssText = 'display:block;position:fixed;left:-10000px;top:0;width:176mm;visibility:hidden;font-family:Inter,Arial,sans-serif;font-size:10.5px;line-height:1.45';
-                // Measure on a clean slate: if a report is already on screen, its screen layout (210mm x 268mm pages) must not leak into the measurement.
+                const old = sheet.style.cssText; sheet.style.cssText = 'display:block;position:fixed;left:-10000px;top:0;width:210mm;visibility:hidden;font-family:Inter,Arial,sans-serif;font-size:10.5px;line-height:1.45';
+                // Measure on a clean slate in the exact A4 geometry that is shown and printed: no screen zoom, no leftover state from another report.
                 const wasViewing = document.body.classList.contains('viewing-report'); document.body.classList.remove('viewing-report');
                 document.body.classList.add('printing-plan');
+                const MM = 96 / 25.4, CW = 182 * MM, LIM = (297 - 12 - 24) * MM - 4;
                 Array.prototype.forEach.call(sheet.querySelectorAll('.ip'), function (pg) {
-                    pg.style.setProperty('height', '232mm', 'important'); pg.style.setProperty('width', '176mm', 'important'); pg.style.setProperty('zoom', '1', 'important');
-                    const c = pg.querySelector('.ipc'), lim = pg.clientHeight - 30 - 8; if (!c || !lim) return;
-                    const fits = function (z) { c.style.zoom = z; return c.scrollHeight * 1 <= lim + 1 && c.getBoundingClientRect().height <= lim; };
-                    let lo = 0.5, hi = 1.5; for (let k = 0; k < 12; k++) { const m = (lo + hi) / 2; if (fits(m)) lo = m; else hi = m; }
-                    c.style.zoom = lo.toFixed(3); pg.style.removeProperty('height'); pg.style.removeProperty('width'); pg.style.removeProperty('zoom');
+                    pg.style.setProperty('zoom', '1', 'important');
+                    const c = pg.querySelector('.ipc'); if (!c) return;
+                    c.style.removeProperty('zoom');
+                    // Scale with transform at width CW/z (the same wrapping in every browser; CSS zoom is not used).
+                    const apply = function (z) { c.style.width = (CW / z).toFixed(2) + 'px'; c.style.transform = 'scale(' + z + ')'; };
+                    const fits = function (z) { apply(z); return c.offsetHeight * z <= LIM && c.scrollWidth <= c.clientWidth + 1; };
+                    let lo = 0.4, hi = 1.2; if (!fits(lo)) { apply(lo); } else { for (let k = 0; k < 14; k++) { const m = (lo + hi) / 2; if (fits(m)) lo = m; else hi = m; } apply(lo); }
+                    pg.style.removeProperty('zoom');
                 });
                 sheet.style.cssText = old; st.remove();
                 if (wasViewing) document.body.classList.add('viewing-report');
@@ -14546,7 +14550,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             Array.prototype.forEach.call(clone.querySelectorAll('img'), function (im) { const u = im.getAttribute('src'); if (imgMap[u]) im.setAttribute('src', imgMap[u]); });
             const W = 794, H = 1123, SC = 2;
             const xml = new XMLSerializer().serializeToString(clone);
-            const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '"><foreignObject x="0" y="0" width="' + W + '" height="' + H + '"><div xmlns="http://www.w3.org/1999/xhtml" style="width:' + W + 'px;height:' + H + 'px;background:#fff;padding:38px;box-sizing:border-box;overflow:hidden"><style>' + css.replace(/</g, '\\3c ') + '\n#plan-print-sheet .ip{height:277mm !important;width:190mm !important;margin:0 !important;padding:0 !important;box-shadow:none !important;zoom:1 !important;position:relative;overflow:hidden}\n#plan-print-sheet .ipf{left:0 !important;right:0 !important;bottom:0 !important}\nbody,html{margin:0}</style><div id="plan-print-sheet" style="display:block;color:#0f172a;font-family:Inter,Arial,Helvetica,sans-serif;font-size:10.5px;line-height:1.45">' + xml + '</div></div></foreignObject></svg>';
+            const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '"><foreignObject x="0" y="0" width="' + W + '" height="' + H + '"><div xmlns="http://www.w3.org/1999/xhtml" style="width:' + W + 'px;height:' + H + 'px;background:#fff;padding:0;box-sizing:border-box;overflow:hidden"><style>' + css.replace(/</g, '\\3c ') + '\n#plan-print-sheet .ip{margin:0 !important;box-shadow:none !important;zoom:1 !important}\nbody,html{margin:0}</style><div id="plan-print-sheet" style="display:block;color:#0f172a;font-family:Inter,Arial,Helvetica,sans-serif;font-size:10.5px;line-height:1.45">' + xml + '</div></div></foreignObject></svg>';
             return new Promise(function (resolve, reject) {
                 const img = new Image();
                 img.onload = function () {
