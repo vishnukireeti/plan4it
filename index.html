@@ -1302,7 +1302,16 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             <div data-nav="What can I do after this?" id="branching-engine-block" class="scroll-mt-32 bg-white border border-slate-200 p-8 rounded-3xl shadow-sm">
                 <h2 class="text-2xl font-bold text-slate-900 mb-2">What can I do after this?</h2>
                 <p class="text-slate-600 text-sm mb-1">Select your current stage — school, degree, diploma, or "I'm just stuck" — to see real branching directions, not just one path.</p>
-                <p class="text-xs text-slate-400 mb-6">13 starting points covered, from Class 10 to postgraduate professionals and gap-year situations.</p>
+                <p class="text-xs text-slate-400 mb-5">13 starting points covered, from Class 10 to postgraduate professionals and gap-year situations.</p>
+
+                <div class="rounded-2xl border border-amber-200 bg-amber-50 p-4 sm:p-5 mb-6" id="skills-over-degree-note">
+                    <h3 class="font-bold text-amber-800 text-base mb-2">Your degree is a gate pass. Your skills get you the job.</h3>
+                    <ul class="space-y-2 text-sm text-slate-700 leading-relaxed">
+                        <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-600 mt-2 shrink-0"></span><span>A degree shows an employer that you are ready to start working. It gets you in the door, but on its own it is not enough to get hired.</span></li>
+                        <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-600 mt-2 shrink-0"></span><span>Hiring used to lean on what you studied. Today, for most jobs in business, tech, data, marketing, design and operations, employers look at what you can actually do: your skills, projects and internships.</span></li>
+                        <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-600 mt-2 shrink-0"></span><span>So people from any stream can move into these fields if they build the skills. The exceptions are regulated professions such as medicine, law, CA, architecture and teaching, where a specific qualification or licence is required.</span></li>
+                    </ul>
+                </div>
 
                 <input type="text" id="branch-search" placeholder="Search your stage (e.g. BCA, diploma, gap year)..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm mb-5 focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-500" oninput="renderBranchButtons()">
 
@@ -8506,6 +8515,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         ];
 
         const pathwaysFaqData = [
+            { q: "Is a degree enough to get a job?", a: "A degree is a gate pass: it tells employers you are ready to start working, but it rarely gets you hired by itself. In most fields today, hiring decisions rest on skills you can show, such as projects, internships, certifications and how you perform in interviews. That is why people from any stream can enter business, tech, data, marketing or design roles. The main exceptions are regulated professions like medicine, law, CA, architecture and teaching, which need a specific qualification or licence." },
             { q: "Is my degree enough to get a job, or do I need skills too?", a: "Skills matter more than they used to. Earlier, graduating in the right domain often got you hired. Now employers look at what you can show: tools you know, projects you built and internships you did. The degree is still important, and some careers need a specific one (such as medicine, law, CA or teaching), but for most roles you need both. Pick the skills your target career asks for, build something small with them, and add it to your resume." },
             { q: "I'm taking B.Com, BBA or BCA. Am I limited to the 'obvious' careers?", a: "No. A B.Com student can become a data analyst or product manager, a BBA student can move into analytics or fintech, and a BCA student can end up in business, design or marketing. The degree gets you started; the skills, projects and internships you add decide where you finish. Open B.Com, BBA or BCA above and look for the 'does not mean only' section to see real crossover careers." },
             { q: "I picked the \"wrong\" stream in Class 10/12 — is it too late to switch?", a: "No. Commerce and Humanities students regularly move into tech or data roles via BCA, certifications, or CUET-based degree options. Science students can just as easily move into design, business, or civil services. The stream affects which door is easiest to open first, not which doors are permanently locked." },
