@@ -25,9 +25,11 @@ Deno.serve(async (req: Request) => {
   const user = u?.user;
   if (!user) return json({ error: "sign in first" }, 401);
 
-  let body: { kind?: string; careerId?: string; scope?: string; snapshot?: string } = {};
+  let body: { kind?: string; careerId?: string; scope?: string; snapshot?: string; ageDecl?: string } = {};
   try { body = await req.json(); } catch { return json({ error: "bad request" }, 400); }
   const kind = String(body.kind || "");
+  // Payment confirmation is mandatory: the payer is 18+, or the student is under 18 and a parent/guardian was consulted.
+  if (body.ageDecl !== "adult" && body.ageDecl !== "minor_with_guardian") return json({ error: "age confirmation required" }, 400);
   if (!(kind in PRICES)) return json({ error: "bad request" }, 400);
   let careerId: string | null = null;
   let scope: string | null = null;
@@ -59,7 +61,7 @@ Deno.serve(async (req: Request) => {
   const r = await fetch("https://api.razorpay.com/v1/orders", {
     method: "POST",
     headers: { Authorization: "Basic " + btoa(`${keyId}:${secret}`), "Content-Type": "application/json" },
-    body: JSON.stringify({ amount, currency: "INR", receipt: `p4_${Date.now()}`.slice(0, 40), notes: { user_id: user.id, kind, career_id: careerId || "", scope: scope || "", snapshot: snapshot || "" } }),
+    body: JSON.stringify({ amount, currency: "INR", receipt: `p4_${Date.now()}`.slice(0, 40), notes: { user_id: user.id, kind, career_id: careerId || "", scope: scope || "", snapshot: snapshot || "", age_declaration: body.ageDecl === "minor_with_guardian" ? "minor_with_guardian" : body.ageDecl === "adult" ? "adult" : "" } }),
   });
   if (!r.ok) return json({ error: "could not start the payment" }, 502);
   const order = await r.json();
