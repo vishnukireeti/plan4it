@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""Logic tests for the two business-critical scoring/ranking functions that
-drive real recommendations: scoreCareerForWizard() (the career-quiz scorer)
-and generateBackupPlan()/renderBackupPlan() (the backup-college ranker).
+"""Logic tests for the business-critical scoring function that drives real
+recommendations: scoreCareerForWizard() (the career-quiz scorer).
 
 Unlike smoke_test.py (does the page load at all), these call the *actual*
 production functions inside a real browser via Playwright and check their
@@ -111,82 +110,6 @@ QUIZ_TEST_JS = """
 }
 """
 
-BACKUP_TEST_JS = """
-(priority) => {
-    const problems = [];
-    const examId = 'jee-main-advanced';
-    const list = BACKUP_COLLEGES[examId];
-    if (!list || list.length < 5) { problems.push('BACKUP_COLLEGES.jee-main-advanced has fewer than 5 entries; cannot test top-5 ranking.'); return { problems }; }
-
-    // generateBackupPlan() now requires sign-in (requireAuth()) before it does anything --
-    // fake a session the same way, via plain assignment to the top-level `let
-    // currentAuthSession` binding that authGetSession() reads. No real Supabase
-    // connectivity is needed: generateBackupPlan()'s own ranking logic never touches
-    // cloudData, only requireAuth()'s gate check does (authGetSession() truthiness).
-    currentAuthSession = { user: { id: 'logic-test-user' } };
-
-    // A synthetic target college that matches none of the real entries by
-    // name, so every real entry is a legitimate "other" candidate. Plain
-    // assignment (no "window."/"let"/"const") on purpose: BACKUP_TARGET is
-    // declared with top-level `let` in index.html, which lives in the
-    // global lexical environment, NOT as a `window` property -- setting
-    // `window.BACKUP_TARGET` silently creates an unrelated property and
-    // leaves the real binding (and this test) untouched.
-    BACKUP_TARGET = { name: 'IIT Delhi (test target)', cutoff: 99.7, location: 'New Delhi, Delhi', knownId: null };
-    document.getElementById('backup-exam').value = examId;
-    document.getElementById('backup-score').value = '88';
-    document.getElementById('backup-city').value = priority === 'location' ? 'Hyderabad' : '';
-    document.querySelectorAll('input[name=\"backup-priority\"]').forEach(r => { r.checked = (r.value === priority); });
-
-    generateBackupPlan();
-
-    const cards = Array.from(document.querySelectorAll('#backup-cards > div'));
-    if (cards.length === 0 || cards.length > 5) problems.push(`Expected 1-5 backup cards, got ${cards.length}.`);
-
-    const score = 88;
-    const preferredCity = priority === 'location' ? 'hyderabad' : 'new delhi';
-    const rendered = cards.map(card => {
-        const name = card.querySelector('h4').textContent.trim();
-        const oddsLabel = card.querySelector('span.text-xs.font-semibold').textContent.trim();
-        return { name, oddsLabel };
-    });
-
-    // Target must never appear among its own backups.
-    if (rendered.some(r => r.name === BACKUP_TARGET.name)) {
-        problems.push('The target college itself appeared in its own backup list.');
-    }
-
-    // Recompute the documented ranking formula independently from the same
-    // source data and check the UI's rendered order matches it exactly --
-    // this is what actually catches a flipped sort, wrong field, or wrong
-    // threshold introduced by a future edit.
-    const expected = list.map(c => {
-        let rank;
-        if (priority === 'placement') rank = c.placementRate * 10;
-        else if (priority === 'salary') rank = c.avgSalary * 100;
-        else if (priority === 'location') { const m = c.location.toLowerCase().includes(preferredCity); rank = (m ? 1000 : 0) + c.placementRate * 5; }
-        else { const closeness = 100 - Math.abs(score - c.cutoff); rank = (c.placementRate * 5) + (c.avgSalary * 50) + (closeness * 2); }
-        return { c, rank };
-    }).sort((a, b) => b.rank - a.rank).slice(0, 5);
-
-    const expectedNames = expected.map(e => e.c.name);
-    const renderedNames = rendered.map(r => r.name);
-    if (JSON.stringify(expectedNames) !== JSON.stringify(renderedNames)) {
-        problems.push(`[${priority}] Rendered order ${JSON.stringify(renderedNames)} does not match the documented ranking formula's order ${JSON.stringify(expectedNames)}.`);
-    }
-
-    // Odds label must match the gap thresholds the summary panel itself
-    // promises (>=5 Very Likely, >=-5 Likely, else Possible).
-    expected.forEach((e, i) => {
-        const gap = +(score - e.c.cutoff).toFixed(1);
-        const want = gap >= 5 ? 'Very Likely' : gap >= -5 ? 'Likely' : 'Possible';
-        const got = rendered[i] && rendered[i].oddsLabel;
-        if (got !== want) problems.push(`[${priority}] ${e.c.name}: expected odds label "${want}" (gap ${gap}) but got "${got}".`);
-    });
-
-    return { problems, renderedNames, expectedNames };
-}
-"""
 
 
 def main():
@@ -202,10 +125,6 @@ def main():
             quiz_result = page.evaluate(QUIZ_TEST_JS)
             problems.extend(f"[scoreCareerForWizard] {p_}" for p_ in quiz_result.get("problems", []))
 
-            for priority in ("placement", "salary", "location", "balanced"):
-                backup_result = page.evaluate(BACKUP_TEST_JS, priority)
-                problems.extend(f"[generateBackupPlan] {p_}" for p_ in backup_result.get("problems", []))
-
             browser.close()
 
     if problems:
@@ -214,7 +133,7 @@ def main():
             print(f"  - {p_}")
         sys.exit(1)
 
-    print("Logic tests OK: quiz scoring and backup-plan ranking match the behavior they promise students.")
+    print("Logic tests OK: quiz scoring matches the behavior they promise students.")
 
 
 if __name__ == "__main__":

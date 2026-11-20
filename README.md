@@ -93,11 +93,9 @@ push with `--no-verify` unless you mean it.
   catalog data loaded, SEO tags are present, and there are no unexpected
   console errors.
 - **Logic tests** (`scripts/ci/logic_tests.py`) — calls the real
-  `scoreCareerForWizard()` and `generateBackupPlan()` functions in a
-  headless browser and checks their output against what the app promises a
-  student: a matching interest outscores an unrelated one, a named career
-  scores higher, backup colleges are sorted and labeled exactly the way the
-  ranking formula and the UI's own thresholds say they should be.
+  `scoreCareerForWizard()` function in a headless browser and checks its
+  output against what the app promises a student: a matching interest
+  outscores an unrelated one and a named career scores higher.
 
 This workflow runs on GitHub after every push (a visible record, and a
 backstop if the local hook below was ever bypassed), but — because pushes

@@ -89,7 +89,5 @@ limitation, not a known bug — see below.
       push on failure — the real gate, since GitHub branch protection can't
       block a direct push with no PR step. See `README.md`'s "Deploying"
       and "CI" sections.
-- [x] Added logic tests for the two scoring/ranking functions that drive
-      real recommendations (`scripts/ci/logic_tests.py`): quiz scoring
-      (`scoreCareerForWizard`) and backup-college ranking
-      (`generateBackupPlan`/`renderBackupPlan`).
+- [x] Added logic tests for the quiz scorer that drives real recommendations
+      (`scripts/ci/logic_tests.py`): `scoreCareerForWizard`.

@@ -2265,117 +2265,12 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         <!-- BACKUP PLAN GENERATOR -->
         <section id="view-backupPlan" class="view-section hidden space-y-8">
             <div data-nav="Overview" class="bg-gradient-to-r from-brand-900 to-brand-800 text-white p-8 rounded-3xl shadow-xl">
-                <span class="bg-brand-500/40 text-brand-200 text-xs font-semibold px-3 py-1 rounded-full"><i class=ic-clipboard></i> Backup Plan Generator</span>
-                <h2 class="text-3xl font-extrabold mt-3">Plan Your Safety Net</h2>
-                <p class="text-brand-200 text-sm mt-1 max-w-2xl">Enter your target exam, dream college, and mock score to get 5 ranked backup colleges you can realistically get into.</p>
+                <span class="bg-brand-500/40 text-brand-200 text-xs font-semibold px-3 py-1 rounded-full"><i class=ic-clipboard></i> Recovery guide</span>
+                <h2 class="text-3xl font-extrabold mt-3">If Plan A Does Not Work Out</h2>
+                <p class="text-brand-200 text-sm mt-1 max-w-2xl">Wrong course, a missed cutoff or a setback: practical ways forward, step by step.</p>
             </div>
 
 
-            <div data-nav="Build a backup plan" id="backup-generator-block" class="scroll-mt-32 space-y-8">
-                <!-- FORM -->
-                <div>
-                    <div class="bg-white border border-slate-200 p-6 sm:p-8 rounded-2xl shadow-sm">
-                        <h3 class="font-bold text-slate-900 text-lg mb-5">Your Details</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
-
-                        <div class="relative">
-                            <label for="backup-exam-search" class="text-slate-600 block text-xs font-semibold mb-1">Target Exam</label>
-                            <input type="text" id="backup-exam-search" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="backup-exam-list" aria-autocomplete="list" placeholder="Search any exam, e.g. NEET" oninput="backupExamInput()" onfocus="backupExamInput()" onkeydown="backupExamKey(event)" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 min-h-[44px]">
-                            <input type="hidden" id="backup-exam" value="">
-                            <div id="backup-exam-list" role="listbox" class="hidden absolute z-40 left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg max-h-72 overflow-y-auto"></div>
-                            <div id="backup-exam-quick" class="flex flex-wrap gap-2 mt-2">
-                                <button type="button" onclick="backupPickExam('neet-ug')" class="text-xs font-semibold px-3 min-h-[36px] rounded-full border border-slate-300 text-slate-700 hover:border-brand-400">NEET UG</button>
-                                <button type="button" onclick="backupPickExam('jee-main-advanced')" class="text-xs font-semibold px-3 min-h-[36px] rounded-full border border-slate-300 text-slate-700 hover:border-brand-400">JEE</button>
-                                <button type="button" onclick="backupPickExam('clat-ug')" class="text-xs font-semibold px-3 min-h-[36px] rounded-full border border-slate-300 text-slate-700 hover:border-brand-400">CLAT</button>
-                                <button type="button" onclick="backupPickExam('cuet-ug')" class="text-xs font-semibold px-3 min-h-[36px] rounded-full border border-slate-300 text-slate-700 hover:border-brand-400">CUET UG</button>
-                            </div>
-                            <p id="backup-exam-picked" class="hidden mt-2 text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2"></p>
-                            <p id="backup-exam-note" class="hidden mt-1 text-[11px] text-slate-500"></p>
-                        </div>
-
-                        <div id="backup-target-wrap" class="relative">
-                            <label for="backup-target-search" class="text-slate-600 block text-xs font-semibold mb-1">Dream / Target College</label>
-                            <input type="text" id="backup-target-search" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="backup-target-list" aria-autocomplete="list" placeholder="Type any college name or city..." oninput="backupTargetInput()" onfocus="backupTargetInput()" onkeydown="backupTargetKey(event)" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 min-h-[44px]">
-                            <input type="hidden" id="backup-target-college" value="">
-                            <div id="backup-target-list" role="listbox" class="hidden absolute z-30 left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg max-h-72 overflow-y-auto"></div>
-                            <p id="backup-target-picked" class="hidden mt-2 text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2"></p>
-                            <p class="text-[11px] text-slate-500 mt-1">Small or local college? Just type its name. If it is not in our list you can still use it.</p>
-                        </div>
-
-                        <div id="backup-target-cutoff-wrap" class="hidden">
-                            <label for="backup-target-cutoff" class="text-slate-600 block text-xs font-semibold mb-1">Last year's cutoff for this college (optional)</label>
-                            <input type="number" id="backup-target-cutoff" min="0" max="100" step="0.1" placeholder="Same 0–100 scale, e.g. 72" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
-                            <p class="text-[11px] text-slate-500 mt-1">We do not have a cutoff for this college yet. Add one if you know it, or leave it blank and we will build backups around your score.</p>
-                        </div>
-
-                        <div>
-                            <label for="backup-score" class="text-slate-600 block text-xs font-semibold mb-1">Your Mock Score (0–100 percentile equivalent)</label>
-                            <input type="number" id="backup-score" min="0" max="100" step="0.1" placeholder="e.g. 78.5" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
-                        </div>
-
-                        <div id="backup-priority-wrap" class="md:col-span-2">
-                            <p class="text-slate-600 block text-xs font-semibold mb-2">What matters most to you?</p>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
-                                <label class="checkbox-wrapper flex items-center gap-2 text-sm text-slate-700 border border-slate-200 rounded-xl px-3 cursor-pointer">
-                                    <input type="radio" name="backup-priority" value="placement" class="text-brand-600 focus:ring-2 focus:ring-brand-500"> Placement Rate
-                                </label>
-                                <label class="checkbox-wrapper flex items-center gap-2 text-sm text-slate-700 border border-slate-200 rounded-xl px-3 cursor-pointer">
-                                    <input type="radio" name="backup-priority" value="salary" class="text-brand-600 focus:ring-2 focus:ring-brand-500"> Average Salary
-                                </label>
-                                <label class="checkbox-wrapper flex items-center gap-2 text-sm text-slate-700 border border-slate-200 rounded-xl px-3 cursor-pointer">
-                                    <input type="radio" name="backup-priority" value="location" class="text-brand-600 focus:ring-2 focus:ring-brand-500"> Preferred Location
-                                </label>
-                                <label class="checkbox-wrapper flex items-center gap-2 text-sm text-slate-700 border border-slate-200 rounded-xl px-3 cursor-pointer">
-                                    <input type="radio" name="backup-priority" value="balanced" checked class="text-brand-600 focus:ring-2 focus:ring-brand-500"> Balanced Mix
-                                </label>
-                            </div>
-                        </div>
-
-                        <div id="backup-city-wrap">
-                            <label for="backup-city" class="text-slate-600 block text-xs font-semibold mb-1">Preferred City (optional)</label>
-                            <input type="text" id="backup-city" placeholder="e.g. Bengaluru" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
-                        </div>
-
-                        <button onclick="generateBackupPlan()" class="md:col-span-2 w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3 rounded-xl text-sm shadow-lg shadow-brand-200 transition">Generate Backup Plan</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- RESULTS -->
-                <div>
-                    <div id="backup-empty-state" class="bg-white border border-dashed border-slate-300 rounded-2xl p-6 sm:p-8 text-center space-y-3">
-                        <div class="text-4xl"><i class=ic-compass></i></div>
-                        <h3 class="font-bold text-slate-900 text-lg">Your backup plan will appear here</h3>
-                        <p class="text-slate-600 text-sm max-w-md mx-auto">Fill in your details and we'll rank 5 realistic backup colleges based on your mock score and priorities.</p>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl mx-auto text-left text-xs text-slate-600 mt-4">
-                            <div class="bg-slate-50 border border-slate-200 rounded-xl p-3">
-                                <p class="font-bold text-slate-800 mb-1">1. Pick your exam</p>
-                                <p>Choose from NEET, JEE, CLAT or CUET.</p>
-                            </div>
-                            <div class="bg-slate-50 border border-slate-200 rounded-xl p-3">
-                                <p class="font-bold text-slate-800 mb-1">2. Set your target</p>
-                                <p>Tell us your dream college and mock score.</p>
-                            </div>
-                            <div class="bg-slate-50 border border-slate-200 rounded-xl p-3">
-                                <p class="font-bold text-slate-800 mb-1">3. Get ranked backups</p>
-                                <p>See 5 realistic options ranked by what matters to you.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="backup-results" class="hidden space-y-6">
-                        <div id="backup-summary" class="p-5 rounded-2xl border space-y-1"></div>
-                        <div id="backup-cards" class="space-y-4"></div>
-                        <p id="backup-cutoff-note" class="text-xs text-slate-600 bg-slate-50 border border-slate-200 rounded-xl p-3"></p>
-                        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-                            <h3 class="font-bold text-slate-900 text-base mb-3">Your Action Plan</h3>
-                            <ol id="backup-action-plan" class="space-y-2 text-sm text-slate-700 list-decimal list-inside"></ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Setbacks & Non-Linear Paths Section -->
             <div data-nav="Wrong course? Fix it" id="wrong-course-block" class="scroll-mt-32 bg-white border border-slate-200 p-8 rounded-3xl space-y-6 shadow-sm">
                 <span class="bg-brand-600 text-white text-xs font-bold px-3 py-1 rounded-full"><i class=ic-repeat></i> You can change direction</span>
                 <h3 class="text-2xl font-bold text-slate-900">Picked the wrong course, or was it someone else's choice?</h3>
@@ -2451,7 +2346,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
 
                 <div>
                     <h3 class="font-bold text-slate-900 mb-1">What needs an account</h3>
-                    <p>Taking the career quiz, saving a career/college/exam, using the checklist, filling in your profile, and generating a backup plan all require a free account. We do this so that what you've done — your quiz matches, what you've saved, your checklist progress — is tied to your account rather than one device's browser storage, and is there for you the next time you come back, on any device. These are stored in our database (via Supabase), protected so that only you can read or change them, even on our side. Signing up with email collects your name, email, and a password (we never see your password itself — it's handled directly by our authentication provider, Supabase, which stores it hashed, not as plain text). Signing up with Google instead shares your name and email from your Google account with us, nothing else.</p>
+                    <p>Taking the career quiz, saving a career/college/exam, using the checklist, filling in your profile, and the checklist all require a free account. We do this so that what you've done — your quiz matches, what you've saved, your checklist progress — is tied to your account rather than one device's browser storage, and is there for you the next time you come back, on any device. These are stored in our database (via Supabase), protected so that only you can read or change them, even on our side. Signing up with email collects your name, email, and a password (we never see your password itself — it's handled directly by our authentication provider, Supabase, which stores it hashed, not as plain text). Signing up with Google instead shares your name and email from your Google account with us, nothing else.</p>
                 </div>
 
                 <div>
@@ -8558,7 +8453,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             { q: "What does Plan4it.co cost?", a: "You can try parts of Plan4it.co for free, including the quiz and a 2-page version of the report. The full 18-page Career Intelligence Report (₹299, for your current quiz answers or saved items) and each single career report (₹99 per career, bought separately) and the Learnership Programme are paid. The price is always shown before you pay." },
             { q: "How does the quiz work, and how long does it take?", a: "About 2 minutes. You pick your stage, then answer questions about your interests, how you like to work, what matters most to you, and your state. The questions change with your stage, so a Class 10 student and a working professional get different ones." },
             { q: "Can quiz answers be changed or the quiz retaken?", a: "Yes, any time. Tap \"Retake Quiz\" on your results, or tap any answer in the side menu to change just that one. Your matches update when you finish." },
-            { q: "What is the Career Intelligence Report?", a: "Our flagship: an 18-page PDF with your career profile, best matches, why they fit, what it takes to get there, colleges and exams, skills, pay, a backup plan, a 90-day plan and a guide to talk it through with your parents. You can build it from your quiz answers, or from the careers, exams and colleges you saved to your dashboard." },
+            { q: "What is the Career Intelligence Report?", a: "Our flagship: an 18-page PDF with your career profile, best matches, why they fit, what it takes to get there, colleges and exams, skills, pay, a 90-day plan and a guide to talk it through with your parents. You can build it from your quiz answers, or from the careers, exams and colleges you saved to your dashboard." },
             { q: "Is the quiz needed to get a report?", a: "No. Save careers, exams and colleges to your dashboard and build a report from those. The quiz-based report is more personal, because it is built from your answers, so take the quiz if you want matches and fit scores." },
             { q: "Is the guidance based on real data?", a: "The careers, exams, colleges and scholarships come from compiled datasets and official sources, not live feeds. Pay figures are estimates. Fees, cut-offs, exam dates and eligibility change every year, so always confirm on the official website before you apply or pay." },
             { q: "Will Plan4it.co tell students what to choose?", a: "No. It shows how well each option fits your answers, the trade-offs, and what it takes to get there, so you decide with facts. For a big decision, also talk to your family, a teacher or a counsellor." },
@@ -8706,14 +8601,14 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             { id: 'dropped-year', icon: '⏳', label: 'Dropped or repeated a year', title: 'A dropped year is common. Plan the comeback on purpose',
               lead: 'What people notice later is not the gap. It is whether you can say what you did with it.',
               week: ['Write one line on why the year was lost and what will be different now.', 'Check age limits and attempt limits for the exams you want.', 'Make a weekly timetable you can really keep, not the perfect one.'],
-              months: ['Use the year well: a course, a project or an internship, and keep proof of it.', 'Retake an exam only if your mock scores are rising. Use the Backup Plan tool above with your latest score.', 'Prepare a short, honest answer about the gap for interviews and forms.'],
-              doors: [['Make a backup plan', 'Enter your exam and score.', "goToBlock('backup-generator-block')"], ['Matching exams', 'See exams in this field.', "goExams('')"]],
+              months: ['Use the year well: a course, a project or an internship, and keep proof of it.', 'Retake an exam only if your mock scores are rising. Check the latest cutoffs on the official site before deciding.', 'Prepare a short, honest answer about the gap for interviews and forms.'],
+              doors: [['Matching exams', 'See exams in this field.', "goExams('')"]],
               avoid: ['Starting another drop year with no plan.', 'Comparing yourself with batchmates. Their year was different from yours.'] },
             { id: 'missed-exam', icon: '<i class=ic-target></i>', label: 'Entrance exam not cleared', title: 'One attempt is one result, not your ceiling',
               lead: 'You have two honest choices: try again with a better plan, or take a good seat now. Both are fine.',
               week: ['Check your score and category rank against last year\'s cutoffs on the official site.', 'List other entrance exams in your field that are still open this year.', 'Talk with your family about the two choices: try again, or join a good college now.'],
               months: ['If you try again, take a mock test every week and fix your weakest topics first.', 'If you take a seat, shortlist 3 colleges you would be happy to attend, and compare fees.', 'Check attempt and age limits before you commit another year.'],
-              doors: [['Make a backup plan', 'Get 5 realistic backups for your score.', "goToBlock('backup-generator-block')"], ['State exams in this field', 'See state-level entrance exams.', "goExams('CET')"], ['Matching colleges', 'See colleges picked for budget and marks.', "goColleges()"]],
+              doors: [['State exams in this field', 'See state-level entrance exams.', "goExams('CET')"], ['Matching colleges', 'See colleges picked for budget and marks.', "goColleges()"]],
               avoid: ['Waiting for next year\'s dates before you act on anything.', 'Taking the first seat offered without comparing fees and placements.'] },
             { id: 'wrong-course', icon: '<i class=ic-compass></i>', label: 'Wrong course or stream', title: 'Finding out it is the wrong fit early is useful information',
               lead: 'The earlier you act, the cheaper it is to change. There are more ways back than most people know.',
@@ -9635,7 +9530,6 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             { zone: '#nirf-panel', ctl: 'select, input', target: '#nirf-count' },
             { zone: '#scholarship-matcher-block', ctl: 'select, input', target: '#scholarship-results' },
             { zone: '#reservation-quota-block', ctl: 'select', target: '#reservation-info-result' },
-            { zone: '#backup-generator-block', ctl: 'button[onclick*="generateBackupPlan"]', target: '#backup-results' },
             { zone: '#setback-guidance-block', ctl: 'button[data-rec]', target: '#recovery-guidance' },
             { zone: '#branching-engine-block', ctl: '#branch-buttons-container button', target: '#branch-results-container' },
             { zone: '#career-switch-block', ctl: 'button[onclick*="buildCareerSwitchPlan"]', target: '#switch-results' },
@@ -10444,8 +10338,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (viewId === 'explorer') renderExplorerCareers();
             if (viewId === 'exams') renderExams();
             if (viewId === 'colleges') { applyFitToCollegeFilters(); renderColleges(); }
-            if (viewId === 'backupPlan') { document.getElementById('backup-exam').value=''; document.getElementById('backup-exam-search').value=''; document.getElementById('backup-exam-picked').classList.add('hidden'); backupTargetClear(); backupApplyMode(); document.getElementById('backup-score').value=''; document.getElementById('backup-results').classList.add('hidden'); document.getElementById('backup-empty-state').classList.remove('hidden'); renderRecoveryGuidance(); }
-            if (viewId === 'backupPlan') backupPrefillFromFit();
+            if (viewId === 'backupPlan') renderRecoveryGuidance();
             if (viewId === 'afterDegree') loadBranchTree(currentBranchKey || 'B.Com');
             try { renderReportPromos(); } catch (er) {}
             if (viewId === 'dashboard') { try { renderDashboard(); } catch (er) { console.error(er); } }
@@ -10649,7 +10542,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 opts: [['serious', 'Preparing seriously'], ['registered', 'Registered, but barely preparing'], ['none', 'Not taking any'], ['dontknow', 'Not sure which ones apply']] },
             pref: { label: 'Course or college', title: 'Which would you take?', sub: 'There is no wrong answer.',
                 opts: [['course', 'First-choice course at an average college'], ['brand', 'Second-choice course at a top college']] },
-            planB: { label: 'If plan A fails', title: 'If your first choice does not work out, what would you do?', sub: 'We use this to set up your Safety Net.',
+            planB: { label: 'If plan A fails', title: 'If your first choice does not work out, what would you do?', sub: 'We use this to shape the advice that follows.',
                 opts: [['drop', 'Take a drop year and try again'], ['nextbest', 'Take the next-best college'], ['different', 'Switch to a different course'], ['none', 'Not thought about it yet']] },
             move: { label: 'How far you will move', title: 'How far are you willing to move for college?', sub: 'We show colleges in this range first.',
                 opts: [['city', 'Only the home city'], ['state', 'Anywhere in the home state'], ['india', 'Anywhere in India'], ['abroad', 'Abroad too']] },
@@ -11648,7 +11541,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 if (is('streamAgain', ['no', 'unsure'])) add('<i class=ic-shuffle></i>', a.streamAgain === 'no' ? 'You want out of your stream' : 'Not sure about your stream', 'Many degrees take students from any stream: BA, BBA, law through CLAT, design through NID and UCEED, journalism and hotel management. Check each course\'s eligibility.', btn('See routes after Class 12', "goToPathwayBranch('Class 12')", true));
                 if (is('examStatus', ['none', 'dontknow'])) add('<i class=ic-edit></i>', 'Find the exams that apply to you', 'The exams page lists every major entrance exam with dates, fees and eligibility, with the ones that fit your stream first.', btn('Matching exams', 'goExams()', true));
                 else if (is('examStatus', ['serious', 'registered'])) add('<i class=ic-calendar></i>', a.examStatus === 'serious' ? 'Keep every exam date in one place' : 'Registered but not preparing yet', a.examStatus === 'serious' ? 'Save the exams you are taking so their dates and deadlines show on your dashboard.' : 'Even 1 to 2 focused hours a day from now adds up. Save your exams so you see how many weeks are left.', btn('Exams', 'goExams()', true));
-                if (has('planB')) add('<i class=ic-lifebuoy></i>', a.planB === 'none' ? 'Have a Plan B ready' : a.planB === 'drop' ? 'Planning a drop year' : 'Your Safety Net', a.planB === 'drop' ? 'Set a deadline and a fallback college list now, so a drop year is a choice and not a default.' : a.planB === 'none' ? 'Cut-offs move every year. A backup list made now saves panic in results week.' : 'The Safety Net tool lists realistic alternatives for the exam or college you are aiming for.', btn('Open the Safety Net', "switchView('backupPlan')", true));
+                if (has('planB')) add('<i class=ic-lifebuoy></i>', a.planB === 'none' ? 'Have a Plan B ready' : a.planB === 'drop' ? 'Planning a drop year' : 'A solid second option', a.planB === 'drop' ? 'Set a deadline and a fallback college list now, so a drop year is a choice and not a default.' : a.planB === 'none' ? 'Cut-offs move every year. A backup list made now saves panic in results week.' : 'Shortlist colleges that would be happy second options for the exam or college you are aiming for, and compare their fees.', btn('Matching colleges', 'goColleges()', true));
                 if (is('pay', 'scholarship')) add('<i class=ic-cap></i>', 'Scholarships first', 'We put low-cost routes first. The scholarship matcher checks which national and state scholarships you may qualify for.', btn('Open the scholarship matcher', "goToBlock('scholarship-matcher-block')", true));
                 if (is('pay', 'loan')) add('<i class=ic-landmark></i>', 'Planning an education loan', 'The loan navigator explains collateral rules, interest subsidies and what to ask the bank.', btn('Open the loan navigator', "goToBlock('loan-navigator-block')", true));
                 if (is('pay', 'earn')) add('<i class=ic-briefcase></i>', 'Study while you earn', 'Open and distance universities such as IGNOU, evening colleges and apprenticeship-linked degrees let you earn alongside your studies.');
@@ -11754,8 +11647,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     break;
                 case 'backup':
                     title = 'You wanted backup options';
-                    text = 'The backup plan tool takes the exam or college you are aiming for and shows realistic alternatives, so you are never left with one option.';
-                    actions = btn('Open the backup plan tool', "switchView('backupPlan')", true);
+                    text = 'Shortlist realistic alternatives for the exam or college you are aiming for, so there is never only one option.';
+                    actions = btn('Matching colleges', 'goColleges()', true);
                     break;
                 default: {
                     title = 'You wanted help knowing where to start';
@@ -12117,7 +12010,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             }
             const steps = [
                 ['1', 'See your best ' + what, 'Start with the first card below. Open it for the full picture.'],
-                ['2', 'Check what to do next', 'Exams to prepare for, a backup plan and a 12-month plan are further down.'],
+                ['2', 'Check what to do next', 'Exams to prepare for and a 12-month plan are further down.'],
                 ['3', 'Download your report', 'Your whole plan as a PDF. <span class="lg:hidden">Tap the Career report button at the bottom left.</span><span class="hidden lg:inline">It is the card on the right.</span>']
             ];
             const jumps = []; document.querySelectorAll('#wizard-results [data-jump]').forEach(function (el) {
@@ -18555,7 +18448,6 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             { group: 'decide', view: 'colleges', block: '', label: 'Colleges', title: 'Colleges', desc: 'Compare colleges by fees, cutoffs, and placements, and find ones that fit your budget.', kw: 'college fees cutoff placement compare budget' },
             { group: 'decide', view: 'colleges', block: 'after10-panel', label: 'After Class 10', title: 'Where to study after Class 10', desc: 'Class 11–12 in Science, Commerce or Humanities, polytechnic, ITI and other diplomas, with the official admission portals by state.', kw: 'after 10th class 10 class 11 junior college pu plus one fyjc polytechnic diploma iti admission portal state' },
             { group: 'decide', view: 'colleges', block: 'integrated-panel', label: 'Integrated programmes', title: 'Integrated school + JEE/NEET programmes', desc: 'How programmes like ALLEN and Aakash work after Class 10, who they suit, and what to ask before you pay.', kw: 'integrated allen aakash coaching after 10th class 11 jee neet foundation dummy school fiitjee resonance' },
-            { group: 'recover', view: 'backupPlan', block: 'backup-generator-block', label: 'Backup plan', title: 'Backup plan generator', desc: 'Enter your target exam, dream college, and mock score to get 5 ranked backup colleges.', kw: 'backup cutoff safety net college rank score' },
             { group: 'recover', view: 'backupPlan', block: 'wrong-course-block', label: 'Wrong course?', title: 'Wrong course or forced choice?', desc: 'Step-by-step ways to change stream, branch or field, and how to talk to family if the choice was not yours.', kw: 'wrong course stream forced pressure parents switch change branch regret unhappy drop unhappy' },
             { group: 'recover', view: 'backupPlan', block: 'setback-guidance-block', label: 'Setback?', title: 'Facing a setback?', desc: 'Backlog, dropped year, missed exam, wrong course, or no campus placement: get practical next steps.', kw: 'backlog fail failed dropped drop year missed placement wrong course placed campus' },
             { group: 'recover', view: 'backupPlan', block: 'pathways-block', label: 'Alternate pathways', title: 'Alternate pathways', desc: 'Lateral entry, open universities, Academic Bank of Credits, bridge courses, and apprenticeships.', kw: 'lateral entry open university distance bridge course apprenticeship credits naps' },
