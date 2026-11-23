@@ -13,6 +13,30 @@ import pandas as pd
 CITY_FIX = {'Bengalore': 'Bengaluru', 'Bhubaneshwar': 'Bhubaneswar', 'Calcutta': 'Kolkata', 'Cochin': 'Kochi',
             'Nasik': 'Nashik', 'Dehra Dun': 'Dehradun', 'Ahmadabad': 'Ahmedabad', 'Sangareddi': 'Sangareddy',
             'Gurgaon': 'Gurugram', 'Karari': 'Karari'}
+# The source tags some listings with the wrong city, or lists programmes that are taught abroad.
+# Wrong city: fixed here by college. Taught abroad or not in India: left out, so students are not misled.
+CITY_BY_UNI = {('BML Munjal University', 'Abhayapuri'): 'Gurugram',
+               ('Indian Institute of Technology Bhubaneswar (IITBBS)', 'Abhayapuri'): 'Bhubaneswar',
+               ('Sri Venkateswara University', 'Andol'): 'Tirupati',
+               ('Indian School of Hospitality', 'Hariana'): 'Gurugram',
+               ('Nitte Meenakshi Institute of Technology', 'Yelahanka'): 'Bengaluru'}
+EXCLUDE_UNIS = {'University of the Punjab', 'University of Toronto', 'York University',
+                'University of New South Wales', 'S P Jain School of Global Management - Dubai',
+                'SDA Bocconi School of Management'}
+CITY_STATE = {'Ahmedabad': 'Gujarat', 'Gandhinagar': 'Gujarat', 'Palanpur': 'Gujarat', 'Ambala': 'Haryana',
+              'Gurugram': 'Haryana', 'Hisar': 'Haryana', 'Sonipat': 'Haryana', 'Bengaluru': 'Karnataka',
+              'Devanhalli': 'Karnataka', 'Manipal': 'Karnataka', 'Mysuru': 'Karnataka', 'Bhopal': 'Madhya Pradesh',
+              'Sehore': 'Madhya Pradesh', 'Bhubaneswar': 'Odisha', 'Rourkela': 'Odisha', 'Bihar Sharif': 'Bihar',
+              'Chandigarh': 'Chandigarh', 'Chennai': 'Tamil Nadu', 'Coimbatore': 'Tamil Nadu',
+              'Karaikkudi': 'Tamil Nadu', 'Vellore': 'Tamil Nadu', 'Dehradun': 'Uttarakhand', 'Delhi': 'Delhi',
+              'New Delhi': 'Delhi', 'Dhanbad': 'Jharkhand', 'Goa Velha': 'Goa', 'Sanquelim': 'Goa',
+              'Guwahati': 'Assam', 'Silchar': 'Assam', 'Hyderabad': 'Telangana', 'Malkajgiri': 'Telangana',
+              'Sangareddy': 'Telangana', 'Kakinada': 'Andhra Pradesh', 'Vijayawada': 'Andhra Pradesh',
+              'Tirupati': 'Andhra Pradesh', 'Kanpur': 'Uttar Pradesh', 'Noida': 'Uttar Pradesh',
+              'Kochi': 'Kerala', 'Kottayam': 'Kerala', 'Kolkata': 'West Bengal', 'Mandi': 'Himachal Pradesh',
+              'Mohali': 'Punjab', 'Patiala': 'Punjab', 'Phagwara': 'Punjab', 'Rupnagar': 'Punjab',
+              'Mumbai': 'Maharashtra', 'Nagpur': 'Maharashtra', 'Nashik': 'Maharashtra', 'Pune': 'Maharashtra',
+              'Pilani': 'Rajasthan'}  # 'Online' and 'Karari' (not sure which state) get no state
 NAGAR_BY_UNI = {'National Institute of Technology, Rourkela': 'Rourkela', 'JSS Academy of Higher Education and Research': 'Mysuru'}
 DUR = re.compile(r'^\d+(½)?\s*years?$|^\d+\s*months?$')
 
@@ -52,6 +76,9 @@ def clean(df, level):
         city = CITY_FIX.get(city, city)
         m = re.match(r'https?://www\.(?:bachelors|masters)portal\.com/studies/(.+)$', str(r['url']))
         tail = m.group(1) if m else ''
+        if r['university'] in EXCLUDE_UNIS:
+            continue
+        city = CITY_BY_UNI.get((r['university'], city), city)
         key = (r['programme'], r['university'], r['degree_type'], city, dur, fee)
         if key in seen:
             continue
@@ -64,7 +91,10 @@ def clean(df, level):
         rows.append([r['programme'].strip(), u, d, c, dur or '', mode, part, -1 if free else (fee if fee is not None else 0), ft if (fee or free) else '', int(extra.group(1)) if extra else 0, tail])
     rows.sort(key=lambda x: (x[0].lower(), x[1]))
     inv = lambda m: [k for k, _ in sorted(m.items(), key=lambda kv: kv[1])]
-    return {'unis': inv(unis), 'degrees': inv(degs), 'cities': inv(cities), 'rows': rows}
+    city_list = inv(cities)
+    states = sorted({CITY_STATE[c] for c in city_list if c in CITY_STATE})
+    city_state = [states.index(CITY_STATE[c]) if c in CITY_STATE else -1 for c in city_list]
+    return {'unis': inv(unis), 'degrees': inv(degs), 'cities': city_list, 'states': states, 'cityState': city_state, 'rows': rows}
 
 
 def main(ug, pg):
