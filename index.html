@@ -1860,7 +1860,6 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     <div class="min-w-0"><label for="prog-deg" class="text-xs font-semibold text-slate-600 block mb-1">Degree</label><select id="prog-deg" onchange="progRender(true)" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:outline-none focus:ring-2 focus:ring-brand-500"></select></div>
-                    <div class="min-w-0"><label for="prog-state" class="text-xs font-semibold text-slate-600 block mb-1">State</label><select id="prog-state" onchange="progRender(true)" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:outline-none focus:ring-2 focus:ring-brand-500"></select></div>
                     <div class="min-w-0"><label for="prog-city" class="text-xs font-semibold text-slate-600 block mb-1">City</label><select id="prog-city" onchange="progRender(true)" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:outline-none focus:ring-2 focus:ring-brand-500"></select></div>
                     <div class="min-w-0"><label for="prog-uni" class="text-xs font-semibold text-slate-600 block mb-1">College or university</label><select id="prog-uni" onchange="progRender(true)" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:outline-none focus:ring-2 focus:ring-brand-500"></select></div>
                     <div class="min-w-0"><label for="prog-dur" class="text-xs font-semibold text-slate-600 block mb-1">Duration</label><select id="prog-dur" onchange="progRender(true)" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:outline-none focus:ring-2 focus:ring-brand-500"></select></div>
@@ -1875,7 +1874,6 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 </div>
             </div>
 
-            <p id="prog-gap" class="hidden text-xs text-slate-600 leading-relaxed bg-amber-50 border border-amber-200 rounded-xl p-4"></p>
             <div id="prog-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             <div class="text-center"><button type="button" id="prog-more" onclick="progMore()" class="hidden min-h-[44px] px-6 py-2.5 rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-50">Show more</button></div>
 
@@ -18269,9 +18267,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const sorted = function (arr) { return arr.map(function (t, i) { return [t, i]; }).sort(function (a, b) { return a[0].localeCompare(b[0]); }); };
             const fill = function (id, first, arr) { const el = document.getElementById(id); if (el) el.innerHTML = opt('', first) + sorted(arr).map(function (p) { return opt(p[1], p[0]); }).join(''); };
             fill('prog-deg', 'All degrees', set.degrees);
-            fill('prog-state', 'All states', set.states || []);
             fill('prog-city', 'All cities', set.cities);
-            progGapNote(set);
             fill('prog-uni', 'All colleges and universities', set.unis);
             const durs = {}; set.rows.forEach(function (r) { if (r[4]) durs[r[4]] = progYears(r[4]); });
             const dl = Object.keys(durs).sort(function (a, b) { return durs[a] - durs[b]; });
@@ -18279,18 +18275,6 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const q = document.getElementById('prog-q'); if (q) q.value = '';
             ['prog-fee'].forEach(function (id) { const e = document.getElementById(id); if (e) e.value = ''; });
             const s = document.getElementById('prog-sort'); if (s) s.value = 'az';
-        }
-        const PROG_ALL_STATES = ['Andaman and Nicobar Islands', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chandigarh', 'Chhattisgarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu and Kashmir', 'Jharkhand', 'Karnataka', 'Kerala', 'Ladakh', 'Lakshadweep', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Puducherry', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'];
-        function progGapNote(set) {
-            const el = document.getElementById('prog-gap'); if (!el) return;
-            const have = {}; set.rows.forEach(function (r) { const i = set.cityState[r[3]]; if (i >= 0) have[set.states[i]] = (have[set.states[i]] || 0) + 1; });
-            const none = PROG_ALL_STATES.filter(function (x) { return !have[x]; });
-            const thin = Object.keys(have).filter(function (x) { return have[x] < 10; });
-            let t = '<strong>This list is not complete.</strong> It covers ' + Object.keys(have).length + ' of 36 states and union territories.';
-            if (none.length) t += ' No programme details yet for: ' + none.map(escapeAuth).join(', ') + '.';
-            if (thin.length) t += ' Only a few listed for: ' + thin.map(function (x) { return escapeAuth(x) + ' (' + have[x] + ')'; }).join(', ') + '.';
-            t += ' For a college that is not here, check its own website, or the UGC and AICTE lists of approved institutions.';
-            el.innerHTML = t; el.classList.remove('hidden');
         }
         function progQueue() { clearTimeout(PROG_TIMER); PROG_TIMER = setTimeout(function () { progRender(true); }, 180); }
         function progReset() {
@@ -18302,14 +18286,12 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const set = PROG_DATA[PROG_LEVEL];
             const val = function (id) { const e = document.getElementById(id); return e ? e.value : ''; };
             const q = val('prog-q').trim().toLowerCase();
-            const stt = val('prog-state');
             const deg = val('prog-deg'), city = val('prog-city'), uni = val('prog-uni'), dur = val('prog-dur'), fee = val('prog-fee'), sort = val('prog-sort') || 'az';
             const band = fee ? fee.split('-').map(Number) : null;
             const words = q ? q.split(/\s+/) : [];
             let rows = set.rows.filter(function (r) {
                 if (deg !== '' && String(r[2]) !== deg) return false;
                 if (city !== '' && String(r[3]) !== city) return false;
-                if (stt !== '' && String(set.cityState[r[3]]) !== stt) return false;
                 if (uni !== '' && String(r[1]) !== uni) return false;
                 if (dur && r[4] !== dur) return false;
                 if (band) { const y = progYearly(r); if (y === null || y < band[0] || y >= band[1]) return false; }
