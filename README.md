@@ -61,6 +61,15 @@ CI fails the build if `assets/tailwind.css` doesn't match what
 The brand color palette (10 shades) lives in `scripts/build-tailwind.mjs`,
 not in `index.html` — change it there, then rerun the build.
 
+## Search pages (/careers/, /exams/, /degrees/)
+
+The app is one page with hash routes, which search engines see as a single
+URL. `node scripts/build-seo-pages.mjs` writes a plain, script-free page for
+every career, exam and degree (from the same data the app uses) plus
+`sitemap.xml`. Netlify has no build step, so **after changing careers, exams
+or degree data, run it and commit the output**. Exam pages with too few
+real facts are generated with `noindex` and left out of the sitemap.
+
 ## Deploying
 
 **This is important and easy to get wrong the other way: pushing to
@@ -86,6 +95,9 @@ push with `--no-verify` unless you mean it.
 - **JS syntax check** — runs `node --check` against every inline
   `<script>` block.
 - **JSON validity check** — validates `data/*.json`.
+- **SEO pages check** — re-runs `scripts/build-seo-pages.mjs` and fails if
+  the committed `/careers/`, `/exams/`, `/degrees/` pages or `sitemap.xml`
+  no longer match the data.
 - **Tailwind drift check** — rebuilds `assets/tailwind.css` and fails if
   it doesn't match what's committed.
 - **Browser smoke test** — a real headless-Chromium Playwright run:
