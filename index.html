@@ -116,8 +116,28 @@
          tables and RLS policies this talks to. -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js" integrity="sha384-TcHRA3zBbn+Lexh5n+Oil4guNPOS3rjNDpGRAN46u/s/mB2IZ50ceC6TYDU2yvgK" crossorigin="anonymous"></script>
     <script>
-        const SUPABASE_URL = 'https://mpfzxbvpndextzgiqpmo.supabase.co'; // ap-south-1 (Mumbai)
-        const SUPABASE_ANON_KEY = 'sb_publishable_91sW4BE4R4uemLm9BHLvBQ_WSXG3oeS';
+        // Which backend to use is decided by the address the page is opened from, so the same file runs everywhere
+        // and nothing has to be edited when a change moves from staging to the live site. ONLY plan4it.co and
+        // www.plan4it.co talk to the live database (real users, real payments). Every other address (the staging
+        // site, Netlify previews, localhost) talks to the separate staging project, so testing can never touch live data.
+        // Both keys are publishable: Row Level Security on the server protects the data, not secrecy of the key.
+        const IS_LIVE_SITE = location.hostname === 'plan4it.co' || location.hostname === 'www.plan4it.co';
+        const SUPABASE_URL = IS_LIVE_SITE ? 'https://mpfzxbvpndextzgiqpmo.supabase.co' : 'https://verezawywdnflezvxchd.supabase.co'; // both ap-south-1 (Mumbai)
+        const SUPABASE_ANON_KEY = IS_LIVE_SITE ? 'sb_publishable_91sW4BE4R4uemLm9BHLvBQ_WSXG3oeS' : 'sb_publishable_kKqH_UnU65Cc_j7Orp8hWw_gKJe8VQE';
+        if (!IS_LIVE_SITE) {
+            // Make it impossible to mistake staging for the real site, and keep it out of search results.
+            try {
+                const m = document.createElement('meta'); m.name = 'robots'; m.content = 'noindex, nofollow'; document.head.appendChild(m);
+                document.title = 'STAGING | ' + document.title;
+                document.addEventListener('DOMContentLoaded', function () {
+                    const b = document.createElement('div');
+                    b.textContent = 'STAGING: test data and test payments only';
+                    b.setAttribute('role', 'status');
+                    b.style.cssText = 'position:fixed;left:50%;bottom:6px;transform:translateX(-50%);z-index:2147483000;background:#f59e0b;color:#111;font:700 11px/1 Inter,system-ui,sans-serif;letter-spacing:.04em;padding:5px 10px;border-radius:999px;pointer-events:none;box-shadow:0 1px 6px rgba(0,0,0,.4);white-space:nowrap';
+                    document.body.appendChild(b);
+                });
+            } catch (e) {}
+        }
         let sb = null;
         try {
             if (window.supabase && SUPABASE_ANON_KEY && SUPABASE_ANON_KEY.indexOf('PASTE_') !== 0) {
