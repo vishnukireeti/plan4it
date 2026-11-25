@@ -11500,31 +11500,40 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 '</div>';
             box.classList.remove('hidden');
         }
+        // One A4 page in the same look as the reports (masthead, section headings, cards, footer), opened in the report viewer
+        // where it can be read, printed or saved as a PDF.
         function printParentSummary() {
-            const a = wizardAnswers;
+            const a = wizardAnswers, e = escapeAuth;
             const routes = computeWizardRoutes(a);
-            const sheet = document.getElementById('parent-print-sheet');
-            if (!sheet || !routes.length) return;
+            if (!routes.length) return;
             const pri = (WIZARD_PRIORITY_LABELS[a.constraint] || WIZARD_PRIORITY_LABELS.Budget)[0];
-            sheet.innerHTML = '<h1>Talking about what comes after Class 10</h1>' +
-                '<p>Made with Plan4it.co on ' + escapeAuth(new Date().toLocaleDateString('en-IN')) + '. A guide, not official advice.</p>' +
-                '<h2>Quiz answers</h2>' +
-                '<p>Interest: <strong>' + escapeAuth(a.interest || '-') + '</strong> &middot; Enjoys doing: <strong>' + escapeAuth(a.workStyle || '-') + '</strong> &middot; What matters most: <strong>' + escapeAuth(pri) + '</strong></p>' +
-                '<h2>Routes worth a closer look</h2>' +
-                routes.map(function (s) {
-                    return '<div class="route"><strong>' + escapeAuth(s.r.title) + '</strong><br>' + escapeAuth(s.why) + '<br><em>Opens up:</em> ' + escapeAuth(s.r.opens) + '<br><em>Keep in mind:</em> ' + escapeAuth(s.r.watch) + '</div>';
+            const sess = authGetSession(), name = (sess && authDisplayName(sess)) || '';
+            const today = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+            const right = (name ? 'Prepared for <b>' + e(name) + '</b><br>' : '') + e(today);
+            const chip = function (label, val) { return '<div class="pp-card pp-slim" style="margin:0"><div class="pp-sm pp-mut">' + e(label) + '</div><b>' + e(val) + '</b></div>'; };
+            const qs = [
+                ['Subjects', 'Which subjects are enjoyed and done well in, and which are only put up with?'],
+                ['Cost', 'What would each route cost in total, including hostel, books and coaching if any?'],
+                ['Plan B', 'If the first choice does not work out, what is the Plan B?'],
+                ['This month', 'What can we check now: school marks, subject choices, and the official sites for fees and dates?']
+            ];
+            const body = '<div class="pp-sm" style="border-left:3px solid #0284c7;background:#f0f9ff;padding:5px 10px;margin:6px 0;border-radius:4px"><b>Based on the quiz answers.</b> These are starting ideas to talk over, not a decision. Choices after Class 10 can be changed later.</div>' +
+                ipH('What the quiz picked up') +
+                '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px">' + chip('Interest', a.interest || '-') + chip('Enjoys doing', a.workStyle || '-') + chip('What matters most', pri) + '</div>' +
+                ipH('Routes worth a closer look') +
+                routes.map(function (r, k) {
+                    return '<div class="pp-card" style="border-left:5px solid #0284c7"><b>' + (k + 1) + '. ' + e(r.r.title) + '</b>' +
+                        '<div class="pp-sm" style="color:#0369a1;margin:2px 0 3px">' + e(r.why) + '</div>' +
+                        '<div class="pp-sm"><b>Opens up:</b> ' + e(r.r.opens) + '</div>' +
+                        '<div class="pp-sm pp-mut" style="margin-top:2px"><b>Keep in mind:</b> ' + e(r.r.watch) + '</div></div>';
                 }).join('') +
-                '<h2>Questions to talk through together</h2>' +
-                '<ul><li>Which subjects are enjoyed and done well in, and which are only put up with?</li>' +
-                '<li>What would each route cost in total, including hostel, books and coaching if any?</li>' +
-                '<li>If the first choice does not work out, what is the Plan B?</li>' +
-                '<li>What can we check this month: school marks, subject choices, and the official sites for fees and dates?</li></ul>' +
-                '<h2>What we decided, and what we still need to find out</h2><div class="lines"><span></span><span></span><span></span><span></span></div>' +
-                '<p style="margin-top:12px;font-size:10px">Always confirm fees, dates and eligibility on the official websites. Choices after Class 10 can be changed later.</p>';
-            document.body.classList.add('printing-parents');
-            const done = function () { document.body.classList.remove('printing-parents'); };
-            window.addEventListener('afterprint', done, { once: true });
-            setTimeout(function () { try { window.print(); } catch (e) { done(); showToast('Printing is blocked here. Open the page in its own tab, then try again.'); } }, 150);
+                ipH('Questions to talk through together') +
+                '<div class="ci-parent">' + qs.map(function (q) { return '<div class="ci-q"><b>' + e(q[0]) + '</b>' + e(q[1]) + '</div>'; }).join('') + '</div>' +
+                ipH('What we decided, and what we still need to find out') +
+                '<div class="pp-lines"><span></span><span></span><span></span><span></span></div>' +
+                '<p class="pp-sm pp-mut pp-foot">Always confirm fees, dates and eligibility on the official websites. A guide, not official advice. Generated ' + e(today) + ' at plan4it.co.</p>';
+            const html = ipPage(1, 1, 'Talking about what comes after Class 10', 'One page to read together with a parent or guardian.', body, 'Parent summary · After Class 10', right, true);
+            printSheetHTML(html, 'Parent summary');
         }
 
         // Fit is shown in words, not as a percentage: the score comes from four answers, so it can't be that precise.
@@ -13776,10 +13785,10 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         function ipCard(t, body, cls) { return '<div class="pp-card ' + (cls || '') + '"><b>' + t + '</b>' + body + '</div>'; }
         function ipUl(arr) { const e = escapeAuth; return '<ul>' + arr.filter(Boolean).map(function (x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul>'; }
         function ipH(t) { return '<h3 class="ip-h3">' + escapeAuth(t) + '</h3>'; }
-        function ipPage(n, N, title, sub, body, kind, right) {
+        function ipPage(n, N, title, sub, body, kind, right, noNotice) {
             body = String(body).replace(/(^|[^\d.])1 years\b/g, '$11 year');
             if (n > 1) body = body.replace(/before the deadlines below/g, 'before the deadlines in the exams section');
-            const notice = n === 1 ? '<div class="ip-notice"><b>Privacy and use of this report.</b> This report was created on this device from the answers given or the items saved. It is guidance only and does not guarantee admission, results or jobs, so confirm dates, fees and eligibility on official websites. Plan4it.co does not sell or share it. A signed-in account keeps a copy for 3 days so it can be downloaded, then deletes it automatically. The quiz answers and saved items behind it stay only in the account, or on this device, and can be deleted at any time. <b>Students under 18: please read this report together with a parent or guardian.</b></div>' : '';
+            const notice = n === 1 && !noNotice ? '<div class="ip-notice"><b>Privacy and use of this report.</b> This report was created on this device from the answers given or the items saved. It is guidance only and does not guarantee admission, results or jobs, so confirm dates, fees and eligibility on official websites. Plan4it.co does not sell or share it. A signed-in account keeps a copy for 3 days so it can be downloaded, then deletes it automatically. The quiz answers and saved items behind it stay only in the account, or on this device, and can be deleted at any time. <b>Students under 18: please read this report together with a parent or guardian.</b></div>' : '';
             return '<div class="ip"><div class="ipc">' + ppMasthead(kind, right) + '<div class="ip-ttl"><span class="ip-n">' + (n < 10 ? '0' : '') + n + '</span><div><div class="ip-t">' + escapeAuth(title) + '</div>' + (sub ? '<div class="pp-sm pp-mut">' + escapeAuth(sub) + '</div>' : '') + '</div></div>' + notice + body + '</div>' +
                 '<div class="ipf"><span>plan4it.co · Guidance only · Under 18? Read with a parent or guardian</span><span>Pay and cost figures are estimates; confirm dates and fees on official sites · Page ' + n + ' of ' + N + '</span></div></div>';
         }
