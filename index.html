@@ -1125,11 +1125,6 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         <p class="text-xs text-brand-800 bg-white/60 border border-brand-100 rounded-lg px-3 py-2 mt-3">This is guidance based on your answers and interests.</p>
                     </div>
 
-                    <div id="wizard-disclaimer" class="mb-6 bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs text-slate-700">
-                        <p class="font-bold text-slate-900 text-sm mb-1">Suggestions based on your quiz</p>
-                        <p>These are ideas to explore from your answers. They are not an exact match or a prediction of what will suit you. Your course or stream does not decide your career: commerce, BBA and BMS students also work in technology, product, marketing and design, and science or arts students move into business, media and more. <span id="wiz-disc-add">If these do not interest you, add the careers you like below and we will update your results.</span></p>
-                    </div>
-
                     <div id="wizard-howto" class="mb-6"></div>
 
                     <div id="report-promo-results" class="mb-6 hidden lg:block"></div>
@@ -12030,7 +12025,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             exams.sort(function (a, b) { return dl(a) - dl(b); });
             let h = '';
             // 1. next exams
-            if (exams.length) h += premiumSec('<i class=ic-calendar></i>', 'Exams to prepare for', 'The next 3 that fit your answers, nearest deadline first. Always confirm on the official site.', '<ul class="divide-y divide-slate-100">' + exams.slice(0, 3).map(function (x) {
+            // Class 10 students are choosing a stream, not an entrance exam yet, so they do not get the exams list
+            if (exams.length && A.cls !== '10') h += premiumSec('<i class=ic-calendar></i>', 'Exams to prepare for', 'The next 3 that fit your answers, nearest deadline first. Always confirm on the official site.', '<ul class="divide-y divide-slate-100">' + exams.slice(0, 3).map(function (x) {
                 return '<li class="py-2.5 flex flex-wrap items-start justify-between gap-2"><div class="min-w-0"><p class="font-semibold text-slate-900 text-sm">' + e(x.name) + '</p><p class="text-xs text-slate-600">' + e(examRegLine(x)) + '</p><p class="text-xs text-slate-500">' + e(examDateLine(x)) + '</p></div><button type="button" onclick="openExamDetail(\'' + x.id + '\')" class="text-sm font-semibold text-brand-700 hover:underline min-h-[44px]">Details \u2192</button></li>';
             }).join('') + '</ul><button type="button" onclick="setFitOff(false);switchView(\'exams\')" class="mt-2 min-h-[44px] text-sm font-semibold text-brand-700 hover:underline">See all matching exams \u2192</button>');
             // 2. colleges in their state (school students already have colleges as their main matches above)
@@ -12067,11 +12063,11 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (head) {
                 head.setAttribute('data-jump', schoolStage ? 'Best colleges for you' : 'Best careers for you');
                 head.innerHTML = '<h3 class="font-extrabold text-slate-900 text-lg">' + (schoolStage ? 'Colleges worth a look' : 'Careers that fit you best') + '</h3><p class="text-sm text-slate-600 mt-0.5 mb-3">' + (schoolStage ? 'These colleges match your answers, state and budget. ' : 'These are the careers that match your answers most closely. ') + 'The label on each card shows how close the match is: <b>Strong fit</b>, <b>Good fit</b> or <b>Possible fit</b> (the dots mean the same).' + (schoolStage ? ' NIRF is the government\'s ranking of colleges; a lower number is better.' : '') + '</p>' +
-                    '<div class="mt-3 text-sm bg-amber-50 border border-amber-200 text-amber-900 rounded-xl px-4 py-3" role="note"><b>Suggestions based on your quiz.</b> These are ideas drawn from your answers only, not a guarantee of fit or a verdict on what suits you. Your degree or stream does not lock you in: B.Com, BBA and BMS students also build careers in technology, analytics, product and fintech, and many careers are open to graduates of any stream. If none of these interest you, add careers you like further down.</div>';
+                    '<div class="mt-3 text-sm bg-amber-50 border border-amber-200 text-amber-900 rounded-xl px-4 py-3" role="note"><b>Suggestions based on your quiz.</b> These are ideas drawn from your answers only, not a guarantee of fit or a verdict on what suits you. Your degree or stream does not lock you in: B.Com, BBA and BMS students also build careers in technology, analytics, product and fintech, and many careers are open to graduates of any stream.' + (schoolStage ? '' : ' If none of these interest you, add careers you like further down.') + '</div>';
             }
             const steps = [
                 ['1', 'See your best ' + what, 'Start with the first card below. Open it for the full picture.'],
-                ['2', 'Check what to do next', 'Exams to prepare for and a 12-month plan are further down.'],
+                ['2', 'Check what to do next', (wizardAnswers.cls === '10' ? 'Your next steps' : 'Exams to prepare for') + ' and a 12-month plan are further down.'],
                 ['3', 'Download your report', 'Your whole plan as a PDF. <span class="lg:hidden">Tap the Career report button at the bottom left.</span><span class="hidden lg:inline">It is the card on the right.</span>']
             ];
             const jumps = []; document.querySelectorAll('#wizard-results [data-jump]').forEach(function (el) {
@@ -13295,7 +13291,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 const top = shortlist.slice(0, 3).map(function (s) { return s.c.title; });
                 h += '<div class="pp-card pp-note"><b>Key takeaways</b><ul>' +
                     (top.length ? '<li>Your answers point towards <b>' + e(top.join(', ')) + '</b>.</li>' : '') +
-                    (exams.length ? '<li>Exams to plan around: <b>' + e(exams.slice(0, 3).map(function (x) { return x.x.name; }).join(', ')) + '</b>.</li>' : '') +
+                    (exams.length && seg !== 'c10' ? '<li>Exams to plan around: <b>' + e(exams.slice(0, 3).map(function (x) { return x.x.name; }).join(', ')) + '</b>.</li>' : '') +
                     (seg === 'c10' ? '<li>Your next big decision is the <b>stream or route after Class 10</b>; the routes below show what each one opens up.</li>' : '') +
                     (seg === 'working' ? '<li>The sections below compare your options, show the skills to build, and give a 30-60-90 day plan to move.</li>' : '<li>Keep a Plan B for every first choice. The Plan B section lists backups.</li>') + '</ul></div>';
             } else {
