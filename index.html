@@ -12298,6 +12298,22 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const g = document.getElementById('a10c-grid'); if (g && g.scrollIntoView) g.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
         // 900+ more Bengaluru PU colleges from the Dept. of PU Education list: loaded on demand, then added to AFTER10_COLLEGES
+        // What can be said about a college from its name and the department's list alone. Streams and fees are not in that list, so they are not guessed.
+        function puExtraRecord(id, r) {
+            const n = String(r[1]), t = n.toLowerCase();
+            const gov = /\bgovt\b|\bgovernment\b|^gpuc/.test(t), corp = /\bcorporation\b/.test(t), girls = /\b(girls|women|womens|ladies)\b|women's|for women/.test(t), boys = /\bboys\b/.test(t), eve = /\bevening\b/.test(t);
+            const chain = /\b(narayana|chaitanya)\b/.test(t);
+            const bits = [];
+            if (gov) bits.push('Government college, so fees are low.');
+            else if (corp) bits.push('Run by the city corporation (BBMP), so fees are low.');
+            if (girls) bits.push('Girls\' college.'); else if (boys) bits.push('Boys\' college.');
+            if (eve) bits.push('Evening classes, so check the timings.');
+            if (chain) bits.push('Part of a chain known for integrated JEE and NEET coaching with PU.');
+            bits.push('Located in Bengaluru' + (r[2] ? ' (PIN ' + r[2] + (r[3] ? ', ' + r[3] : '') + ')' : (r[3] ? ' (' + r[3] + ')' : '')) + '. College code ' + String(r[0]).replace(/\s+/g, '') + '.');
+            return { id: id, name: n, city: 'Bengaluru', state: 'Karnataka', kind: 'pu', streams: [], coach: chain ? ['jee_neet'] : [], area: 'Bengaluru', conf: 'dpue',
+                admission: 'Apply after your SSLC (Class 10) results. Seats go on SSLC marks and the state\'s reservation rules' + '. Ask the college for its cut-off and the subject combinations (Arts, Commerce, Science) it offers this year.',
+                link: ['Dept. of Pre-University Education', 'https://pue.karnataka.gov.in/'], note: bits.join(' ') };
+        }
         let PU_EXTRA = null;
         function puLoadExtra() {
             if (PU_EXTRA) return PU_EXTRA;
@@ -12307,8 +12323,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     d.rows.forEach(function (r) {
                         const id = 'dpue-' + String(r[0]).toLowerCase().replace(/\s+/g, '');
                         if (have.has(id)) return;
-                        AFTER10_COLLEGES.push({ id: id, name: r[1], city: 'Bengaluru', state: 'Karnataka', kind: 'pu', streams: [], coach: [], admission: null, area: 'Bengaluru', conf: 'listed', link: null,
-                            note: 'In the Dept. of PU Education list for Bengaluru' + (r[2] ? ' (PIN ' + r[2] + (r[3] ? ', ' + r[3] : '') + ')' : (r[3] ? ' (' + r[3] + ')' : '')) + '. Streams offered are not in that list, so ask the college.' });
+                        AFTER10_COLLEGES.push(puExtraRecord(id, r));
                     });
                     return true;
                 })
@@ -15004,6 +15019,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 (A10C_COMMON.has(a10cAdmission(c)) ? '' : '<p class="text-xs text-slate-700"><span class="font-semibold">How to get in:</span> ' + e(a10cAdmission(c)) + '</p>') +
                 (c.note ? '<p class="text-xs text-slate-600">' + e(c.note) + '</p>' : '') +
                 (c.conf === 'listed' ? '<p class="text-[11px] text-slate-500">Seen on one directory listing. Confirm the details with the college.</p>' : '') +
+                (c.conf === 'dpue' ? '<p class="text-[11px] text-slate-500">From the Dept. of PU Education college list. The streams offered are not in that list, so ask the college.</p>' : '') +
                 (c.link ? '<a href="' + e(c.link[1]) + '" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-brand-600 hover:underline">' + e(c.link[0]) + ' ↗</a>' : '') +
                 '</div>';
         }
