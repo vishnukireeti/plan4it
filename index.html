@@ -11496,46 +11496,9 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 }).join('') + '</div>' +
                 '<div class="flex flex-col sm:flex-row gap-3 mt-3">' +
                 '<button type="button" onclick="goToPathwayBranch(\'Class 10\')" class="w-full sm:w-auto min-h-[44px] bg-white border border-slate-300 text-slate-700 font-semibold py-2.5 px-5 rounded-xl hover:bg-slate-50 text-sm">See every route after Class 10 →</button>' +
-                '<button type="button" onclick="printParentSummary()" class="w-full sm:w-auto min-h-[44px] bg-brand-600 text-white font-semibold py-2.5 px-5 rounded-xl hover:bg-brand-700 text-sm">Print a one-page summary to talk it over with parents</button>' +
                 '</div>';
             box.classList.remove('hidden');
         }
-        // One A4 page in the same look as the reports (masthead, section headings, cards, footer), opened in the report viewer
-        // where it can be read, printed or saved as a PDF.
-        function printParentSummary() {
-            const a = wizardAnswers, e = escapeAuth;
-            const routes = computeWizardRoutes(a);
-            if (!routes.length) return;
-            const pri = (WIZARD_PRIORITY_LABELS[a.constraint] || WIZARD_PRIORITY_LABELS.Budget)[0];
-            const sess = authGetSession(), name = (sess && authDisplayName(sess)) || '';
-            const today = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
-            const right = (name ? 'Prepared for <b>' + e(name) + '</b><br>' : '') + e(today);
-            const chip = function (label, val) { return '<div class="pp-card pp-slim" style="margin:0"><div class="pp-sm pp-mut">' + e(label) + '</div><b>' + e(val) + '</b></div>'; };
-            const qs = [
-                ['Subjects', 'Which subjects are enjoyed and done well in, and which are only put up with?'],
-                ['Cost', 'What would each route cost in total, including hostel, books and coaching if any?'],
-                ['Plan B', 'If the first choice does not work out, what is the Plan B?'],
-                ['This month', 'What can we check now: school marks, subject choices, and the official sites for fees and dates?']
-            ];
-            const body = '<div class="pp-sm" style="border-left:3px solid #0284c7;background:#f0f9ff;padding:5px 10px;margin:6px 0;border-radius:4px"><b>Based on the quiz answers.</b> These are starting ideas to talk over, not a decision. Choices after Class 10 can be changed later.</div>' +
-                ipH('What the quiz picked up') +
-                '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px">' + chip('Interest', a.interest || '-') + chip('Enjoys doing', a.workStyle || '-') + chip('What matters most', pri) + '</div>' +
-                ipH('Routes worth a closer look') +
-                routes.map(function (r, k) {
-                    return '<div class="pp-card" style="border-left:5px solid #0284c7"><b>' + (k + 1) + '. ' + e(r.r.title) + '</b>' +
-                        '<div class="pp-sm" style="color:#0369a1;margin:2px 0 3px">' + e(r.why) + '</div>' +
-                        '<div class="pp-sm"><b>Opens up:</b> ' + e(r.r.opens) + '</div>' +
-                        '<div class="pp-sm pp-mut" style="margin-top:2px"><b>Keep in mind:</b> ' + e(r.r.watch) + '</div></div>';
-                }).join('') +
-                ipH('Questions to talk through together') +
-                '<div class="ci-parent">' + qs.map(function (q) { return '<div class="ci-q"><b>' + e(q[0]) + '</b>' + e(q[1]) + '</div>'; }).join('') + '</div>' +
-                ipH('What we decided, and what we still need to find out') +
-                '<div class="pp-lines"><span></span><span></span><span></span><span></span></div>' +
-                '<p class="pp-sm pp-mut pp-foot">Always confirm fees, dates and eligibility on the official websites. A guide, not official advice. Generated ' + e(today) + ' at plan4it.co.</p>';
-            const html = ipPage(1, 1, 'Talking about what comes after Class 10', 'One page to read together with a parent or guardian.', body, 'Parent summary · After Class 10', right, true);
-            printSheetHTML(html, 'Parent summary');
-        }
-
         // Fit is shown in words, not as a percentage: the score comes from four answers, so it can't be that precise.
         function fitInfo(pct) {
             if (pct >= 75) return { text: 'Strong fit', dots: 3, cls: 'bg-emerald-100 text-emerald-800' };
@@ -11596,7 +11559,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 const w = a.worry;
                 if (w === 'wrong') add('<i class=ic-compass></i>', 'Worried about picking the wrong stream', 'It is less final than it feels. Many degree courses accept students from more than one stream, and the routes below show what each stream keeps open.', btn('See every route after Class 10', "goToPathwayBranch('Class 10')", true));
                 if (w === 'marks') add('<i class=ic-up></i>', 'Your Class 10 marks don\'t decide everything', 'Most degree admissions depend on Class 12 subjects and entrance exams, not Class 10 marks. Diploma, ITI and many state colleges also don\'t need top scores.', btn('See every route after Class 10', "goToPathwayBranch('Class 10')", true));
-                if (w === 'parents' || (is('decider', ['parents', 'decided']) && w !== 'parents')) add('<i class=ic-chat></i>', w === 'parents' ? 'You and your parents disagree' : 'Your parents are deciding', 'Use the family section below to see where your interest and their expectation overlap, then print a one-page summary to talk it through together.', btn('Compare with family expectations', "document.getElementById('wizard-family').scrollIntoView({behavior:'smooth'})", true) + btn('Print a summary for parents', 'printParentSummary()', false));
+                if (w === 'parents' || (is('decider', ['parents', 'decided']) && w !== 'parents')) add('<i class=ic-chat></i>', w === 'parents' ? 'You and your parents disagree' : 'Your parents are deciding', 'Use the family section below to see where your interest and their expectation overlap, then talk it through together.', btn('Compare with family expectations', "document.getElementById('wizard-family').scrollIntoView({behavior:'smooth'})", true));
                 if (w === 'cost') add('<i class=ic-wallet></i>', 'Keeping the cost down', 'Government schools, colleges and many scholarships keep costs low. The scholarship matcher shows which ones you may qualify for.', btn('Open the scholarship matcher', "goToBlock('scholarship-matcher-block')", true));
                 if (w === 'friends') add('<i class=ic-users></i>', 'Your friends\' stream is not a reason to pick yours', 'You will make new friends in Class 11; you will live with your subjects for years. Pick for what you enjoy and what it opens up.');
                 const ints = (a.interests || []).filter(function (x) { return x !== 'none'; }), str = (a.strong || []).filter(function (x) { return x !== 'none'; });
