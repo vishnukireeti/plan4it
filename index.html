@@ -12062,7 +12062,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const what = schoolStage ? 'colleges' : 'careers';
             if (head) {
                 head.setAttribute('data-jump', schoolStage ? 'Best colleges for you' : 'Best careers for you');
-                head.innerHTML = '<h3 class="font-extrabold text-slate-900 text-lg">' + (schoolStage ? 'Colleges worth a look' : 'Careers that fit you best') + '</h3><p class="text-sm text-slate-600 mt-0.5 mb-3">' + (schoolStage ? 'These colleges match your answers, state and budget. ' : 'These are the careers that match your answers most closely. ') + 'The label on each card shows how close the match is: <b>Strong fit</b>, <b>Good fit</b> or <b>Possible fit</b> (the dots mean the same).' + (schoolStage ? ' NIRF is the government\'s ranking of colleges; a lower number is better.' : '') + '</p>' +
+                head.innerHTML = '<h3 class="font-extrabold text-slate-900 text-lg">' + (schoolStage ? (isClass10(A) ? 'PU and junior colleges worth a look' : 'Colleges worth a look') : 'Careers that fit you best') + '</h3><p class="text-sm text-slate-600 mt-0.5 mb-3">' + (schoolStage ? (isClass10(A) ? 'These are PU and junior colleges, where you do Class 11 and 12, in your state. ' : 'These colleges match your answers, state and budget. ') : 'These are the careers that match your answers most closely. ') + 'The label on each card shows how close the match is: <b>Strong fit</b>, <b>Good fit</b> or <b>Possible fit</b> (the dots mean the same).' + (schoolStage && !isClass10(A) ? ' NIRF is the government\'s ranking of colleges; a lower number is better.' : '') + '</p>' +
                     '<div class="mt-3 text-sm bg-amber-50 border border-amber-200 text-amber-900 rounded-xl px-4 py-3" role="note"><b>Suggestions based on your quiz.</b> These are ideas drawn from your answers only, not a guarantee of fit or a verdict on what suits you. Your degree or stream does not lock you in: B.Com, BBA and BMS students also build careers in technology, analytics, product and fintech, and many careers are open to graduates of any stream.' + (schoolStage ? '' : ' If none of these interest you, add careers you like further down.') + '</div>';
             }
             const steps = [
@@ -12178,7 +12178,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             document.getElementById('wizard-results-summary').innerHTML =
                 '<span class="block font-semibold text-slate-800 mb-2">You told us</span>' +
                 '<span class="flex flex-wrap gap-2 mb-3">' + chips.map(function (t) { return '<span class="text-xs font-semibold bg-white border border-brand-200 text-brand-800 rounded-full px-3 py-1">' + e(t) + '</span>'; }).join('') + '</span>' +
-                (schoolStage ? '<span class="block text-sm text-slate-700 mb-2">You can\'t legally work yet, so we\'re leading with colleges worth a look instead of job titles — careers come into the picture once you\'re past Class 12.</span>' : '') +
+                (schoolStage ? '<span class="block text-sm text-slate-700 mb-2">You can\'t legally work yet, so we\'re leading with ' + (isClass10(A) ? 'PU and junior colleges' : 'colleges') + ' worth a look instead of job titles — careers come into the picture once you\'re past Class 12.</span>' : '') +
                 (!schoolStage && (A.clarity === 'none' || A.clarity === 'unsure') ? '<span class="block text-sm text-slate-700 mb-2">You said you are still exploring, and that is completely fine. Treat these as places to start looking, not answers.' + (noSignal ? ' Nothing stood out yet, so these are three very different careers in high demand, just to react to: which one feels closest, and which feels furthest?' : '') + '</span>' : '') +
                 (!schoolStage && A.careerNote ? '<span class="block text-sm text-slate-700 mb-2">You mentioned <strong>' + e(A.careerNote) + '</strong>.' + (A.mentioned && A.mentioned.length ? ' We matched ' + A.mentioned.length + ' career' + (A.mentioned.length === 1 ? '' : 's') + ' to it' + (A.mentioned.length ? ': ' + A.mentioned.slice(0, 3).map(function (id) { const c = careersData.find(function (x) { return x.id === id; }); return c ? '<button type="button" onclick="openCareerDetail(\'' + c.id + '\')" class="font-semibold text-brand-700 underline">' + e(c.title) + '</button>' : ''; }).join(', ') : '') + '.' : ' We could not find a close match, so try the search box in the Career Explorer.') + '</span>' : '') +
                 '<span class="block text-xs text-slate-600">These are starting ideas based on your answers, not a test of your ability or a verdict on what suits you. Check each one against your marks, eligibility and the official details before you decide.</span>';
@@ -12275,6 +12275,30 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             ranked.filter(function (r) { return affordable(r.c); }).forEach(function (r) { add(r, 0); });
             return out.sort(function (a, b) { return b.score - a.score; });
         }
+        // Class 10 students are choosing where to do Class 11-12, so they are shown PU and junior colleges only, never degree colleges.
+        function isClass10(a) { return !!a && (a.cls === '10' || a.cls === '9'); }
+        function wizardSeeAllPu(state) {
+            goColleges(); setCollegesMode('after10'); renderAfter10Colleges();
+            const sel = document.getElementById('a10c-state'); if (sel && state) sel.value = state;
+            renderAfter10Colleges();
+            const g = document.getElementById('a10c-grid'); if (g && g.scrollIntoView) g.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        function renderWizardPuMatches(f) {
+            const box = document.getElementById('wizard-matches-list'); if (!box) return;
+            const e = escapeAuth, st = f.state;
+            const all = AFTER10_COLLEGES.filter(function (c) { return (c.kind === 'pu' || c.kind === 'jc') && (st === 'any' || c.state === st); });
+            if (!all.length) {
+                box.innerHTML = '<div class="p-5 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-900">We do not list PU or junior colleges for ' + e(st === 'any' ? 'India' : st) + ' yet. Ask your school counsellor which colleges take students after Class 10 in your area, and check your state board\'s admission portal.' +
+                    '<button type="button" onclick="wizardSeeAllPu(\'\')" class="block mt-3 min-h-[44px] px-4 rounded-xl border border-amber-300 bg-white text-amber-900 font-semibold">Browse all PU and junior colleges</button></div>';
+                return;
+            }
+            const dist = String(f.district || '').toLowerCase();
+            const rank = function (c) { return (dist && (String(c.city) + ' ' + String(c.area)).toLowerCase().indexOf(dist) > -1 ? 0 : 1); };
+            const top = all.slice().sort(function (x, y) { return rank(x) - rank(y) || (y.streams.length - x.streams.length) || (y.coach.length - x.coach.length) || (x.conf === 'listed') - (y.conf === 'listed') || String(x.name).localeCompare(y.name); }).slice(0, 5);
+            box.innerHTML = '<p class="text-xs text-slate-600 mb-1">PU and junior colleges (Class 11 and 12)' + (st === 'any' ? '' : ' in ' + e(st)) + ', ' + (dist ? 'nearest first, then the ones with the most streams' : 'starting with the ones that offer the most streams') + '.</p>' +
+                '<div class="grid grid-cols-1 gap-3">' + top.map(after10CollegeCardHTML).join('') + '</div>' +
+                '<button type="button" onclick="wizardSeeAllPu(\'' + (st === 'any' ? '' : e(st)) + '\')" class="w-full min-h-[48px] mt-1 rounded-xl border border-brand-200 bg-brand-50 text-brand-800 font-semibold text-sm hover:bg-brand-100">See all ' + all.length + ' PU and junior colleges' + (st === 'any' ? '' : ' in ' + e(st)) + ' \u2192</button>';
+        }
         function renderWizardCollegeMatches() {
             const box = document.getElementById('wizard-matches-list');
             if (!box) return;
@@ -12287,6 +12311,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     '</div>';
                 return;
             }
+            if (isClass10(wizardAnswers)) { renderWizardPuMatches(f); return; }
             // every college in the student's state, not only the curated ones: load that state's file first
             const code = f.state !== 'any' && DIR.codeOf ? DIR.codeOf[f.state] : '';
             if (!DIR.index && !DIR.failed) { box.innerHTML = '<p class="text-sm text-slate-500 p-4">Finding colleges for you…</p>'; dirLoadIndex().then(renderWizardCollegeMatches); return; }
@@ -13213,7 +13238,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const ready = sd.length ? Math.round(sd.filter(function (s) { return done.indexOf(s.name) > -1; }).length / sd.length * 100) : null;
             const qa = getStoredWizardAnswers(), okEx = qa ? premiumExamFilter(qa) : function () { return true; };
             const exams = examsForCareer(c).filter(okEx).slice(0, gen ? 3 : 4);
-            const lcr = localColleges(collegesForCareer(c), gen ? 2 : 3), cols = (seg === 'working' || lcr.none) ? [] : lcr.list;
+            const lcr = localColleges(collegesForCareer(c), gen ? 2 : 3), cols = (seg === 'working' || seg === 'c10' || lcr.none) ? [] : lcr.list;
             return '<div class="pp-card"><div class="pp-h3"><span>' + e(c.title) + ' <span class="pp-tag ' + (tag === 'Saved' ? '' : 'a') + '">' + e(tag) + '</span>' + (fitText ? ' <span class="pp-tag g">' + e(fitText) + '</span>' : '') + '</span><span class="pp-mut">' + e(c.category) + '</span></div>' +
                 '<div class="pp-facts"><span>Pay: ' + e(c.salary) + approxText(c, 'salary') + '</span><span>Demand: ' + e(c.demand) + '</span><span>Difficulty: ' + e(c.difficulty) + '</span><span>Start in ~' + e(c.entryYears) + ' yr</span><span>Cost: ' + e(c.costTier) + '</span>' + (c.workLife ? '<span>Work-life: ' + e(c.workLife) + '</span>' : '') + '</div>' +
                 (c.overview ? '<p>' + e(c.overview) + '</p>' : '') + (c.suitability ? '<p><b>Suits:</b> ' + e(c.suitability) + '</p>' : '') +
@@ -13260,7 +13285,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const shortlist = savedCareers.map(function (c) { return { c: c, tag: 'Saved' }; }).concat(recCareers.map(function (r) { return { c: r.c, tag: 'Recommended', fit: r.fit }; }));
             let recCols = [];
             // someone already in a degree only needs colleges if they plan a master's in India
-            const wantsColleges = !a || ['ug', 'grad'].indexOf(a.cls) < 0 || a.after === 'msIndia';
+            const wantsColleges = !isClass10(a) && (!a || ['ug', 'grad'].indexOf(a.cls) < 0 || a.after === 'msIndia');
             if (student && f && wantsColleges) recCols = pickDiverseColleges(planStatePool(f).filter(function (c) { return savedColIds.indexOf(c.id) < 0; }).map(function (c) { return { c: c, score: collegeFit(c, f).score }; }).sort(function (x, y) { return y.score - x.score; }), f, savedCols.length >= 4 ? 2 : 4).map(function (r) { return r.c; });
             const examSeen = {}; savedExams.forEach(function (x) { examSeen[x.id] = 1; });
             let recExams = [];
@@ -13586,8 +13611,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             h += sec('Education pathway', student ? 'The usual route into ' + rec.title + ', step by step.' : 'How people usually move into ' + rec.title + '.');
             if (A.cls === '10') { const rt = computeWizardRoutes(A); if (rt.length) h += '<div class="pp-cols3">' + rt.slice(0, 3).map(function (s) { return '<div class="pp-card pp-slim"><b>' + e(s.r.title) + '</b><p class="pp-sm">' + e(s.why) + '</p></div>'; }).join('') + '</div>'; }
             h += (road.length ? '<div class="cr-steps">' + road.map(function (x, i) { return '<div class="cr-step"><b>' + (i + 1) + '</b><span>' + e(x) + '</span></div>'; }).join('') + '</div>' : '');
-            const lc = localColleges(collegesForCareer(rec), 4); let cols = lc.none ? [] : lc.list, colsNote = '';
-            const wantsCols = student && ['ug', 'grad'].indexOf(A.cls) < 0 || A.after === 'msIndia';
+            const lc = localColleges(collegesForCareer(rec), 4); let cols = lc.none || isClass10(A) ? [] : lc.list, colsNote = '';
+            const wantsCols = !isClass10(A) && (student && ['ug', 'grad'].indexOf(A.cls) < 0 || A.after === 'msIndia');
             if (!cols.length && wantsCols && f) { try { cols = pickDiverseColleges(planStatePool(f).map(function (c) { return { c: c, score: collegeFit(c, f).score }; }).sort(function (x, y) { return y.score - x.score; }), f, 4).map(function (r) { return r.c; }); colsNote = 'We have no college list specific to this career, so these are strong options for your state, budget and marks. Check that each offers the course you want.'; } catch (er) { cols = []; } }
             h += sec(student && cols.length ? 'College and course options' + (f && f.state && f.state !== 'any' ? ' in ' + f.state : '') : student ? 'College and course options' : 'Courses and certifications to consider') + (student && cols.length ? '<table class="pp-t"><tr><th>College</th><th>Where</th><th>Why look</th></tr>' + cols.map(function (c) { return '<tr><td><b>' + e(c.name.replace(/\s*\(.*?\)\s*/g, ' ').trim()) + '</b></td><td>' + e(c.location || '') + '</td><td class="pp-sm">' + e(colsNote ? (c.nirf ? 'NIRF rank ' + c.nirf + '. Confirm the course' : 'Confirm it offers the course you want') : ((c.pros || [])[0] || (c.nirf ? 'NIRF rank ' + c.nirf : 'Offers a course for this career'))) + '</td></tr>'; }).join('') + '</table><p class="pp-sm pp-mut">Check fees, cut-offs and placements on each college\'s own website before you decide. Aim for a mix: one reach, two realistic and one safe option.' + (colsNote ? ' ' + e(colsNote) : '') + '</p>' : (rec.certifications && rec.certifications.length ? '<ul>' + rec.certifications.slice(0, 4).map(function (x) { return '<li>' + planCertHTML(x) + '</li>'; }).join('') + '</ul>' : '<p>Check official course pages for your target role.</p>'));
             const exams = examsForCareer(rec).filter(premiumExamFilter(A)).slice(0, 4);
@@ -13720,8 +13745,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const okEx = A ? premiumExamFilter(A) : function () { return true; };
             const savedEx = (A && A.__saved) ? getSavedExams().map(function (id) { return examsData.find(function (x) { return x.id === id; }); }).filter(Boolean) : [];
             const exams = savedEx.concat(examsForCareer(rec).filter(okEx).filter(function (x) { return savedEx.indexOf(x) < 0; })).slice(0, gen ? 3 : 4);
-            const lc = localColleges(collegesForCareer(rec), 4); let cols = lc.none ? [] : lc.list, colsNote = '';
-            const wantsCols = gen || (student && ['ug', 'grad'].indexOf(A && A.cls) < 0) || (A && A.after === 'msIndia');
+            const lc = localColleges(collegesForCareer(rec), 4); let cols = lc.none || isClass10(A) ? [] : lc.list, colsNote = '';
+            const wantsCols = !isClass10(A) && (gen || (student && ['ug', 'grad'].indexOf(A && A.cls) < 0) || (A && A.after === 'msIndia'));
             if (!cols.length && wantsCols && f && f.state && f.state !== 'any') { try { cols = pickDiverseColleges(planStatePool(f).map(function (c) { return { c: c, score: collegeFit(c, f).score }; }).sort(function (x, y) { return y.score - x.score; }), f, 4).map(function (r) { return r.c; }); colsNote = 'We have no college list specific to this career, so these are strong options for your state and budget. Confirm each offers the course you want.'; } catch (er) { cols = []; } }
             const planB = (function () {
                 const a = premiumPlanB(rec, pool, [rec.id]);
@@ -14623,7 +14648,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (A) { const r = scoreCareerForWizard(c, A); fit = premiumFitPct(r.score) + '% match to your answers'; why = (r.reasons || []).slice(0, 3).join('; '); }
             const okEx = A ? premiumExamFilter(A) : function () { return true; };
             const exams = examsForCareer(c).filter(okEx).slice(0, 4);
-            const lcr = localColleges(collegesForCareer(c), 3), cols = (seg === 'working' || lcr.none) ? [] : lcr.list;
+            const lcr = localColleges(collegesForCareer(c), 3), cols = (seg === 'working' || seg === 'c10' || lcr.none) ? [] : lcr.list;
             const pool = careersData.map(function (x) { const r = A ? scoreCareerForWizard(x, A) : { score: 0 }; return Object.assign({}, x, { score: r.score }); }).sort(function (a, b) { return b.score - a.score; });
             const planB = (function () {
                 const base = Object.assign({}, c, { score: 0 }), a = premiumPlanB(base, pool, [c.id]);
