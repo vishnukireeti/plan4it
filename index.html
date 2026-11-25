@@ -1884,7 +1884,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
 
         <!-- ================= VIEW 7B: COLLEGE DETAIL PAGE ================= -->
         <section id="view-collegeDetail" class="view-section hidden max-w-4xl mx-auto space-y-6">
-            <button id="cd-back" onclick="switchView('colleges')" class="text-brand-600 font-semibold text-sm hover:underline">← Back to College Discovery</button>
+            <button id="cd-back" onclick="switchView('colleges')" class="min-h-[44px] text-brand-600 font-semibold text-sm hover:underline">← Back to College Discovery</button>
             <div id="college-detail-content" class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm space-y-6">
                 <!-- Rendered dynamically -->
             </div>
@@ -9752,7 +9752,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             { id: 'careers', label: 'Careers', key: 'career', items: function () { return careersData; }, fields: careerSearchFields, title: function (c) { return c.title; }, sub: function (c) { return c.category + (c.salary ? ' \u00b7 ' + c.salary + approxText(c, 'salary') : ''); }, open: function (id) { openCareerDetail(id); }, all: function (q) { switchView('explorer'); document.getElementById('career-search').value = q; renderExplorerCareers(); } },
             { id: 'exams', label: 'Exams', key: 'exam', items: function () { return examsData; }, fields: examSearchFields, title: function (e) { return e.name; }, sub: function (e) { return e.body + ' \u00b7 ' + e.stream; }, open: function (id) { openExamDetail(id); }, all: function (q) { switchView('exams'); document.getElementById('exam-search').value = q; renderExams(); } },
             { id: 'colleges', label: 'Colleges', key: 'college', items: function () { return collegesData; }, fields: collegeSearchFields, title: function (c) { return c.name; }, sub: function (c) { return c.location + ' \u00b7 ' + c.stream; }, open: function (id) { openCollegeDetail(id); }, all: function (q) { switchView('colleges'); setCollegesMode('degree'); document.getElementById('college-search').value = q; renderColleges(); } },
-            { id: 'a10c', label: 'Class 11\u201312 colleges and schools', key: 'inst', items: function () { return AFTER10_COLLEGES; }, fields: institutionSearchFields, title: function (c) { return c.name; }, sub: function (c) { return c.city + (c.state === 'All India' ? '' : ', ' + c.state); }, open: function (id) { openAfter10Detail(id); }, all: function (q) { switchView('colleges'); setCollegesMode('after10'); document.getElementById('a10c-search').value = q; renderAfter10Colleges(); } },
+            { id: 'a10c', label: 'Class 11\u201312 colleges and schools', key: 'inst', items: function () { puLoadExtra(); return AFTER10_COLLEGES; }, fields: institutionSearchFields, title: function (c) { return c.name; }, sub: function (c) { return c.city + (c.state === 'All India' ? '' : ', ' + c.state); }, open: function (id) { openAfter10Detail(id); }, all: function (q) { switchView('colleges'); setCollegesMode('after10'); document.getElementById('a10c-search').value = q; renderAfter10Colleges(); } },
             { id: 'tools', label: 'Pages and tools', key: 'tool', items: function () { return TOOL_DIRECTORY; }, fields: function (t) { return [{ t: t.title, w: 3 }, { t: t.label, w: 2.5 }, { t: t.kw, w: 2 }, { t: t.desc, w: 1 }]; }, title: function (t) { return t.title; }, sub: function (t) { return (VIEW_NAMES[t.view] || '') + ' \u00b7 ' + t.desc; }, all: function (q) { switchView('home'); const inp = document.getElementById('tool-search'); if (inp) { inp.value = q; filterToolDirectory(); } } },
         ];
         const GS_POPULAR = ['NEET', 'JEE', 'IIT', 'MBA', 'CA', 'Law', 'Scholarship', 'Class 11 admission'];
@@ -12042,7 +12042,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const what = schoolStage ? 'colleges' : 'careers';
             if (head) {
                 head.setAttribute('data-jump', schoolStage ? 'Best colleges for you' : 'Best careers for you');
-                head.innerHTML = '<h3 class="font-extrabold text-slate-900 text-lg">' + (schoolStage ? (isClass10(A) ? 'PU and junior colleges worth a look' : 'Colleges worth a look') : 'Careers that fit you best') + '</h3><p class="text-sm text-slate-600 mt-0.5 mb-3">' + (schoolStage ? (isClass10(A) ? 'These are PU and junior colleges, where you do Class 11 and 12, in your state. ' : 'These colleges match your answers, state and budget. ') : 'These are the careers that match your answers most closely. ') + 'The label on each card shows how close the match is: <b>Strong fit</b>, <b>Good fit</b> or <b>Possible fit</b> (the dots mean the same).' + (schoolStage && !isClass10(A) ? ' NIRF is the government\'s ranking of colleges; a lower number is better.' : '') + '</p>' +
+                head.innerHTML = '<h3 class="font-extrabold text-slate-900 text-lg">' + (schoolStage ? (isClass10(wizardAnswers) ? 'PU and junior colleges worth a look' : 'Colleges worth a look') : 'Careers that fit you best') + '</h3><p class="text-sm text-slate-600 mt-0.5 mb-3">' + (schoolStage ? (isClass10(wizardAnswers) ? 'These are PU and junior colleges, where you do Class 11 and 12, in your state. ' : 'These colleges match your answers, state and budget. ') : 'These are the careers that match your answers most closely. ') + 'The label on each card shows how close the match is: <b>Strong fit</b>, <b>Good fit</b> or <b>Possible fit</b> (the dots mean the same).' + (schoolStage && !isClass10(wizardAnswers) ? ' NIRF is the government\'s ranking of colleges; a lower number is better.' : '') + '</p>' +
                     '<div class="mt-3 text-sm bg-amber-50 border border-amber-200 text-amber-900 rounded-xl px-4 py-3" role="note"><b>Suggestions based on your quiz.</b> These are ideas drawn from your answers only, not a guarantee of fit or a verdict on what suits you. Your degree or stream does not lock you in: B.Com, BBA and BMS students also build careers in technology, analytics, product and fintech, and many careers are open to graduates of any stream.' + (schoolStage ? '' : ' If none of these interest you, add careers you like further down.') + '</div>';
             }
             const steps = [
@@ -12197,12 +12197,12 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         '<p class="text-xs text-slate-600 mt-2"><span class="font-semibold text-slate-800">What stands out:</span> ' + e(facts(c).join(' \u00b7 ')) + '</p>' +
                         (c.skills && c.skills.length ? '<p class="text-xs text-slate-600 mt-1"><span class="font-semibold text-slate-800">Skills you would build:</span> ' + e(c.skills.slice(0, 3).join(', ')) + '</p>' : '') +
                         (own.length ? '<p class="text-xs text-brand-800 mt-1"><span class="font-semibold">Why this one:</span> ' + e(own.join('; ')) + '</p>' : '') +
-                        '<div class="mt-3 pt-3 border-t border-slate-100"><p class="text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5">Next steps</p><div class="flex flex-wrap gap-2">' +
+                        (isClass10(A) ? '' : '<div class="mt-3 pt-3 border-t border-slate-100"><p class="text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5">Next steps</p><div class="flex flex-wrap gap-2">' +
                         (exams.length ? exams.map(function (x) { return '<button type="button" onclick="openExamDetail(\'' + x.id + '\')" class="' + chip + '">Exam: ' + e(x.name) + '</button>'; }).join('') : '') +
                         (cols.length ? cols.map(function (x) { return '<button type="button" onclick="openCollegeDetail(\'' + x.id + '\')" class="' + chip + '">College: ' + e(x.name.replace(/\s*\(.*?\)\s*/g, ' ').trim()) + '</button>'; }).join('') : '') +
                         (lc.none ? '<span class="text-xs text-slate-600">No listed college for this career in ' + e(lc.where) + ' yet. Browse the Colleges page for your area.</span>' : '') +
                         ((exams.length || cols.length || lc.none) ? '' : '<span class="text-xs text-slate-600">Open the full roadmap to see the exams and colleges on this route.</span>') +
-                        '</div></div></div>';
+                        '</div></div>') + '</div>';
                 }).join('');
             }
             familySetup();
@@ -12322,9 +12322,19 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 return;
             }
             const dist = String(f.district || '').toLowerCase();
-            const mgRank = { Government: 0, Aided: 1 }, rank = function (c) { return puDistNear(c, f.district) ? 0 : 1; };
-            const top = all.slice().sort(function (x, y) { return rank(x) - rank(y) || (x.conf === 'dpue') - (y.conf === 'dpue') || (mgRank[x.mgmt] === undefined ? 2 : mgRank[x.mgmt]) - (mgRank[y.mgmt] === undefined ? 2 : mgRank[y.mgmt]) || (y.streams.length - x.streams.length) || (y.coach.length - x.coach.length) || (x.conf === 'listed') - (y.conf === 'listed') || String(x.name).localeCompare(y.name); }).filter(function (c, i, arr) { return arr.findIndex(function (d) { return puKey(d.name) === puKey(c.name) && d.mgmt === c.mgmt; }) === i; }).slice(0, 5);
-            box.innerHTML = '<p class="text-xs text-slate-600 mb-1">PU and junior colleges (Class 11 and 12)' + (st === 'any' ? '' : ' in ' + e(st)) + ', ' + (dist ? 'nearest first, then the ones with the most streams' : 'starting with the ones that offer the most streams') + '.</p>' +
+            // score every college once (the Karnataka list has thousands), pick the best, and skip repeats of the same name
+            const mgRank = { Government: 0, Aided: 1 };
+            const scored = all.map(function (c) {
+                return { c: c, k: [puDistNear(c, f.district) ? 0 : 1, c.conf === 'dpue' ? 1 : 0, mgRank[c.mgmt] === undefined ? 2 : mgRank[c.mgmt], -c.streams.length, -c.coach.length, c.conf === 'listed' ? 1 : 0] };
+            });
+            scored.sort(function (x, y) { for (let n = 0; n < 6; n++) { if (x.k[n] !== y.k[n]) return x.k[n] - y.k[n]; } return x.c.name < y.c.name ? -1 : x.c.name > y.c.name ? 1 : 0; });
+            const top = [], seen = new Set();
+            for (let n = 0; n < scored.length && top.length < 5; n++) {
+                const c = scored[n].c, key = puKey(c.name) + '|' + c.mgmt;
+                if (seen.has(key)) continue;
+                seen.add(key); top.push(c);
+            }
+            box.innerHTML = '<p class="text-xs text-slate-600 mb-1">PU and junior colleges (Class 11 and 12)' + (st === 'any' ? '' : ' in ' + e(st)) + ', ' + (dist ? 'nearest first, then government and aided colleges' : 'starting with colleges we know most about, then government and aided ones') + '.</p>' +
                 '<div class="grid grid-cols-1 gap-3">' + top.map(after10CollegeCardHTML).join('') + '</div>' +
                 '<button type="button" onclick="wizardSeeAllPu(\'' + (st === 'any' ? '' : e(st)) + '\')" class="w-full min-h-[48px] mt-1 rounded-xl border border-brand-200 bg-brand-50 text-brand-800 font-semibold text-sm hover:bg-brand-100">See all ' + all.length + ' PU and junior colleges' + (st === 'any' ? '' : ' in ' + e(st)) + ' \u2192</button>';
         }
@@ -15051,7 +15061,6 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         function renderAfter10Colleges() {
             const grid = document.getElementById('a10c-grid');
             if (!grid) return;
-            if (!PU_EXTRA) { puLoadExtra().then(function (ok) { if (ok) renderAfter10Colleges(); }); }
             const q = (document.getElementById('a10c-search').value || '').toLowerCase();
             const vals = {};
             A10C_FACETS.forEach(function (f) { vals[f.id] = document.getElementById(f.id).value; });
@@ -18462,6 +18471,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 ? 'These colleges start after Class 12. Finishing Class 10? Switch to "After Class 10" for Class 11–12, polytechnic, ITI and other diplomas.'
                 : 'Where to study right after Class 10, by route and state. For degree colleges, switch back above.';
             if (collegesMode === 'after10') { const d = document.getElementById('after10-panel'); if (d) d.open = true; }
+            if (collegesMode === 'after10' && !PU_EXTRA) { puLoadExtra().then(function (ok) { if (ok) renderAfter10Colleges(); }); }
             refreshPageNav();
         }
 
