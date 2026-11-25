@@ -27,7 +27,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
 
       - uses: actions/setup-python@v5
         with:
@@ -44,6 +44,9 @@ jobs:
 
       - name: Check the static SEO pages match the data
         run: python3 scripts/ci/check_seo_pages.py
+
+      - name: Check the Supabase edge functions
+        run: node scripts/ci/check_edge_functions.mjs
 
       - name: Install Tailwind build tool
         run: npm install

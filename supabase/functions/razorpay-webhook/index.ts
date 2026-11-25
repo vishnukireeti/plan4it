@@ -3,6 +3,7 @@ import { createClient } from "jsr:@supabase/supabase-js@2";
 
 // Razorpay calls this when a payment is captured, so the purchase is recorded even if the customer closes the page.
 // It is not called by browsers: it is protected by Razorpay's signature (RAZORPAY_WEBHOOK_SECRET), not a login.
+// (Deployed with "verify JWT" off on purpose: Razorpay cannot send a Supabase login. No CORS headers: browsers must not call it.)
 async function hmacHex(secret: string, msg: string) {
   const k = await crypto.subtle.importKey("raw", new TextEncoder().encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
   const s = await crypto.subtle.sign("HMAC", k, new TextEncoder().encode(msg));
@@ -15,6 +16,7 @@ Deno.serve(async (req: Request) => {
   const secret = Deno.env.get("RAZORPAY_WEBHOOK_SECRET");
   if (!secret) return new Response("not configured", { status: 503 });
   const raw = await req.text();
+  if (raw.length > 100_000) return new Response("too large", { status: 413 });
   const sig = req.headers.get("x-razorpay-signature") || "";
   if (!safeEq(await hmacHex(secret, raw), sig)) return new Response("bad signature", { status: 400 });
 

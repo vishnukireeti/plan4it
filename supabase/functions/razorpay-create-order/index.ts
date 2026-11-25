@@ -4,14 +4,23 @@ import { createClient } from "jsr:@supabase/supabase-js@2";
 // Creates a Razorpay order for the signed-in person. The PRICE IS SET HERE ON THE SERVER, never taken from the browser.
 // Secrets: RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET (both required; use the live pair in production).
 const PRICES: Record<string, number> = { full: 29900, career: 9900 }; // in paise: Rs 299 and Rs 99
-const cors = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
+const MAX_ORDERS_PER_HOUR = 15; // per person; stops a script from spamming Razorpay and filling the purchases table
+
+// Only the site itself may call this from a browser.
+const ALLOWED_ORIGINS = ["https://plan4it.co", "https://www.plan4it.co", "https://staging--plan4it-app.netlify.app"];
+const corsFor = (req: Request) => {
+  const o = req.headers.get("Origin") || "";
+  return {
+    ...(ALLOWED_ORIGINS.includes(o) ? { "Access-Control-Allow-Origin": o } : {}),
+    "Vary": "Origin",
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+  };
 };
-const json = (b: unknown, s = 200) => new Response(JSON.stringify(b), { status: s, headers: { ...cors, "Content-Type": "application/json" } });
 
 Deno.serve(async (req: Request) => {
+  const cors = corsFor(req);
+  const json = (b: unknown, s = 200) => new Response(JSON.stringify(b), { status: s, headers: { ...cors, "Content-Type": "application/json" } });
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   if (req.method !== "POST") return json({ error: "method" }, 405);
   const secret = Deno.env.get("RAZORPAY_KEY_SECRET");
@@ -47,6 +56,12 @@ Deno.serve(async (req: Request) => {
   if ((kind === "full" || scope === "me") && !snapshot) return json({ error: "bad request" }, 400);
 
   const db = createClient(url, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+
+  // Rate limit: at most MAX_ORDERS_PER_HOUR new orders per person per hour.
+  const since = new Date(Date.now() - 3600_000).toISOString();
+  const { count: recent } = await db.from("purchases").select("id", { count: "exact", head: true }).eq("user_id", user.id).gte("created_at", since);
+  if ((recent ?? 0) >= MAX_ORDERS_PER_HOUR) return json({ error: "too many attempts, please try again in a while" }, 429);
+
   const { data: owned } = await db.from("purchases").select("kind,career_id,scope,snapshot").eq("user_id", user.id).eq("status", "paid");
   type P = { kind: string; career_id: string | null; scope: string | null; snapshot: string | null };
   const has = (owned || []).some((p: P) => {
@@ -61,7 +76,7 @@ Deno.serve(async (req: Request) => {
   const r = await fetch("https://api.razorpay.com/v1/orders", {
     method: "POST",
     headers: { Authorization: "Basic " + btoa(`${keyId}:${secret}`), "Content-Type": "application/json" },
-    body: JSON.stringify({ amount, currency: "INR", receipt: `p4_${Date.now()}`.slice(0, 40), notes: { user_id: user.id, kind, career_id: careerId || "", scope: scope || "", snapshot: snapshot || "", age_declaration: body.ageDecl === "minor_with_guardian" ? "minor_with_guardian" : body.ageDecl === "adult" ? "adult" : "" } }),
+    body: JSON.stringify({ amount, currency: "INR", receipt: `p4_${Date.now()}`.slice(0, 40), notes: { user_id: user.id, kind, career_id: careerId || "", scope: scope || "", snapshot: snapshot || "", age_declaration: body.ageDecl === "minor_with_guardian" ? "minor_with_guardian" : "adult" } }),
   });
   if (!r.ok) return json({ error: "could not start the payment" }, 502);
   const order = await r.json();

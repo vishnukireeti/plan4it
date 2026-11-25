@@ -8944,7 +8944,9 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         }
         function adWaitCsv() {
             const rows = AD.wait || []; if (!rows.length) return;
-            const q = function (v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; };
+            // A cell starting with = + - @ (or a tab/CR) is run as a formula when the CSV is opened in Excel or Sheets. Anyone can type such text
+            // into the public waitlist form, so a leading ' makes it plain text.
+            const q = function (v) { let t = String(v == null ? '' : v); if (/^[=+\-@\t\r]/.test(t)) t = "'" + t; return '"' + t.replace(/"/g, '""') + '"'; };
             const csv = ['Joined (IST)', 'Name', 'Email', 'Track', 'Stage', 'Duration', 'College or company', 'Note', 'Confirmation email'].map(q).join(',') + '\n' +
                 rows.map(function (w) { return [new Date(w.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }), w.name, w.email, w.track, w.stage, w.duration, w.college, w.note, w.email_sent_at ? 'sent' : 'not sent'].map(q).join(','); }).join('\n');
             const a = document.createElement('a');

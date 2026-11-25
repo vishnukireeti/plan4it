@@ -4,26 +4,34 @@ import { createClient } from "jsr:@supabase/supabase-js@2";
 // Sends the "thanks for joining the waitlist" email. It only ever emails an address that is already on the
 // learnership_waitlist table, and only once per row, so it cannot be used to mail arbitrary people.
 // Secrets needed (Supabase > Edge Functions > Secrets): RESEND_API_KEY, and optionally WAITLIST_FROM.
-const cors = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
+const ALLOWED_ORIGINS = ["https://plan4it.co", "https://www.plan4it.co", "https://staging--plan4it-app.netlify.app"];
+const corsFor = (req: Request) => {
+  const o = req.headers.get("Origin") || "";
+  return {
+    ...(ALLOWED_ORIGINS.includes(o) ? { "Access-Control-Allow-Origin": o } : {}),
+    "Vary": "Origin",
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+  };
 };
-const json = (b: unknown, s = 200) => new Response(JSON.stringify(b), { status: s, headers: { ...cors, "Content-Type": "application/json" } });
 const esc = (t: string) => t.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] as string));
+// ilike treats % _ and \ as wildcards. An email or track containing them must match literally, not as a pattern.
+const likeLiteral = (t: string) => t.replace(/[\\%_]/g, (c) => "\\" + c);
 
 Deno.serve(async (req: Request) => {
+  const cors = corsFor(req);
+  const json = (b: unknown, s = 200) => new Response(JSON.stringify(b), { status: s, headers: { ...cors, "Content-Type": "application/json" } });
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   if (req.method !== "POST") return json({ error: "method" }, 405);
   let body: { email?: string; track?: string } = {};
   try { body = await req.json(); } catch { return json({ error: "bad request" }, 400); }
   const email = String(body.email || "").trim().toLowerCase();
   const track = String(body.track || "").trim();
-  if (!email || !track) return json({ error: "bad request" }, 400);
+  if (!email || !track || email.length > 254 || track.length > 40 || !/^[^@\s%]+@[^@\s%]+\.[^@\s%]+$/.test(email)) return json({ error: "bad request" }, 400);
 
   const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
   const { data: row } = await db.from("learnership_waitlist").select("id,name,email,track,duration,email_sent_at,created_at")
-    .ilike("email", email).eq("track", track).maybeSingle();
+    .ilike("email", likeLiteral(email)).eq("track", track).maybeSingle();
   if (!row) return json({ error: "not on the waitlist" }, 404);
   if (row.email_sent_at) return json({ sent: true, already: true });
   // only for a sign-up made in the last 15 minutes, so this cannot be used to re-trigger mail later

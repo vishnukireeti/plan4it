@@ -32,6 +32,7 @@ run "HTML structure check"      "python3 scripts/ci/check_html_structure.py"
 run "JS syntax check"            "python3 scripts/ci/check_js_syntax.py"
 run "JSON validity check"        "python3 scripts/ci/check_json.py"
 run "SEO pages in sync"          "python3 scripts/ci/check_seo_pages.py"
+run "Edge function checks"       "node --no-warnings scripts/ci/check_edge_functions.mjs"
 
 if [ -f package.json ] && [ -d node_modules ]; then
     run "Tailwind drift check" "node scripts/build-tailwind.mjs && git diff --exit-code assets/tailwind.css"
