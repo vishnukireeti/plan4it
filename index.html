@@ -1594,6 +1594,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     <select id="a10c-stream" aria-label="Filter by stream" onchange="renderAfter10Colleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500"><option value="ALL">Any stream</option></select>
                     <select id="a10c-kind" aria-label="Filter by type" onchange="renderAfter10Colleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500"><option value="ALL">Any type</option></select>
                     <select id="a10c-coach" aria-label="Filter by coaching" onchange="renderAfter10Colleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500"><option value="ALL">Any coaching</option></select>
+                    <select id="a10c-mgmt" aria-label="Filter by management" onchange="renderAfter10Colleges()" class="px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white min-h-[44px] focus:ring-2 focus:ring-brand-500"><option value="ALL">Any management</option></select>
                 </div>
                 <div class="flex flex-wrap items-center gap-3">
                     <p id="a10c-count" aria-live="polite" class="text-xs text-slate-500 font-medium"></p>
@@ -12261,37 +12262,56 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const g = document.getElementById('a10c-grid'); if (g && g.scrollIntoView) g.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
         // 900+ more Bengaluru PU colleges from the Dept. of PU Education list: loaded on demand, then added to AFTER10_COLLEGES
-        // What can be said about a college from its name and the department's list alone. Streams and fees are not in that list, so they are not guessed.
-        function puExtraRecord(id, r) {
-            const n = String(r[1]), t = n.toLowerCase();
-            const gov = /\bgovt\b|\bgovernment\b|^gpuc/.test(t), corp = /\bcorporation\b/.test(t), girls = /\b(girls|women|womens|ladies)\b|women's|for women/.test(t), boys = /\bboys\b/.test(t), eve = /\bevening\b/.test(t);
-            const chain = /\b(narayana|chaitanya)\b/.test(t);
-            const bits = [];
-            if (gov) bits.push('Government college, so fees are low.');
-            else if (corp) bits.push('Run by the city corporation (BBMP), so fees are low.');
-            if (girls) bits.push('Girls\' college.'); else if (boys) bits.push('Boys\' college.');
+        // Karnataka PU colleges from the department's list (district, management type, year started). It has no fees or subject
+        // combinations, so those are not guessed: the card says to ask the college. Loaded on demand, then added to AFTER10_COLLEGES.
+        let PU_EXTRA = null;
+        const PU_MGMT = {
+            Government: ['Government', 'Government college, so fees are low.'],
+            Corporation: ['Government', 'Run by the city corporation (BBMP), so fees are low.'],
+            Aided: ['Aided', 'Government-aided: run by a trust or society with state grants, so fees are usually lower than at private colleges.'],
+            UnAided: ['Private', 'Private (unaided) college: it sets its own fees, so ask for the full fee list.'],
+            MWD: ['Other', 'Listed under the department\u2019s MWD management type, a state welfare department. Many are residential, so check who can apply.'],
+            KREIS: ['Other', 'Run by the Karnataka Residential Educational Institutions Society (KREIS), a state society. Many are residential.'],
+            Bifurcated: ['Other', 'Listed as a \u201cbifurcated\u201d college by the department.']
+        };
+        function puKey(n) { return String(n).toLowerCase().replace(/['.]/g, '').replace(/\b(pu|puc|college|col|govt|government)\b/g, '').replace(/[^a-z0-9]/g, '').slice(0, 14); }
+        function puExtraRecord(r, d, own) {
+            const n = String(r[1]), t = n.toLowerCase(), dist = d.dists[r[2]], mg = PU_MGMT[d.mgmt[r[3]]] || PU_MGMT.UnAided;
+            const blr = /^Bengaluru (Central|North|South)$/.test(dist), place = blr ? 'Bengaluru' : dist;
+            const streams = []; if (/\barts\b/.test(t)) streams.push('Arts'); if (/\bscience\b/.test(t)) streams.push('Science'); if (/\bcommerce\b/.test(t)) streams.push('Commerce');
+            const chain = /\b(narayana|chaitanya)\b/.test(t), girls = /\b(girls|women|womens|ladies)\b|women's/.test(t), boys = /\bboys\b/.test(t), eve = /\bevening\b/.test(t);
+            const bits = [mg[1]];
+            if (girls) bits.push('Girls\u2019 college.'); else if (boys) bits.push('Boys\u2019 college.');
             if (eve) bits.push('Evening classes, so check the timings.');
             if (chain) bits.push('Part of a chain known for integrated JEE and NEET coaching with PU.');
-            bits.push('Located in Bengaluru' + (r[2] ? ' (PIN ' + r[2] + (r[3] ? ', ' + r[3] : '') + ')' : (r[3] ? ' (' + r[3] + ')' : '')) + '. College code ' + String(r[0]).replace(/\s+/g, '') + '.');
-            return { id: id, name: n, city: 'Bengaluru', state: 'Karnataka', kind: 'pu', streams: [], coach: chain ? ['jee_neet'] : [], area: 'Bengaluru', conf: 'dpue',
-                admission: 'Apply after your SSLC (Class 10) results. Seats go on SSLC marks and the state\'s reservation rules' + '. Ask the college for its cut-off and the subject combinations (Arts, Commerce, Science) it offers this year.',
+            if (r[4]) bits.push('Address: ' + r[4] + '.');
+            if (r[5]) bits.push('Started in ' + String(r[5]).replace('-', '\u2013') + '.');
+            if (streams.length) bits.push('The streams shown come from the college\u2019s name; ask which combinations it offers.');
+            return { id: 'pu-' + String(r[0]).toLowerCase().replace(/\s+/g, ''), name: n, city: place, state: 'Karnataka', kind: 'pu', streams: streams, coach: chain ? ['jee_neet'] : [], area: place, dist: dist, mgmt: mg[0], conf: 'dpue',
+                admission: 'Apply after your SSLC (Class 10) results. Seats go on SSLC marks and the state\u2019s reservation rules. Ask the college for its cut-off and the subject combinations (Arts, Commerce, Science) it offers this year.',
                 link: ['Dept. of Pre-University Education', 'https://pue.karnataka.gov.in/'], note: bits.join(' ') };
         }
-        let PU_EXTRA = null;
         function puLoadExtra() {
             if (PU_EXTRA) return PU_EXTRA;
-            PU_EXTRA = fetch('data/pu_bengaluru.json').then(function (r) { if (!r.ok) throw new Error('pu ' + r.status); return r.json(); })
+            PU_EXTRA = fetch('data/pu_karnataka.json').then(function (r) { if (!r.ok) throw new Error('pu ' + r.status); return r.json(); })
                 .then(function (d) {
-                    const have = new Set(AFTER10_COLLEGES.map(function (c) { return c.id; }));
+                    // colleges already described by hand stay as they are; skip the same college in Bengaluru and Mysuru
+                    const hand = new Set(AFTER10_COLLEGES.filter(function (c) { return c.state === 'Karnataka'; }).map(function (c) { return c.area + '|' + puKey(c.name); }));
                     d.rows.forEach(function (r) {
-                        const id = 'dpue-' + String(r[0]).toLowerCase().replace(/\s+/g, '');
-                        if (have.has(id)) return;
-                        AFTER10_COLLEGES.push(puExtraRecord(id, r));
+                        const rec = puExtraRecord(r, d);
+                        if (hand.has(rec.area + '|' + puKey(rec.name))) return;
+                        AFTER10_COLLEGES.push(rec);
                     });
                     return true;
                 })
                 .catch(function (e) { console.warn('PU list not loaded:', e); return false; });
             return PU_EXTRA;
+        }
+        // does this college sit in (or next to) the district the student named? Spellings differ between lists, so compare the first 7 letters.
+        function puDistNear(c, dist) {
+            const norm = function (x) { return String(x || '').toLowerCase().replace(/davanagere/, 'davangere').replace(/bagalkote/, 'bagalkot').replace(/yadgiri/, 'yadgir').replace(/[^a-z ]/g, '').trim().slice(0, 7); };
+            if (!dist) return false;
+            return c.dist ? norm(c.dist) === norm(dist) : (String(c.city) + ' ' + String(c.area)).toLowerCase().indexOf(norm(dist)) > -1;
         }
         function renderWizardPuMatches(f) {
             if (!PU_EXTRA && (f.state === 'Karnataka' || f.state === 'any')) { puLoadExtra().then(function () { renderWizardPuMatches(f); }); }
@@ -12304,8 +12324,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 return;
             }
             const dist = String(f.district || '').toLowerCase();
-            const rank = function (c) { return (dist && (String(c.city) + ' ' + String(c.area)).toLowerCase().indexOf(dist) > -1 ? 0 : 1); };
-            const top = all.slice().sort(function (x, y) { return rank(x) - rank(y) || (y.streams.length - x.streams.length) || (y.coach.length - x.coach.length) || (x.conf === 'listed') - (y.conf === 'listed') || String(x.name).localeCompare(y.name); }).slice(0, 5);
+            const mgRank = { Government: 0, Aided: 1 }, rank = function (c) { return puDistNear(c, f.district) ? 0 : 1; };
+            const top = all.slice().sort(function (x, y) { return rank(x) - rank(y) || (x.conf === 'dpue') - (y.conf === 'dpue') || (mgRank[x.mgmt] === undefined ? 2 : mgRank[x.mgmt]) - (mgRank[y.mgmt] === undefined ? 2 : mgRank[y.mgmt]) || (y.streams.length - x.streams.length) || (y.coach.length - x.coach.length) || (x.conf === 'listed') - (y.conf === 'listed') || String(x.name).localeCompare(y.name); }).filter(function (c, i, arr) { return arr.findIndex(function (d) { return puKey(d.name) === puKey(c.name) && d.mgmt === c.mgmt; }) === i; }).slice(0, 5);
             box.innerHTML = '<p class="text-xs text-slate-600 mb-1">PU and junior colleges (Class 11 and 12)' + (st === 'any' ? '' : ' in ' + e(st)) + ', ' + (dist ? 'nearest first, then the ones with the most streams' : 'starting with the ones that offer the most streams') + '.</p>' +
                 '<div class="grid grid-cols-1 gap-3">' + top.map(after10CollegeCardHTML).join('') + '</div>' +
                 '<button type="button" onclick="wizardSeeAllPu(\'' + (st === 'any' ? '' : e(st)) + '\')" class="w-full min-h-[48px] mt-1 rounded-xl border border-brand-200 bg-brand-50 text-brand-800 font-semibold text-sm hover:bg-brand-100">See all ' + all.length + ' PU and junior colleges' + (st === 'any' ? '' : ' in ' + e(st)) + ' \u2192</button>';
@@ -14966,7 +14986,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             { id: 'a10c-state', test: (c, v) => c.state === v },
             { id: 'a10c-stream', test: (c, v) => c.streams.includes(v) },
             { id: 'a10c-kind', test: (c, v) => c.kind === v },
-            { id: 'a10c-coach', test: (c, v) => c.coach.includes(v) }
+            { id: 'a10c-coach', test: (c, v) => c.coach.includes(v) },
+            { id: 'a10c-mgmt', test: (c, v) => c.mgmt === v }
         ];
         // How to get in, for one institution. Text shared by 3 or more listed institutions is shown once above the list instead.
         let A10C_COMMON = new Set();
@@ -14982,7 +15003,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 (A10C_COMMON.has(a10cAdmission(c)) ? '' : '<p class="text-xs text-slate-700"><span class="font-semibold">How to get in:</span> ' + e(a10cAdmission(c)) + '</p>') +
                 (c.note ? '<p class="text-xs text-slate-600">' + e(c.note) + '</p>' : '') +
                 (c.conf === 'listed' ? '<p class="text-[11px] text-slate-500">Seen on one directory listing. Confirm the details with the college.</p>' : '') +
-                (c.conf === 'dpue' ? '<p class="text-[11px] text-slate-500">From the Dept. of PU Education college list. The streams offered are not in that list, so ask the college.</p>' : '') +
+                (c.conf === 'dpue' ? '<p class="text-[11px] text-slate-500">From the Dept. of PU Education college list. Fees and the subjects offered are not in that list, so ask the college.</p>' : '') +
                 (c.link ? '<a href="' + e(c.link[1]) + '" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-brand-600 hover:underline">' + e(c.link[0]) + ' ↗</a>' : '') +
                 '</div>';
         }
@@ -15007,9 +15028,10 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 'a10c-state': [...new Set(AFTER10_COLLEGES.map(function (c) { return c.state; }))].map(function (s) { return [s, s === 'All India' ? 'All-India school systems' : s]; }),
                 'a10c-stream': [['Science', 'Science'], ['Commerce', 'Commerce'], ['Arts', 'Arts / Humanities']],
                 'a10c-kind': Object.keys(A10C_KINDS).map(function (k) { return [k, A10C_KINDS[k]]; }),
-                'a10c-coach': [['jee_neet', 'JEE / NEET coaching built in'], ['ca', 'CA / CMA / CS built in']]
+                'a10c-coach': [['jee_neet', 'JEE / NEET coaching built in'], ['ca', 'CA / CMA / CS built in']],
+                'a10c-mgmt': [['Government', 'Government (low fees)'], ['Aided', 'Government-aided'], ['Private', 'Private (unaided)'], ['Other', 'Welfare, residential or other']]
             };
-            const allLabel = { 'a10c-area': 'Any city or area', 'a10c-state': 'All states', 'a10c-stream': 'Any stream', 'a10c-kind': 'Any type', 'a10c-coach': 'Any coaching' };
+            const allLabel = { 'a10c-area': 'Any city or area', 'a10c-state': 'All states', 'a10c-stream': 'Any stream', 'a10c-kind': 'Any type', 'a10c-coach': 'Any coaching', 'a10c-mgmt': 'Any management' };
             A10C_FACETS.forEach(function (f) {
                 const sel = document.getElementById(f.id);
                 const pool = AFTER10_COLLEGES.filter(function (c) { return base(c) && A10C_FACETS.every(function (g) { return g.id === f.id || vals[g.id] === 'ALL' || g.test(c, vals[g.id]); }); });
