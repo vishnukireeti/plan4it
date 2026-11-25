@@ -2149,7 +2149,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full">Paid programme</span>
                 </div>
                 <h3 class="text-xl font-extrabold text-slate-900">Do a real industry project while you study, and get it reviewed and certified</h3>
-                <p class="text-slate-700 text-sm md:text-base max-w-3xl">Most companies only take interns in their final year, and ask for experience you cannot get without an internship. The Plan4it.co Learnership Program closes that gap. Choose a track and a duration from 1 to 6 months, and you get one industry-standard project sized to that time. A mentor reviews your work at every milestone, and when you finish you get a Plan4it.co certificate and a project you can put on your resume, LinkedIn and portfolio.</p>
+                <p class="text-slate-700 text-sm md:text-base max-w-3xl">Most companies only take interns in their final year, and ask for experience you cannot get without an internship. The Plan4it.co Learnership Program closes that gap. Choose a track and you get one industry-standard project that fits in 1 month. A mentor reviews your work at the end, and when you finish you get a Plan4it.co certificate and a project you can put on your resume, LinkedIn and portfolio.</p>
                 <details class="group"><summary class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-xl bg-brand-600 text-white text-sm font-bold cursor-pointer list-none">See the programme and join the waitlist</summary>
                 <div class="space-y-5 pt-4">
                 <div class="grid sm:grid-cols-3 gap-3 text-sm">
@@ -2163,7 +2163,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 </div>
                 <div class="bg-white border border-slate-200 rounded-2xl p-4 md:p-5 space-y-3">
                     <p class="text-sm font-bold text-slate-900">Join the Learnership waitlist</p>
-                    <p class="text-xs text-slate-600">This is a paid programme. The price for each duration and the first batch dates will be announced before launch. Joining the waitlist is free and does not commit you to paying.</p>
+                    <p class="text-xs text-slate-600">This is a paid programme. The price and the first batch dates will be announced before launch. Joining the waitlist is free and does not commit you to paying.</p>
                     <form id="p4-wait-form" onsubmit="return internshipJoin(event)" class="grid sm:grid-cols-2 gap-3 text-sm" novalidate>
                         <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label>Website<input id="p4-wait-site" type="text" tabindex="-1" autocomplete="off"></label></div>
                         <label class="block"><span class="font-semibold text-slate-700">Your name</span>
@@ -2175,9 +2175,9 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         <label class="block"><span class="font-semibold text-slate-700">Where are you now?</span>
                             <select id="p4-wait-stage" class="mt-1 w-full border border-slate-300 rounded-xl px-3 min-h-[44px] bg-white">
                                 <option value="">Select</option><option>1st year (UG)</option><option>2nd year (UG)</option><option>3rd year (UG)</option><option>Final year (UG)</option><option>Postgraduate</option><option>Class 11-12</option><option>Working professional</option></select></label>
-                        <div class="sm:col-span-2"><span class="font-semibold text-slate-700">How long do you want your learnership to be?</span>
-                            <div id="p4-wait-dur" role="group" aria-label="Learnership duration" class="mt-1 grid grid-cols-2 min-[480px]:grid-cols-3 md:grid-cols-6 gap-2"></div>
-                            <div id="p4-dur-plan" class="mt-2 text-xs text-slate-700 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2" aria-live="polite">Pick a duration to see what your project will look like.</div></div>
+                        <div class="sm:col-span-2"><span class="font-semibold text-slate-700">Learnership duration</span>
+                            <div id="p4-wait-dur" role="group" aria-label="Learnership duration" class="mt-1 grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+                            <div id="p4-dur-plan" class="mt-2 text-xs text-slate-700 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2" aria-live="polite">Your project will look like this.</div></div>
                         <label class="block sm:col-span-2"><span class="font-semibold text-slate-700">College or company (optional)</span>
                             <input id="p4-wait-college" maxlength="120" class="mt-1 w-full border border-slate-300 rounded-xl px-3 min-h-[44px]" placeholder="e.g. your college name"></label>
                         <label class="block sm:col-span-2"><span class="font-semibold text-slate-700">Anything you want us to know (optional)</span>
@@ -10168,14 +10168,9 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             ] }
         ];
         const P4_DURATIONS = [
-            { id: '1m', months: 1, label: '1 month', sub: '~8 hrs/week', plan: 'A focused project with one clear deliverable. One mentor review at the end. Good for a first try or a short break.' },
-            { id: '2m', months: 2, label: '2 months', sub: '~8 hrs/week', plan: 'A small end-to-end project in 2 milestones, each reviewed by a mentor.' },
-            { id: '3m', months: 3, label: '3 months', sub: '~10 hrs/week', plan: 'A complete industry project in 3 milestones with reviews, finished with a short case study for your resume. Fits a summer break.' },
-            { id: '4m', months: 4, label: '4 months', sub: '~10 hrs/week', plan: 'A larger project in 4 milestones: planning, building, testing and presenting, each reviewed.' },
-            { id: '5m', months: 5, label: '5 months', sub: '~10 hrs/week', plan: 'An extended project in 5 milestones with reviews, including working from feedback the way teams do.' },
-            { id: '6m', months: 6, label: '6 months', sub: '~12 hrs/week', plan: 'A capstone-scale project covering the full cycle, with monthly reviews and a final presentation. The closest thing to a full internship.' }
+            { id: '1m', months: 1, label: '1 month', sub: '~8 hrs/week', plan: 'A focused project with one clear deliverable. One mentor review at the end. Good for a first try or a short break.' }
         ];
-        let p4Dur = '';
+        let p4Dur = '1m';
         function internshipDur(id) {
             p4Dur = id;
             document.querySelectorAll('#p4-wait-dur button').forEach(function (b) { const on = b.getAttribute('data-dur') === id; b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.className = 'text-left border rounded-xl px-3 py-2 min-h-[44px] ' + (on ? 'border-brand-500 bg-brand-50 ring-1 ring-brand-300' : 'border-slate-300 bg-white hover:border-brand-400'); });
@@ -10184,7 +10179,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         function internshipDurPlan() {
             const box = document.getElementById('p4-dur-plan'); if (!box) return;
             const d = P4_DURATIONS.filter(function (x) { return x.id === p4Dur; })[0];
-            if (!d) { box.textContent = 'Pick a duration to see what your project will look like.'; return; }
+            if (!d) { box.textContent = 'Your project will look like this.'; return; }
             const tid = (document.getElementById('p4-wait-track') || {}).value;
             const t = P4_TRACKS.filter(function (x) { return x.id === tid; })[0];
             const e = escapeAuth;
@@ -10251,7 +10246,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { say('Please enter a valid email address.', false); document.getElementById('p4-wait-email').focus(); return false; }
             if (!track) { say('Please choose a track.', false); return false; }
             if (!stage) { say('Please tell us where you are now.', false); return false; }
-            if (!p4Dur) { say('Please choose a duration (1 to 6 months).', false); return false; }
+            if (!p4Dur) { say('Please choose a duration.', false); return false; }
             const s = authGetSession();
             btn.disabled = true; say('Saving…', true);
             sb.from('learnership_waitlist').insert({
@@ -13314,7 +13309,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 const pp = ['Internshala', 'LinkedIn Jobs', 'Unstop', 'PM Internship Scheme', 'AICTE Internship Portal', 'Forage', 'Google Summer of Code', 'Wellfound (AngelList Talent)'];
                 const items = []; P4_PORTALS.forEach(function (g) { g.items.forEach(function (it) { if (pp.indexOf(it[0]) > -1) items.push(it); }); });
                 h += '<div class="pp-card"><b>Where to look</b><ul>' + items.map(function (it) { return '<li>' + planLink(it[1], it[0]) + ' — ' + e(it[2]) + '</li>'; }).join('') + '</ul><p class="pp-sm pp-mut">Never pay anyone for an internship offer. Check each portal for the current eligibility.</p></div>';
-                h += '<div class="pp-card"><b>Plan4it.co Learnership Program</b><p>Choose a track and a duration from 1 to 6 months, do one industry-standard project sized to that time, get it reviewed by a mentor, and receive a Plan4it.co certificate. The finished project goes on your resume. This is a paid programme; join the waitlist in the Internships section of the app.</p></div>';
+                h += '<div class="pp-card"><b>Plan4it.co Learnership Program</b><p>Choose a track, do one industry-standard 1-month project, get it reviewed by a mentor, and receive a Plan4it.co certificate. The finished project goes on your resume. This is a paid programme; join the waitlist in the Internships section of the app.</p></div>';
             }
 
             // ----- action plan
@@ -18473,7 +18468,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             { group: 'recover', view: 'backupPlan', block: 'wrong-course-block', label: 'Wrong course?', title: 'Wrong course or forced choice?', desc: 'Step-by-step ways to change stream, branch or field, and how to talk to family if the choice was not yours.', kw: 'wrong course stream forced pressure parents switch change branch regret unhappy drop unhappy' },
             { group: 'recover', view: 'backupPlan', block: 'setback-guidance-block', label: 'Setback?', title: 'Facing a setback?', desc: 'Backlog, dropped year, missed exam, wrong course, or no campus placement: get practical next steps.', kw: 'backlog fail failed dropped drop year missed placement wrong course placed campus' },
             { group: 'recover', view: 'backupPlan', block: 'pathways-block', label: 'Alternate pathways', title: 'Alternate pathways', desc: 'Lateral entry, open universities, Academic Bank of Credits, bridge courses, and apprenticeships.', kw: 'lateral entry open university distance bridge course apprenticeship credits naps' },
-            { group: 'intern', view: 'internships', block: 'p4-intern-block', label: 'Plan4it.co Learnership · Coming soon!', title: 'Plan4it.co Learnership Program', desc: 'Pick 1 to 6 months, do a reviewed industry-standard project, and get a certificate for your resume. Paid programme; join the waitlist.', kw: 'learnership internship intern project certificate experience first year second year paid waitlist resume' },
+            { group: 'intern', view: 'internships', block: 'p4-intern-block', label: 'Plan4it.co Learnership · Coming soon!', title: 'Plan4it.co Learnership Program', desc: 'Do a 1-month reviewed industry-standard project, and get a certificate for your resume. Paid programme; join the waitlist.', kw: 'learnership internship intern project certificate experience first year second year paid waitlist resume' },
             { group: 'intern', view: 'internships', block: 'intern-ladder-block', label: 'First internship', title: 'How to get your first internship', desc: 'A year-by-year route from no experience to a formal internship, with resume and outreach tips.', kw: 'internship no experience first year resume outreach fresher' },
             { group: 'intern', view: 'internships', block: 'intern-portals-block', label: 'Internship portals', title: 'Internship portals', desc: 'Internshala, LinkedIn, Unstop, AICTE, PM Internship, Forage and more, with links.', kw: 'internship portal internshala linkedin unstop aicte pm internship naps nats forage gsoc' },
             { group: 'money', view: 'govAndAbroad', block: 'scholarship-matcher-block', label: 'Scholarships', title: 'Scholarship matcher', desc: 'Match scholarships to your category, family income, and stream.', kw: 'scholarship funding income category fees waiver' },
