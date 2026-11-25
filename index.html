@@ -186,6 +186,8 @@
         body.hdr-l5 #site-header [data-wordmark] { display: none !important; }
         #hdr-left, #hdr-right { flex-shrink: 0; }
         /* Quiz action bar: inline on laptops, pinned to the bottom of the screen on phones */
+        .qz-gate { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 4.5rem); z-index: 20; margin-bottom: 1rem; padding: 1rem 1.1rem; border-radius: 1rem; box-shadow: 0 8px 24px rgba(15, 23, 42, .18); }
+        #wizard-results.qz-locked { filter: blur(9px); opacity: .85; pointer-events: none; user-select: none; -webkit-user-select: none; max-height: 70vh; overflow: hidden; }
         .qz-actions { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin-top: 1.25rem; }
         .qz-actions .qz-go { flex: 0 0 auto; min-width: 12rem; }
         @media (max-width: 767px) {
@@ -1015,7 +1017,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
                     <div class="bg-white border border-slate-200 rounded-2xl p-5"><h3 class="font-bold text-slate-900 text-sm">How matches are made</h3><p class="text-sm text-slate-600 mt-2">Your quiz answers are scored against each career's interests, work style, demand and entry requirements. It is guidance for a conversation, not a verdict.</p></div>
                     <div class="bg-white border border-slate-200 rounded-2xl p-5"><h3 class="font-bold text-slate-900 text-sm">Where information comes from</h3><p class="text-sm text-slate-600 mt-2">Exam and college details come from official notices and institution websites, and the college directory uses Ministry of Education listings. Fees, dates and cutoffs change, so always confirm them on the official site.</p></div>
-                    <div class="bg-white border border-slate-200 rounded-2xl p-5"><h3 class="font-bold text-slate-900 text-sm">Your data</h3><p class="text-sm text-slate-600 mt-2">You can browse without an account. Quiz answers and saved items are stored in your free account, and report copies are deleted after 3 days. Read the <button type="button" onclick="switchView('privacy')" class="underline text-brand-700 font-semibold">privacy policy</button>.</p></div>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-5"><h3 class="font-bold text-slate-900 text-sm">Your data</h3><p class="text-sm text-slate-600 mt-2">You can browse and take the quiz without an account. To see your quiz results and to save items, you need a free account, and your quiz answers and saved items are stored in it, and report copies are deleted after 3 days. Read the <button type="button" onclick="switchView('privacy')" class="underline text-brand-700 font-semibold">privacy policy</button>.</p></div>
                     <div class="bg-white border border-slate-200 rounded-2xl p-5"><h3 class="font-bold text-slate-900 text-sm">What we do not claim</h3><p class="text-sm text-slate-600 mt-2">No guaranteed jobs, admissions or salaries. Pay figures are estimates. See <button type="button" onclick="switchView('refund')" class="underline text-brand-700 font-semibold">refunds and payments</button> for how paid reports work.</p></div>
                 </div>
             </div>
@@ -1100,6 +1102,16 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                             <button id="wiz-sit-go" type="button" onclick="wizardSitDone()" class="flex-grow bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3.5 rounded-xl transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed" disabled>See results →</button>
                             <button id="wiz-sit-skip" type="button" onclick="wizardSitSkip()" class="sm:w-auto bg-white border border-slate-300 text-slate-700 font-semibold py-3.5 px-6 rounded-xl transition hover:bg-slate-50">Skip this step</button>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Sign-in gate shown above blurred results when not signed in -->
+                <div id="qz-gate" class="hidden qz-gate bg-white border border-brand-300" role="region" aria-label="Sign in to see your results">
+                    <p class="text-base font-extrabold text-slate-900">Your results are ready</p>
+                    <p class="text-sm text-slate-700 mt-1">Create a free account or log in to see your matches. Your answers are kept, so you will not have to retake the quiz.</p>
+                    <div class="mt-3 flex flex-col sm:flex-row gap-2">
+                        <button type="button" onclick="quizGateOpen('signup')" class="min-h-[48px] px-5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold">Create free account</button>
+                        <button type="button" onclick="quizGateOpen('login')" class="min-h-[48px] px-5 rounded-xl border border-slate-300 bg-white text-slate-800 font-semibold hover:bg-slate-50">Log in</button>
                     </div>
                 </div>
 
@@ -2366,7 +2378,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
 
                 <div>
                     <h3 class="font-bold text-slate-900 mb-1">What needs an account</h3>
-                    <p>Taking the career quiz, saving a career/college/exam, using the checklist, filling in your profile, and the checklist all require a free account. We do this so that what you've done — your quiz matches, what you've saved, your checklist progress — is tied to your account rather than one device's browser storage, and is there for you the next time you come back, on any device. These are stored in our database (via Supabase), protected so that only you can read or change them, even on our side. Signing up with email collects your name, email, and a password (we never see your password itself — it's handled directly by our authentication provider, Supabase, which stores it hashed, not as plain text). Signing up with Google instead shares your name and email from your Google account with us, nothing else.</p>
+                    <p>You can take the career quiz without an account, but seeing your results, saving a career/college/exam, using the checklist and filling in your profile require a free account. Until you sign in, your quiz answers are kept only in your own browser. We do this so that what you've done — your quiz matches, what you've saved, your checklist progress — is tied to your account rather than one device's browser storage, and is there for you the next time you come back, on any device. These are stored in our database (via Supabase), protected so that only you can read or change them, even on our side. Signing up with email collects your name, email, and a password (we never see your password itself — it's handled directly by our authentication provider, Supabase, which stores it hashed, not as plain text). Signing up with Google instead shares your name and email from your Google account with us, nothing else.</p>
                 </div>
 
                 <div>
@@ -8477,7 +8489,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             { q: "Is the quiz needed to get a report?", a: "No. Save careers, exams and colleges to your dashboard and build a report from those. The quiz-based report is more personal, because it is built from your answers, so take the quiz if you want matches and fit scores." },
             { q: "Is the guidance based on real data?", a: "The careers, exams, colleges and scholarships come from compiled datasets and official sources, not live feeds. Pay figures are estimates. Fees, cut-offs, exam dates and eligibility change every year, so always confirm on the official website before you apply or pay." },
             { q: "Will Plan4it.co tell students what to choose?", a: "No. It shows how well each option fits your answers, the trade-offs, and what it takes to get there, so you decide with facts. For a big decision, also talk to your family, a teacher or a counsellor." },
-            { q: "Where is saved data stored?", a: "Saving careers, colleges and exams, the quiz, your checklist and your profile need a free account. Once you are signed in, they are saved to your account and follow you to any device. Our Privacy Policy explains what we collect and why." },
+            { q: "Where is saved data stored?", a: "The quiz can be taken without an account, but you need a free account to see its results. Saving careers, colleges and exams, your checklist and your profile also need one. Once you are signed in, they are saved to your account and follow you to any device. Our Privacy Policy explains what we collect and why." },
             { q: "What if interests are still unclear?", a: "That is common, and the quiz is built for it. You can pick \"still exploring\" and the results lean on how you like to work and what matters to you. You can also browse the Career Explorer by category and save what catches your eye." }
         ];
 
@@ -10310,11 +10322,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         function switchView(viewId, skipHash) {
             // Any navigation closes the phone menu and header dropdowns, so they never sit over the page that was just opened.
             try { closeMobileMenu(); if (typeof closeNavDD === 'function') closeNavDD(); } catch (er) {}
-            // The quiz is a "use it" tool, not reference material -- gate it here, in the
-            // one place every entry point (nav links, home/explorer CTAs, recovery-guide
-            // links, browser back/forward, and a direct #confusedMode link) already funnels
-            // through, rather than patching each call site individually.
-            if (viewId === 'confusedMode' && !requireAuth('Sign in to take the career quiz — your answers and matches are saved to your account, so you can pick up where you left off on any device.', function () { switchView('confusedMode'); })) return;
+            // The quiz can be taken without an account. Results are shown blurred until the student signs in or signs up (see quizGateRefresh()).
             const prevEl = document.querySelector('.view-section:not(.hidden)');
             const prevView = prevEl ? prevEl.id.slice(5) : null;
             if (viewId === 'explorer' && prevView !== 'careerDetail' && typeof STREAM_STATE !== 'undefined' && STREAM_STATE.key) { STREAM_STATE.key = null; document.getElementById('view-explorer').classList.remove('stream-open'); }
@@ -10812,7 +10820,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         function wizardHas(k) { const v = wizardAnswers[k]; return Array.isArray(v) ? v.length > 0 : !!v; }
         function showWizardStep(n) {
             document.querySelectorAll('.wizard-step').forEach(function (el) { el.classList.add('hidden'); });
-            document.getElementById('wizard-results').classList.add('hidden');
+            document.getElementById('wizard-results').classList.add('hidden'); quizGateRefresh();
             if (n !== WIZARD_PRACTICAL) n = Math.max(1, Math.min(n, quizLen()));
             wizCur = n;
             if (n === WIZARD_PRACTICAL) { markSit(); document.getElementById('wizard-q9').classList.remove('hidden'); }
@@ -10830,12 +10838,36 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (!wizardAnswers.situation) { showWizardStep(WIZARD_PRACTICAL); return; }
             showWizardResults();
         }
+        // Not signed in: results are blurred and locked behind the sign-in card. Signed in: shown normally.
+        // Called when results are shown, and again after every sign-in / sign-out.
+        let quizWasLocked = false;
+        function quizGateRefresh() {
+            const res = document.getElementById('wizard-results'), gate = document.getElementById('qz-gate');
+            if (!res || !gate) return;
+            const showing = !res.classList.contains('hidden');
+            const lock = showing && !authGetSession();
+            res.classList.toggle('qz-locked', lock);
+            if (lock) { res.setAttribute('inert', ''); res.setAttribute('aria-hidden', 'true'); } else { res.removeAttribute('inert'); res.removeAttribute('aria-hidden'); }
+            gate.classList.toggle('hidden', !lock);
+            if (lock && !quizWasLocked) trackEvent('quiz_gate_shown');
+            if (!lock && quizWasLocked && showing && authGetSession()) {
+                // They just signed in with a quiz finished in this browser: save it to the account and drop the local copy.
+                try { saveWizardAnswers(wizardAnswers); localStorage.removeItem(STORAGE_KEYS.wizardAnswers); } catch (er) {}
+                trackEvent('quiz_gate_unlocked');
+            }
+            quizWasLocked = lock;
+        }
+        function quizGateOpen(tab) {
+            openAuth(tab);
+            const sub = document.getElementById('auth-sub');
+            if (sub) { sub.textContent = 'Your quiz results are ready. ' + (tab === 'login' ? 'Log in' : 'Create a free account') + ' to see them. Your answers are saved.'; sub.classList.remove('hidden'); }
+        }
         function showWizardResults() {
             try { renderReportPromos(); } catch (er) {}
             document.querySelectorAll('.wizard-step').forEach(function (el) { el.classList.add('hidden'); });
             document.getElementById('wizard-results').classList.remove('hidden');
             wizCur = WIZARD_DONE; updateWizardProgress(WIZARD_DONE);
-            renderWizardResults(); refreshPageNav();
+            renderWizardResults(); refreshPageNav(); quizGateRefresh();
             window.scrollTo({ top: 0, behavior: 'smooth' });
             trackEvent('quiz_completed');
         }
@@ -11337,7 +11369,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
 
         // Persist completed quiz answers so other pages (Career Explorer) can use them, and
         // so they follow the student to another device. The quiz now requires sign-in to
-        // even start (see requireAuth() in switchView), so this always has a real account
+        // even start (see requireAuth() in switchView), so this normally has a real account
         // to save to in practice -- it still falls back to local storage defensively, the
         // same way every other saved-data getter/setter in this file does.
         function saveWizardAnswers(answers) {
@@ -12809,6 +12841,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 if (res.error) { console.error('Could not load your saved data:', res.error.message); cloudData = cloudDataDefaults(); return; }
                 if (res.data) {
                     cloudData = Object.assign(cloudDataDefaults(), res.data.data || {});
+                    if (!cloudData.wizardAnswers) { try { const lw = JSON.parse(localStorage.getItem(STORAGE_KEYS.wizardAnswers)); if (lw && lw.interest && lw.workStyle && lw.constraint) { cloudData.wizardAnswers = lw; scheduleCloudSave(); } } catch (er) {} }
                 } else {
                     cloudData = Object.assign(cloudDataDefaults(), collectLocalDataForMigration());
                     scheduleCloudSave();
@@ -12844,6 +12877,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 if (session && !wasSignedIn) {
                     loadCloudData(session).then(function () {
                         try { renderDashboard(); } catch (e) {}
+                        try { quizGateRefresh(); } catch (e) {}
                         // Resume whatever the student was actually trying to do when they
                         // got stopped by requireAuth() -- take the quiz, save a career,
                         // generate a backup plan, etc. -- now that they're signed in and
@@ -12853,6 +12887,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 } else if (!session && wasSignedIn) {
                     cloudData = null;
                     try { renderDashboard(); } catch (e) {}
+                    try { quizGateRefresh(); } catch (e) {}
                 }
             });
         }
