@@ -11813,7 +11813,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const c = career ? careersData.find(function (x) { return x.id === id; }) : null;
             const t = document.getElementById('premium-modal-title'); if (t) t.textContent = career && c ? (me ? 'Your personal report: ' : 'Career guide: ') + c.title : 'Unlock your full report';
             const d = document.getElementById('premium-modal-desc'); if (d) d.innerHTML = career ? 'One-time payment of <b class="text-slate-900">₹' + PREMIUM_CFG.careerPrice + '</b> for this career report, as a PDF you keep. It is separate from the full report.' + (me ? '<span class="block mt-2 text-xs text-slate-600">It is built from your quiz answers as they are now. If you change them, a new personal report needs a new payment.</span>' : '') : 'One-time payment of <b class="text-slate-900">₹<span class="premium-price">' + PREMIUM_CFG.price + '</span></b> for the report built from your ' + (REPORT_SRC === 'saved' ? 'saved items' : 'quiz answers') + ' as they are now.' + '<span class="block mt-2 text-xs text-slate-600">If you change your ' + (REPORT_SRC === 'saved' ? 'saved careers, exams or colleges' : 'quiz answers') + ' later, a new report needs a new payment, so finish your quiz or saved items first. Save the PDF as soon as it opens.</span>' + (premiumFullStale(REPORT_SRC) ? '<span class="block mt-2 text-xs font-semibold text-amber-700">Your ' + (REPORT_SRC === 'saved' ? 'saved items' : 'quiz answers') + ' changed since your last purchase, so this is a new report.</span>' : '');
-            const l = document.getElementById('premium-modal-list'); if (l) { l.className = 'mt-3'; l.innerHTML = '<p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">' + (career ? 'What is inside (5 pages)' : 'What is inside (18 pages)') + '</p>' + rptInsideHTML(career ? RPT_GUIDE5.concat(me ? ['Your fit and what could go wrong for you, from your quiz'] : []) : RPT_FULL18, career ? '' : 'sm:columns-2 gap-x-4 [&>li]:break-inside-avoid'); }
+            const l = document.getElementById('premium-modal-list'); if (l) { l.className = 'mt-3'; l.innerHTML = '<p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">' + (career ? 'What is inside (5 pages)' : 'What is inside (18 pages)') + '</p>' + rptInsideHTML(career ? RPT_GUIDE5.concat(me ? ['Your fit and what could go wrong for you, from your quiz'] : []) : (rptIsC10() ? RPT_FULL18_C10 : RPT_FULL18), career ? '' : 'sm:columns-2 gap-x-4 [&>li]:break-inside-avoid'); }
             const sn = document.getElementById('premium-snapshot-btn'); if (sn) { const ok = career || (REPORT_SRC === 'saved' ? getSavedCareers().length > 0 : !!getStoredWizardAnswers()); sn.classList.toggle('hidden', !ok); sn.setAttribute('onclick', career ? "careerSnapshotRun('" + id + "','" + (me ? 'me' : 'general') + "')" : 'intelSnapshotRun(REPORT_SRC)'); }
             const sn2 = document.getElementById('premium-snapshot-btn'); if (sn2) sn2.textContent = career ? 'Get a free 1-page snapshot instead' : 'Get the free 2-page report instead';
             if (career && l) {
@@ -12264,7 +12264,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         // 900+ more Bengaluru PU colleges from the Dept. of PU Education list: loaded on demand, then added to AFTER10_COLLEGES
         // Karnataka PU colleges from the department's list (district, management type, year started). It has no fees or subject
         // combinations, so those are not guessed: the card says to ask the college. Loaded on demand, then added to AFTER10_COLLEGES.
-        let PU_EXTRA = null;
+        let PU_EXTRA = null, PU_READY = false;
         const PU_MGMT = {
             Government: ['Government', 'Government college, so fees are low.'],
             Corporation: ['Government', 'Run by the city corporation (BBMP), so fees are low.'],
@@ -12300,6 +12300,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         if (hand.has(rec.area + '|' + puKey(rec.name))) return;
                         AFTER10_COLLEGES.push(rec);
                     });
+                    PU_READY = true;
                     return true;
                 })
                 .catch(function (e) { console.warn('PU list not loaded:', e); return false; });
@@ -14010,6 +14011,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         /* ---- the 18-page report ---- */
         function intelBuild18() {
             const A = getStoredWizardAnswers(); if (!A) return null;
+            if (!A.__saved && isClass10(A)) return intelBuild18C10(A);
             const X = ipCtx(A, null, false), e = X.e, rec = X.rec, top = X.top, pct = X.pct, pool = X.pool;
             if (!rec) return null;
             X.f18 = true;
@@ -14402,7 +14404,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         ];
         function rptGroupsHTML() {
             const e = escapeAuth;
-            return '<ul class="mt-2 space-y-3">' + RPT_FULL18_GROUPS.map(function (g) { return '<li class="text-sm"><p class="font-bold text-slate-900">' + e(g[1]) + ' <span class="font-normal text-xs text-slate-500">· ' + e(g[0]) + '</span></p><p class="text-xs text-slate-600 mt-0.5">' + e(g[2]) + '.</p><p class="text-xs text-brand-800 mt-0.5"><span class="font-semibold">How it helps:</span> ' + e(g[3]) + '</p></li>'; }).join('') + '</ul>';
+            return '<ul class="mt-2 space-y-3">' + (rptIsC10() ? RPT_FULL18_GROUPS_C10 : RPT_FULL18_GROUPS).map(function (g) { return '<li class="text-sm"><p class="font-bold text-slate-900">' + e(g[1]) + ' <span class="font-normal text-xs text-slate-500">· ' + e(g[0]) + '</span></p><p class="text-xs text-slate-600 mt-0.5">' + e(g[2]) + '.</p><p class="text-xs text-brand-800 mt-0.5"><span class="font-semibold">How it helps:</span> ' + e(g[3]) + '</p></li>'; }).join('') + '</ul>';
         }
         function rptInsideHTML(list, cls) { return '<ol class="' + (cls || '') + ' text-xs text-slate-700 space-y-0.5">' + list.map(function (t, i) { return '<li class="flex gap-2"><span class="shrink-0 w-5 text-right font-bold text-brand-700">' + (i + 1) + '</span><span>' + escapeAuth(t) + '</span></li>'; }).join('') + '</ol>'; }
         function rptLockedBox(title, items, price, how) {
@@ -14424,6 +14426,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         }
         function intelSnapshot() {
             const A = getStoredWizardAnswers(); if (!A) return null;
+            if (!A.__saved && isClass10(A)) return intelSnapshotC10(A);
             const X = ipCtx(A, null, false), e = X.e, rec = X.rec, top = X.top, pct = X.pct, pool = X.pool;
             if (!rec) return null;
             const vis = CAT_VIS[rec.category] || ['<i class=ic-star></i>', '#0c4a6e', '#0284c7'];
@@ -14455,6 +14458,408 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const P = [['Your best career match and why', (A.__saved ? 'What your saved items say about you, and why ' : 'What the quiz says about you, and why ') + rec.title + ' came first.', p1], ['What it takes, and where to start', 'Pay, route and skills for ' + rec.title + ', with a first week you can begin on.', p2]];
             return P.map(function (p, n) { return ipPage(n + 1, P.length, p[0], p[1], p[2], kind, right); }).join('');
         }
+
+        /* ============================================================
+           CLASS 10 REPORTS (intelBuild18C10, intelSnapshotC10)
+           A Class 9-10 student cannot work yet. Their real question is "which stream, which subjects, which
+           college, and what if it goes wrong?", so these reports answer that first and put careers at the end.
+           Everything is rule-based from the quiz answers and Plan4it.co's own data; nothing is invented.
+           Fees and cut-offs are never stated as numbers: they change every year, so the pages say what to ask.
+           ============================================================ */
+        const C10_FAMILY = { pcm: 'sci', pcb: 'sci', pcmb: 'sci', comm: 'com', com: 'com', arts: 'arts', voc: 'voc' };
+        const C10_SHORT = { pcm: 'Science with Maths', pcb: 'Science with Biology', pcmb: 'Science with Maths and Biology', comm: 'Commerce with Maths', com: 'Commerce without Maths', arts: 'Arts / Humanities', voc: 'Diploma (polytechnic)' };
+        const C10_ROUTE = {
+            pcm: { load: 'Heavy: Maths and Physics every day', later: 'JEE Main, your state engineering entrance (for example KCET or MHT CET), NDA, NATA for architecture, CUET', degrees: 'B.E./B.Tech, B.Arch, B.Sc (Physics, Maths, Computer Science, Statistics), BCA, data science, NDA, and B.Com or BBA too', closes: 'MBBS, BDS and other NEET courses, because they need Biology', suits: 'You like solving problems step by step and do not mind daily Maths practice.' },
+            pcb: { load: 'Heavy: a lot to learn and remember', later: 'NEET-UG, state entrances for agriculture, pharmacy and allied health, CUET', degrees: 'MBBS, BDS, AYUSH courses, nursing, pharmacy, physiotherapy, biotechnology, agriculture, allied health, and B.Com or BA too', closes: 'Engineering and most degrees that ask for Maths in Class 12', suits: 'You enjoy how living things work and can learn a lot of detail steadily.' },
+            pcmb: { load: 'Heaviest: four science subjects', later: 'JEE, NEET-UG, state entrances, CUET', degrees: 'Everything PCM and PCB open: engineering, medicine, pharmacy, biotech, data, architecture', closes: 'Almost nothing. The cost is two very full years', suits: 'You like both Maths and Biology and are not ready to close either door.' },
+            comm: { load: 'Medium: steady practice in Accounts and Maths', later: 'CA Foundation, CUET, IPMAT for integrated management, CLAT for law', degrees: 'B.Com, BBA, BMS, economics (honours often asks for Maths), BCA at many colleges, 5-year law, CA, CS, CMA', closes: 'Engineering, medicine and pure science degrees', suits: 'You like numbers, money and how businesses work.' },
+            com: { load: 'Medium: Accounts practice and a lot of theory', later: 'CA Foundation, CUET, CLAT, NCHMCT JEE for hotel management', degrees: 'B.Com, BBA, BMS, 5-year law, CA, CS, hotel management, design, media', closes: 'Engineering, medicine, and degrees that ask for Maths, such as economics honours at many universities', suits: 'You like business and people, and want to leave Maths behind.' },
+            arts: { load: 'Medium: lots of reading and writing', later: 'CUET, CLAT and other law entrances, NID and NIFT design entrances, NCHMCT JEE', degrees: 'BA (Psychology, History, Political Science, Economics, English and more), 5-year law, journalism, design, social work, teaching later, civil services preparation', closes: 'Engineering, medicine and science degrees', suits: 'You like people, ideas, writing, debate or creative work.' },
+            voc: { load: 'Practical: workshops and labs', later: 'Your state polytechnic entrance or merit list now, and a lateral-entry exam after the diploma (for example DCET in Karnataka)', degrees: 'A 3-year diploma, then a job, or the second year of B.E./B.Tech through lateral entry', closes: 'Nothing for good, but NEET courses need Class 12 with Biology', suits: 'You learn best by making and fixing things and want to start earning sooner.' }
+        };
+        const C10_COMBOS = {
+            ka: { sci: [['PCMB', 'Physics, Chemistry, Maths, Biology', 'Keeps engineering and medicine both open. Almost every PU college offers it.'], ['PCMC', 'Physics, Chemistry, Maths, Computer Science', 'For computer science, IT and engineering. No Biology, so NEET is closed.'], ['PCME', 'Physics, Chemistry, Maths, Electronics', 'For electronics and core engineering. Fewer colleges offer it, so check first.'], ['PCMS', 'Physics, Chemistry, Maths, Statistics', 'For maths, data and economics-type degrees. Offered by fewer colleges.']],
+                  com: [['Commerce with Basic Maths', 'Basic Maths, Economics, Business Studies, Accountancy (names such as BEBA or MEBA vary by college)', 'Keeps economics, finance and courses that ask for Maths open.'], ['SEBA', 'Statistics, Economics, Business Studies, Accountancy', 'Commerce with numbers and data, without full Maths.'], ['EBAC', 'Economics, Business Studies, Accountancy, Computer Science', 'Commerce with computers, without Maths.']],
+                  arts: [['HEPS', 'History, Economics, Political Science, Sociology', 'The classic start for law, civil services and social sciences.'], ['HEPP', 'History, Economics, Political Science, Psychology', 'Adds Psychology: useful for psychology, counselling and HR degrees.']] },
+            ts: { sci: [['MPC', 'Maths, Physics, Chemistry', 'Engineering, technology and architecture, through JEE and the state EAPCET.'], ['BiPC', 'Biology (Botany and Zoology), Physics, Chemistry', 'Medicine through NEET, pharmacy, agriculture and allied health.']],
+                  com: [['MEC', 'Maths, Economics, Commerce', 'Commerce with Maths: CA, economics, finance and BBA.'], ['CEC', 'Civics, Economics, Commerce', 'Commerce without Maths: B.Com, CA and management.']],
+                  arts: [['HEC', 'History, Economics, Civics', 'Law, civil services, social sciences and teaching.']] },
+            mh: { sci: [['Science with Maths and Biology', 'Physics, Chemistry, Maths, Biology', 'Keeps JEE, MHT CET (both groups) and NEET open.'], ['Science with Maths and IT or Computer Science', 'Physics, Chemistry, Maths, with IT or Computer Science', 'For computer and engineering courses. No Biology.'], ['Science with Biology', 'Physics, Chemistry, Biology (ask whether Maths is optional)', 'For NEET and health courses.']],
+                  com: [['Commerce with Maths', 'Book-keeping and Accountancy, Economics, Organisation of Commerce, Maths', 'Keeps CA, economics and finance open.'], ['Commerce with Secretarial Practice', 'Book-keeping and Accountancy, Economics, Organisation of Commerce, Secretarial Practice', 'B.Com, CS and business without Maths.']],
+                  arts: [['Arts', 'Choose from History, Geography, Political Science, Psychology, Economics, Sociology and languages', 'Law, civil services, psychology and media.']] },
+            gen: { sci: [['PCM with a fifth subject', 'Physics, Chemistry, Maths, plus Computer Science, Informatics Practices or Physical Education', 'Engineering, technology, data, architecture and NDA.'], ['PCB with a fifth subject', 'Physics, Chemistry, Biology, plus Psychology, Physical Education or another elective', 'NEET, pharmacy, nursing and life sciences.'], ['PCMB', 'Physics, Chemistry, Maths, Biology', 'Keeps engineering and medicine open. The heaviest load.']],
+                   com: [['Commerce with Maths', 'Accountancy, Business Studies, Economics, Mathematics', 'CA, economics, finance, data, and BBA courses that ask for Maths.'], ['Commerce with Applied Maths (CBSE)', 'Accountancy, Business Studies, Economics, Applied Mathematics', 'Lighter Maths with statistics. Check that your target course accepts it.'], ['Commerce without Maths', 'Accountancy, Business Studies, Economics, plus Informatics Practices or another elective', 'B.Com, CA, management and law.']],
+                   arts: [['Humanities', 'Choose 3 or 4 from History, Political Science, Geography, Economics, Psychology, Sociology', 'Law, civil services, psychology, design, media and teaching.']] }
+        };
+        // Diploma admission after Class 10, by state. Exam ids point at examsData; text is only what is well established.
+        const C10_POLY = { 'Uttar Pradesh': 'jeecup', 'Bihar': 'bihar-dcece', 'Andhra Pradesh': 'ap-polycet', 'Telangana': 'ts-polycet', 'West Bengal': 'wb-jexpo', 'Odisha': 'odisha-det', 'Delhi': 'delhi-cet', 'Maharashtra': 'mh-polytechnic', 'Gujarat': 'gujarat-diploma' };
+        const C10_POLY_TXT = { 'Karnataka': 'Diploma seats are filled by the Department of Technical Education (DTE) Karnataka on SSLC marks, through its online admission. After the diploma, DCET lets you join the second year of B.E.', 'Kerala': 'Polytechnic seats are filled on SSLC marks through the state’s online single-window admission.', 'Tamil Nadu': 'Government polytechnic seats are filled on Class 10 marks through the Directorate of Technical Education.' };
+        const C10_TEST = { pcm: ['Try Class 11 Maths', 'Do the exercises from the first chapter of the NCERT Class 11 Maths book (free at ncert.nic.in) for two hours.', 'Did you want to solve one more problem, or did you want to stop?'], pcb: ['Try Class 11 Biology', 'Read the first chapter of the NCERT Class 11 Biology book and draw one diagram from memory.', 'Did the detail interest you, or feel like a list to memorise?'], pcmb: ['Try both Maths and Biology', 'Do the Maths test one day and the Biology test the next.', 'Which one did you think about afterwards?'], comm: ['Try Accountancy', 'Read the first chapter of the NCERT Class 11 Accountancy book and record a week of your own spending as a simple account.', 'Did the numbers and rules feel satisfying?'], com: ['Try Business Studies', 'Read the first chapter of the NCERT Class 11 Business Studies book, then explain to someone how a shop near you makes money.', 'Did you enjoy working out how the business runs?'], arts: ['Try a Humanities subject', 'Read the first chapter of the NCERT Class 11 Psychology or Political Science book and write a one-page opinion.', 'Did you enjoy forming and defending a view?'], voc: ['Try a workshop day', 'Spend a day with someone who repairs, wires or builds things, or visit a polytechnic open day.', 'Did time pass quickly while you worked with your hands?'] };
+        const C10_VALUES = { enjoy: 'Pick the stream whose subjects you would study even without an exam.', earn: 'Good pay comes from being very good at something in demand. That is possible from every stream, though Science and Commerce have the most clearly mapped routes.', help: 'Health care (PCB), teaching, psychology and law are built around helping people.', creative: 'Design, media and architecture take students from many streams. Arts gives you the most time for creative work.', own: 'Business owners come from every stream. Commerce teaches how money and businesses work.', stable: 'Government jobs, teaching, banking and health care are known for stability, and each has a stream that leads there.', freedom: 'Freelance, creative and many technology jobs give flexibility later.', skilled: 'Skill matters more than stream: pick the subjects you can practise for years.' };
+        const C10_ADMIT = { 'Karnataka': 'PU colleges admit students directly on SSLC (Class 10) marks, under the Department of Pre-University Education\u2019s rules. You apply to each college separately after the results.', 'Maharashtra': 'First-year junior college (FYJC, Class 11) admission is online through the state\u2019s centralised admission process: one form, with a list of colleges in order of preference.', 'Kerala': 'Plus One (Class 11) admission is through the state\u2019s single-window online process (HSCAP).', 'Telangana': 'Junior colleges admit students on SSC (Class 10) marks. Apply to each college; government junior colleges follow the board\u2019s schedule.', 'Andhra Pradesh': 'Junior colleges admit students on SSC (Class 10) marks. Apply to each college; government junior colleges follow the board\u2019s schedule.' };
+        function c10WhyNot(X, k) {
+            const A = X.A, r = c10Reasons(X, k); if (r.con[0]) return r.con[0];
+            const has = function (x) { return c10Has(A.interests, x); };
+            if (k === 'pcm') return 'None of the subjects you look forward to needs Maths every day.';
+            if (k === 'pcb') return A.bio === 'neutral' ? 'Biology is only neutral for you, and none of your favourite subjects is biology or health.' : 'Biology or health is not among the subjects you look forward to.';
+            if (k === 'pcmb') return 'It means two full years of four sciences, and your answers lean clearly to one side.';
+            if (k === 'comm' || k === 'com') return has('business') ? 'Your other answers point more strongly elsewhere.' : 'Business and money are not among the subjects you look forward to.';
+            if (k === 'arts') return (has('words') || has('people') || has('civics')) ? 'Your other answers point more strongly elsewhere.' : 'Writing, people, history or politics are not among your favourite subjects.';
+            if (k === 'voc') return 'You did not say you are open to a diploma or ITI.';
+            return 'Fewer of your answers point to it, but it is not closed to you.';
+        }
+        function c10Fam(A) { const s = A && A.state; return s === 'Karnataka' ? 'ka' : (s === 'Telangana' || s === 'Andhra Pradesh') ? 'ts' : s === 'Maharashtra' ? 'mh' : 'gen'; }
+        function c10Has(arr, k) { return [].concat(arr || []).indexOf(k) > -1; }
+        // Rank the seven routes for this student. Starts from the stage layer's stream score and adds the Class 10 answers.
+        function c10Streams(X) {
+            const A = X.A, r = ipStreamChoice(X), sc = Object.assign({}, r.sc);
+            const act = { build: { pcm: 2, voc: 2 }, research: { pcb: 1, pcm: 1, arts: 1 }, create: { arts: 2, voc: 1 }, biz: { comm: 2, com: 2 }, people: { arts: 2, com: 1, pcb: 1 } }[A.activity] || {};
+            Object.keys(act).forEach(function (k) { sc[k] += act[k]; });
+            const ro = [].concat(A.routes || []);
+            if (ro.length && ro.indexOf('unsure') < 0) { if (ro.indexOf('diploma') > -1 || ro.indexOf('iti') > -1) sc.voc += 3; else sc.voc -= 4; } else sc.voc -= 1;
+            if (ro.indexOf('coaching') > -1) { sc.pcm += 1; sc.pcb += 1; }
+            if (A.maths === 'drop' || A.bio === 'no') sc.pcmb -= 4;
+            if (A.maths === 'drop') sc.comm -= 3;
+            const keys = ['pcm', 'pcb', 'pcmb', 'comm', 'com', 'arts', 'voc'];
+            const order = keys.slice().sort(function (a, b) { return sc[b] - sc[a] || keys.indexOf(a) - keys.indexOf(b); });
+            const first = order[0], backup = order.filter(function (k) { return C10_FAMILY[k] !== C10_FAMILY[first]; })[0];
+            const max = sc[first], min = Math.min.apply(null, keys.map(function (k) { return sc[k]; }));
+            const pct = function (k) { return max === min ? 50 : Math.round(12 + (sc[k] - min) / (max - min) * 88); };
+            return { sc: sc, order: order, first: first, backup: backup, pct: pct, closeCall: sc[first] - sc[backup] <= 2 };
+        }
+        // Reasons for and against one route, each from an answer the student gave.
+        function c10Reasons(X, k) {
+            const A = X.A, c = X.rec, pro = [], con = [], L = function (x) { return IP_INT_LAB[x]; };
+            const en = [].concat(A.interests || []).filter(L), st = [].concat(A.strong || []).filter(L);
+            const enHit = en.filter(function (x) { return ((IP_INT_STREAM[x] || {})[k] || 0) >= 2; }), stHit = st.filter(function (x) { return ((IP_INT_STREAM[x] || {})[k] || 0) >= 2; });
+            if (enHit.length) pro.push('You look forward to ' + enHit.map(L).join(' and ') + '.');
+            if (stHit.length) pro.push('You score well in ' + stHit.map(L).join(' and ') + '.');
+            const needM = k === 'pcm' || k === 'pcmb' || k === 'comm', needB = k === 'pcb' || k === 'pcmb';
+            if (needM && A.maths === 'more') pro.push('You want more Maths, and this route is built on it.');
+            if (needM && A.maths === 'drop') con.push('You said you want to drop Maths, and this route is built on it.');
+            if (needB && A.bio === 'enjoy') pro.push('You enjoy Biology and lab work.');
+            if (needB && A.bio === 'no') con.push('You said Biology is not a good fit, and this route depends on it.');
+            if ((k === 'com' || k === 'arts') && A.maths === 'drop') pro.push('It lets you leave Maths behind, as you wanted.');
+            const act = { build: ['pcm', 'voc', 'You chose to build the working model'], research: ['pcb', 'arts', 'You chose to research and explain the topic'], create: ['arts', 'voc', 'You chose to design the poster and display'], biz: ['comm', 'com', 'You chose to manage the team and the money'], people: ['arts', 'com', 'You chose to talk to visitors and judges'] }[A.activity];
+            if (act && (act[0] === k || act[1] === k)) pro.push(act[2] + ', which is the kind of work this route trains.');
+            const cs = IP_CAT_STREAM[c.category] || [];
+            if (cs.indexOf(k) > -1) pro.push('It is a usual start for ' + c.title + ', your top career match.');
+            const ro = [].concat(A.routes || []);
+            if (k === 'voc' && (ro.indexOf('diploma') > -1 || ro.indexOf('iti') > -1)) pro.push('You said you are open to a diploma or ITI.');
+            if (k === 'voc' && ro.length && ro.indexOf('diploma') < 0 && ro.indexOf('iti') < 0 && ro.indexOf('unsure') < 0) con.push('You said you want to stay in school for Class 11 and 12.');
+            if (k === 'pcmb' && !(A.maths === 'drop' || A.bio === 'no')) con.push('It is the heaviest load. Choose it only if you really want both doors open.');
+            if (!en.length && !st.length && !pro.length) pro.push('A broad route that keeps many doors open while you find your favourite subject.');
+            return { pro: pro, con: con };
+        }
+        // The subject combination inside a route, for this student's state.
+        function c10Combo(X, k) {
+            const A = X.A, fam = c10Fam(A), C = C10_COMBOS[fam], f = C10_FAMILY[k];
+            if (f === 'voc') return { pick: ['A diploma branch', 'Computer, Electronics, Electrical, Mechanical, Civil and more', 'Pick the branch that matches what you enjoy making or fixing.'], all: [], fam: fam };
+            const list = C[f], tech = c10Has(A.interests, 'tech') || c10Has(A.strong, 'tech'), people = c10Has(A.interests, 'people'), by = function (n) { return list.find(function (x) { return x[0] === n; }) || list[0]; };
+            let pick = list[0];
+            if (fam === 'ka') {
+                if (k === 'pcm') pick = A.activity === 'build' && !tech ? by('PCME') : (tech || A.maths === 'more') ? by('PCMC') : A.bio !== 'no' ? by('PCMB') : by('PCMC');
+                else if (k === 'pcb' || k === 'pcmb') pick = by('PCMB');
+                else if (k === 'comm') pick = by('Commerce with Basic Maths');
+                else if (k === 'com') pick = tech ? by('EBAC') : by('SEBA');
+                else if (k === 'arts') pick = people ? by('HEPP') : by('HEPS');
+            } else if (fam === 'ts') {
+                pick = k === 'pcm' ? by('MPC') : k === 'pcb' ? by('BiPC') : k === 'pcmb' ? (A.maths === 'more' ? by('MPC') : by('BiPC')) : k === 'comm' ? by('MEC') : k === 'com' ? by('CEC') : by('HEC');
+            } else if (fam === 'mh') {
+                pick = k === 'pcm' ? (tech ? list[1] : list[0]) : k === 'pcb' ? list[2] : k === 'pcmb' ? list[0] : k === 'comm' ? list[0] : k === 'com' ? list[1] : list[0];
+            } else {
+                pick = k === 'pcm' ? list[0] : k === 'pcb' ? list[1] : k === 'pcmb' ? list[2] : k === 'comm' ? list[0] : k === 'com' ? list[2] : list[0];
+            }
+            const note = fam === 'ts' && k === 'pcmb' ? 'Telangana and Andhra Pradesh colleges mostly offer MPC or BiPC rather than all four sciences (a few Andhra Pradesh colleges offer MBiPC). Pick MPC if engineering is ahead of medicine for you, BiPC if medicine is.' : fam === 'ka' && k === 'pcb' && A.maths === 'drop' ? 'A few PU colleges offer PCB without Maths. Most offer PCMB, which keeps Maths in for two more years.' : '';
+            return { pick: pick, all: list, fam: fam, note: note };
+        }
+        // Class 11-12 colleges for this student: their district first, then colleges that list their stream, then government and aided.
+        function c10Colleges(A, k, n) {
+            const st = A.state; if (!st || st === 'any') return [];
+            n = n || 6;
+            const want = { pcm: 'Science', pcb: 'Science', pcmb: 'Science', comm: 'Commerce', com: 'Commerce', arts: 'Arts' }[k];
+            const cheap = !A.budget || (FIT_BUDGET[A.budget] && FIT_BUDGET[A.budget][1] <= 3);
+            const list = AFTER10_COLLEGES.filter(function (c) { return (c.kind === 'pu' || c.kind === 'jc') && c.state === st; });
+            const near = function (c) { return A.district ? (puDistNear(c, A.district) ? 1 : 0) : 1; };
+            const offers = function (c) { return !!want && c.streams.indexOf(want) > -1; };
+            const info = function (c) { return c.conf === 'multi' ? 0 : c.conf === 'listed' ? 1 : 2; };
+            const mg = function (c) { return c.mgmt === 'Government' ? 0 : c.mgmt === 'Aided' || /\baided\b/i.test(c.note || '') ? 1 : 2; };
+            const byName = function (x, y) { return x.name < y.name ? -1 : x.name > y.name ? 1 : 0; };
+            // two lists: colleges that say they run this stream (best described first), and low-fee government or aided colleges
+            const named = list.filter(offers).sort(function (x, y) { return near(y) - near(x) || info(x) - info(y) || y.streams.length - x.streams.length || byName(x, y); });
+            const low = list.filter(function (c) { return mg(c) <= 1 && !(want && c.streams.length && !offers(c)); }).sort(function (x, y) { return near(y) - near(x) || mg(x) - mg(y) || (offers(y) ? 1 : 0) - (offers(x) ? 1 : 0) || y.streams.length - x.streams.length || byName(x, y); });
+            const seen = {}, out = [], take = function (arr) { while (arr.length) { const c = arr.shift(), key = puKey(c.name) + '|' + (c.mgmt || ''); if (!seen[key]) { seen[key] = 1; out.push(c); return; } } };
+            const pattern = cheap ? [low, named, low, named, low, named] : [named, named, low, named, low, named];
+            for (let r = 0; out.length < n && r < 4; r++) pattern.forEach(function (arr) { if (out.length < n) take(arr); });
+            if (out.length < n) list.filter(function (c) { return near(c); }).sort(byName).forEach(function (c) { if (out.length < n) { const key = puKey(c.name) + '|' + (c.mgmt || ''); if (!seen[key]) { seen[key] = 1; out.push(c); } } });
+            return out;
+        }
+        function c10CollegeType(c) {
+            if (c.mgmt === 'Government') return ['Government', 'Low fees'];
+            if (c.mgmt === 'Aided') return ['Aided', 'Usually lower fees'];
+            if (c.mgmt === 'Private') return ['Private', 'Ask for the full fee list'];
+            if (c.mgmt === 'Other') return ['State society or department', 'Ask who can apply'];
+            if (/aided/i.test(c.note || '')) return ['Aided', 'Usually lower fees'];
+            return [c.kind === 'jc' ? 'Junior college' : 'PU college', 'Ask for the full fee list'];
+        }
+        // Scholarships a student can apply for from Class 11, from Plan4it.co's scholarship list.
+        function c10Scholarships(A) {
+            const states = FIT_STATES.filter(function (s) { return s !== A.state; });
+            return SCHOLARSHIPS_DATA.filter(function (s) {
+                if (s.statusNow === 'Discontinued') return false;
+                // NMMS is won in Class 8, and the pre-matric schemes end with Class 10. NTSE has not been held in recent years.
+                if (/^(nmms|pre-matric|national-talent-search)/.test(s.id)) return false;
+                if (!/class\s*(9|11)|class 11/i.test(s.level)) return false;
+                const txt = s.name + ' ' + s.provider;
+                return !states.some(function (x) { return txt.indexOf(x) > -1; });
+            }).slice(0, 7);
+        }
+        function c10Who(s) {
+            const t = (s.categoryTags || []).filter(function (x) { return x !== 'Any'; });
+            const who = t.length ? t.join(', ').replace('Girls', 'girls').replace('Minority', 'minority communities') + ' students' : 'Any student';
+            return who + (s.maxIncomeLakh && s.maxIncomeLakh < 99 ? ', family income up to ₹' + s.maxIncomeLakh + ' lakh a year' : '');
+        }
+        // The months from now until Class 11 starts. Phases are keyed by month (0 = January).
+        function c10Months(X, s) {
+            const A = X.A, now = new Date(), m = now.getMonth(), y = now.getFullYear(), start = m >= 7 ? y : y - 1, rel = function (mm) { return (mm - 7 + 12) % 12; };
+            const S1 = C10_SHORT[s.first], S2 = C10_SHORT[s.backup], wantDip = c10Has(A.routes, 'diploma') || c10Has(A.routes, 'iti') || s.first === 'voc';
+            const P = [
+                [7, 'August to October', 9, ['Finish the syllabus for your half-yearly exams.', 'Read pages 1 to 6 of this report with a parent.', 'Start 20 minutes a day on your weakest subject.']],
+                [10, 'November', 10, ['Make a revision timetable that ends two weeks before your first board paper.', 'Agree with a parent on a first choice (' + S1 + ') and a backup (' + S2 + ').', 'Check your documents for scholarships: an income certificate and, if you have one, a caste certificate can take weeks to get.']],
+                [11, 'December', 11, ['Finish the syllabus. Start one past paper a week in each main subject.', 'Shortlist 4 to 6 colleges from page 8 and note how each one admits students.', 'Do test 1 from page 14 on a weekend.']],
+                [0, 'January', 0, ['Pre-boards or mock exams: list the chapters where you lose the most marks, and fix those first.', 'Look up last year’s cut-off for your stream at each college on your shortlist.', 'No new big decisions this month. Protect your sleep.']],
+                [1, 'February and March', 2, ['Board exams. CBSE’s first exam usually starts in mid-February; most state boards hold theirs in March or April.', 'Only exams this month. The stream decision can wait.', 'After your last paper, take three days off.']],
+                [3, 'April', 3, ['Visit 2 or 3 colleges with a parent and ask the questions on page 9.', 'Do tests 2 and 3 from page 14.', wantDip ? 'Watch for your state’s diploma admission notice (page 11).' : 'Keep your Class 10 marks card, transfer certificate and photos ready.']],
+                [4, 'May', 4, ['Results come out (most boards in April or May). Compare your marks with last year’s cut-offs.', 'CBSE students can take the optional second exam in May to improve up to three subjects.', 'Apply to your shortlist: one dream, two realistic and one safe college.']],
+                [5, 'June', 5, ['Confirm your seat and combination. Ask for the fee receipt, and ask about the rule for changing stream.', 'Buy only the books the college lists.', 'Spend 30 minutes a day on the first chapter of Class 11 ' + (C10_FAMILY[s.first] === 'sci' ? 'Physics or Maths' : C10_FAMILY[s.first] === 'com' ? 'Accountancy' : C10_FAMILY[s.first] === 'arts' ? 'one of your new subjects' : 'workshop basics') + '.']],
+                [6, 'July', 6, ['Class 11 or the diploma begins. In the first six weeks, ask yourself: do I understand most classes, and am I sleeping enough?', 'If the stream clearly feels wrong, talk to the college quickly. Changes are easier early.', 'Scholarship applications for Class 11 usually open from August (page 10).']]
+            ];
+            return P.filter(function (p) { return rel(p[2]) >= rel(m); }).map(function (p) { return [p[1] + ' ' + (p[0] >= 7 ? start : start + 1), p[3]]; });
+        }
+        function c10WeeksToBoards() {
+            const now = new Date(), m = now.getMonth(), y = now.getFullYear(), start = m >= 7 ? y : y - 1, d = new Date(start + 1, 1, 15);
+            const w = Math.round((d - now) / 604800000); return w > 0 && w < 30 ? w : 0;
+        }
+        const C10_WORRY = {
+            wrong: ['Picking the wrong stream', 'It is the most common worry in Class 10, and it is smaller than it feels. Your stream decides which degrees you can apply to after Class 12, not your whole life. Many good courses (CA, law, design, hotel management, civil services, B.Com) take students from any stream. What a stream can close are a few specific doors: engineering needs Maths, and NEET needs Biology. This report tells you which doors your answers point at, and gives you a backup.'],
+            marks: ['Marks may not be enough', 'Marks decide which college you get into, not which stream you are allowed to take: almost every stream has a seat for you somewhere. Use the next weeks well (page 7), apply to a mix of colleges (page 8), and keep a safe option. If a board offers a second exam or a supplementary exam, you can still improve.'],
+            parents: ['You and your parents disagree', 'Disagreement is normal, and it usually comes from different information, not different love. Page 16 is written for your parents: it answers what they will ask about cost, jobs and risk. Agree on facts first, then on a trial: try the subjects on page 14 together before anyone decides.'],
+            cost: ['The cost', 'Two years of Class 11 and 12 can cost very little or a lot, and the difference is mostly the college type and coaching, not the stream. Government and aided colleges keep fees low, integrated coaching is the biggest extra cost, and scholarships exist from Class 11 (page 10).'],
+            friends: ['Friends are going elsewhere', 'Choosing a stream because friends chose it is the most common reason students feel stuck in Class 11. Friendships survive different colleges: you will still meet on weekends and online. Pick the subjects you will study for two years every day, not the bench you will sit on.']
+        };
+        function c10WorryDeep(X, s) {
+            const A = X.A, e = X.e, w = A.worry, S1 = C10_SHORT[s.first];
+            const blocks = {
+                wrong: [['How to know you chose well', ['You can explain, in one sentence, why you chose it, using your own reasons.', 'You did at least one test on page 14 and did not hate it.', 'Your backup (' + C10_SHORT[s.backup] + ') is written down, so a change of mind is not a crisis.']], ['If you still feel unsure', ['Pick the option that keeps more doors open: ' + (C10_FAMILY[s.first] === 'sci' ? 'within Science, PCMB keeps both engineering and medicine' : 'Commerce with Maths keeps more doors open than without'), 'Ask the college about its rule for changing stream or combination early in Class 11. Many allow it in the first few weeks if seats are free.', 'Remember that CA, law, design, civil services and hotel management take students from any stream.']]],
+                marks: [['The next few weeks', ['Do past papers under exam timing: they show you what the board asks, not only what the book says.', 'Fix the chapters where you lose the most marks first. Two weak chapters fixed are worth more than one strong chapter polished.', 'Sleep 7 to 8 hours. Memory is built while you sleep.']], ['If your marks come out lower', ['Apply to government and aided colleges as well as private ones; they publish merit lists and admit in rounds.', 'CBSE students can take the optional second exam in May to improve up to three subjects. Many state boards hold a second or supplementary exam too.', 'A lower mark rarely closes a stream. It changes which college, not whether you can study ' + S1 + '.']]],
+                parents: [['Before you talk', ['Read page 16 first, then give it to your parents a day before you talk.', 'Write down your top reason and your backup in one line each.', 'Ask them what worries them most, and listen to the answer fully.']], ['During the talk', ['Agree on facts first: what each stream opens and closes (page 6).', 'Offer a trial: do tests on page 14 together this holiday.', 'If you still disagree, ask a school counsellor or a teacher you both trust to join one conversation.']]],
+                cost: [['Keeping two years affordable', ['Look at government and aided colleges first (page 8).', 'Do not pay for integrated coaching in Class 11 unless you are sure about JEE or NEET. You can decide after the first term.', 'NCERT textbooks are free to read and download at ncert.nic.in, and DIKSHA has free lessons.']], ['Money you can get', ['Scholarships for Class 11 students are on page 10, with who can apply.', 'Keep a bank account in your name, your Aadhaar and your family’s income certificate ready: most schemes need them.', 'Ask each college whether it has its own merit or need-based fee concession.']]],
+                friends: [['Deciding for yourself', ['Write your reasons for ' + S1 + ' before you ask friends what they chose.', 'Ask one senior in each stream what a normal week is like (page 14).', 'Notice whether you feel relief or worry when you imagine two years of those subjects.']], ['Keeping your friends', ['Plan one fixed meet-up a week with your old group.', 'New classmates become friends fast in Class 11: almost everyone is new.', 'If a friend is going to the same college but another stream, that is often the best of both.']]]
+            }[w] || [['Common worries, answered', ['Picking the wrong stream: a stream decides which degrees you can apply for, and many courses take any stream.', 'Marks: marks decide which college, not whether you can take a stream.', 'Cost: college type and coaching decide most of the cost, and scholarships start from Class 11.']], ['What to do with a worry', ['Write it in one line.', 'Find the page in this report that answers it.', 'Talk it over with one adult you trust this week.']]];
+            const W = C10_WORRY[w];
+            return (W ? ipCard('What you told us: ' + e(W[0].toLowerCase()), '<p>' + e(W[1]) + '</p>', 'pp-note') : '') + '<div class="pp-cols">' + blocks.map(function (b) { return '<div>' + ipCard(e(b[0]), ipUl(b[1])) + '</div>'; }).join('') + '</div>';
+        }
+        // Shared context for both Class 10 reports.
+        function c10Ctx(A) {
+            const X = ipCtx(A, null, false); if (!X.rec) return null;
+            X.s = c10Streams(X); X.r1 = c10Reasons(X, X.s.first); X.r2 = c10Reasons(X, X.s.backup); X.combo = c10Combo(X, X.s.first);
+            X.colK = X.s.first === 'voc' ? X.s.backup : X.s.first; X.cols = c10Colleges(A, X.colK, 6); X.months = c10Months(X, X.s); X.first = (X.name && X.name !== 'You') ? String(X.name).split(' ')[0] : '';
+            X.warn = []; const cs = IP_CAT_STREAM[X.rec.category] || [];
+            if (A.maths === 'drop' && /Engineering|Technology/.test(X.rec.category)) X.warn.push('You want to drop Maths, but your top career match (' + X.rec.title + ') usually needs it. Keep Maths, or look at the careers on page 17 that do not.');
+            if (A.bio === 'no' && cs[0] === 'pcb') X.warn.push('You said Biology is not for you, but your top career match (' + X.rec.title + ') usually starts from Biology.');
+            if (A.decider === 'parents') X.warn.push('Your parents are leading this choice. Read page 16 together so your reasons are on the table too.');
+            if (c10Has(A.routes, 'coaching') && FIT_BUDGET[A.budget] && FIT_BUDGET[A.budget][1] <= 1) X.warn.push('You are open to integrated coaching, but your budget is ' + FIT_BUDGET[A.budget][0] + '. Read page 9 before you pay for it.');
+            X.kind = 'Career Intelligence Report · Class 10 edition'; X.right = 'Prepared for <b>' + X.e(X.name) + '</b><br>' + X.e(X.today);
+            return X;
+        }
+        function c10Verdict(X) {
+            const e = X.e, s = X.s, m0 = X.months[0];
+            return '<div class="ci-verdict"><div class="ci-v ci-v1"><b>YOUR STREAM</b><span><u>' + e(C10_SHORT[s.first]) + '</u>' + (X.combo.pick && C10_FAMILY[s.first] !== 'voc' ? ', as ' + e(X.combo.pick[0]) : '') + '. ' + e(X.r1.pro[0] || '') + '</span></div>' +
+                '<div class="ci-v ci-v2"><b>THIS MONTH</b><span>' + e((m0 && m0[1][0]) || 'Read this report with a parent.') + '</span></div>' +
+                '<div class="ci-v ci-v3"><b>YOUR BACKUP</b><span><u>' + e(C10_SHORT[s.backup]) + '</u>. ' + e(X.r2.pro[0] || 'It keeps a different set of doors open.') + '</span></div>' +
+                '<div class="ci-v ci-v4"><b>WATCH OUT FOR</b><span>' + e(X.warn[0] || X.r1.con[0] || ('It closes: ' + C10_ROUTE[s.first].closes + '.')) + '</span></div></div>';
+        }
+        function c10Hero(X, big) {
+            const e = X.e;
+            return '<div class="cr-banner ci-cover" style="background:linear-gradient(120deg,#0c4a6e,#0284c7)"><div><div class="cr-cat">Plan4it.co · After Class 10</div><div class="cr-name" style="font-size:' + (big ? 19 : 17) + 'px">' + (X.first ? e(X.first) + ', here is' : 'Here is') + ' your answer.</div><div class="cr-sub" style="font-size:11.5px;margin-top:4px">Which stream, which subjects, which college, and what to do if things change. Careers come at the end: you do not need to pick one yet.</div></div><div style="margin-left:auto">' + ppHeroArt('Education', ['<i class=ic-star></i>', '#0c4a6e', '#0284c7']) + '</div></div>';
+        }
+        function c10StreamMeters(X, n) {
+            const s = X.s, col = { sci: '#0284c7', com: '#16a34a', arts: '#db2777', voc: '#d97706' };
+            return s.order.slice(0, n || 7).map(function (k) { return ppMeter(C10_SHORT[k], s.pct(k), s.pct(k) + '% fit', col[C10_FAMILY[k]]); }).join('');
+        }
+        function intelBuild18C10(A) {
+            const X = c10Ctx(A); if (!X) return null;
+            const e = X.e, s = X.s, rec = X.rec, top = X.top, pct = X.pct, R = C10_ROUTE, S = C10_SHORT, fam = X.combo.fam;
+            const L = function (arr) { return [].concat(arr || []).filter(function (x) { return IP_INT_LAB[x]; }).map(function (x) { return IP_INT_LAB[x]; }).join(', '); };
+            const Q = function (k) { return quizLabel(k, A, true); }, P = [];
+            const where = [A.district && A.state && A.state !== 'any' ? A.district : '', A.state && A.state !== 'any' ? A.state : ''].filter(Boolean).join(', ');
+            // 1 the answer
+            const W = C10_WORRY[A.worry];
+            P.push(['Your answer, on one page', 'The short version. Every page after this explains one part of it.',
+                c10Hero(X, true) + ipBasis(A) + c10Verdict(X) +
+                (W ? ipCard('Your biggest worry: ' + e(W[0].toLowerCase()), '<p class="pp-sm">' + e(W[1]) + '</p><p class="pp-sm pp-mut">Page 15 goes into it properly.</p>', 'pp-note') : '') +
+                '<div class="pp-cols"><table class="pp-t pp-kv" style="flex:1.3">' + [['You enjoy', L(A.interests) || 'No favourite yet'], ['You score well in', L(A.strong) || 'None stands out yet'], ['Maths after Class 10', Q('maths')], ['Biology and lab work', Q('bio')], ['Routes you are open to', Q('routes')], ['Who decides', Q('decider')], ['Where', where]].filter(function (r) { return r[1]; }).map(function (r) { return '<tr><th>' + e(r[0]) + '</th><td>' + e(r[1]) + '</td></tr>'; }).join('') + '</table>' +
+                '<div style="flex:1">' + ipCard('How sure is this?', '<p class="pp-sm">' + e(s.closeCall ? 'It is a close call between ' + S[s.first] + ' and ' + S[s.backup] + '. That is useful to know: do the tests on page 14 before you decide.' : S[s.first] + ' is clearly ahead of the other routes for your answers. Still do one test on page 14 to be sure.') + '</p>') + '</div></div>']);
+            // 2 what you told us
+            const items = ipLikings(X).slice(0, 4);
+            const en = [].concat(A.interests || []).filter(function (x) { return IP_INT_LAB[x]; }), st = [].concat(A.strong || []).filter(function (x) { return IP_INT_LAB[x]; });
+            const allK = en.concat(st.filter(function (x) { return en.indexOf(x) < 0; }));
+            P.push(['What you told us, and what it says about you', 'Your answers in plain words. Enjoyment and marks are different signals, and both matter.',
+                (allK.length ? ipH('Enjoy versus score') + ipRows(['Subject', 'You enjoy it', 'You score well', 'What it means'], allK.map(function (k) { const a = en.indexOf(k) > -1, b = st.indexOf(k) > -1; return ['<b>' + e(IP_INT_LAB[k]) + '</b>', a ? '✓' : '', b ? '✓' : '', e(a && b ? 'Your strongest signal: build around it.' : a ? 'Interest is there; marks can follow with practice.' : 'A strength to use, but not a reason on its own.')]; })) : '<p>You have not picked a favourite subject yet. That is normal in Class 10. The tests on page 14 help you find out by doing.</p>') +
+                '<div class="pp-cols">' + ipCard('Maths and Biology', ipUl([A.maths ? 'Maths: ' + Q('maths') + '. ' + (A.maths === 'drop' ? 'This closes engineering, most data and economics degrees, and Commerce with Maths.' : A.maths === 'more' ? 'This keeps PCM, Commerce with Maths and economics wide open.' : 'You can keep Maths if a course needs it, which keeps most doors open.') : '', A.bio ? 'Biology: ' + Q('bio') + '. ' + (A.bio === 'no' ? 'This closes NEET courses, which is fine if health care is not for you.' : A.bio === 'enjoy' ? 'This keeps medicine, pharmacy, nursing and life sciences open.' : 'Neutral is fine: you can still choose PCMB if you want both doors open.') : ''])) +
+                ipCard('How you like to work', ipUl([A.activity ? 'At the science fair you would ' + ({ build: 'build the working model', research: 'research the topic and explain it', create: 'design the poster and display', biz: 'manage the team and the money', people: 'talk to visitors and judges' }[A.activity] || '') + '.' : '', A.workStyle ? 'That points to ' + (IP_STYLE_TXT[A.workStyle] || A.workStyle) + '.' : '', A.values && A.values.length ? 'What would make work worthwhile: ' + Q('values').toLowerCase() + '.' : ''])) + '</div>' +
+                ipCard('What it adds up to', ipUl(items), 'pp-note') +
+                ([].concat(A.values || []).filter(function (v) { return C10_VALUES[v]; }).length ? ipH('What you want from work, and what it means now') + ipRows(['You picked', 'What it means for your stream choice'], [].concat(A.values || []).filter(function (v) { return C10_VALUES[v]; }).map(function (v) { return ['<b>' + e(quizLabel('values', { values: [v] }, false)) + '</b>', e(C10_VALUES[v])]; })) : '')]);
+            // 3 stream verdict
+            P.push(['Your stream verdict', 'All seven routes after Class 10, ranked for your answers, with the reasons.',
+                c10StreamMeters(X, 7) + '<p class="pp-sm pp-mut">The score compares the routes for you only. It is not a measure of ability, and close scores should be treated as equal.</p>' +
+                '<div class="pp-cols">' + [[s.first, X.r1, 'Your first choice'], [s.backup, X.r2, 'Your backup']].map(function (t) { return '<div>' + ipCard(e(t[2] + ': ' + S[t[0]]), '<div class="cr-good">' + (t[1].pro.length ? t[1].pro : ['It keeps a useful set of doors open.']).slice(0, 4).map(function (x) { return '<div><span>✓</span>' + e(x) + '</div>'; }).join('') + '</div>' + (t[1].con.length ? '<div class="cr-bad">' + t[1].con.slice(0, 2).map(function (x) { return '<div><span>!</span>' + e(x) + '</div>'; }).join('') + '</div>' : '')) + '</div>'; }).join('') + '</div>' +
+                ipH('Why not the others?') + ipRows(['Route', 'Main reason it ranks lower for you'], s.order.filter(function (k) { return k !== s.first && k !== s.backup; }).slice(0, 5).map(function (k) { return ['<b>' + e(S[k]) + '</b>', e(c10WhyNot(X, k))]; })) +
+                ipCard('Still torn? Three questions to settle it', '<ol class="pp-sm" style="margin:4px 0 0 16px;padding:0"><li>Picture a normal day in Class 11 with ' + e(X.combo.pick[1]) + '. Could you do that for two years?</li><li>On a free Sunday, would you rather ' + e(C10_TEST[s.first][0].toLowerCase()) + ' or ' + e(C10_TEST[s.backup][0].toLowerCase()) + '?</li><li>Look at page 6. Which closed doors would you be sad to lose?</li></ol><p class="pp-sm" style="margin-top:4px">If two of your three answers point the same way, go with that route.</p>', 'pp-note')]);
+            // 4 routes side by side
+            const keys = ['pcm', 'pcb', 'pcmb', 'comm', 'com', 'arts', 'voc'];
+            P.push(['Every route after Class 10, side by side', 'What each one is like for two years, and who it suits. Your first choice and backup are marked.',
+                ipRows(['Route', 'The two years', 'Exams later', 'Suits you if'], keys.map(function (k) { const mark = k === s.first ? ' ★' : k === s.backup ? ' (backup)' : ''; return ['<b>' + e(S[k] + mark) + '</b>', e(R[k].load), '<span class="pp-sm">' + e(R[k].later) + '</span>', '<span class="pp-sm">' + e(R[k].suits) + '</span>']; })) +
+                ipCard('ITI and skilled trades', '<p class="pp-sm">An ITI course (6 months to 2 years) trains you for a trade such as electrician, fitter or mechanic, followed by an apprenticeship. It is the fastest route to work. Page 11 has the details.</p>') +
+                '<p class="pp-sm pp-mut">"Exams later" are taken in or after Class 12. You do not need to prepare for them now. Dates and rules change every year.</p>' +
+                ipH('Four things people say, and the truth') + ipRows(['People say', 'The truth'], [['Science is only for toppers.', 'Science needs regular practice more than top marks. Students who like it usually do well in it.'], ['Arts has no jobs.', 'Law, psychology, design, media, civil services and teaching start from Arts. How good you become matters more than the stream.'], ['Commerce is the easy option.', 'Accountancy and CA are demanding. Commerce suits people who like numbers and business.'], ['A diploma is for students who could not get Science.', 'A diploma is a faster, practical route, and lateral entry can still lead to a B.E.']].map(function (r) { return ['<b>' + e(r[0]) + '</b>', e(r[1])]; }))]);
+            // 5 combinations
+            const combo = X.combo, all = combo.all || [];
+            P.push(['Your subject combination', 'Inside a stream, the exact subjects matter. Here is the combination that fits you' + (fam !== 'gen' && A.state ? ' in ' + A.state : '') + '.',
+                '<div class="cr-banner" style="background:linear-gradient(120deg,#0c4a6e,#0284c7)"><div><div class="cr-cat">Your combination</div><div class="cr-name">' + e(combo.pick[0]) + '</div><div class="cr-sub">' + e(combo.pick[1]) + '</div></div></div>' +
+                '<p><b>Why this one:</b> ' + e(combo.pick[2]) + (combo.note ? ' ' + e(combo.note) : '') + '</p>' +
+                (all.length ? ipH('All the usual combinations in ' + S[s.first].replace(/ with.*| without.*/, '')) + ipRows(['Combination', 'Subjects', 'Good for'], all.map(function (c) { return ['<b>' + e(c[0]) + (c === combo.pick ? ' ★' : '') + '</b>', e(c[1]), '<span class="pp-sm">' + e(c[2]) + '</span>']; })) : '') +
+                (C10_FAMILY[s.backup] !== 'voc' ? ipH('If you take your backup (' + S[s.backup] + ')') + '<p>' + e(c10Combo(X, s.backup).pick[0] + ': ' + c10Combo(X, s.backup).pick[1] + '. ' + c10Combo(X, s.backup).pick[2]) + '</p>' : '') +
+                ipCard('Before you fill the form', ipUl(['Check that the college runs this exact combination this year: not every college offers every one.', 'Ask whether you can change combination in the first weeks of Class 11, and until when.', fam === 'gen' ? 'If you are in CBSE and took Basic Maths in Class 10, ask your school whether you can take Mathematics in Class 11. Many schools allow only Applied Mathematics.' : 'Ask which language subjects the college offers alongside your combination.']), 'pp-note') +
+                '<p class="pp-sm pp-mut">Combination names differ by board and college. Confirm the exact subjects with the college before you pay.</p>']);
+            // 6 doors
+            const tick = function (b) { return b === 1 ? '<span class="cx-g">✓</span>' : b === 2 ? '<span class="cx-m">often</span>' : '<span class="cx-b">✗</span>'; };
+            const mx = [['Engineering', { pcm: 1, pcmb: 1, voc: 1 }], ['Medicine (NEET)', { pcb: 1, pcmb: 1 }], ['CA', { pcm: 1, pcb: 1, pcmb: 1, comm: 1, com: 1, arts: 1 }], ['Law (5-year)', { pcm: 1, pcb: 1, pcmb: 1, comm: 1, com: 1, arts: 1 }], ['Design (NID, NIFT)', { pcm: 1, pcb: 1, pcmb: 1, comm: 1, com: 1, arts: 1 }], ['Economics honours', { pcm: 1, pcmb: 1, comm: 1, com: 2, arts: 2 }], ['Civil services later', { pcm: 1, pcb: 1, pcmb: 1, comm: 1, com: 1, arts: 1, voc: 2 }]];
+            const cols = [s.first, s.backup].concat(['pcm', 'pcb', 'comm', 'arts'].filter(function (k) { return k !== s.first && k !== s.backup; })).slice(0, 4);
+            P.push(['The doors each choice opens and closes', 'What you can apply for after Class 12, and what you cannot. This is the part that really matters.',
+                '<div class="pp-cols">' + [[s.first, 'Your first choice'], [s.backup, 'Your backup']].map(function (t) { return '<div>' + ipCard(e(t[1] + ': ' + S[t[0]]), '<p class="pp-sm"><b>Opens:</b> ' + e(R[t[0]].degrees) + '.</p><p class="pp-sm"><b>Closes:</b> ' + e(R[t[0]].closes) + '.</p>') + '</div>'; }).join('') + '</div>' +
+                ipH('Can you still get there?') + '<table class="pp-t ci-mx"><tr><th></th>' + cols.map(function (k) { return '<th>' + e(S[k]) + '</th>'; }).join('') + '</tr>' + mx.map(function (r) { return '<tr><th>' + e(r[0]) + '</th>' + cols.map(function (k) { return '<td>' + tick(r[1][k] || 0) + '</td>'; }).join('') + '</tr>'; }).join('') + '</table>' +
+                '<p class="pp-sm pp-mut">✓ = open, often = open at many colleges but not all, ✗ = closed or very hard. Engineering from a diploma is through lateral entry. Rules differ by university, so check the course page before you apply.</p>' +
+                ipCard('The one-way rule', ipUl(['It is easy to move from Science to Commerce or Arts after Class 12, and very hard to move the other way.', 'That is why, if you are truly unsure and enjoy Science, Science keeps more doors open.', 'But choose Science only if you can enjoy two years of it. Unhappy students in the "safe" stream often score less than they would elsewhere.']), 'pp-note')]);
+            // 7 marks and boards
+            const lv = { top: 'Your marks are at the very top, so most colleges’ merit lists are open to you. Apply to your dream college and still keep one safe choice.', strong: 'Your marks are strong. You will get a seat at most colleges, though the most popular city colleges can still be a reach for Science.', mid: 'Your marks are around the middle. Government and aided colleges and most private ones are realistic. For popular colleges, keep a backup.', low: 'You say your marks are still improving. The next weeks matter: every few percent widens your choice of college. Government colleges admit in order of marks, so apply to several.', none: 'You have not told us your marks yet. Look at your last exam result and use it as your starting point.' }[A.level];
+            const wk = c10WeeksToBoards(), core = C10_FAMILY[s.first] === 'sci' ? 'Maths and Science' : s.first === 'comm' ? 'Maths and Social Science' : s.first === 'voc' ? 'Maths and Science' : 'English and Social Science';
+            P.push(['Your marks and the board exams', 'What your marks open, and how to use the time you have.',
+                (lv ? ipCard('Where you stand', '<p>' + e(lv) + '</p>', 'pp-note') : '') +
+                '<div class="pp-cols"><div>' + ipCard('What marks do, and do not do', ipUl(['They decide which college gives you a seat, through merit lists.', 'They rarely stop you taking a stream; they change where you take it.', 'Some colleges also look at your ' + core + ' marks for a ' + S[s.first].split(' ')[0] + ' seat, not only the total.', 'Cut-offs change every year and by combination. Ask each college for last year’s.'])) + '</div><div>' + ipCard('Subjects to protect for ' + S[s.first], ipUl([core + ': these are the ones your next two years build on.', 'English: every stream and every college form uses it.', 'Your weakest subject: a pass in every subject is needed for admission.'])) + '</div></div>' +
+                ipH(wk ? 'About ' + wk + ' weeks to mid-February' : 'Your revision plan') + ipRows(['Phase', 'What to do'], [['Now', 'Finish the syllabus. Write a one-page summary for each chapter as you finish it.'], ['Next', 'One full past paper a week in each main subject, under exam timing. Mark where marks were lost.'], ['Last month', 'Only revision and past papers. No new books. Sleep 7 to 8 hours.'], ['Exam week', 'Revise from your one-page summaries, not the textbook.']].map(function (r) { return ['<b>' + e(r[0]) + '</b>', e(r[1])]; })) +
+                ipH('A sample revision week') + (function () { const sci = /Maths and Science/.test(core), a1 = sci ? 'Maths' : 'English', a2 = sci ? 'Science' : 'Social Science', o1 = sci ? 'Social Science' : 'Maths', o2 = sci ? 'English' : 'Science'; return ipRows(['Day', 'Slot 1 (90 min)', 'Slot 2 (60 min)'], [['Mon', a1 + ': one section of a past paper', 'Second language'], ['Tue', a2 + ': one chapter, then its questions', o1], ['Wed', a1 + ': mistakes from Monday, redone', o2], ['Thu', a2 + ': diagrams, maps or derivations', 'Your weakest subject'], ['Fri', o1 + ': one-page summaries', a1 + ': 10 quick problems or questions'], ['Sat', 'One full past paper, timed (rotate the subject)', 'Mark it honestly'], ['Sun', 'Rest in the morning', 'Re-read your mistake list']].map(function (r) { return ['<b>' + e(r[0]) + '</b>', e(r[1]), e(r[2])]; })); })() +
+                '<p class="pp-sm pp-mut">CBSE holds its first Class 10 board exam from mid-February and an optional second exam in May to improve up to three subjects. Most state boards hold theirs in March or April. Check your board’s website for this year’s dates.</p>']);
+            // 8 colleges
+            const cl = X.cols, nvs = AFTER10_COLLEGES.filter(function (c) { return c.kind === 'school'; });
+            P.push(['Class 11 and 12 colleges near you', where ? 'Colleges in ' + where + ' for ' + S[X.colK] + (X.colK !== s.first ? ' (your backup, since a diploma is studied at a polytechnic)' : '') + ', starting with your district.' : 'Where to study Class 11 and 12.',
+                (cl.length ? ipRows(['College and place', 'Type', 'Streams', 'Why it is on your list'], cl.map(function (c) { const t = c10CollegeType(c); return ['<b>' + e(c.name) + '</b><br><span class="pp-sm pp-mut">' + e(c.city || c.area || '') + '</span>', e(t[0]) + '<br><span class="pp-sm pp-mut">' + e(t[1]) + '</span>', e(c.streams.length ? c.streams.join(', ') : 'Ask'), '<span class="pp-sm">' + e(((A.district && puDistNear(c, A.district) ? 'In your district. ' : '') + (c.streams.indexOf((S[X.colK].match(/Science|Commerce|Arts/) || [''])[0]) > -1 ? 'Lists your stream. ' : '') + (c.coach && c.coach.length ? 'Has integrated coaching. ' : '') + (t[0] === 'Government' || t[0] === 'Aided' ? 'Lower fees.' : '')).trim() || 'Close to you; ask what it offers.') + '</span>']; })) +
+                    '<p class="pp-sm pp-mut">From Plan4it.co’s list' + (cl.some(function (c) { return c.conf === 'dpue'; }) ? ', which includes the Karnataka Department of Pre-University Education list' : '') + '. Streams marked "Ask" are not published; the college will tell you which combinations it runs this year. See every college on plan4it.co.</p>' :
+                    ipCard('We do not list colleges for your area yet', '<p class="pp-sm">' + e(A.state && A.state !== 'any' ? 'Plan4it.co does not have Class 11 and 12 colleges for ' + A.state + ' yet. ' : 'You did not tell us your state, so we cannot list colleges. ') + 'Ask your school which junior colleges take students after Class 10, check your state board’s admission portal, and use the questions on page 9.</p>', 'pp-note')) +
+                (nvs.length ? ipH('Schools anywhere in India') + ipRows(['School', 'How to get in'], nvs.slice(0, 2).map(function (c) { return ['<b>' + e(c.name) + '</b>', '<span class="pp-sm">' + e(c.admission || '') + '</span>']; })) : '') +
+                '<div class="pp-cols"><div>' + ipCard('How admission works' + (A.state && A.state !== 'any' ? ' in ' + e(A.state) : ''), '<p class="pp-sm">' + e(C10_ADMIT[A.state] || 'Most students continue to Class 11 in their own school if it offers their stream. To move, apply to other schools or junior colleges after the Class 10 result. Kendriya Vidyalayas and Navodayas have their own process (above).') + '</p>') + '</div><div>' +
+                ipCard('Make a shortlist of four', ipUl(['One dream college (a reach for your marks).', 'Two realistic colleges.', 'One safe college you are sure to get, ideally government or aided.']), 'pp-note') + '</div></div>']);
+            // 9 choosing a college + coaching
+            const coachYes = c10Has(A.routes, 'coaching'), firstSci = C10_FAMILY[s.first] === 'sci';
+            P.push(['How to choose between colleges', 'What to ask on a visit, and whether you need integrated coaching.',
+                ipH('Ask these on your visit') + '<div class="pp-cols">' + [['About the subjects', ['Do you run ' + X.combo.pick[0] + ' this year, and how many sections?', 'Can I change stream or combination early in Class 11? Until when?', 'Who teaches the main subjects, and how long have they been here?']], ['About money and time', ['What is the full fee for both years, with every extra?', 'Is coaching included or optional, and what does it cost?', 'What are the timings, and how long would I travel each day?']]].map(function (b) { return '<div>' + ipCard(e(b[0]), '<ul>' + b[1].map(function (x) { return '<li><span class="pp-box"></span> ' + e(x) + '</li>'; }).join('') + '</ul>') + '</div>'; }).join('') + '</div>' +
+                ipH('Government, aided or private?') + ipRows(['Type', 'Fees', 'Good to know'], [['Government', 'Low', 'Admits on merit lists. Facilities vary, so visit first.'], ['Aided', 'Usually lower than private', 'Run by a trust with state grants. Often well known locally.'], ['Private (unaided)', 'Set by the college', 'Ask for the full fee list in writing, including coaching and transport.']].map(function (r) { return ['<b>' + e(r[0]) + '</b>', e(r[1]), e(r[2])]; })) +
+                ipCard('Do you need integrated JEE or NEET coaching?', ipUl(firstSci ? [coachYes ? 'You said you are open to it. It helps only if you are sure about JEE or NEET and can handle long days.' : 'You did not pick it, and that is fine. Most students do not need it in Class 11.', 'It is usually the biggest extra cost of Class 11 and 12. Ask for the coaching fee separately.', 'A safer plan: study the board syllabus well in Class 11, and decide about coaching after the first term.', FIT_BUDGET[A.budget] && FIT_BUDGET[A.budget][1] <= 3 ? 'With your budget (' + FIT_BUDGET[A.budget][0] + '), look at free and low-cost options first.' : 'If you join, check the timings leave you time to sleep and revise.'] : ['Not for ' + S[s.first] + '. For CA, ICAI’s own study material is the main resource, and law and design entrances are usually prepared for in Class 12.', 'Spend the money on books and one good teacher for your weakest subject instead.']), 'pp-note') +
+                '<div class="pp-cols"><div style="flex:1.4">' + ipH('Compare your top two') + ipRows(['', 'College 1', 'College 2'], ['Runs ' + X.combo.pick[0] + '?', 'Full fee, both years', 'Travel time each way', 'Coaching: included, optional or none', 'Rule for changing stream', 'How it felt on the visit (1 to 5)'].map(function (r) { return ['<b>' + e(r) + '</b>', '', '']; })) + '</div><div>' + ipH('Red flags') + ipUl(['Pressure to pay a seat fee before you see the full fee list.', 'Promises of a guaranteed rank or result.', 'No written refund rule if you leave in the first weeks.', 'Days so long there is no time to sleep or revise.']) + '</div></div>']);
+            // 10 cost + scholarships
+            const sch = c10Scholarships(A);
+            P.push(['What the two years will cost, and scholarships', 'Fees change every year, so this page tells you what to ask, not a number to trust.',
+                ipH('Your cost worksheet') + ipRows(['Item', 'What decides it', 'Your figure'], [['Tuition', 'College type: government, aided or private'], ['Coaching', 'Only if you choose integrated coaching (page 9)'], ['Travel', 'Distance from home; a nearer college saves time and money'], ['Books and uniform', 'Ask for the college’s list'], ['Exam and other fees', 'Ask what is extra']].map(function (r) { return ['<b>' + e(r[0]) + '</b>', e(r[1]), '₹ ________']; })) +
+                (FIT_BUDGET[A.budget] ? '<p class="pp-sm">You said your budget is <b>' + e(FIT_BUDGET[A.budget][0]) + '</b>. ' + e(FIT_BUDGET[A.budget][1] <= 3 ? 'Start with government and aided colleges, and keep coaching optional.' : 'Most colleges fit; still ask for every fee in writing.') + '</p>' : '') +
+                ipH('Scholarships you can apply for from Class 11') + (sch.length ? ipRows(['Scheme', 'Who can apply', 'Amount', 'When'], sch.map(function (x) { return ['<b>' + e(x.name) + '</b><br><span class="pp-sm pp-mut">' + e(x.provider) + '</span>', '<span class="pp-sm">' + e(c10Who(x)) + '</span>', '<span class="pp-sm">' + e(x.amount) + '</span>', '<span class="pp-sm">' + e(x.deadline || '') + '</span>']; })) : '<p>We have no Class 11 scholarships for your state in our list yet. Check scholarships.gov.in (the National Scholarship Portal) and your state’s scholarship portal.</p>') +
+                ipCard('Keep these ready', ipUl(['A bank account in your name, linked to Aadhaar.', 'Your family’s income certificate, and a caste certificate if it applies.', 'Your Class 10 marks card and the college admission receipt.']), 'pp-note') +
+                '<p class="pp-sm pp-mut">Amounts and dates are from Plan4it.co’s scholarship list and change every year. Apply only on the official portal, never through an agent who asks for money.</p>']);
+            // 11 diploma, ITI and other routes
+            const stn = A.state && A.state !== 'any' ? A.state : '', pid = C10_POLY[stn], pex = pid && examsData.find(function (x) { return x.id === pid; }), wantD = c10Has(A.routes, 'diploma') || c10Has(A.routes, 'iti') || s.first === 'voc' || s.backup === 'voc';
+            P.push(['Diploma, ITI and other routes', wantD ? 'You are open to these, so here is how they work in ' + (stn || 'your state') + '.' : 'You did not pick these, but every student should know they exist.',
+                '<div class="pp-cols">' + ipCard('Diploma (polytechnic), about 3 years', ipUl(['Technical branches such as Computer, Electronics, Electrical, Mechanical and Civil.', 'You can work after it, or join the second year of B.E./B.Tech through lateral entry.', 'Check that the polytechnic is AICTE-approved.'])) + ipCard('ITI, 6 months to 2 years', ipUl(['Trades such as electrician, fitter, welder, mechanic or plumber.', 'Followed by an apprenticeship with a stipend in many trades.', 'Look for NCVT-affiliated trades; many states also run their own.'])) + '</div>' +
+                ipH('How diploma admission works in ' + (stn || 'your state')) + '<p>' + (pex ? e(pex.name) + ': ' + e(String(pex.eligibility || '')) + (pex.site ? '. Official site: ' + planLink(pex.site, String(pex.site).replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')) : '') + '.' : e(C10_POLY_TXT[stn] || 'Each state runs its own diploma admission, through an entrance exam or on Class 10 marks. Check your state’s technical education department.')) + '</p>' +
+                ipH('Other options') + ipRows(['Option', 'Who it suits'], [['Kendriya Vidyalaya or Navodaya (Class 11)', 'Students who want a CBSE school; see page 8 for how to get in.'], ['NIOS (open schooling)', 'Students who need flexible timings, for example for sport or health. Class 12 from NIOS is accepted for most degrees; check your target course.'], ['Your own school’s Class 11', 'The easiest move if your school offers your combination.']].map(function (r) { return ['<b>' + e(r[0]) + '</b>', e(r[1])]; })) +
+                '<p class="pp-sm pp-mut">Dates, eligibility and seats change every year. Confirm on the official site.</p>']);
+            // 12 plan B
+            const hardWrong = ipH('Is it just hard, or is it wrong?') + ipRows(['Probably just hard (keep going)', 'Maybe wrong (talk to someone)'], [['You understand it after extra practice.', 'You dread every class, even the easy ones.'], ['You are tired but still curious.', 'After six weeks of real effort you still follow very little.'], ['Your marks are improving, slowly.', 'You think every day about another stream\u2019s subjects.']].map(function (r) { return [e(r[0]), e(r[1])]; }));
+            P.push(['Plan B: if things do not go as planned', 'Most plans change a little. Decide now what you would do, so a change is not a crisis.',
+                ipRows(['If this happens', 'Do this'], [['Your marks are lower than you hoped', 'Apply to government and aided colleges as well, and wait for later merit rounds. CBSE students can sit the May exam to improve up to three subjects.'], ['You do not get your first-choice college', 'Take your safe college. The board exam is the same everywhere; your effort matters more than the name.'], ['In Class 11, ' + S[s.first] + ' feels wrong', 'Talk to the college in the first weeks. Moving to ' + S[s.backup] + ' is easiest early.'], ['Your parents prefer another stream', 'Use page 16, and agree to try both streams’ tests on page 14 before deciding.'], ['Coaching becomes too much', 'Drop the coaching, not your sleep. Board marks come first.'], ['You change your mind about careers', 'Normal. Your stream keeps the doors on page 6 open, and page 17 shows careers that fit you.']].map(function (r) { return ['<b>' + e(r[0]) + '</b>', e(r[1])]; })) +
+                ipCard('Your backup, in one line', '<p>If ' + e(S[s.first]) + ' does not work out, my backup is <b>' + e(S[s.backup]) + '</b>' + (C10_FAMILY[s.backup] !== 'voc' ? ' (' + e(c10Combo(X, s.backup).pick[0]) + ')' : '') + '.</p><p class="pp-sm"><b>Why it suits you:</b> ' + e(X.r2.pro[0] || 'It keeps a different set of doors open.') + '</p>', 'pp-note') + hardWrong]);
+            // 13 month by month
+            P.push(['Your month-by-month plan', 'From today until Class 11 starts. Tick items off as you go.',
+                X.months.map(function (mo) { return '<div class="pp-card pp-slim"><b>' + e(mo[0]) + '</b><ul>' + mo[1].map(function (x) { return '<li><span class="pp-box"></span> ' + e(x) + '</li>'; }).join('') + '</ul></div>'; }).join('') +
+                '<p class="pp-sm pp-mut">Exam and result months are the usual pattern, not this year’s dates. Check your board’s website.</p>']);
+            // 14 try before you choose
+            const TEST = C10_TEST;
+            const tk = [s.first, s.backup, s.order.filter(function (k) { return k !== s.first && k !== s.backup && C10_FAMILY[k] !== C10_FAMILY[s.first]; })[0] || s.order[2]];
+            P.push(['Try before you choose', 'Three small tests you can do on a weekend or after the exams. They tell you more than any quiz.',
+                tk.map(function (k, i) { const t = TEST[k]; return ipCard('Test ' + (i + 1) + ': ' + e(t[0]) + ' (' + e(S[k]) + ')', '<p class="pp-sm"><b>Do:</b> ' + e(t[1]) + '</p><p class="pp-sm"><b>Notice:</b> ' + e(t[2]) + '</p>'); }).join('') +
+                ipH('Ask a senior') + ipUl(['What does a normal week look like in ' + S[s.first] + '?', 'What surprised you in Class 11?', 'What do you wish you had known in Class 10?']) +
+                ipCard('How to read the results', ipUl(['If you enjoyed a test even when it was hard, that is a strong yes.', 'If you were bored even when it was easy, that is a real warning.', 'If two tests felt the same, pick the route that keeps more doors open (page 6).']), 'pp-note') +
+                ipH('Your test diary') + ipRows(['Test', 'What I enjoyed', 'What I did not', 'Rating (1 to 5)'], tk.map(function (k, i) { return ['<b>' + (i + 1) + '. ' + e(C10_TEST[k][0]) + '</b><br>&nbsp;', '', '', '']; })) +
+                '<p class="pp-sm pp-mut">Free to use: NCERT textbooks (ncert.nic.in) and DIKSHA (diksha.gov.in) for every subject above.</p>']);
+            // 15 the worry
+            P.push(['Your worry, answered properly', 'What you told us worries you most, and what to do about it.', c10WorryDeep(X, s) +
+                ipH('Other worries students have, briefly') + ipRows(['Worry', 'The short answer'], Object.keys(C10_WORRY).filter(function (k) { return k !== A.worry; }).map(function (k) { const t = C10_WORRY[k][1].split('. '); return ['<b>' + e(C10_WORRY[k][0]) + '</b>', e(t.slice(0, 2).join('. ').replace(/\.?$/, '.'))]; }))]);
+            // 16 parents
+            const dec = { me: 'You are deciding this yourself. Share this page so your parents can support the plan.', together: 'You are deciding together. Use this page as the agenda for one sit-down talk.', parents: 'Your parents are leading this decision. This page puts your answers next to their questions.', decided: 'Your stream is already decided. This page helps you make the most of it and plan a backup.' }[A.decider] || '';
+            P.push(['Parent discussion guide', 'For parents: the questions families ask most, answered from your child’s answers.',
+                (dec ? '<p>' + e(dec) + '</p>' : '') + '<div class="ci-parent">' + [
+                    ['Why ' + S[s.first] + '?', (X.r1.pro.slice(0, 2).join(' ') || 'It fits most of the answers given.')],
+                    ['Why not engineering or medicine?', s.first === 'pcm' || s.first === 'pcmb' || s.first === 'pcb' ? 'It is still open: ' + S[s.first] + ' keeps ' + (s.first === 'pcb' ? 'medicine' : s.first === 'pcm' ? 'engineering' : 'both') + ' open.' : 'They need Maths or Biology in Class 11 and 12. The answers point elsewhere, and the careers on page 17 fit better. If the family still prefers Science, do the tests on page 14 first.'],
+                    ['What will it cost?', 'Mostly the college type and coaching. Government and aided colleges keep fees low; page 10 has a worksheet and scholarships.'],
+                    ['Will there be jobs?', 'It is too early to pick a job. What matters now is choosing subjects your child can do well in. Page 17 shows the careers these answers fit, for later.'],
+                    ['What if it goes wrong?', 'The backup is ' + S[s.backup] + '. Page 12 has a plan for low marks, a missed college or a change of mind.'],
+                    ['What do we decide, and by when?', 'A first choice and a backup before the board exams, and a shortlist of four colleges before results.']
+                ].map(function (q) { return '<div class="ci-q"><b>' + e(q[0]) + '</b><span>' + e(q[1]) + '</span></div>'; }).join('') + '</div>' +
+                ipCard('How parents can help this month', ipUl(['Ask what your child enjoys before asking what pays.', 'Keep exam weeks calm: the decision can wait until after the last paper.', 'Visit colleges together after the exams, with the questions on page 9.', 'Agree on the backup, so a change of plan is not a family crisis.'])) +
+                ipCard('What we agreed', '<p class="pp-sm">Stream: ____________________ &nbsp; Backup: ____________________</p><p class="pp-sm">Colleges to visit: ______________________________________________</p><p class="pp-sm">We will review this on: ____ / ____ / ______</p>', 'pp-note')]);
+            // 17 careers
+            P.push(['Careers that fit you, for later', 'You do not need to choose a career in Class 10. These are the ones your answers point to, so you know which doors to keep open.',
+                ipRows(['Career', 'Fit', 'Usual stream', 'Your first choice keeps it open?', 'Why it fits you'], top.map(function (c) { const cs = IP_CAT_STREAM[c.category] || [], ok = cs.indexOf(s.first) > -1 || (s.first === 'pcmb' && (cs.indexOf('pcm') > -1 || cs.indexOf('pcb') > -1)) || (C10_FAMILY[s.first] === 'com' && cs.some(function (x) { return C10_FAMILY[x] === 'com'; })) || cs[0] === 'arts' || cs[0] === 'voc' && s.first === 'voc'; return ['<b>' + e(c.title) + '</b>', '<span style="white-space:nowrap">' + pct(c) + '%</span>', e(cs.length ? S[cs[0]] : 'Any'), ok ? '<span class="cx-g">✓ Yes</span>' : '<span class="cx-m">Check</span>', '<span class="pp-sm">' + e(intelWhy(c, A).slice(0, 1).join(' ') || c.overview || '') + '</span>']; })) +
+                '<p class="pp-sm pp-mut">"Check" means the career usually starts from a different stream; some courses still accept yours. Fit shows how well a career matches your answers, not whether you will succeed.</p>' +
+                '<div class="ci-top5">' + top.map(function (c, i) { const v = CAT_VIS[c.category] || ['<i class=ic-star></i>', '#0c4a6e', '#0284c7']; return '<div class="ci-t5" style="border-top:4px solid ' + v[2] + '"><div class="ci-t5i">' + v[0] + '</div><div class="ci-t5n">' + (i + 1) + '. ' + e(c.title) + '</div><div class="ci-t5f" style="color:' + v[1] + '">' + pct(c) + '%</div><div class="pp-sm pp-mut">' + e(c.category) + '</div><div class="pp-sm">About ' + e(2 + Number(c.entryYears || 3)) + ' years from Class 11</div></div>'; }).join('') + '</div>']);
+            // 18 stream to career + final checklist
+            const road = (rec.roadmap || []).filter(function (x) { return !/^class\s*10\b/i.test(x); }).slice(0, 4), later = examsForCareer(rec).slice(0, 3).map(function (x) { return x.name; });
+            P.push(['From your stream to your top career', 'How ' + rec.title + ' connects to the choice you make now, and a final checklist.',
+                ipHero(rec, CAT_VIS[rec.category] || ['<i class=ic-star></i>', '#0c4a6e', '#0284c7'], '<div class="cr-fit"><b>' + pct(rec) + '%</b><span>your match</span></div>') +
+                '<div class="cr-steps"><div class="cr-step"><b>1</b><span>Now: Class 10, then ' + e(S[s.first]) + (C10_FAMILY[s.first] !== 'voc' ? ' (' + e(X.combo.pick[0]) + ')' : '') + '</span></div>' + road.map(function (x, i) { return '<div class="cr-step"><b>' + (i + 2) + '</b><span>' + e(x) + '</span></div>'; }).join('') + '</div>' +
+                (later.length ? '<p class="pp-sm"><b>Exams for later (in Class 12, not now):</b> ' + e(later.join(', ')) + '.</p>' : '') +
+                '<p class="pp-sm">Typical pay once working: ' + e(rec.salary) + ' (an estimate). That is many years away, and pay changes.</p>' +
+                ipCard('Your final checklist', '<ul>' + ['I know my first choice (' + S[s.first] + ') and my backup (' + S[s.backup] + ').', 'I know my subject combination: ' + X.combo.pick[0] + '.', 'I have a shortlist of four colleges.', 'I have done at least one test from page 14.', 'I have talked this through with a parent (page 16).', 'I know what I will do if my marks are lower than I hope (page 12).'].map(function (x) { return '<li><span class="pp-box"></span> ' + e(x) + '</li>'; }).join('') + '</ul>', 'pp-note') +
+                '<div class="pp-card pp-slim pp-foot"><b>Sources and how to read this report</b><p class="pp-sm">Stream fit comes from your quiz answers, using fixed rules. Colleges come from Plan4it.co’s list and, in Karnataka, the Department of Pre-University Education list. Scholarships come from Plan4it.co’s scholarship list. Career pay and demand are estimates from Plan4it.co’s career data. Fees, cut-offs, exam dates and scholarship rules change every year: confirm them on official websites before you act. Report generated ' + e(X.today) + ' at plan4it.co.</p></div>']);
+            return P.map(function (p, i) { return ipPage(i + 1, P.length, p[0], p[1], p[2], X.kind, X.right); }).join('');
+        }
+        function intelSnapshotC10(A) {
+            const X = c10Ctx(A); if (!X) return null;
+            const e = X.e, s = X.s, S = C10_SHORT, top = X.top, kind = 'Free 2-page report · Class 10';
+            const W = C10_WORRY[A.worry];
+            const p1 = c10Hero(X, false) + ipBasis(A) + c10Verdict(X) +
+                (W ? ipCard('Your biggest worry: ' + e(W[0].toLowerCase()), '<p class="pp-sm">' + e(W[1]) + '</p>', 'pp-note') : '') +
+                '<div class="pp-cols"><div style="flex:1.1">' + ipCard('Your top routes after Class 10', c10StreamMeters(X, 4) + '<p class="pp-sm pp-mut">The full report ranks all seven routes and says why the others rank lower.</p>') + '</div>' +
+                '<div>' + ipCard('Why ' + e(S[s.first]), '<div class="cr-good">' + (X.r1.pro.length ? X.r1.pro : ['It keeps a useful set of doors open.']).slice(0, 3).map(function (x) { return '<div><span>✓</span>' + e(x) + '</div>'; }).join('') + '</div>' + (X.r1.con[0] ? '<div class="cr-bad"><div><span>!</span>' + e(X.r1.con[0]) + '</div></div>' : '')) + '</div></div>' +
+                '<p class="pp-sm"><b>Opens:</b> ' + e(C10_ROUTE[s.first].degrees) + '. <b>Closes:</b> ' + e(C10_ROUTE[s.first].closes) + '.</p>';
+            const cl = X.cols.slice(0, 3), mo = X.months.slice(0, 3);
+            const p2 = ipH('Your next three months') + '<div class="pp-cols3">' + mo.map(function (m) { return ipCard(e(m[0]), ipUl(m[1].slice(0, 2))); }).join('') + '</div>' +
+                ipH('Your subject combination') + '<p><b>' + e(X.combo.pick[0]) + '</b>: ' + e(X.combo.pick[1]) + '. ' + e(X.combo.pick[2]) + '</p>' +
+                (cl.length ? ipH('Colleges to look at first') + ipRows(['College', 'Where', 'Type'], cl.map(function (c) { return ['<b>' + e(c.name) + '</b>', e(c.city || c.area || ''), e(c10CollegeType(c).join(' · '))]; })) + '<p class="pp-sm pp-mut">The full report lists six, with the questions to ask on a visit.</p>' : '') +
+                ipH('Careers that fit you, for later') + '<p class="pp-sm">You do not need to choose a career now. Your answers point to <b>' + e(top.slice(0, 3).map(function (c) { return c.title; }).join(', ')) + '</b>. The full report shows which stream each one needs.</p>' +
+                rptLockedBox('The full 18-page Class 10 report adds', RPT_C10_LOCKED, rptPriceText('full'), 'open plan4it.co, finish the quiz and tap Unlock on your results page.') +
+                '<p class="pp-sm pp-mut">Stream fit shows how well a route matches your answers. Fees, cut-offs and dates change every year; confirm on official sites. Generated ' + e(X.today) + ' at plan4it.co.</p>';
+            const P = [['Your stream, and why', 'What the quiz says about you, and the route after Class 10 that fits best.', p1], ['What to do next', 'Your next three months, your subjects and where to look first.', p2]];
+            return P.map(function (p, n) { return ipPage(n + 1, P.length, p[0], p[1], p[2], kind, X.right); }).join('');
+        }
+        const RPT_C10_LOCKED = ['All seven routes ranked, and why the others rank lower', 'The doors each stream opens and closes', 'Every subject combination, and the one for you', 'What your marks open, and a board-exam plan', 'Six Class 11-12 colleges near you, and what to ask', 'Integrated coaching: do you need it?', 'Scholarships from Class 11, and a cost worksheet', 'Plan B for low marks, a missed college or a wrong stream', 'A month-by-month plan and three try-it tests', 'A parent guide, and your top 5 careers for later'];
+        const RPT_FULL18_C10 = ['Your answer, on one page', 'What you told us, and what it says about you', 'Your stream verdict', 'Every route after Class 10, side by side', 'Your subject combination', 'The doors each choice opens and closes', 'Your marks and the board exams', 'Class 11 and 12 colleges near you', 'How to choose between colleges', 'What the two years will cost, and scholarships', 'Diploma, ITI and other routes', 'Plan B: if things do not go as planned', 'Your month-by-month plan', 'Try before you choose', 'Your worry, answered properly', 'Parent discussion guide', 'Careers that fit you, for later', 'From your stream to your top career'];
+        const RPT_FULL18_GROUPS_C10 = [
+            ['Pages 1-3', 'Your answer', 'The answer on one page, what your answers say about you, and all seven routes ranked', 'Tells you which stream fits you and why, in your own words, so the confusion has an answer.'],
+            ['Pages 4-6', 'The choice, explained', 'Every route side by side, your exact subject combination, and the doors each choice opens and closes', 'Shows what you are really choosing: which degrees you can apply for after Class 12, and which you cannot.'],
+            ['Pages 7-11', 'Getting a seat', 'Marks and board exams, colleges near you, how to choose, cost and scholarships, diploma and ITI', 'Which college, how to get in, what it costs and who pays less.'],
+            ['Pages 12-15', 'If things change', 'Plan B, a month-by-month plan, three try-it tests, and your worry answered', 'A backup for every likely problem, and exactly what to do each month until Class 11.'],
+            ['Pages 16-18', 'Family and the future', 'Parent guide, careers that fit you, and how your stream leads there', 'Talk it through at home, and see the careers your choice keeps open, for later.']
+        ];
+        function rptIsC10() { try { const a = getStoredWizardAnswers(); return !!(a && !a.__saved && isClass10(a)); } catch (er) { return false; } }
         function careerSnapshotRun(id, mode) {
             const c = careersData.find(function (x) { return x.id === id; }); if (!c) return;
             careerReportChoiceClose(); premiumCloseUnlock();
@@ -14468,6 +14873,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (!requireAuth('Sign in or create a free account to get your free report.', function () { intelSnapshotRun(src); })) return;
             trackEvent('snapshot_full');
             const from = src === 'quiz' || src === 'saved' ? src : (getStoredWizardAnswers() ? 'quiz' : getSavedCareers().length ? 'saved' : 'quiz');
+            if (c10NeedsPu(from)) { showToast('Preparing your report…'); puLoadExtra().then(function () { PU_READY = true; intelSnapshotRun(from); }); return; }
             let html = null; try { html = reportWith(from, intelSnapshot); } catch (er) { console.error(er); }
             if (!html) { showToast('Take the quiz, or save a career to your dashboard, then you can get your free report.'); return; }
             printSheetHTML(html, 'Your free report');
@@ -14671,7 +15077,10 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         function reportHubClose() { const m = document.getElementById('report-hub'); if (m) { m.className = 'hidden'; m.innerHTML = ''; } }
         document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') reportHubClose(); });
 
+        // A Class 10 report lists Class 11-12 colleges; in Karnataka most of them come from the lazily loaded PU list.
+        function c10NeedsPu(src) { const a = reportWith(src, getStoredWizardAnswers); return !!(a && !a.__saved && isClass10(a) && a.state === 'Karnataka' && !PU_READY); }
         function printPlan() {
+            if (c10NeedsPu(REPORT_SRC)) { showToast('Preparing your report…'); puLoadExtra().then(function () { PU_READY = true; printPlan(); }); return; }
             const f0 = reportWith(REPORT_SRC, getFit);
             if (f0 && f0.state && f0.state !== 'any' && !(DIR.index && DIR.shards[DIR.codeOf[f0.state]])) {
                 showToast('Preparing your plan for ' + f0.state + '…');
