@@ -10773,6 +10773,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             });
             // careers or fields the student named: their categories count as interests too
             if (a.cls === '9' || a.cls === '10' || a.cls === '11' || a.cls === '12') a.pickedCareers = [];
+            if (isClass10(a)) a.aim = [];
             a.pickedCareers = (a.pickedCareers || []).filter(function (id) { return careersData.some(function (x) { return x.id === id; }); }).slice(0, 5);
             a.mentioned = a.pickedCareers.concat(wizardMentionedCareers(a.careerNote).filter(function (id) { return a.pickedCareers.indexOf(id) < 0; }));
             const cats = {};
@@ -11120,7 +11121,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const needsState = wizardNeedsState();
             // fees, marks and institute type only matter to people still choosing a college
             const a0 = wizardAnswers, choosing = needsState || a0.cls === 'pg' || a0.after === 'msIndia';
-            ['wiz-sit-budget', 'wiz-sit-level', 'wiz-sit-aim'].forEach(function (id) { const el = document.getElementById(id); if (el) el.classList.toggle('hidden', !choosing || (id === 'wiz-sit-level' && !needsState)); });
+            ['wiz-sit-budget', 'wiz-sit-level', 'wiz-sit-aim'].forEach(function (id) { const el = document.getElementById(id); if (el) el.classList.toggle('hidden', !choosing || (id === 'wiz-sit-level' && !needsState) || (id === 'wiz-sit-aim' && isClass10(a0))); });
             const title = document.getElementById('wiz-practical-title'); if (title) title.textContent = needsState ? 'One more thing: where are you studying?' : choosing ? 'Optional: a few practical things' : 'Optional: where are you based?';
             const sub = document.getElementById('wiz-practical-sub'); if (sub) sub.textContent = needsState ? 'Colleges are only useful if they are realistic for you, so we need your state before showing any. Budget and marks are still optional.' : 'This lets us put colleges, exams and careers that are realistic for you first, not only the most famous ones. It is not a test, and you can skip any part of it.';
             const stateLabel = document.getElementById('wiz-state-label'); if (stateLabel) stateLabel.textContent = needsState ? 'Which state do you live in? *' : 'Which state do you live in?';
