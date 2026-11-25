@@ -1884,7 +1884,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
 
         <!-- ================= VIEW 7B: COLLEGE DETAIL PAGE ================= -->
         <section id="view-collegeDetail" class="view-section hidden max-w-4xl mx-auto space-y-6">
-            <button onclick="switchView('colleges')" class="text-brand-600 font-semibold text-sm hover:underline">← Back to College Discovery</button>
+            <button id="cd-back" onclick="switchView('colleges')" class="text-brand-600 font-semibold text-sm hover:underline">← Back to College Discovery</button>
             <div id="college-detail-content" class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm space-y-6">
                 <!-- Rendered dynamically -->
             </div>
@@ -9752,7 +9752,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             { id: 'careers', label: 'Careers', key: 'career', items: function () { return careersData; }, fields: careerSearchFields, title: function (c) { return c.title; }, sub: function (c) { return c.category + (c.salary ? ' \u00b7 ' + c.salary + approxText(c, 'salary') : ''); }, open: function (id) { openCareerDetail(id); }, all: function (q) { switchView('explorer'); document.getElementById('career-search').value = q; renderExplorerCareers(); } },
             { id: 'exams', label: 'Exams', key: 'exam', items: function () { return examsData; }, fields: examSearchFields, title: function (e) { return e.name; }, sub: function (e) { return e.body + ' \u00b7 ' + e.stream; }, open: function (id) { openExamDetail(id); }, all: function (q) { switchView('exams'); document.getElementById('exam-search').value = q; renderExams(); } },
             { id: 'colleges', label: 'Colleges', key: 'college', items: function () { return collegesData; }, fields: collegeSearchFields, title: function (c) { return c.name; }, sub: function (c) { return c.location + ' \u00b7 ' + c.stream; }, open: function (id) { openCollegeDetail(id); }, all: function (q) { switchView('colleges'); setCollegesMode('degree'); document.getElementById('college-search').value = q; renderColleges(); } },
-            { id: 'a10c', label: 'Class 11\u201312 colleges and schools', key: 'inst', items: function () { return AFTER10_COLLEGES; }, fields: institutionSearchFields, title: function (c) { return c.name; }, sub: function (c) { return c.city + (c.state === 'All India' ? '' : ', ' + c.state); }, open: null, all: function (q) { switchView('colleges'); setCollegesMode('after10'); document.getElementById('a10c-search').value = q; renderAfter10Colleges(); } },
+            { id: 'a10c', label: 'Class 11\u201312 colleges and schools', key: 'inst', items: function () { return AFTER10_COLLEGES; }, fields: institutionSearchFields, title: function (c) { return c.name; }, sub: function (c) { return c.city + (c.state === 'All India' ? '' : ', ' + c.state); }, open: function (id) { openAfter10Detail(id); }, all: function (q) { switchView('colleges'); setCollegesMode('after10'); document.getElementById('a10c-search').value = q; renderAfter10Colleges(); } },
             { id: 'tools', label: 'Pages and tools', key: 'tool', items: function () { return TOOL_DIRECTORY; }, fields: function (t) { return [{ t: t.title, w: 3 }, { t: t.label, w: 2.5 }, { t: t.kw, w: 2 }, { t: t.desc, w: 1 }]; }, title: function (t) { return t.title; }, sub: function (t) { return (VIEW_NAMES[t.view] || '') + ' \u00b7 ' + t.desc; }, all: function (q) { switchView('home'); const inp = document.getElementById('tool-search'); if (inp) { inp.value = q; filterToolDirectory(); } } },
         ];
         const GS_POPULAR = ['NEET', 'JEE', 'IIT', 'MBA', 'CA', 'Law', 'Scholarship', 'Class 11 admission'];
@@ -12284,12 +12284,10 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (girls) bits.push('Girls\u2019 college.'); else if (boys) bits.push('Boys\u2019 college.');
             if (eve) bits.push('Evening classes, so check the timings.');
             if (chain) bits.push('Part of a chain known for integrated JEE and NEET coaching with PU.');
-            if (r[4]) bits.push('Address: ' + r[4] + '.');
-            if (r[5]) bits.push('Started in ' + String(r[5]).replace('-', '\u2013') + '.');
             if (streams.length) bits.push('The streams shown come from the college\u2019s name; ask which combinations it offers.');
-            return { id: 'pu-' + String(r[0]).toLowerCase().replace(/\s+/g, ''), name: n, city: place, state: 'Karnataka', kind: 'pu', streams: streams, coach: chain ? ['jee_neet'] : [], area: place, dist: dist, mgmt: mg[0], conf: 'dpue',
+            return { id: 'pu-' + String(r[0]).toLowerCase().replace(/\s+/g, ''), code: String(r[0]).replace(/\s+/g, ''), addr: r[4] || '', year: r[5] ? String(r[5]).replace('-', '\u2013') : '', mtype: d.mgmt[r[3]], name: n, city: place, state: 'Karnataka', kind: 'pu', streams: streams, coach: chain ? ['jee_neet'] : [], area: place, dist: dist, mgmt: mg[0], conf: 'dpue',
                 admission: 'Apply after your SSLC (Class 10) results. Seats go on SSLC marks and the state\u2019s reservation rules. Ask the college for its cut-off and the subject combinations (Arts, Commerce, Science) it offers this year.',
-                link: ['Dept. of Pre-University Education', 'https://pue.karnataka.gov.in/'], note: bits.join(' ') };
+                link: ['Dept. of Pre-University Education', 'https://pue.karnataka.gov.in/'], note: bits.join(' '), extra: bits.slice(1).join(' ') };
         }
         function puLoadExtra() {
             if (PU_EXTRA) return PU_EXTRA;
@@ -15005,7 +15003,45 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 (c.conf === 'listed' ? '<p class="text-[11px] text-slate-500">Seen on one directory listing. Confirm the details with the college.</p>' : '') +
                 (c.conf === 'dpue' ? '<p class="text-[11px] text-slate-500">From the Dept. of PU Education college list. Fees and the subjects offered are not in that list, so ask the college.</p>' : '') +
                 (c.link ? '<a href="' + e(c.link[1]) + '" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-brand-600 hover:underline">' + e(c.link[0]) + ' ↗</a>' : '') +
+                '<button type="button" onclick="openAfter10Detail(\'' + e(c.id) + '\')" class="self-start text-brand-700 text-sm font-semibold hover:underline min-h-[44px]">View details →</button>' +
                 '</div>';
+        }
+        // Details page for a Class 11-12 institution (PU, junior college, group or school), in the same page shell as degree colleges
+        const A10C_MTYPE = { Government: 'Government', Corporation: 'City corporation (BBMP)', Aided: 'Government-aided', UnAided: 'Private (unaided)', MWD: 'MWD (state welfare department)', KREIS: 'KREIS (state residential society)', Bifurcated: 'Bifurcated' };
+        function openAfter10Detail(id) {
+            const e = escapeAuth, c = AFTER10_COLLEGES.find(function (x) { return x.id === id; });
+            const content = document.getElementById('college-detail-content'); if (!content) return;
+            const back = document.getElementById('cd-back');
+            if (back) { back.onclick = function () { switchView('colleges'); setCollegesMode('after10'); renderAfter10Colleges(); }; back.textContent = '\u2190 Back to Class 11\u201312 colleges'; }
+            const rg = document.getElementById('related-colleges-grid'), rt = document.getElementById('related-colleges-title');
+            if (!c) { content.innerHTML = '<p class="text-slate-500 text-sm">We could not find that college. It may have been removed.</p>'; if (rg) rg.innerHTML = ''; if (rt) rt.classList.add('hidden'); switchView('collegeDetail'); return; }
+            const row = function (k, v) { return v ? '<div class="flex flex-col sm:flex-row sm:gap-4 py-2 border-b border-slate-100"><dt class="sm:w-44 shrink-0 text-xs font-semibold text-slate-500">' + e(k) + '</dt><dd class="text-sm text-slate-800 break-words">' + e(v) + '</dd></div>' : ''; };
+            const chips = c.streams.map(function (x) { return '<span class="text-[11px] font-semibold bg-brand-50 text-brand-700 px-2 py-0.5 rounded-full">' + e(x === 'Arts' ? 'Arts / Humanities' : x) + '</span>'; }).concat(c.coach.map(function (k) { return '<span class="text-[11px] font-semibold bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full">' + (k === 'ca' ? 'CA / CMA / CS built in' : 'JEE / NEET coaching built in') + '</span>'; })).join(' ');
+            const known = c.conf !== 'dpue';
+            const ask = ['What are the fees for the full two years, including books, uniform and any hostel or transport?', 'Which subject combinations (such as PCMB, PCMC, EBAC, HEBA) are offered this year, and how many seats in each?', 'What was last year\u2019s SSLC cut-off for the combination I want?', 'Which language options are there, and are there coaching or bridge classes for CET, NEET or JEE?', 'How were the last two years\u2019 2nd PU results, and how many students went on to engineering, medicine or degree courses?'];
+            content.innerHTML =
+                '<div><p class="text-xs font-semibold text-brand-700">' + e(A10C_KINDS[c.kind] || 'Class 11\u201312') + (c.mgmt ? ' \u00b7 ' + e(A10C_MTYPE[c.mtype] || c.mtype) : '') + '</p>' +
+                '<h2 class="text-2xl font-extrabold text-slate-900 mt-1 break-words">' + e(c.name) + '</h2>' +
+                '<p class="text-sm text-slate-600 mt-1">' + e(c.city) + (c.state === 'All India' ? '' : ', ' + e(c.state)) + '</p>' +
+                (chips ? '<div class="flex flex-wrap gap-1 mt-3">' + chips + '</div>' : '') + '</div>' +
+                '<div><h3 class="font-bold text-slate-900 text-sm mb-1">At a glance</h3><dl>' +
+                row('Type', A10C_KINDS[c.kind]) + row('Management', c.mtype ? A10C_MTYPE[c.mtype] || c.mtype : '') + row('District', c.dist) + row('Area', c.dist ? '' : c.area) + row('Address', String(c.addr || '').toLowerCase() === String(c.dist || '').toLowerCase() ? '' : c.addr) + row('Started', c.year) + row('College code', c.code) +
+                row('Streams', c.streams.length ? c.streams.map(function (x) { return x === 'Arts' ? 'Arts / Humanities' : x; }).join(', ') + (known ? '' : ' (taken from the college name)') : 'Not in the list we have') +
+                '</dl></div>' +
+                (c.mgmt ? '<div class="bg-slate-50 border border-slate-200 rounded-xl p-4"><h3 class="font-bold text-slate-900 text-sm mb-1">What the management type means for you</h3><p class="text-sm text-slate-700">' + e((PU_MGMT[c.mtype] || [0, ''])[1]) + '</p></div>' : '') +
+                '<div><h3 class="font-bold text-slate-900 text-sm mb-1">How to get in</h3><p class="text-sm text-slate-700">' + e(a10cAdmission(c)) + '</p></div>' +
+                ((c.extra !== undefined ? c.extra : c.note) ? '<div><h3 class="font-bold text-slate-900 text-sm mb-1">Good to know</h3><p class="text-sm text-slate-700">' + e(c.extra !== undefined ? c.extra : c.note) + '</p></div>' : '') +
+                (known ? '' : '<div class="bg-amber-50 border border-amber-200 rounded-xl p-4"><h3 class="font-bold text-amber-900 text-sm mb-1">Fees and subjects are not in our list yet</h3><p class="text-sm text-amber-900">The department\u2019s college list gives the college\u2019s name, place and management type, but not fees or subject combinations. Ask the college these before you apply:</p><ul class="list-disc pl-5 mt-2 space-y-1 text-sm text-amber-900">' + ask.map(function (q) { return '<li>' + e(q) + '</li>'; }).join('') + '</ul></div>') +
+                (c.link ? '<p><a href="' + e(c.link[1]) + '" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold text-brand-600 hover:underline">' + e(c.link[0]) + ' \u2197</a></p>' : '') +
+                '<p class="text-[11px] text-slate-500">Details come from the Dept. of Pre-University Education college list and our own notes. Confirm fees, seats and dates with the college before you apply.</p>';
+            // other colleges in the same place
+            if (rg && rt) {
+                const near = AFTER10_COLLEGES.filter(function (x) { return x.id !== c.id && x.state === c.state && x.area === c.area && x.kind === c.kind; }).sort(function (x, y) { return (x.conf === 'dpue') - (y.conf === 'dpue') || String(x.name).localeCompare(y.name); }).slice(0, 6);
+                rt.textContent = 'Other colleges in ' + c.area; rt.classList.toggle('hidden', !near.length);
+                rg.innerHTML = near.map(function (x) { return '<button type="button" onclick="openAfter10Detail(\'' + e(x.id) + '\')" class="text-left bg-white border border-slate-200 rounded-xl p-4 hover:border-brand-400"><p class="font-bold text-slate-900 text-sm break-words">' + e(x.name) + '</p><p class="text-xs text-slate-500 mt-0.5">' + e(x.addr && String(x.addr).toLowerCase() !== String(x.dist || '').toLowerCase() ? x.addr : x.city) + (x.mtype ? ' \u00b7 ' + e(A10C_MTYPE[x.mtype] || x.mtype) : '') + (x.code ? ' \u00b7 ' + e(x.code) : '') + '</p></button>'; }).join('');
+            }
+            switchView('collegeDetail');
+            window.scrollTo(0, 0);
         }
         function resetAfter10Colleges() {
             document.getElementById('a10c-search').value = '';
@@ -17100,6 +17136,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         }
         function openCollegeDetail(collegeId, skipViewSwitch) {
             const content = document.getElementById('college-detail-content');
+            { const bk = document.getElementById('cd-back'); if (bk) { bk.onclick = function () { switchView('colleges'); }; bk.textContent = '\u2190 Back to College Discovery'; } }
             if (dirCodeFromId(collegeId) && !DIR.byId.has(collegeId) && !openCollegeDetail._retry) {
                 // a directory college whose state file is not loaded yet (saved earlier, or from another page)
                 content.innerHTML = '<p class="text-slate-500 text-sm">Loading this college…</p>';
