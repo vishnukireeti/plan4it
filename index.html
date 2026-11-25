@@ -12283,7 +12283,26 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             renderAfter10Colleges();
             const g = document.getElementById('a10c-grid'); if (g && g.scrollIntoView) g.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+        // 900+ more Bengaluru PU colleges from the Dept. of PU Education list: loaded on demand, then added to AFTER10_COLLEGES
+        let PU_EXTRA = null;
+        function puLoadExtra() {
+            if (PU_EXTRA) return PU_EXTRA;
+            PU_EXTRA = fetch('data/pu_bengaluru.json').then(function (r) { if (!r.ok) throw new Error('pu ' + r.status); return r.json(); })
+                .then(function (d) {
+                    const have = new Set(AFTER10_COLLEGES.map(function (c) { return c.id; }));
+                    d.rows.forEach(function (r) {
+                        const id = 'dpue-' + String(r[0]).toLowerCase().replace(/\s+/g, '');
+                        if (have.has(id)) return;
+                        AFTER10_COLLEGES.push({ id: id, name: r[1], city: 'Bengaluru', state: 'Karnataka', kind: 'pu', streams: [], coach: [], admission: null, area: 'Bengaluru', conf: 'listed', link: null,
+                            note: 'In the Dept. of PU Education list for Bengaluru' + (r[2] ? ' (PIN ' + r[2] + (r[3] ? ', ' + r[3] : '') + ')' : (r[3] ? ' (' + r[3] + ')' : '')) + '. Streams offered are not in that list, so ask the college.' });
+                    });
+                    return true;
+                })
+                .catch(function (e) { console.warn('PU list not loaded:', e); return false; });
+            return PU_EXTRA;
+        }
         function renderWizardPuMatches(f) {
+            if (!PU_EXTRA && (f.state === 'Karnataka' || f.state === 'any')) { puLoadExtra().then(function () { renderWizardPuMatches(f); }); }
             const box = document.getElementById('wizard-matches-list'); if (!box) return;
             const e = escapeAuth, st = f.state;
             const all = AFTER10_COLLEGES.filter(function (c) { return (c.kind === 'pu' || c.kind === 'jc') && (st === 'any' || c.state === st); });
@@ -14914,6 +14933,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         function renderAfter10Colleges() {
             const grid = document.getElementById('a10c-grid');
             if (!grid) return;
+            if (!PU_EXTRA) { puLoadExtra().then(function (ok) { if (ok) renderAfter10Colleges(); }); }
             const q = (document.getElementById('a10c-search').value || '').toLowerCase();
             const vals = {};
             A10C_FACETS.forEach(function (f) { vals[f.id] = document.getElementById(f.id).value; });
