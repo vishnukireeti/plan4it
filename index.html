@@ -521,11 +521,15 @@
             main a[href]:not(.block):not([class*="px-"]):not([class*="py-"])::after, main .gloss::after { content: ""; position: absolute; left: -6px; right: -6px; top: 50%; height: max(100%, 44px); transform: translateY(-50%); }
         }
         /* Quiz results: report card sits in a right-hand column on laptops */
+        #wizard-side { display: contents; }
         @media (min-width: 1024px) {
             #view-confusedMode:has(#wizard-results:not(.hidden)) { max-width: 72rem; padding: 1.75rem; }
             #wizard-results:not(.hidden) { display: grid; grid-template-columns: minmax(0, 1fr) 19.5rem; column-gap: 1.5rem; align-items: start; }
             #wizard-results > * { grid-column: 1; min-width: 0; }
-            #wizard-results > #report-promo-results { grid-column: 2; grid-row: 1 / span 40; position: sticky; top: 5.5rem; margin-bottom: 0; max-height: calc(100vh - 6.5rem); overflow-y: auto; border-radius: 1rem; }
+            #wizard-results > #wizard-side { display: block; grid-column: 2; grid-row: 1 / span 40; position: sticky; top: 5.5rem; max-height: calc(100vh - 6.5rem); overflow-y: auto; }
+            #wizard-side #report-promo-results { margin-bottom: 1.5rem; border-radius: 1rem; }
+            #wizard-side #wizard-insights .grid { grid-template-columns: minmax(0, 1fr); }
+            #wizard-side #wizard-insights { margin-bottom: 0; }
         }
     /* Professional line icons (replace emoji). Usage: <i class=ic-NAME></i>; colour follows the text colour. */
 i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em;background-color:currentColor;-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat;-webkit-print-color-adjust:exact;print-color-adjust:exact;flex:none}
@@ -1127,9 +1131,11 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
 
                     <div id="wizard-howto" class="mb-6"></div>
 
-                    <div id="report-promo-results" class="mb-6 hidden lg:block"></div>
+                    <div id="wizard-side">
+                        <div id="report-promo-results" class="mb-6 hidden lg:block"></div>
 
-                    <div id="wizard-insights" class="hidden mb-6"></div>
+                        <div id="wizard-insights" class="hidden mb-6"></div>
+                    </div>
 
                     <div id="wizard-nextstep" class="mb-6"></div>
 
