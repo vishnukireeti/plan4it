@@ -1155,11 +1155,11 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
 
                     <!-- Family Expectation vs. Your Interest Reflection -->
                     <div id="wizard-family" data-jump="Family talk" class="scroll-mt-32 bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-4 mb-6">
-                        <h4 class="font-bold text-slate-900 text-sm"><i class=ic-chat></i> One More Thing: Family Expectations vs. Your Interest</h4>
-                        <p class="text-xs text-slate-600">Career fit in India is rarely just about you — it's also about what family expects. This won't resolve it, but it can help you see the gap (or lack of one) clearly enough to actually talk about it.</p>
+                        <h4 id="family-title" class="font-bold text-slate-900 text-sm"><i class=ic-chat></i> <span id="family-title-text">One More Thing: Family Expectations vs. Your Interest</span></h4>
+                        <p id="family-intro" class="text-xs text-slate-600">Career fit in India is rarely just about you — it's also about what family expects. This won't resolve it, but it can help you see the gap (or lack of one) clearly enough to actually talk about it.</p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
-                                <label for="family-expectation" class="text-slate-600 block text-xs font-semibold mb-1">What does your family expect or prefer?</label>
+                                <label id="family-expect-label" for="family-expectation" class="text-slate-600 block text-xs font-semibold mb-1">What does your family expect or prefer?</label>
                                 <select id="family-expectation" onchange="renderFamilyReflection()" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
                                     <option value="">Select...</option>
                                     <option value="Technology">Engineering / Technology</option>
@@ -1172,7 +1172,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                                 </select>
                             </div>
                             <div>
-                                <p class="text-slate-600 block text-xs font-semibold mb-1">Your interest, from the quiz</p>
+                                <p id="family-interest-label" class="text-slate-600 block text-xs font-semibold mb-1">Your interest, from the quiz</p>
                                 <p id="family-your-interest" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-semibold text-slate-800"></p>
                             </div>
                         </div>
@@ -12232,9 +12232,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         '</div></div></div>';
                 }).join('');
             }
-            document.getElementById('family-expectation').value = '';
-            document.getElementById('family-reflection-result').classList.add('hidden');
-            document.getElementById('family-your-interest').textContent = wizardAnswers.interest && wizardAnswers.interest !== 'Undecided' ? wizardAnswers.interest : 'Not clear yet \u2014 that\'s okay';
+            familySetup();
             renderWizardInsights();
             renderWizardRoutes();
             renderWizardNextStep();
@@ -12376,10 +12374,65 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 (st ? '<button type="button" onclick="goColleges()" class="w-full min-h-[48px] mt-1 rounded-xl border border-brand-200 bg-brand-50 text-brand-800 font-semibold text-sm hover:bg-brand-100">See all ' + (st.count + collegesData.filter(function (c) { return collegeState(c) === st.name; }).length).toLocaleString('en-IN') + ' colleges in ' + e(st.name) + ' →</button>' : '');
         }
 
+        // Class 9/10 students compare what the family expects with the stream or route that fits the quiz, not with a career
+        function familyIsC10() { return isClass10(wizardAnswers) || wizardAnswers.stage === 'School 8-10'; }
+        const FAMILY_C10_OPTS = [['pcm', 'Science with Maths (engineering, JEE)'], ['pcb', 'Science with Biology (medicine, NEET)'], ['com', 'Commerce (CA, business)'], ['hum', 'Humanities / Arts (law, civil services, design)'], ['dip', 'Diploma / Polytechnic'], ['iti', 'ITI / skilled trade'], ['Open', 'They say "whatever you choose is fine"']];
+        function familySetup() {
+            const sel = document.getElementById('family-expectation'); if (!sel) return;
+            const set = function (id, t) { const el = document.getElementById(id); if (el) el.textContent = t; };
+            if (!sel.getAttribute('data-orig')) sel.setAttribute('data-orig', sel.innerHTML);
+            const c10 = familyIsC10(), mode = c10 ? 'c10' : 'std';
+            if (sel.getAttribute('data-mode') !== mode) {
+                sel.innerHTML = c10 ? '<option value="">Select...</option>' + FAMILY_C10_OPTS.map(function (o) { return '<option value="' + o[0] + '">' + escapeAuth(o[1]) + '</option>'; }).join('') : sel.getAttribute('data-orig');
+                sel.setAttribute('data-mode', mode); sel.value = '';
+            }
+            const fr = document.getElementById('family-reflection-result'); if (fr) fr.classList.add('hidden');
+            if (c10) {
+                set('family-title-text', 'One More Thing: Talking With Your Family About After Class 10');
+                set('family-intro', 'Many families have a stream or route in mind for after Class 10. This will not settle it, but it can show where your family and your quiz agree or differ, so you can talk about it calmly. Your school counsellor can help too.');
+                set('family-expect-label', 'What does your family expect or prefer after Class 10?');
+                set('family-interest-label', 'Routes that fit your quiz answers');
+                let r = []; try { r = computeWizardRoutes(wizardAnswers); } catch (e) { r = []; }
+                set('family-your-interest', r.length ? r.map(function (x) { return x.r.title.replace(/\s*\(.*?\)\s*$/, ''); }).join(', ') : 'Not clear yet \u2014 that\'s okay');
+            } else {
+                set('family-title-text', 'One More Thing: Family Expectations vs. Your Interest');
+                set('family-intro', 'Career fit in India is rarely just about you \u2014 it\'s also about what family expects. This won\'t resolve it, but it can help you see the gap (or lack of one) clearly enough to actually talk about it.');
+                set('family-expect-label', 'What does your family expect or prefer?');
+                set('family-interest-label', 'Your interest, from the quiz');
+                set('family-your-interest', wizardAnswers.interest && wizardAnswers.interest !== 'Undecided' ? wizardAnswers.interest : 'Not clear yet \u2014 that\'s okay');
+            }
+        }
+        function renderFamilyReflectionC10(expectation, resultEl) {
+            resultEl.classList.remove('hidden');
+            let routes = []; try { routes = computeWizardRoutes(wizardAnswers); } catch (e) { routes = []; }
+            const ids = routes.map(function (x) { return x.r.id; });
+            const nm = function (id) { const o = FAMILY_C10_OPTS.filter(function (x) { return x[0] === id; })[0]; const r = WIZARD_ROUTES.filter(function (x) { return x.id === id; })[0]; return r ? r.title.replace(/\s*\(.*?\)\s*$/, '') : (o ? o[1] : id); };
+            const fit = ids.length ? ids.map(nm).join(', ') : '';
+            if (expectation === 'Open') {
+                resultEl.className = 'bg-emerald-50 border border-emerald-200 rounded-xl p-4 space-y-1.5';
+                resultEl.innerHTML = '<p class="font-bold text-emerald-800 text-sm">Good alignment here</p><p class="text-xs text-emerald-700">An open family is a real advantage at this age. Show them the routes above and what each one keeps open, so their trust is matched with information. Choosing a stream is easier when you decide together.</p>';
+            } else if (!ids.length) {
+                resultEl.className = 'bg-amber-50 border border-amber-200 rounded-xl p-4 space-y-1.5';
+                resultEl.innerHTML = '<p class="font-bold text-amber-800 text-sm">Your own picture is not clear yet, and that is fine</p><p class="text-xs text-amber-700">Most students are unsure at Class 10. Look at what each route keeps open before comparing with your family\'s wish, and ask your school counsellor. Comparing against an unclear picture usually only adds pressure.</p>';
+            } else if (ids.indexOf(expectation) > -1) {
+                resultEl.className = 'bg-emerald-50 border border-emerald-200 rounded-xl p-4 space-y-1.5';
+                resultEl.innerHTML = '<p class="font-bold text-emerald-800 text-sm">Good alignment here</p><p class="text-xs text-emerald-700">' + escapeAuth(nm(expectation)) + ' is one of the routes that fit your quiz answers (' + escapeAuth(fit) + '). Tell your family why it suits you, and check the subjects and marks the PU or junior college asks for.</p>';
+            } else {
+                resultEl.className = 'bg-amber-50 border border-amber-200 rounded-xl p-4 space-y-2';
+                resultEl.innerHTML = '<p class="font-bold text-amber-800 text-sm">There is a gap worth talking through</p>' +
+                    '<p class="text-xs text-amber-700">Your family is thinking of ' + escapeAuth(nm(expectation)) + ', while your quiz points to ' + escapeAuth(fit) + '. That is common at Class 10, and it does not have to be a standoff. Things that tend to help:</p>' +
+                    '<ul class="text-xs text-amber-700 space-y-1 pl-4 list-disc">' +
+                    '<li>Show them what each route keeps open, using the routes above. Many families relax when they see that other streams also lead to good careers.</li>' +
+                    '<li>Ask what is behind their preference. Often it is job security or a relative\'s experience, not the stream itself.</li>' +
+                    '<li>Your Class 10 results and the subjects you enjoy matter. Check the marks and subject combinations the PU or junior colleges near you ask for before deciding.</li>' +
+                    '<li>Talk to your school counsellor or a teacher you trust, and ask for time to compare, since you do not have to decide in one conversation.</li></ul>';
+            }
+        }
         function renderFamilyReflection() {
             const expectation = document.getElementById('family-expectation').value;
             const resultEl = document.getElementById('family-reflection-result');
             if (!expectation) { resultEl.classList.add('hidden'); return; }
+            if (familyIsC10()) { renderFamilyReflectionC10(expectation, resultEl); return; }
 
             const interest = wizardAnswers.interest;
             const interestKnown = interest && interest !== 'Undecided';
