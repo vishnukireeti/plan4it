@@ -1125,6 +1125,11 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         <p class="text-xs text-brand-800 bg-white/60 border border-brand-100 rounded-lg px-3 py-2 mt-3">This is guidance based on your answers and interests.</p>
                     </div>
 
+                    <div id="wizard-disclaimer" class="mb-6 bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs text-slate-700">
+                        <p class="font-bold text-slate-900 text-sm mb-1">Suggestions based on your quiz</p>
+                        <p>These are ideas to explore from your answers. They are not an exact match or a prediction of what will suit you. Your course or stream does not decide your career: commerce, BBA and BMS students also work in technology, product, marketing and design, and science or arts students move into business, media and more. If these do not interest you, add the careers you like below and we will update your results.</p>
+                    </div>
+
                     <div id="wizard-howto" class="mb-6"></div>
 
                     <div id="report-promo-results" class="mb-6 hidden lg:block"></div>
@@ -1140,6 +1145,10 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     <div id="wizard-matches-list" class="space-y-4 mb-6">
                         <!-- Populated by JS -->
                     </div>
+
+                    <div id="wizard-pick" class="mb-6 scroll-mt-32"></div>
+
+                    <div id="wizard-pick" class="mb-6"></div>
 
                     <div id="wizard-premium" class="mb-6"></div>
 
@@ -10716,8 +10725,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             maths: { more: [['Technology', 1], ['Engineering', 1], ['Science', 0.5]], drop: [['Engineering', -1.5], ['Technology', -0.5]] },
             bio: { enjoy: [['Healthcare', 1.5], ['Science', 0.5]], no: [['Healthcare', -1.5]] },
             stream: { pcm: [['Engineering', 3], ['Technology', 2], ['Science', 1.5]], pcb: [['Healthcare', 3], ['Science', 2]], pcmb: [['Healthcare', 2], ['Engineering', 2], ['Science', 2], ['Technology', 1]],
-                comm: [['Business', 3], ['Technology', 0.5]], com: [['Business', 2.5], ['Law & Public Service', 1]], arts: [['Law & Public Service', 2], ['Media', 1.5], ['Education', 1.5], ['Creative', 1]], voc: [['Skilled Trades', 2], ['Aviation & Hospitality', 1], ['Technology', 0.5]] },
-            degree: { btech: [['Engineering', 2.5], ['Technology', 2]], bsc: [['Science', 2.5], ['Technology', 0.5]], bcom: [['Business', 2.5]], ba: [['Law & Public Service', 1.5], ['Media', 1.5], ['Education', 1.5]], bba: [['Business', 2.5]],
+                comm: [['Business', 2.5], ['Technology', 1]], com: [['Business', 2.2], ['Technology', 0.9], ['Law & Public Service', 1]], arts: [['Law & Public Service', 2], ['Media', 1.5], ['Education', 1.5], ['Creative', 1]], voc: [['Skilled Trades', 2], ['Aviation & Hospitality', 1], ['Technology', 0.5]] },
+            degree: { btech: [['Engineering', 2.5], ['Technology', 2]], bsc: [['Science', 2.5], ['Technology', 0.5]], bcom: [['Business', 1.8], ['Technology', 1.1], ['Media', 0.6]], ba: [['Law & Public Service', 1.5], ['Media', 1.5], ['Education', 1.5]], bba: [['Business', 1.8], ['Technology', 1.1], ['Media', 0.6]],
                 bca: [['Technology', 3]], med: [['Healthcare', 3]], design: [['Creative', 3], ['Media', 1]], law: [['Law & Public Service', 3]], diploma: [['Engineering', 1.5], ['Skilled Trades', 1.5]] },
             selfDrive: { projects: [['Technology', 0.7], ['Engineering', 0.5]], clubs: [['Business', 0.5], ['Media', 0.5]], freelance: [['Business', 1], ['Creative', 0.5]] },
             keep: { data: [['Technology', 1], ['Business', 0.5]], manage: [['Business', 1]], customers: [['Business', 0.5], ['Personal Services & Wellness', 0.5]], build: [['Engineering', 1], ['Technology', 1]],
@@ -10768,7 +10777,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 [].concat(a[k] || []).forEach(function (v) { add(QZ_INTEREST[k][v], w); });
             });
             // careers or fields the student named: their categories count as interests too
-            a.mentioned = wizardMentionedCareers(a.careerNote);
+            a.pickedCareers = (a.pickedCareers || []).filter(function (id) { return careersData.some(function (x) { return x.id === id; }); }).slice(0, 5);
+            a.mentioned = a.pickedCareers.concat(wizardMentionedCareers(a.careerNote).filter(function (id) { return a.pickedCareers.indexOf(id) < 0; }));
             const cats = {};
             // the best match for what they typed counts most; looser matches ("Sports Data Analyst" for "data analyst") count a little
             a.mentioned.forEach(function (id, i) { const c = careersData.find(function (x) { return x.id === id; }); if (c) { const k = QZ_CAT_TO_INT[c.category] || c.category; cats[k] = (cats[k] || 0) + (i === 0 ? 1 : 0.25); } });
@@ -12055,7 +12065,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const what = schoolStage ? 'colleges' : 'careers';
             if (head) {
                 head.setAttribute('data-jump', schoolStage ? 'Best colleges for you' : 'Best careers for you');
-                head.innerHTML = '<h3 class="font-extrabold text-slate-900 text-lg">' + (schoolStage ? 'Colleges worth a look' : 'Careers that fit you best') + '</h3><p class="text-sm text-slate-600 mt-0.5 mb-3">' + (schoolStage ? 'These colleges match your answers, state and budget. ' : 'These are the careers that match your answers most closely. ') + 'The label on each card shows how close the match is: <b>Strong fit</b>, <b>Good fit</b> or <b>Possible fit</b> (the dots mean the same).' + (schoolStage ? ' NIRF is the government\'s ranking of colleges; a lower number is better.' : '') + '</p>';
+                head.innerHTML = '<h3 class="font-extrabold text-slate-900 text-lg">' + (schoolStage ? 'Colleges worth a look' : 'Careers that fit you best') + '</h3><p class="text-sm text-slate-600 mt-0.5 mb-3">' + (schoolStage ? 'These colleges match your answers, state and budget. ' : 'These are the careers that match your answers most closely. ') + 'The label on each card shows how close the match is: <b>Strong fit</b>, <b>Good fit</b> or <b>Possible fit</b> (the dots mean the same).' + (schoolStage ? ' NIRF is the government\'s ranking of colleges; a lower number is better.' : '') + '</p>' +
+                    '<div class="mt-3 text-sm bg-amber-50 border border-amber-200 text-amber-900 rounded-xl px-4 py-3" role="note"><b>Suggestions based on your quiz.</b> These are ideas drawn from your answers only, not a guarantee of fit or a verdict on what suits you. Your degree or stream does not lock you in: B.Com, BBA and BMS students also build careers in technology, analytics, product and fintech, and many careers are open to graduates of any stream. If none of these interest you, add careers you like further down.</div>';
             }
             const steps = [
                 ['1', 'See your best ' + what, 'Start with the first card below. Open it for the full picture.'],
@@ -12067,6 +12078,70 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             });
             box.innerHTML = '<div class="bg-white border border-slate-200 rounded-2xl p-4 md:p-5"><h4 class="font-extrabold text-slate-900">How to read this page</h4><ol class="grid sm:grid-cols-3 gap-3 mt-3">' + steps.map(function (st) { return '<li class="flex gap-3"><span class="inline-flex w-7 h-7 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-800 text-sm font-bold">' + st[0] + '</span><span><span class="block text-sm font-bold text-slate-900">' + st[1] + '</span><span class="block text-xs text-slate-600 mt-0.5">' + st[2] + '</span></span></li>'; }).join('') + '</ol>' +
                 (jumps.length ? '<p class="text-xs font-bold uppercase tracking-wider text-slate-500 mt-4 mb-2">Jump to</p><div class="flex flex-wrap gap-2">' + jumps.join('') + '</div>' : '') + '</div>';
+        }
+        // The top matches should not all come from one field: at most `cap` per field, careers the student named always stay.
+        // "Not interested in these?": the student adds careers they like, right here on the results page.
+        // The careers join their quiz answers, the matches update, and nothing sends them to the Career Explorer.
+        let wizPickCat = '', wizPickQ = '';
+        function wizardPickAdd(id) {
+            const a = wizardAnswers, list = (a.pickedCareers || []).filter(function (x) { return x !== id; });
+            if (list.length >= 5) { try { showToast('You can add up to 5 careers. Remove one first.'); } catch (er) {} return; }
+            list.push(id); a.pickedCareers = list; wizPickQ = '';
+            trackEvent('quiz_career_added', { career: id });
+            renderWizardResults();
+        }
+        function wizardPickRemove(id) { wizardAnswers.pickedCareers = (wizardAnswers.pickedCareers || []).filter(function (x) { return x !== id; }); renderWizardResults(); }
+        function wizardPickCatSet(cat) { wizPickCat = wizPickCat === cat ? '' : cat; wizPickQ = ''; renderWizardPick(); }
+        function wizardPickSearch(v) { wizPickQ = String(v || '').slice(0, 60); wizPickList(); }
+        function wizPickList() {
+            const box = document.getElementById('wiz-pick-list'); if (!box) return;
+            const e = escapeAuth, picked = wizardAnswers.pickedCareers || [], q = wizPickQ.trim().toLowerCase();
+            let list = careersData.filter(function (c) { return picked.indexOf(c.id) < 0; }), head = '';
+            const byDemand = function (x, y) { return ((y.demandScore || 0) - (x.demandScore || 0)) || String(x.title).localeCompare(y.title); };
+            if (q) { list = list.filter(function (c) { return (c.title + ' ' + c.category).toLowerCase().indexOf(q) > -1; }).sort(byDemand); head = 'Careers matching "' + q + '"'; }
+            else if (wizPickCat) { list = list.filter(function (c) { return c.category === wizPickCat; }).sort(byDemand); head = 'Careers in ' + wizPickCat; }
+            else if (picked.length) {
+                const cats = {}; picked.forEach(function (id) { const c = careersData.find(function (x) { return x.id === id; }); if (c) cats[c.category] = 1; });
+                list = list.filter(function (c) { return cats[c.category]; }).sort(byDemand); head = 'More careers like the ones you added';
+            } else { box.innerHTML = '<p class="text-xs text-slate-600">Search for a career, or pick a field above to see careers in it.</p>'; return; }
+            list = list.slice(0, 8);
+            box.innerHTML = '<p class="text-xs font-semibold text-slate-700 mb-2">' + e(head) + '</p>' + (list.length ? '<ul class="space-y-2">' + list.map(function (c) {
+                return '<li class="flex items-center justify-between gap-3 p-3 bg-white border border-slate-200 rounded-xl"><div class="min-w-0"><p class="text-sm font-bold text-slate-900">' + e(c.title) + '</p><p class="text-xs text-slate-600">' + e(c.category) + (c.salary ? ' \u00b7 ' + e(c.salary) : '') + '</p></div>' +
+                    '<button type="button" onclick="wizardPickAdd(\'' + c.id + '\')" aria-label="Add ' + e(c.title) + ' to my results" class="shrink-0 min-h-[44px] px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold">+ Add</button></li>';
+            }).join('') + '</ul>' : '<p class="text-xs text-slate-600">No careers found. Try another word or a field above.</p>');
+        }
+        function renderWizardPick() {
+            const box = document.getElementById('wizard-pick'); if (!box) return;
+            const e = escapeAuth, picked = (wizardAnswers.pickedCareers || []).map(function (id) { return careersData.find(function (x) { return x.id === id; }); }).filter(Boolean);
+            const cats = [...new Set(careersData.map(function (c) { return c.category; }))].sort();
+            box.innerHTML = '<div class="bg-white border border-slate-200 rounded-2xl p-4 md:p-5">' +
+                '<h3 class="font-extrabold text-slate-900">Not interested in these? Add careers you like</h3>' +
+                '<p class="text-xs text-slate-600 mt-1">Pick up to 5 careers that interest you. We add them to your results and use them to improve your matches. You stay on this page.</p>' +
+                (picked.length ? '<div class="mt-3"><p class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Careers you added</p><ul class="space-y-2">' + picked.map(function (c) {
+                    return '<li class="flex items-center justify-between gap-3 p-3 bg-brand-50 border border-brand-200 rounded-xl"><div class="min-w-0"><p class="text-sm font-bold text-slate-900">' + e(c.title) + '</p><button type="button" onclick="openCareerDetail(\'' + c.id + '\')" class="text-xs font-semibold text-brand-700 hover:underline min-h-[44px]">Full roadmap \u2192</button></div>' +
+                        '<button type="button" onclick="wizardPickRemove(\'' + c.id + '\')" aria-label="Remove ' + e(c.title) + '" class="shrink-0 min-h-[44px] px-3 rounded-xl border border-slate-300 bg-white text-slate-700 text-sm font-semibold">Remove</button></li>';
+                }).join('') + '</ul></div>' : '') +
+                '<label for="wiz-pick-q" class="block text-sm font-semibold text-slate-700 mt-4">Search for a career</label>' +
+                '<input id="wiz-pick-q" type="search" maxlength="60" autocomplete="off" value="' + e(wizPickQ) + '" oninput="wizardPickSearch(this.value)" placeholder="For example: data analyst, designer, marketing" class="mt-1 w-full border border-slate-300 rounded-xl px-3 min-h-[44px]">' +
+                '<p class="text-xs font-semibold text-slate-700 mt-3 mb-1.5">Or browse by field</p><div class="flex flex-wrap gap-2" role="group" aria-label="Fields">' + cats.map(function (c) {
+                    const on = wizPickCat === c;
+                    return '<button type="button" aria-pressed="' + on + '" onclick="wizardPickCatSet(\'' + String(c).replace(/'/g, "\\'") + '\')" class="min-h-[40px] px-3 rounded-xl border text-xs font-semibold ' + (on ? 'border-brand-600 bg-brand-50 text-brand-800' : 'border-slate-200 text-slate-700 hover:border-brand-400') + '">' + e(c) + '</button>';
+                }).join('') + '</div>' +
+                '<div id="wiz-pick-list" class="mt-3" aria-live="polite"></div>' +
+                (picked.length ? '<div class="mt-4 pt-4 border-t border-slate-200"><p class="text-sm font-semibold text-slate-900">Happy with your list?</p><p class="text-xs text-slate-600 mt-0.5">Your report is built from your quiz answers and the careers you added.</p><button type="button" onclick="reportHubOpen()" class="mt-2 min-h-[48px] px-5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold">See your report</button></div>' : '') +
+                '</div>';
+            wizPickList();
+        }
+        function quizDiversify(pool, n, cap, keep) {
+            const ints = wizardAnswers.interests3 || [], out = [], cnt = {};
+            const rel = function (c) { return ints.length === 0 || ints.indexOf(QZ_CAT_TO_INT[c.category] || c.category) > -1; };
+            const add = function (c) { out.push(c); const k = QZ_CAT_TO_INT[c.category] || c.category; cnt[k] = (cnt[k] || 0) + 1; };
+            pool.forEach(function (c) { if (out.length < n && keep.indexOf(c.id) > -1) add(c); });
+            pool.forEach(function (c) { if (out.length < n && out.indexOf(c) < 0 && rel(c) && (cnt[QZ_CAT_TO_INT[c.category] || c.category] || 0) < cap && (c.category !== 'Finance' || (cnt.__fin || 0) < 1)) { add(c); if (c.category === 'Finance') cnt.__fin = (cnt.__fin || 0) + 1; } });
+            pool.forEach(function (c) { if (out.length < n && out.indexOf(c) < 0 && rel(c) && (c.category !== 'Finance' || (cnt.__fin || 0) < 1)) { add(c); if (c.category === 'Finance') cnt.__fin = (cnt.__fin || 0) + 1; } });
+            pool.forEach(function (c) { if (out.length < n && out.indexOf(c) < 0 && rel(c)) add(c); });
+            pool.forEach(function (c) { if (out.length < n && out.indexOf(c) < 0) add(c); });
+            return out.sort(function (x, y) { return pool.indexOf(x) - pool.indexOf(y); });
         }
         function renderWizardResults() {
             deriveWizard(); saveWizardAnswers(wizardAnswers);
@@ -12080,7 +12155,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             pool = careersData.map(c => { const r = scoreCareerForWizard(c, wizardAnswers); return { ...c, score: r.score, reasons: r.reasons }; });
             pool.sort((a, b) => b.score - a.score);
             if (!schoolStage) {
-                top = pool.slice(0, 5);
+                top = quizDiversify(pool, 5, 2, wizardAnswers.mentioned || []);
                 // nothing stood out yet: show three very different, in-demand careers to react to, instead of an arbitrary three
                 noSignal = wizardAnswers.interest === 'Undecided' && wizardAnswers.workStyle === 'Mixed' && !(wizardAnswers.values || []).some(function (v) { return v !== 'enjoy'; });
                 if (noSignal) {
@@ -12095,6 +12170,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const valueLabels = (A.values || []).map(function (v) { const o = QZ_BANK.values.opts.find(function (p) { return p[0] === v; }); return o ? o[1] : v; });
             const chips = [quizLabel('cls', A, true), A.interests3 && A.interests3.length ? 'Interests: ' + A.interests3.join(', ') : 'Interests: still exploring', 'Work style: ' + (styleWords[A.workStyle] || A.workStyle)];
             if (valueLabels.length) chips.push('Matters: ' + valueLabels.join('; '));
+            if ((A.pickedCareers || []).length) chips.push('You added: ' + A.pickedCareers.map(function (id) { const c = careersData.find(function (x) { return x.id === id; }); return c ? c.title : ''; }).filter(Boolean).join(', '));
             const helpLab = quizLabel('help', A); if (helpLab) chips.push('Help with: ' + helpLab.toLowerCase());
             if (wizardSituationText()) chips.push(wizardSituationText());
             document.getElementById('wizard-results-summary').innerHTML =
@@ -12153,6 +12229,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             renderWizardInsights();
             renderWizardRoutes();
             renderWizardNextStep();
+            try { renderWizardPick(); } catch (er) { console.error(er); }
             try { renderPremiumReport(A, pool); } catch (er) { console.error(er); }
             try { renderWizardHowTo(schoolStage); } catch (er) { console.error(er); }
             saveWizardAnswers(wizardAnswers);
