@@ -1127,7 +1127,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
 
                     <div id="wizard-disclaimer" class="mb-6 bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs text-slate-700">
                         <p class="font-bold text-slate-900 text-sm mb-1">Suggestions based on your quiz</p>
-                        <p>These are ideas to explore from your answers. They are not an exact match or a prediction of what will suit you. Your course or stream does not decide your career: commerce, BBA and BMS students also work in technology, product, marketing and design, and science or arts students move into business, media and more. If these do not interest you, add the careers you like below and we will update your results.</p>
+                        <p>These are ideas to explore from your answers. They are not an exact match or a prediction of what will suit you. Your course or stream does not decide your career: commerce, BBA and BMS students also work in technology, product, marketing and design, and science or arts students move into business, media and more. <span id="wiz-disc-add">If these do not interest you, add the careers you like below and we will update your results.</span></p>
                     </div>
 
                     <div id="wizard-howto" class="mb-6"></div>
@@ -10777,6 +10777,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 [].concat(a[k] || []).forEach(function (v) { add(QZ_INTEREST[k][v], w); });
             });
             // careers or fields the student named: their categories count as interests too
+            if (a.cls === '9' || a.cls === '10' || a.cls === '11' || a.cls === '12') a.pickedCareers = [];
             a.pickedCareers = (a.pickedCareers || []).filter(function (id) { return careersData.some(function (x) { return x.id === id; }); }).slice(0, 5);
             a.mentioned = a.pickedCareers.concat(wizardMentionedCareers(a.careerNote).filter(function (id) { return a.pickedCareers.indexOf(id) < 0; }));
             const cats = {};
@@ -12112,6 +12113,11 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         }
         function renderWizardPick() {
             const box = document.getElementById('wizard-pick'); if (!box) return;
+            // School students (Class 10 to 12) are not choosing a job yet, so the add-careers panel is for undergraduates and above only
+            const school = ['9', '10', '11', '12'].indexOf(wizardAnswers.cls) > -1;
+            const add = document.getElementById('wiz-disc-add'); if (add) add.classList.toggle('hidden', school);
+            if (school) { box.innerHTML = ''; box.classList.add('hidden'); return; }
+            box.classList.remove('hidden');
             const e = escapeAuth, picked = (wizardAnswers.pickedCareers || []).map(function (id) { return careersData.find(function (x) { return x.id === id; }); }).filter(Boolean);
             const cats = [...new Set(careersData.map(function (c) { return c.category; }))].sort();
             box.innerHTML = '<div class="bg-white border border-slate-200 rounded-2xl p-4 md:p-5">' +
