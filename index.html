@@ -13016,6 +13016,16 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             };
         }
 
+        // After a reload the quiz page is drawn before a signed-in student's saved answers have come back from their account,
+        // so it would show question 1 although they already took the quiz. Once the data is in, show their results instead.
+        function quizRestoreAfterLoad() {
+            const v = document.getElementById('view-confusedMode'), r = document.getElementById('wizard-results');
+            if (!v || !r || v.classList.contains('hidden') || !r.classList.contains('hidden')) return;
+            if (wizardAnswers && Object.keys(wizardAnswers).length) return;   // they have already started answering: leave it alone
+            const saved = getStoredWizardAnswers(); if (!saved) return;
+            wizardAnswers = Object.assign({}, saved);
+            showWizardResults();
+        }
         // Called once per sign-in. Loads this user's row; if it's their first time, seeds
         // it from whatever was already saved locally rather than starting them at zero.
         function loadCloudData(session) {
@@ -13061,6 +13071,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     loadCloudData(session).then(function () {
                         try { renderDashboard(); } catch (e) {}
                         try { quizGateRefresh(); } catch (e) {}
+                        try { quizRestoreAfterLoad(); } catch (e) {}
                         // Resume whatever the student was actually trying to do when they
                         // got stopped by requireAuth() -- take the quiz, save a career,
                         // generate a backup plan, etc. -- now that they're signed in and
