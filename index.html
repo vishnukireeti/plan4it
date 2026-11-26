@@ -10235,14 +10235,14 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const say = function (t, ok) { msg.textContent = t; msg.className = 'text-sm ' + (ok ? 'text-emerald-700' : 'text-red-700'); };
             const track = document.getElementById('p4-wait-track').value, stage = document.getElementById('p4-wait-stage').value;
             if (!window.__p4Opened) window.__p4Opened = Date.now();
-            const hp = document.getElementById('p4-wait-site');
-            if ((hp && hp.value) || Date.now() - window.__p4Opened < 3000) { say('You are on the list. We will email you when this track opens.', true); return false; } // looks like a bot: act as if it worked, save nothing
             const nm = (document.getElementById('p4-wait-name').value || '').trim().slice(0, 80), em = (document.getElementById('p4-wait-email').value || '').trim().slice(0, 254);
             if (!nm) { say('Please enter your name.', false); document.getElementById('p4-wait-name').focus(); return false; }
             if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { say('Please enter a valid email address.', false); document.getElementById('p4-wait-email').focus(); return false; }
             if (!track) { say('Please choose a track.', false); return false; }
             if (!stage) { say('Please tell us where you are now.', false); return false; }
             if (!p4Dur) { say('Please choose a duration.', false); return false; }
+            const hp = document.getElementById('p4-wait-site');
+            if ((hp && hp.value) || Date.now() - window.__p4Opened < 3000) { say('You are on the list. We will email you when this track opens.', true); return false; } // looks like a bot: act as if it worked, save nothing
             const s = authGetSession();
             btn.disabled = true; say('Saving…', true);
             sb.from('learnership_waitlist').insert({
