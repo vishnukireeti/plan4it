@@ -1244,7 +1244,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             </div>
 
             <!-- Take-the-quiz CTA (shown only if no quiz has been taken yet) -->
-            <div data-nav="Take the quiz" id="explorer-quiz-cta-banner" class="hidden bg-slate-900 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div data-nav="Take the quiz" data-nav-go="confusedMode" id="explorer-quiz-cta-banner" class="hidden bg-slate-900 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
                     <p class="text-white font-semibold text-sm"><span id="explorer-cta-count">150</span> careers is a lot to scroll through blind.</p>
                     <p class="text-white/90 text-xs mt-0.5">Take the 2-minute quiz and this page will show you how well each one actually fits.</p>
@@ -9860,7 +9860,23 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         }
         function markWizardSelection() { const n = wizardCurrentStep(); if (n >= 1 && n <= quizLen()) renderQuizStep(n); }
         function wizardGoTo(n) { showWizardStep(n); }
-        function pageNavGo(id) { if (typeof jumpToBlock === 'function') jumpToBlock(id); else { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }
+        // Every "On this page" link has to do something, whatever state the page is in:
+        //  - an item tagged data-nav-go="<view>" is a door to another page (e.g. "Take the quiz" opens the quiz),
+        //  - an item that is hidden right now (a stream is open, a folded panel) is revealed first, then scrolled to.
+        function pageNavGo(id) {
+            const jump = function () { if (typeof jumpToBlock === 'function') jumpToBlock(id); else { const e2 = document.getElementById(id); if (e2) e2.scrollIntoView({ behavior: 'smooth', block: 'start' }); } };
+            const el = document.getElementById(id);
+            if (!el) { refreshPageNav(); return; }
+            const go = el.getAttribute('data-nav-go');
+            if (go) { switchView(go); return; }
+            if (el.getClientRects().length === 0) {
+                const ex = document.getElementById('view-explorer');
+                if (ex && ex.classList.contains('stream-open') && ex.contains(el)) closeStream();
+                setTimeout(function () { if (document.getElementById(id) && document.getElementById(id).getClientRects().length) jump(); else refreshPageNav(); }, 80);
+                return;
+            }
+            jump();
+        }
         const REPORT_NOTE_VIEWS = { explorer: 'car', afterDegree: 'path', exams: 'exam', colleges: 'col' };
         function refreshPageNav() {
             const side = document.getElementById('page-nav'), bar = document.getElementById('page-nav-m');
