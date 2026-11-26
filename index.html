@@ -13113,6 +13113,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     }, 0);
                 }
                 currentAuthSession = session; try { p4SyncForm(); } catch (er) {}
+                if (!!session !== wasSignedIn) { try { if (typeof renderExplorerCareers === 'function' && document.getElementById('career-search')) renderExplorerCareers(); } catch (er) {} try { if (STREAM_STATE && STREAM_STATE.key) renderStream(); } catch (er) {} }
                 try { premiumLoadPurchases(); } catch (er) {}
                 updateAuthUI();
                 if (session && !wasSignedIn) {
@@ -16126,11 +16127,17 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const st = PAGED_LISTS.state[key] || (PAGED_LISTS.state[key] = { sig: null, limit: PAGED_LISTS.size });
             if (st.sig !== sig) { st.sig = sig; st.limit = PAGED_LISTS.size; }
             st.args = [grid, list, cardFn, moreId, noun];
-            const shown = Math.min(st.limit, list.length);
+            // signed-out visitors see the first GUEST_CAREER_CAP careers; "Show more" asks them to sign in
+            const guestCap = (key === 'careers' && !authGetSession()) ? GUEST_CAREER_CAP : 0;
+            const shown = guestCap ? Math.min(guestCap, list.length) : Math.min(st.limit, list.length);
             grid.innerHTML = list.slice(0, shown).map(cardFn).join('');
             const more = document.getElementById(moreId);
             const left = list.length - shown;
-            if (left > 0) {
+            if (left > 0 && guestCap) {
+                more.innerHTML = `<p class="text-xs text-slate-500 mb-3">Showing ${shown} of ${list.length} ${noun}s. Sign in free to see them all.</p>
+                    <button type="button" onclick="guestMoreCareers()" class="bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 font-semibold px-6 py-3 rounded-xl text-sm transition">Show more ${noun}s</button>`;
+                more.classList.remove('hidden');
+            } else if (left > 0) {
                 const next = Math.min(PAGED_LISTS.size, left);
                 more.innerHTML = `<p class="text-xs text-slate-500 mb-3">Showing ${shown} of ${list.length} ${noun}s</p>
                     <button type="button" onclick="showMoreItems('${key}')" class="bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 font-semibold px-6 py-3 rounded-xl text-sm transition">Show ${next} more</button>`;
@@ -16141,6 +16148,15 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             }
         }
 
+        const GUEST_CAREER_CAP = 24, GUEST_STREAM_CAP = 3;
+        // Signed out: "Show more" opens the sign-up / log-in pop-up. After sign-in the list carries on from where it was.
+        function guestMoreCareers() {
+            const go = function () { const st = PAGED_LISTS.state.careers; if (st) st.limit = Math.max(st.limit, GUEST_CAREER_CAP); showMoreItems('careers'); };
+            if (requireAuth('Sign in free to see all careers. It takes a minute, and you carry on browsing right after.', go)) go();
+        }
+        function guestStreamMore() {
+            if (requireAuth('Sign in free to see every career in this stream. It takes a minute, and you carry on browsing right after.', function () { renderStream(); })) renderStream();
+        }
         function showMoreItems(key) {
             const st = PAGED_LISTS.state[key];
             if (!st || !st.args) return;
@@ -16225,7 +16241,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         function renderStream() {
             const sec = document.getElementById('view-explorer');
             if (!STREAM_STATE.key) { sec.classList.remove('stream-open'); return; }
-            const S = STREAMS[STREAM_STATE.key], fams = streamFamilyCareers(STREAM_STATE.key);
+            const S = STREAMS[STREAM_STATE.key], fams = streamFamilyCareers(STREAM_STATE.key), guestView = !authGetSession();
             sec.classList.add('stream-open');
             document.getElementById('stream-title').textContent = S.title;
             document.getElementById('stream-intro').textContent = S.intro;
@@ -16238,7 +16254,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         <h3 class="text-xl font-extrabold text-slate-900">${f.n} <span class="text-sm font-semibold text-slate-500">· ${f.list.length} career${f.list.length === 1 ? '' : 's'}</span></h3>
                         <p class="text-sm text-slate-600">${f.d}</p>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">${f.list.map(careerCardHTML).join('')}</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">${(guestView && f.list.length > GUEST_STREAM_CAP ? f.list.slice(0, GUEST_STREAM_CAP) : f.list).map(careerCardHTML).join('')}</div>
+                    ${guestView && f.list.length > GUEST_STREAM_CAP ? `<div class="text-center mt-4"><p class="text-xs text-slate-500 mb-2">Showing ${GUEST_STREAM_CAP} of ${f.list.length} careers in this family. Sign in free to see them all.</p><button type="button" onclick="guestStreamMore()" class="bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 font-semibold px-6 py-3 rounded-xl text-sm transition min-h-[44px]">Show all ${f.list.length} careers</button></div>` : ''}
                     ${f.more.length ? `<p class="text-xs text-slate-500 mt-3"><strong>Also in this family, being added:</strong> ${f.more.join(' · ')}</p>` : ''}
                 </section>`).join('');
         }
