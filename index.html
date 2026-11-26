@@ -2147,8 +2147,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 </div>
                 <h3 class="text-xl font-extrabold text-slate-900">Do a real industry project while you study, and get it reviewed and certified</h3>
                 <p class="text-slate-700 text-sm md:text-base max-w-3xl">Most companies only take interns in their final year, and ask for experience you cannot get without an internship. The Plan4it.co Learnership Program closes that gap. Choose a track and you get one industry-standard project that fits in 1 month. A mentor reviews your work at the end, and when you finish you get a Plan4it.co certificate and a project you can put on your resume, LinkedIn and portfolio.</p>
-                <details class="group" open><summary class="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-xl bg-brand-600 text-white text-sm font-bold cursor-pointer list-none">See the programme and join the waitlist</summary>
-                <div class="space-y-5 pt-4">
+                <div class="space-y-5 pt-2">
                 <div class="grid sm:grid-cols-3 gap-3 text-sm">
                     <div class="bg-white border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900"><i class=ic-wrench></i> Industry-standard project</p><p class="text-slate-600 mt-1">A real-world brief using the tools companies use today, sized to the duration you pick.</p></div>
                     <div class="bg-white border border-slate-200 rounded-2xl p-4"><p class="font-bold text-slate-900"><i class=ic-present></i> Reviewed at every milestone</p><p class="text-slate-600 mt-1">A mentor reviews each milestone and tells you what to fix before a recruiter sees it.</p></div>
@@ -2187,7 +2186,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 </div>
                 <p class="text-xs text-slate-500">The Plan4it.co certificate shows what you completed with us. It is not a degree or a government-recognised qualification, and it does not guarantee a job. The Learnership Program is a paid feature; you will see the price before you pay anything.</p>
             
-                </div></details>
+                </div>
             </div>
 
         </section>
@@ -10258,9 +10257,9 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     say('Could not save right now. Please try again in a moment.', false); return;
                 }
                 trackEvent('learnership_waitlist', { track: track, duration: p4Dur });
-                say('You are on the list, ' + nm.split(' ')[0] + '. We will email ' + em + ' when this track opens.', true);
+                say('You are on the list, ' + nm.split(' ')[0] + '. We will email ' + em + ' when this track opens. If you do not see it, check your spam folder.', true);
                 // the confirmation email is sent by a small server function; the sign-up above is already saved either way
-                try { if (sb.functions && sb.functions.invoke) sb.functions.invoke('waitlist-email', { body: { email: em, track: track } }).then(function (r) { if (r && r.data && r.data.sent) say('You are on the list, ' + nm.split(' ')[0] + '. We have emailed a confirmation to ' + em + ' and will update you there.', true); }, function () {}); } catch (er) {}
+                try { if (sb.functions && sb.functions.invoke) sb.functions.invoke('waitlist-email', { body: { email: em, track: track } }).then(function (r) { if (r && r.data && r.data.sent) say('You are on the list, ' + nm.split(' ')[0] + '. We have emailed a confirmation to ' + em + ' and will update you there. If you do not see it, check your spam folder.', true); }, function () {}); } catch (er) {}
             }, function () { btn.disabled = false; say('Could not save right now. Please try again in a moment.', false); });
             return false;
         }
