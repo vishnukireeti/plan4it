@@ -9,7 +9,7 @@
 --   usage_events         anyone: add an anonymous usage event (write-only)
 --   report_log           signed in: add a row (write-only; the admin reads it through admin_report_flags())
 --   purchases            signed in: read own purchases (rows are written only by the edge functions, with the service role)
---   learnership_waitlist anyone: join (write-only); signed in: read own rows
+--   learnership_waitlist signed in (confirmed email): join and read own rows -- see 20261126_waitlist_confirmed_email_only.sql
 --
 -- The service role (edge functions) and the postgres role are unaffected. Safe to run more than once.
 
@@ -20,7 +20,7 @@ grant select, insert, update, delete on public.user_data     to authenticated;
 grant insert on public.usage_events                          to anon, authenticated;
 grant insert on public.report_log                            to authenticated;
 grant select on public.purchases                             to authenticated;
-grant insert on public.learnership_waitlist                  to anon, authenticated;
+grant insert on public.learnership_waitlist                  to authenticated;
 grant select on public.learnership_waitlist                  to authenticated;
 
 -- A table created later must be opted in on purpose, not exposed by default.

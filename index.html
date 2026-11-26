@@ -2178,6 +2178,13 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                             <input id="p4-wait-college" maxlength="120" class="mt-1 w-full border border-slate-300 rounded-xl px-3 min-h-[44px]" placeholder="e.g. your college name"></label>
                         <label class="block sm:col-span-2"><span class="font-semibold text-slate-700">Anything you want us to know (optional)</span>
                             <textarea id="p4-wait-note" maxlength="400" rows="2" class="mt-1 w-full border border-slate-300 rounded-xl px-3 py-2" placeholder="Skills you have, what you want to learn, or what is blocking you"></textarea></label>
+                        <div id="p4-wait-confirm" class="hidden sm:col-span-2 rounded-xl border border-amber-300 bg-amber-50 text-amber-900 p-3 text-sm space-y-2" role="alert">
+                            <p id="p4-confirm-text"></p>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" id="p4-confirm-login" onclick="openAuth('signup')" class="bg-brand-600 text-white font-bold px-4 min-h-[44px] rounded-xl hover:bg-brand-700">Sign up or log in</button>
+                                <button type="button" id="p4-confirm-resend" onclick="p4ResendConfirm()" class="border-2 border-amber-500 text-amber-900 font-bold px-4 min-h-[44px] rounded-xl hover:bg-amber-100">Send me the confirmation link</button>
+                            </div>
+                        </div>
                         <div class="sm:col-span-2 flex flex-wrap items-center gap-3">
                             <button id="p4-wait-btn" type="submit" class="bg-brand-600 text-white font-bold px-5 min-h-[44px] rounded-xl hover:bg-brand-700">Join the waitlist</button>
                             <p id="p4-wait-msg" class="text-sm" role="status" aria-live="polite"></p>
@@ -10207,6 +10214,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (sel && !sel.value && sug) sel.value = sug;
             const st = document.getElementById('p4-wait-stage');
             { const sn = authGetSession(), ne = document.getElementById('p4-wait-name'), ee = document.getElementById('p4-wait-email'); if (sn && sn.user) { if (ee && !ee.value) ee.value = sn.user.email || ''; if (ne && !ne.value && typeof authDisplayName === 'function') { const dn = authDisplayName(sn); if (dn && dn.indexOf('@') < 0) ne.value = dn; } } }
+            p4SyncForm();
             if (st && !st.value) st.value = a && a.working ? 'Working professional' : a && a.stage === 'School 11-12' ? 'Class 11-12' : '';
             const dw = document.getElementById('p4-wait-dur');
             if (dw && !dw.children.length) { dw.innerHTML = P4_DURATIONS.map(function (d) { return '<button type="button" aria-pressed="false" data-dur="' + d.id + '" onclick="internshipDur(\'' + d.id + '\')"><span class="block font-bold text-slate-900">' + e(d.label) + '</span><span class="block text-[11px] text-slate-500 whitespace-nowrap">' + e(d.sub) + '</span></button>'; }).join(''); internshipDur(p4Dur); if (sel) sel.addEventListener('change', internshipDurPlan); }
@@ -10224,6 +10232,39 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             }).join('');
         }
         document.addEventListener('focusin', function (ev) { if (ev.target && ev.target.closest && ev.target.closest('#p4-wait-form') && !window.__p4Opened) window.__p4Opened = Date.now(); });
+        // The waitlist is for confirmed emails only. A signed-in session only exists once the email is confirmed,
+        // so a visitor who is signed out, or whose account has no confirmed email yet, is asked to confirm first.
+        function p4SessionState() {
+            const sn = authGetSession(); if (!sn || !sn.user) return { state: 'out' };
+            return { state: (sn.user.email_confirmed_at || sn.user.confirmed_at) ? 'ok' : 'unconfirmed', email: sn.user.email || '', id: sn.user.id };
+        }
+        function p4SyncForm() {
+            const st = p4SessionState(), ee = document.getElementById('p4-wait-email'), box = document.getElementById('p4-wait-confirm'); if (!ee) return;
+            if (st.state === 'ok') { ee.value = st.email; ee.readOnly = true; ee.classList.add('bg-slate-100'); if (box) box.classList.add('hidden'); }
+            else { if (ee.readOnly) ee.value = ''; ee.readOnly = false; ee.classList.remove('bg-slate-100'); }
+        }
+        function p4ShowConfirm(st) {
+            const box = document.getElementById('p4-wait-confirm'), tx = document.getElementById('p4-confirm-text'), lg = document.getElementById('p4-confirm-login'); if (!box || !tx) return;
+            tx.textContent = st.state === 'unconfirmed'
+                ? 'Your email ' + st.email + ' is not confirmed yet. Press the button to get a confirmation link, open it (check your spam folder too), then come back here and join the waitlist.'
+                : 'Only confirmed emails can join the waitlist. Sign up or log in with your email, confirm it using the link we send (check your spam folder too), then come back here and join.';
+            if (lg) lg.classList.toggle('hidden', st.state === 'unconfirmed');
+            box.classList.remove('hidden');
+        }
+        function p4ResendConfirm() {
+            const msg = document.getElementById('p4-wait-msg'), btn = document.getElementById('p4-confirm-resend');
+            const say = function (t, ok) { if (msg) { msg.textContent = t; msg.className = 'text-sm ' + (ok ? 'text-emerald-700' : 'text-red-700'); } };
+            const st = p4SessionState(), em = st.state === 'unconfirmed' ? st.email : (document.getElementById('p4-wait-email').value || '').trim().toLowerCase();
+            if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { say('Type your email address above first, then press the button.', false); document.getElementById('p4-wait-email').focus(); return; }
+            if (!sb) { say('Cannot reach the server right now. Please try again in a moment.', false); return; }
+            btn.disabled = true;
+            sb.auth.resend({ type: 'signup', email: em }).then(function (res) {
+                if (res.error) { btn.disabled = false; say(/rate|seconds/i.test(res.error.message || '') ? 'Please wait a minute before asking again.' : 'Could not send the link. Please try again shortly.', false); return; }
+                say('If ' + em + ' has an account waiting to be confirmed, we have sent a new confirmation link. Open it, check your spam folder too, then come back here and join.', true);
+                let n = 60; btn.textContent = 'Send again in ' + n + 's';
+                const t = setInterval(function () { n--; if (n <= 0) { clearInterval(t); btn.disabled = false; btn.textContent = 'Send me the confirmation link'; } else btn.textContent = 'Send again in ' + n + 's'; }, 1000);
+            }, function () { btn.disabled = false; say('Cannot reach the server right now. Please try again in a moment.', false); });
+        }
         function internshipPick(id) {
             const sel = document.getElementById('p4-wait-track'); if (sel) sel.value = id;
             internshipDurPlan();
@@ -10235,7 +10276,10 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const say = function (t, ok) { msg.textContent = t; msg.className = 'text-sm ' + (ok ? 'text-emerald-700' : 'text-red-700'); };
             const track = document.getElementById('p4-wait-track').value, stage = document.getElementById('p4-wait-stage').value;
             if (!window.__p4Opened) window.__p4Opened = Date.now();
-            const nm = (document.getElementById('p4-wait-name').value || '').trim().slice(0, 80), em = (document.getElementById('p4-wait-email').value || '').trim().slice(0, 254);
+            const cst = p4SessionState();
+            if (cst.state !== 'ok') { say('', true); p4ShowConfirm(cst); return false; }
+            { const cb = document.getElementById('p4-wait-confirm'); if (cb) cb.classList.add('hidden'); }
+            const nm = (document.getElementById('p4-wait-name').value || '').trim().slice(0, 80), em = String(cst.email || '').trim().slice(0, 254);
             if (!nm) { say('Please enter your name.', false); document.getElementById('p4-wait-name').focus(); return false; }
             if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { say('Please enter a valid email address.', false); document.getElementById('p4-wait-email').focus(); return false; }
             if (!track) { say('Please choose a track.', false); return false; }
@@ -13074,7 +13118,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                         authShow('reset');
                     }, 0);
                 }
-                currentAuthSession = session;
+                currentAuthSession = session; try { p4SyncForm(); } catch (er) {}
                 try { premiumLoadPurchases(); } catch (er) {}
                 updateAuthUI();
                 if (session && !wasSignedIn) {
