@@ -9885,7 +9885,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const opts = quizOpts(q);
             const lab = function (x) { const o = opts.find(function (p) { return p[0] === x; }); return o ? (o[2] || o[1]) : x; };
             const cut = function (s) { return s.length > 34 ? s.slice(0, 32).replace(/\s+\S*$/, '') + '…' : s; };
-            let t = Array.isArray(v) ? cut(lab(v[0])) + (v.length > 1 ? ' +' + (v.length - 1) : '') : cut(lab(v));
+            let t = Array.isArray(v) ? cut(lab(v[0])) + (v.length > 1 ? ' +' + (v.length - 1) : '') : cut(lab(v)) + (q.two && wizardAnswers[q.key + '2'] ? ' +1' : '');
             const pr = quizPair(q);
             if (pr && wizardAnswers[pr.key]) { const o = pr.opts.find(function (x) { return x[0] === wizardAnswers[pr.key]; }); if (o) t += ' · ' + o[1]; }
             return t;
@@ -14781,7 +14781,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             // 2 snapshot
             const cr = o.sc.creative, an = o.sc.tech + o.sc.sci * 0.5;
             const pbt = ['people', 'biz', 'tech'].sort(function (a, b) { return o.sc[b] - o.sc[a]; })[0], hands = o.sc.hands, acad = Math.max(o.sc.sci, o.sc.tech, o.sc.people);
-            const prof = [['Interests', L(A.interests) || 'No favourite yet'], ['Preferred activities', C10_ORI_ACT[A.activity] ? 'You would ' + C10_ORI_ACT[A.activity][1] : ''], ['Strong subjects', L(A.strong) || 'None stands out yet'], ['Work-style preference', IP_STYLE_TXT[A.workStyle] || ''], ['Problem-solving orientation', quizLabel('challenge', A, false)], ['Creative or analytical', Math.abs(cr - an) < 1 ? 'Balanced between the two' : cr > an ? 'More creative' : 'More analytical'], ['People, business or technology', { people: 'Leans towards people', biz: 'Leans towards business', tech: 'Leans towards technology' }[pbt]], ['Practical or academic', Math.abs(hands - acad) < 1 ? 'A mix of both' : hands > acad ? 'More practical' : 'More academic']].filter(function (r) { return r[1]; });
+            const prof = [['Interests', L(A.interests) || 'No favourite yet'], ['Preferred activities', C10_ORI_ACT[A.activity] ? 'You would ' + C10_ORI_ACT[A.activity][1] + (C10_ORI_ACT[A.activity2] ? ', and might also ' + C10_ORI_ACT[A.activity2][1] : '') : ''], ['Strong subjects', L(A.strong) || 'None stands out yet'], ['Work-style preference', IP_STYLE_TXT[A.workStyle] || ''], ['Problem-solving orientation', quizLabel('challenge', A, false)], ['Creative or analytical', Math.abs(cr - an) < 1 ? 'Balanced between the two' : cr > an ? 'More creative' : 'More analytical'], ['People, business or technology', { people: 'Leans towards people', biz: 'Leans towards business', tech: 'Leans towards technology' }[pbt]], ['Practical or academic', Math.abs(hands - acad) < 1 ? 'A mix of both' : hands > acad ? 'More practical' : 'More academic']].filter(function (r) { return r[1]; });
             P.push(['Your Career Discovery Snapshot', 'Your profile at a glance, from your quiz answers.',
                 '<div class="pp-cols"><table class="pp-t pp-kv" style="flex:1.15">' + prof.map(function (r) { return '<tr><th>' + e(r[0]) + '</th><td>' + e(r[1]) + '</td></tr>'; }).join('') + '</table>' +
                 '<div>' + ipCard('Your inclination, by area', c10OriMeters(X, 7)) + '</div></div>' +
