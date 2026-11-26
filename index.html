@@ -10557,17 +10557,17 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 opts: QZ_INTEREST_OPTS.concat([['none', 'No favourite yet']]) },
             strong: { label: 'What you score well in', multi: 3, exclusive: 'none', title: 'And which subjects do you score well in?', sub: 'Pick up to 3. These can be different from the ones you enjoy, and that is useful to know.',
                 opts: QZ_INTEREST_OPTS.concat([['none', 'None stands out yet']]) },
-            activity: { label: 'Your science-fair job', title: 'Your class runs a science-fair stall. Which job do you grab?', sub: 'Go with your first instinct.',
+            activity: { two: true, label: 'Your science-fair job', title: 'Your class runs a science-fair stall. Which job do you grab?', sub: 'Go with your first instinct.',
                 opts: [['build', 'Build the working model'], ['research', 'Research the topic and explain it'], ['create', 'Design the poster and display'], ['biz', 'Manage the team and the money'], ['people', 'Talk to visitors and judges']] },
-            maths: { label: 'Maths after Class 10', title: 'How do you feel about Maths after Class 10?', sub: 'This decides whether PCM, Commerce with Maths and Economics stay open.',
+            maths: { two: true, exclusive: 'drop', label: 'Maths after Class 10', title: 'How do you feel about Maths after Class 10?', sub: 'This decides whether PCM, Commerce with Maths and Economics stay open.',
                 opts: [['more', 'More Maths'], ['fine', 'Fine if a course needs it'], ['drop', 'Drop it']] },
-            bio: { label: 'Biology and lab work', title: 'And Biology or lab work?', sub: 'This decides whether PCB and health careers stay open.',
+            bio: { two: true, exclusive: 'no', label: 'Biology and lab work', title: 'And Biology or lab work?', sub: 'This decides whether PCB and health careers stay open.',
                 opts: [['enjoy', 'Enjoyable'], ['neutral', 'Neutral'], ['no', 'Not a good fit']] },
             decider: { label: 'Who decides', title: 'Who is deciding your stream?', sub: 'There is no right answer. It helps us show the right tools.',
                 opts: [['me', 'The student'], ['together', 'Student and parents together'], ['parents', 'Mostly the parents'], ['decided', 'Already decided']] },
             routes: { label: 'Routes you are open to', multi: 4, exclusive: 'unsure', title: 'Which routes after Class 10 are you open to?', sub: 'Pick any. We only show other routes if you want them.',
                 opts: [['school', 'School, Class 11 and 12'], ['coaching', 'School with integrated coaching'], ['diploma', 'Diploma or polytechnic'], ['iti', 'ITI or a skilled trade'], ['unsure', 'Not sure']] },
-            worry: { label: 'Biggest worry', title: 'What worries you most right now?', sub: 'We start your results with this.',
+            worry: { two: true, label: 'Biggest worry', title: 'What worries you most right now?', sub: 'We start your results with this.',
                 opts: [['wrong', 'Picking the wrong stream'], ['marks', 'Marks may not be enough'], ['parents', 'Parents and student disagree'], ['cost', 'The cost'], ['friends', 'Friends are going elsewhere']] },
             // ---- Class 11-12: course, exam, college, backup
             stream: { label: 'Your stream', title: 'Which stream and subjects are you in?', sub: 'This decides which courses and exams you are eligible for.',
@@ -10578,11 +10578,11 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 opts: [['serious', 'Preparing seriously'], ['registered', 'Registered, but barely preparing'], ['none', 'Not taking any'], ['dontknow', 'Not sure which ones apply']] },
             pref: { label: 'Course or college', title: 'Which would you take?', sub: 'There is no wrong answer.',
                 opts: [['course', 'First-choice course at an average college'], ['brand', 'Second-choice course at a top college']] },
-            planB: { label: 'If plan A fails', title: 'If your first choice does not work out, what would you do?', sub: 'We use this to shape the advice that follows.',
+            planB: { two: true, exclusive: 'none', label: 'If plan A fails', title: 'If your first choice does not work out, what would you do?', sub: 'We use this to shape the advice that follows.',
                 opts: [['drop', 'Take a drop year and try again'], ['nextbest', 'Take the next-best college'], ['different', 'Switch to a different course'], ['none', 'Not thought about it yet']] },
             move: { label: 'How far you will move', title: 'How far are you willing to move for college?', sub: 'We show colleges in this range first.',
                 opts: [['city', 'Only the home city'], ['state', 'Anywhere in the home state'], ['india', 'Anywhere in India'], ['abroad', 'Abroad too']] },
-            pay: { label: 'Paying for the degree', title: 'How will the degree be paid for?', sub: 'We show scholarships and loans if they apply.',
+            pay: { two: true, label: 'Paying for the degree', title: 'How will the degree be paid for?', sub: 'We show scholarships and loans if they apply.',
                 opts: [['savings', 'Family savings'], ['loan', 'An education loan is fine'], ['scholarship', 'A scholarship is needed'], ['earn', 'Earning while studying is necessary']] },
             // ---- Undergraduate / recent graduate
             degree: { label: 'Your degree', title: 'Which degree are you doing or did you finish?', sub: 'Pick the closest one.',
@@ -10595,7 +10595,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 } },
             ugHow: { label: 'How the degree is going', title: 'How is your degree going?', sub: 'Honest answers get honest help.',
                 opts: [['love', 'Going well'], ['okay', 'It\'s okay'], ['wrong', 'Wrong course, but it will be finished'], ['out', 'Wanting to leave']] },
-            selfDrive: { label: 'What you do unprompted', title: 'What do you do without anyone pushing you?', sub: 'This is the strongest sign of real interest.',
+            selfDrive: { two: true, exclusive: 'nothing', label: 'What you do unprompted', title: 'What do you do without anyone pushing you?', sub: 'This is the strongest sign of real interest.',
                 opts: [['core', 'Go deeper into core subjects'], ['projects', 'Build projects'], ['clubs', 'Run clubs and events'], ['freelance', 'Freelance work or a side business'], ['nothing', 'Nothing yet']] },
             after: { label: 'After graduating', title: 'What do you want to do straight after graduating?', sub: 'This picks the path we plan for.',
                 opts: [['job', 'Get a job'], ['msIndia', 'A master\'s degree in India'], ['msAbroad', 'A master\'s degree abroad'], ['govt', 'Prepare for government exams'], ['biz', 'Family business or a startup'], ['dontknow', 'Not decided yet']] },
@@ -10610,22 +10610,22 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             earnWhen: { label: 'When you must earn', title: 'When do you need to start earning?', sub: 'This filters out routes that take too long.',
                 opts: [['atgrad', 'Right at graduation'], ['wait', 'Can wait 1 to 2 years']] },
             // ---- Postgraduate
-            pgWhy: { label: 'Why a PG degree', title: 'Why a postgraduate degree?', sub: 'Be honest; it changes the advice.',
+            pgWhy: { two: true, label: 'Why a PG degree', title: 'Why a postgraduate degree?', sub: 'Be honest; it changes the advice.',
                 opts: [['deeper', 'To go deeper into the field'], ['change', 'To change field'], ['pay', 'For better pay'], ['required', 'The goal requires it'], ['time', 'To buy time while deciding']] },
-            pgLead: { label: 'Where it should lead', title: 'Where should the degree lead?', sub: 'This decides which exams and programmes fit.',
+            pgLead: { two: true, label: 'Where it should lead', title: 'Where should the degree lead?', sub: 'This decides which exams and programmes fit.',
                 opts: [['industry', 'An industry role'], ['research', 'Research or a PhD'], ['teaching', 'Teaching'], ['govt', 'Government'], ['abroad', 'Work abroad']] },
             pgSpec: { label: 'Specialisation', title: 'Have you picked a specialisation?', sub: 'If not, we help you compare.',
                 opts: [['decided', 'Yes, decided'], ['two', 'Between two or three'], ['none', 'No idea yet']] },
             pgCost: { label: 'Fees you can manage', title: 'About how much can you spend on fees each year?', sub: 'We weigh cost against what the degree pays back.',
                 opts: [['u1', 'Up to ₹1 lakh'], ['1-3', '₹1 to 3 lakh'], ['3-8', '₹3 to 8 lakh'], ['8+', 'More than ₹8 lakh']],
                 pairFor: function () { return { key: 'loan', title: 'Would you take an education loan?', opts: [['yes', 'Yes'], ['no', 'No']] }; } },
-            pgMissing: { label: 'What is missing', title: 'What is missing for you today?', sub: 'We turn this into actions for the next 90 days.',
+            pgMissing: { two: true, label: 'What is missing', title: 'What is missing for you today?', sub: 'We turn this into actions for the next 90 days.',
                 opts: [['exposure', 'Industry exposure'], ['research', 'Research output'], ['network', 'A professional network'], ['skills', 'Specific skills']] },
             // ---- Working professionals
             industry: { label: 'Your current work', title: 'What kind of work do you do now?', sub: 'Pick the closest one.',
                 opts: [['data-analyst', 'Data or analytics'], ['software-developer', 'Software or IT'], ['finance-accounts', 'Finance or accounts'], ['marketing-sales', 'Marketing or sales'], ['operations', 'Operations or project coordination'], ['teacher-trainer', 'Teaching or training'], ['design-creative', 'Design or creative'], ['customer-support', 'Customer support or client success'], ['other', 'Something else']],
                 pairFor: function () { return { key: 'years', title: 'Years of experience', opts: [['0-2', '0 to 2'], ['3-5', '3 to 5'], ['6-10', '6 to 10'], ['10+', '10 or more']] }; } },
-            whyMove: { label: 'Why move now', title: 'Why are you thinking about a change now?', sub: 'This decides whether to grow where you are or switch.',
+            whyMove: { two: true, label: 'Why move now', title: 'Why are you thinking about a change now?', sub: 'This decides whether to grow where you are or switch.',
                 opts: [['pay', 'Pay'], ['stalled', 'Growth has stalled'], ['dislike', 'Dislike of the work'], ['risk', 'The industry feels risky'], ['return', 'Returning after a break']] },
             keep: { label: 'Tasks you would keep', multi: 3, title: 'Which parts of your work would you keep?', sub: 'Pick up to 3. These are your transferable strengths.',
                 opts: [['data', 'Analysing data and numbers'], ['manage', 'Managing people'], ['customers', 'Talking to customers'], ['build', 'Building or fixing things'], ['write', 'Writing and communicating'], ['plan', 'Planning and organising'], ['design', 'Designing or creating'], ['teach', 'Teaching or training others']] },
@@ -10634,10 +10634,10 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 pairFor: function () { return { key: 'runway', title: 'How many months could you live on savings?', opts: [['0-3', '0 to 3'], ['3-6', '3 to 6'], ['6+', '6 or more']] }; } },
             paycut: { label: 'Pay cut you can take', title: 'What pay cut could you absorb during a move?', sub: 'This decides between a bridge role and a direct jump.',
                 opts: [['none', 'None'], ['20', 'Up to 20%'], ['more', 'More, for a short time']] },
-            wroute: { label: 'Preferred route', title: 'How would you prefer to make the move?', sub: 'This shapes your plan.',
+            wroute: { two: true, label: 'Preferred route', title: 'How would you prefer to make the move?', sub: 'This shapes your plan.',
                 opts: [['upskill', 'Upskill while in the job'], ['internal', 'Move internally within the company'], ['parttime', 'A part-time course'], ['fulltime', 'A full-time break to study']] },
             // ---- Shared core
-            challenge: { label: 'A satisfying challenge', title: 'Which kind of challenge sounds most satisfying to you?', sub: 'Pick the one that feels most like you.',
+            challenge: { two: true, label: 'A satisfying challenge', title: 'Which kind of challenge sounds most satisfying to you?', sub: 'Pick the one that feels most like you.',
                 opts: [['patterns', 'Finding patterns and solving complex problems'], ['people', 'Understanding people and helping them through problems'], ['ideas', 'Coming up with original ideas or better designs'], ['plan', 'Planning, organising and making things happen'], ['build', 'Building, repairing or working with practical systems'], ['mixed', 'Different kinds of challenges']] },
             values: { label: 'What would matter', multi: 2, title: 'What would make a career feel worthwhile to you?', sub: 'Pick up to 2.',
                 opts: [['enjoy', 'Doing work that is genuinely enjoyable'], ['earn', 'Earning well and achieving financial independence'], ['help', 'Helping people or making a difference'], ['creative', 'Being creative and expressing ideas'], ['own', 'Building something original'], ['stable', 'Having stability and a predictable future'], ['freedom', 'Having freedom and flexibility'], ['skilled', 'Becoming highly skilled or recognised in the field']] },
@@ -10650,7 +10650,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     return o;
                 } },
             // ---- Closing
-            help: { label: 'What you need help with', title: 'What do you need help with first?', sub: 'We start your results there.',
+            help: { two: true, label: 'What you need help with', title: 'What do you need help with first?', sub: 'We start your results there.',
                 optsFor: function (a) {
                     if (a.cls === '10') return [['stream', 'Choosing a stream'], ['careers', 'Which careers fit'], ['scholarships', 'Scholarships and low-cost options'], ['start', 'Where to start']];
                     if (a.cls === '11' || a.cls === '12') return [['exams', 'Which entrance exams to take'], ['colleges', 'Which colleges and courses to target'], ['backup', 'A backup plan if the first choice fails'], ['scholarships', 'Scholarships and affordable study'], ['careers', 'Which careers fit']];
@@ -10692,10 +10692,12 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (!q || v == null || (Array.isArray(v) && !v.length)) return '';
             const opts = typeof q.optsFor === 'function' ? q.optsFor(a) : q.opts;
             const lab = function (x) { const o = (opts || []).find(function (p) { return p[0] === x; }); return o ? ((short && o[2]) || o[1]) : x; };
-            return [].concat(v).map(lab).join('; ');
+            return [].concat(v, a[key + '2'] || []).map(lab).join('; ');
         }
         // Some questions' options depend on earlier answers (e.g. "help" for a working professional vs a student).
         // Everywhere that needs a question's option list should call this instead of reading q.opts directly.
+        // true when v is the main answer or the optional second answer to question k
+        function qzIs(a, k, v) { return !!a && (a[k] === v || a[k + '2'] === v); }
         function quizOpts(q) { return typeof q.optsFor === 'function' ? q.optsFor(wizardAnswers) : q.opts; }
         // topic or answer → [[interest the app understands, weight], ...]
         const QZ_INTEREST = {
@@ -10777,6 +10779,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 if (!counts(k) || !QZ_INTEREST[k]) return;
                 const w = qzWeight(a, k);
                 [].concat(a[k] || []).forEach(function (v) { add(QZ_INTEREST[k][v], w); });
+                if (a[k + '2']) add(QZ_INTEREST[k][a[k + '2']], w * 0.7);
             });
             // careers or fields the student named: their categories count as interests too
             if (a.cls === '9' || a.cls === '10' || a.cls === '11' || a.cls === '12') a.pickedCareers = [];
@@ -10799,14 +10802,16 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     const m = QZ_STYLE[k][v]; if (!m) return;
                     Object.keys(m).forEach(function (s) { st[s] = (st[s] || 0) + m[s]; if (order.indexOf(s) < 0) order.push(s); });
                 });
+                const m2 = a[k + '2'] && QZ_STYLE[k][a[k + '2']];
+                if (m2) Object.keys(m2).forEach(function (s) { st[s] = (st[s] || 0) + m2[s] * 0.7; if (order.indexOf(s) < 0) order.push(s); });
             });
             const sr = order.sort(function (x, y) { return st[y] - st[x] || order.indexOf(x) - order.indexOf(y); });
             a.workStyle = sr.length ? sr[0] : 'Mixed';
             a.workStyles = sr.slice(0, 2);
             // what matters most
             const v = a.values || [];
-            const has = function (k, val) { return counts(k) && a[k] === val; };
-            a.constraint = (a.help === 'scholarships' || has('pay', 'scholarship') || has('pgCost', 'u1')) ? 'Budget'
+            const has = function (k, val) { return counts(k) && (a[k] === val || a[k + '2'] === val); };
+            a.constraint = (a.help === 'scholarships' || a.help2 === 'scholarships' || has('pay', 'scholarship') || has('pgCost', 'u1')) ? 'Budget'
                 : (has('earnWhen', 'atgrad') || has('pay', 'earn') || has('paycut', 'none')) ? 'Fast'
                 : (v.indexOf('skilled') > -1 || has('pgWhy', 'deeper') || has('pgLead', 'research')) ? 'Deep'
                 : (v.indexOf('earn') > -1 && v.indexOf('stable') > -1) ? 'Fast' : 'Open';
@@ -10889,14 +10894,14 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         function renderQuizStep(n) {
             const q = quizQ(n), box = document.getElementById('wizard-qs');
             if (!q || !box) return;
-            const e = escapeAuth, cur = wizardAnswers[q.key], sel = Array.isArray(cur) ? cur : (cur ? [cur] : []);
+            const e = escapeAuth, cur = wizardAnswers[q.key], sel = q.two ? [cur, wizardAnswers[q.key + '2']].filter(Boolean) : Array.isArray(cur) ? cur : (cur ? [cur] : []);
             const base = 'w-full text-left p-4 rounded-xl border transition min-h-[56px] ';
             const pr = quizPair(q);
-            let h = '<p class="text-lg font-medium text-slate-700 mb-1">' + n + '. ' + e(q.title) + '</p><p class="text-xs text-slate-600 mb-5">' + e(q.sub) + (q.multi ? ' <span class="font-semibold">Selected: <span id="wiz-count-' + n + '">' + sel.length + '</span> of up to ' + q.multi + '.</span>' : '') + '</p>';
+            let h = '<p class="text-lg font-medium text-slate-700 mb-1">' + n + '. ' + e(q.title) + '</p><p class="text-xs text-slate-600 mb-5">' + e(q.sub) + (q.multi ? ' <span class="font-semibold">Selected: <span id="wiz-count-' + n + '">' + sel.length + '</span> of up to ' + q.multi + '.</span>' : q.two ? ' <span class="font-semibold">Pick 1, or 2 if two fit you. Your first tap is your main answer.</span>' : '') + '</p>';
             const qOpts = quizOpts(q), twoCol = qOpts.length >= 4 && qOpts.every(function (o) { return String(o[1] || '').length <= 60; });
-            h += '<div class="' + (twoCol ? 'grid grid-cols-1 md:grid-cols-2 gap-2.5' : 'space-y-2.5') + '" role="' + (q.multi ? 'group' : 'radiogroup') + '" aria-label="' + e(q.title) + '">' + qOpts.map(function (o) {
+            h += '<div class="' + (twoCol ? 'grid grid-cols-1 md:grid-cols-2 gap-2.5' : 'space-y-2.5') + '" role="' + (q.multi || q.two ? 'group' : 'radiogroup') + '" aria-label="' + e(q.title) + '">' + qOpts.map(function (o) {
                 const on = sel.indexOf(o[0]) > -1;
-                return '<button type="button" data-qv="' + o[0] + '" aria-pressed="' + on + '" onclick="quizPick(' + n + ', \'' + o[0] + '\')" class="' + base + (on ? 'border-brand-600 bg-brand-50' : 'border-slate-200 hover:border-brand-600 hover:bg-brand-50/50') + '"><span class="flex items-start gap-3"><span aria-hidden="true" class="mt-0.5 w-5 h-5 shrink-0 border-2 ' + (q.multi ? 'rounded-md' : 'rounded-full') + ' flex items-center justify-center text-[11px] font-bold ' + (on ? 'border-brand-600 bg-brand-600 text-white' : 'border-slate-300 text-transparent') + '">✓</span><span class="font-semibold text-slate-800">' + e(o[1]) + '</span></span></button>';
+                return '<button type="button" data-qv="' + o[0] + '" aria-pressed="' + on + '" onclick="quizPick(' + n + ', \'' + o[0] + '\')" class="' + base + (on ? 'border-brand-600 bg-brand-50' : 'border-slate-200 hover:border-brand-600 hover:bg-brand-50/50') + '"><span class="flex items-start gap-3"><span aria-hidden="true" class="mt-0.5 w-5 h-5 shrink-0 border-2 ' + (q.multi || q.two ? 'rounded-md' : 'rounded-full') + ' flex items-center justify-center text-[11px] font-bold ' + (on ? 'border-brand-600 bg-brand-600 text-white' : 'border-slate-300 text-transparent') + '">✓</span><span class="font-semibold text-slate-800">' + e(o[1]) + '</span></span></button>';
             }).join('') + '</div>';
             if (pr) {
                 const pv = wizardAnswers[pr.key];
@@ -10912,8 +10917,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                     '<button type="button" onclick="wizardClarityDone()" class="w-full min-h-[48px] bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition">Continue</button></div>';
             }
             const qBack = n > 1 ? '<button type="button" onclick="showWizardStep(' + (n - 1) + ')" class="min-h-[48px] px-4 rounded-xl border border-slate-300 text-sm font-semibold text-slate-700 hover:bg-slate-50">← Back</button>' : '<span></span>';
-            const qGo = q.multi ? '<button type="button" id="wiz-multi-go-' + n + '" onclick="wizardMultiDone(' + n + ')" ' + (sel.length ? '' : 'disabled ') + 'class="qz-go min-h-[48px] px-6 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition disabled:opacity-50 disabled:cursor-not-allowed">Continue</button>' : '';
-            if (n > 1 || q.multi) h += '<div class="qz-actions bg-white">' + qBack + qGo + '</div>';
+            const qGo = q.multi || q.two ? '<button type="button" id="wiz-multi-go-' + n + '" onclick="wizardMultiDone(' + n + ')" ' + (sel.length ? '' : 'disabled ') + 'class="qz-go min-h-[48px] px-6 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition disabled:opacity-50 disabled:cursor-not-allowed">Continue</button>' : '';
+            if (n > 1 || q.multi || q.two) h += '<div class="qz-actions bg-white">' + qBack + qGo + '</div>';
             box.innerHTML = h;
         }
         // After the stage changes, drop answers that no longer fit (e.g. "switch field" for a Class 12 student).
@@ -10921,8 +10926,11 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             ['clarity', 'help'].forEach(function (k) {
                 const v = wizardAnswers[k]; if (!v) return;
                 if (!QZ_BANK[k].optsFor(wizardAnswers).some(function (o) { return o[0] === v; })) { delete wizardAnswers[k]; if (k === 'clarity') delete wizardAnswers.careerNote; }
+                const v2 = wizardAnswers[k + '2']; if (v2 && !QZ_BANK[k].optsFor(wizardAnswers).some(function (o) { return o[0] === v2; })) delete wizardAnswers[k + '2'];
             });
         }
+        // answers that mean "none of the above": picking one clears the other pick
+        const QZ_TWO_EXCL = ['none', 'dontknow', 'unsure'];
         function quizPick(n, v) {
             const q = quizQ(n); if (!q) return;
             if (q.multi) {
@@ -10936,6 +10944,19 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 }
                 wizardAnswers[q.key] = sel; deriveWizard(); renderQuizStep(n); saveQuizDraft();
                 const b = document.querySelector('#wizard-qs [data-qv="' + v + '"]'); if (b) b.focus();
+                refreshPageNav();
+                return;
+            }
+            if (q.two) {
+                // up to two answers: the first tap is the main answer (everything in the app reads it), the second is an optional extra
+                const k2 = q.key + '2', p = wizardAnswers[q.key], s2 = wizardAnswers[k2];
+                const ex = [].concat(q.exclusive || [], QZ_TWO_EXCL);
+                if (v === p) { if (s2) { wizardAnswers[q.key] = s2; delete wizardAnswers[k2]; } else delete wizardAnswers[q.key]; }
+                else if (v === s2) delete wizardAnswers[k2];
+                else if (!p || ex.indexOf(v) > -1 || ex.indexOf(p) > -1) { wizardAnswers[q.key] = v; delete wizardAnswers[k2]; }
+                else wizardAnswers[k2] = v;
+                deriveWizard(); renderQuizStep(n); saveQuizDraft();
+                const b2 = document.querySelector('#wizard-qs [data-qv="' + v + '"]'); if (b2) b2.focus();
                 refreshPageNav();
                 return;
             }
@@ -11468,9 +11489,9 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
         // Class 10 answers that open or close a route outright (Maths, Biology, routes they are open to).
         function qzRouteAdj(id, a) {
             let s = 0;
-            if (id === 'pcm') s += a.maths === 'drop' ? -6 : a.maths === 'more' ? 2 : 0;
-            if (id === 'pcb') s += a.bio === 'no' ? -6 : a.bio === 'enjoy' ? 2 : 0;
-            if (id === 'com' && a.maths === 'more') s += 0.5;
+            if (id === 'pcm') s += a.maths === 'drop' ? -6 : qzIs(a, 'maths', 'more') ? 2 : 0;
+            if (id === 'pcb') s += a.bio === 'no' ? -6 : qzIs(a, 'bio', 'enjoy') ? 2 : 0;
+            if (id === 'com' && qzIs(a, 'maths', 'more')) s += 0.5;
             const r = a.routes || [];
             if (r.length && r.indexOf('unsure') < 0) {
                 const want = { dip: 'diploma', iti: 'iti' };
@@ -14112,8 +14133,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             en.forEach(function (k) { const m = IP_INT_STREAM[k] || {}; Object.keys(m).forEach(function (s) { sc[s] += m[s] * 2; }); });
             st.forEach(function (k) { const m = IP_INT_STREAM[k] || {}; Object.keys(m).forEach(function (s) { sc[s] += m[s]; }); });
             const cs = IP_CAT_STREAM[c.category] || []; cs.forEach(function (s, i) { sc[s] += i === 0 ? 4 : 2; });
-            if (A.maths === 'drop') { sc.pcm -= 8; sc.pcmb -= 6; sc.comm -= 4; sc.com += 2; sc.arts += 1; } else if (A.maths === 'more') { sc.pcm += 2; sc.comm += 1; }
-            if (A.bio === 'no') { sc.pcb -= 8; sc.pcmb -= 6; } else if (A.bio === 'enjoy') { sc.pcb += 2; sc.pcmb += 1; }
+            if (A.maths === 'drop') { sc.pcm -= 8; sc.pcmb -= 6; sc.comm -= 4; sc.com += 2; sc.arts += 1; } else if (qzIs(A, 'maths', 'more')) { sc.pcm += 2; sc.comm += 1; }
+            if (A.bio === 'no') { sc.pcb -= 8; sc.pcmb -= 6; } else if (qzIs(A, 'bio', 'enjoy')) { sc.pcb += 2; sc.pcmb += 1; }
             const order = Object.keys(sc).sort(function (a, b) { return sc[b] - sc[a]; });
             return { first: order[0], second: order[1], en: en, st: st, sc: sc, careerStreams: cs };
         }
@@ -14499,6 +14520,8 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const A = X.A, r = ipStreamChoice(X), sc = Object.assign({}, r.sc);
             const act = { build: { pcm: 2, voc: 2 }, research: { pcb: 1, pcm: 1, arts: 1 }, create: { arts: 2, voc: 1 }, biz: { comm: 2, com: 2 }, people: { arts: 2, com: 1, pcb: 1 } }[A.activity] || {};
             Object.keys(act).forEach(function (k) { sc[k] += act[k]; });
+            const act2 = { build: { pcm: 2, voc: 2 }, research: { pcb: 1, pcm: 1, arts: 1 }, create: { arts: 2, voc: 1 }, biz: { comm: 2, com: 2 }, people: { arts: 2, com: 1, pcb: 1 } }[A.activity2] || {};
+            Object.keys(act2).forEach(function (k) { sc[k] += act2[k] * 0.7; });
             const ro = [].concat(A.routes || []);
             if (ro.length && ro.indexOf('unsure') < 0) { if (ro.indexOf('diploma') > -1 || ro.indexOf('iti') > -1) sc.voc += 3; else sc.voc -= 4; } else sc.voc -= 1;
             if (ro.indexOf('coaching') > -1) { sc.pcm += 1; sc.pcb += 1; }
@@ -14519,9 +14542,9 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             if (enHit.length) pro.push('You look forward to ' + enHit.map(L).join(' and ') + '.');
             if (stHit.length) pro.push('You score well in ' + stHit.map(L).join(' and ') + '.');
             const needM = k === 'pcm' || k === 'pcmb' || k === 'comm', needB = k === 'pcb' || k === 'pcmb';
-            if (needM && A.maths === 'more') pro.push('You want more Maths, and this route is built on it.');
+            if (needM && qzIs(A, 'maths', 'more')) pro.push('You want more Maths, and this route is built on it.');
             if (needM && A.maths === 'drop') con.push('You said you want to drop Maths, and this route is built on it.');
-            if (needB && A.bio === 'enjoy') pro.push('You enjoy Biology and lab work.');
+            if (needB && qzIs(A, 'bio', 'enjoy')) pro.push('You enjoy Biology and lab work.');
             if (needB && A.bio === 'no') con.push('You said Biology is not a good fit, and this route depends on it.');
             if ((k === 'com' || k === 'arts') && A.maths === 'drop') pro.push('It lets you leave Maths behind, as you wanted.');
             const act = { build: ['pcm', 'voc', 'You chose to build the working model'], research: ['pcb', 'arts', 'You chose to research and explain the topic'], create: ['arts', 'voc', 'You chose to design the poster and display'], biz: ['comm', 'com', 'You chose to manage the team and the money'], people: ['arts', 'com', 'You chose to talk to visitors and judges'] }[A.activity];
@@ -14542,13 +14565,13 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const list = C[f], tech = c10Has(A.interests, 'tech') || c10Has(A.strong, 'tech'), people = c10Has(A.interests, 'people'), by = function (n) { return list.find(function (x) { return x[0] === n; }) || list[0]; };
             let pick = list[0];
             if (fam === 'ka') {
-                if (k === 'pcm') pick = A.activity === 'build' && !tech ? by('PCME') : (tech || A.maths === 'more') ? by('PCMC') : A.bio !== 'no' ? by('PCMB') : by('PCMC');
+                if (k === 'pcm') pick = A.activity === 'build' && !tech ? by('PCME') : (tech || qzIs(A, 'maths', 'more')) ? by('PCMC') : A.bio !== 'no' ? by('PCMB') : by('PCMC');
                 else if (k === 'pcb' || k === 'pcmb') pick = by('PCMB');
                 else if (k === 'comm') pick = by('Commerce with Basic Maths');
                 else if (k === 'com') pick = tech ? by('EBAC') : by('SEBA');
                 else if (k === 'arts') pick = people ? by('HEPP') : by('HEPS');
             } else if (fam === 'ts') {
-                pick = k === 'pcm' ? by('MPC') : k === 'pcb' ? by('BiPC') : k === 'pcmb' ? (A.maths === 'more' ? by('MPC') : by('BiPC')) : k === 'comm' ? by('MEC') : k === 'com' ? by('CEC') : by('HEC');
+                pick = k === 'pcm' ? by('MPC') : k === 'pcb' ? by('BiPC') : k === 'pcmb' ? (qzIs(A, 'maths', 'more') ? by('MPC') : by('BiPC')) : k === 'comm' ? by('MEC') : k === 'com' ? by('CEC') : by('HEC');
             } else if (fam === 'mh') {
                 pick = k === 'pcm' ? (tech ? list[1] : list[0]) : k === 'pcb' ? list[2] : k === 'pcmb' ? list[0] : k === 'comm' ? list[0] : k === 'com' ? list[1] : list[0];
             } else {
@@ -14610,10 +14633,11 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             [].concat(A.interests || []).forEach(function (x) { if (IP_INT_LAB[x]) add(C10_ORI_INT[x], 1.5, 'you look forward to ' + IP_INT_LAB[x]); });
             [].concat(A.strong || []).forEach(function (x) { if (IP_INT_LAB[x]) add(C10_ORI_INT[x], 1, 'you score well in ' + IP_INT_LAB[x]); });
             const act = C10_ORI_ACT[A.activity]; if (act) add(act[0], 1, 'at the science fair you would ' + act[1]);
+            const act2 = C10_ORI_ACT[A.activity2]; if (act2) add(act2[0], 0.7, 'at the science fair you might also ' + act2[1]);
             if (C10_ORI_CH[A.challenge]) add(C10_ORI_CH[A.challenge], 1, 'the challenge you find most satisfying is ' + quizLabel('challenge', A, false).toLowerCase());
             [].concat(A.values || []).forEach(function (v) { if (C10_ORI_VAL[v]) add(C10_ORI_VAL[v], 1, 'you want work that means ' + quizLabel('values', { values: [v] }, false).toLowerCase()); });
-            if (A.maths === 'more') add({ tech: 1, biz: 0.5 }, 1, 'you want more Maths after Class 10'); else if (A.maths === 'drop') add({ tech: -2, sci: -1 }, 1);
-            if (A.bio === 'enjoy') add({ health: 1.5 }, 1, 'you enjoy Biology and lab work'); else if (A.bio === 'no') add({ health: -2 }, 1);
+            if (qzIs(A, 'maths', 'more')) add({ tech: 1, biz: 0.5 }, 1, 'you want more Maths after Class 10'); else if (A.maths === 'drop') add({ tech: -2, sci: -1 }, 1);
+            if (qzIs(A, 'bio', 'enjoy')) add({ health: 1.5 }, 1, 'you enjoy Biology and lab work'); else if (A.bio === 'no') add({ health: -2 }, 1);
             if (c10Has(A.routes, 'diploma') || c10Has(A.routes, 'iti')) add({ hands: 2 }, 1, 'you are open to a diploma or ITI');
             const keys = Object.keys(C10_ORI), order = keys.slice().sort(function (a, b) { return sc[b] - sc[a] || keys.indexOf(a) - keys.indexOf(b); }), max = Math.max(0.01, sc[order[0]]);
             const level = function (k) { const r = sc[k] / max; return sc[k] <= 0 ? 'Low' : r >= 0.7 ? 'High' : r >= 0.35 ? 'Moderate' : 'Low'; };
@@ -14770,7 +14794,7 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
                 ipH('Your strongest interest areas') + topO.map(function (k, i) { return ipCard((i + 1) + '. ' + e(C10_ORI[k][0]) + ' <span class="pp-mut" style="font-weight:400">(' + e(o.level(k)) + ')</span>', '<p>' + e(C10_ORI[k][1]) + '</p>' + (o.why[k].length ? '<p class="pp-sm pp-mut">Why we think so: ' + e(o.why[k].slice(0, 3).join('; ')) + '.</p>' : '')); }).join('') +
                 ipCard('Interest is not the same as aptitude', '<p><b>Interest tells you what attracts you. Aptitude and marks tell you what you are equipped to pursue today. A good choice considers both.</b> This report is built from your interests, so check it against your marks and your teachers’ view.</p>', 'pp-note') +
                 (allK.length ? ipH('What you enjoy, and what you score well in') + ipRows(['Subject', 'You enjoy it', 'You score well', 'What it means'], allK.map(function (k) { const a = en.indexOf(k) > -1, b = st.indexOf(k) > -1; return ['<b>' + e(IP_INT_LAB[k]) + '</b>', a ? '✓' : '', b ? '✓' : '', e(a && b ? 'Interest and aptitude agree: your strongest signal.' : a ? 'Interest is there; marks can follow with practice.' : 'An aptitude to use, but not a reason on its own.')]; })) : '') +
-                ipCard('Maths and Biology after Class 10', ipUl([A.maths ? 'Maths: ' + Q('maths') + '. ' + (A.maths === 'drop' ? 'This closes engineering and most data and economics degrees.' : A.maths === 'more' ? 'This keeps PCM, Commerce + Mathematics and economics wide open.' : 'Keeping Maths if a course needs it keeps most doors open.') : '', A.bio ? 'Biology: ' + Q('bio') + '. ' + (A.bio === 'no' ? 'NEET courses close, which is fine if health care is not for you.' : A.bio === 'enjoy' ? 'Medicine, pharmacy, nursing and life sciences stay open.' : 'Neutral is fine: PCMB keeps both doors open if you want that.') : '']))]);
+                ipCard('Maths and Biology after Class 10', ipUl([A.maths ? 'Maths: ' + Q('maths') + '. ' + (A.maths === 'drop' ? 'This closes engineering and most data and economics degrees.' : qzIs(A, 'maths', 'more') ? 'This keeps PCM, Commerce + Mathematics and economics wide open.' : 'Keeping Maths if a course needs it keeps most doors open.') : '', A.bio ? 'Biology: ' + Q('bio') + '. ' + (A.bio === 'no' ? 'NEET courses close, which is fine if health care is not for you.' : qzIs(A, 'bio', 'enjoy') ? 'Medicine, pharmacy, nursing and life sciences stay open.' : 'Neutral is fine: PCMB keeps both doors open if you want that.') : '']))]);
             // 4 decision
             const fitCol = { 'Strong fit': 'cx-g', 'Good fit': 'cx-g', 'Explore further': 'cx-m', Possible: 'cx-m', 'Less likely': '' };
             P.push(['Your Class 11–12 decision', 'Your next major decision. What to consider after Class 10, before you look at careers.',
