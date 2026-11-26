@@ -10277,6 +10277,12 @@ i[class^=ic-]{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em
             const track = document.getElementById('p4-wait-track').value, stage = document.getElementById('p4-wait-stage').value;
             if (!window.__p4Opened) window.__p4Opened = Date.now();
             const cst = p4SessionState();
+            if (cst.state === 'out') {
+                // Signed out: open the sign-up / log-in pop-up now. Once they are signed in (which needs a confirmed email) the join carries on by itself.
+                say('', true); { const cb = document.getElementById('p4-wait-confirm'); if (cb) cb.classList.add('hidden'); }
+                requireAuth('Sign up or log in to join the Learnership waitlist. You need a confirmed email: open the link we send you (check your spam folder too), log in, and your waitlist request will carry on.', function () { internshipJoin(null); });
+                return false;
+            }
             if (cst.state !== 'ok') { say('', true); p4ShowConfirm(cst); return false; }
             { const cb = document.getElementById('p4-wait-confirm'); if (cb) cb.classList.add('hidden'); }
             const nm = (document.getElementById('p4-wait-name').value || '').trim().slice(0, 80), em = String(cst.email || '').trim().slice(0, 254);
